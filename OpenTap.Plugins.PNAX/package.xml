@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+InfoLink: Specifies a location where additional information about the package can be found.
+Version: The version of the package. Must be in a semver 2.0 compatible format. This can be automatically updated from GIT.
+
+For Version the following macro is available (Only works if the project directory is under Git source control):
+$(GitVersion) - Gets the version from Git in the recommended format Major.Minor.Build-PreRelease+CommitHash.BranchName.
+-->
+<Package Name="OpenTap.Plugins.PNAX" Version="0.1.0-alpha" OS="Windows,Linux" Architecture="AnyCPU" xmlns="http://opentap.io/schemas/package">
+  <Description>This is my OpenTAP plugin package.</Description>
+  <Files>
+    <File Path="Packages/OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.dll" SourcePath="OpenTap.Plugins.PNAX.dll">
+      <SetAssemblyInfo Attributes="Version"/>
+      <!--ObfuscateWithDotfuscator/-->
+    </File>
+  </Files>
+</Package>
