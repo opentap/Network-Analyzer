@@ -17,6 +17,10 @@ namespace OpenTap.Plugins.PNAX
     public class GeneralStandardChannelBaseStep : TestStep
     {
         #region Settings
+
+        [Browsable(false)]
+        public bool isControlledByParent = false;
+        [EnabledIf("isControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Group: "Instrument Settings", Order: 1)]
         public PNAX PNAX { get; set; }
 

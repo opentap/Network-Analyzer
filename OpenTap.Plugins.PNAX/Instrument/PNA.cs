@@ -82,16 +82,16 @@ namespace OpenTap.Plugins.PNAX
                 double stopphase = GetPhaseStop(1);
 
                 Log.Info($"Sweep Type: {sweepType}");
-                Log.Info($"Start: {start.ToString()}");
-                Log.Info($"Stop: {stop.ToString()}");
-                Log.Info($"Power: {power.ToString()}");
-                Log.Info($"Number of Points: {points.ToString()}");
-                Log.Info($"IF Bandwidth: {ifbw.ToString()}");
-                Log.Info($"Start Power: {startpower.ToString()}");
-                Log.Info($"Stop Power: {stoppower.ToString()}");
-                Log.Info($"CW Freq: {cwfreq.ToString()}");
-                Log.Info($"Start Phase: {startphase.ToString()}");
-                Log.Info($"Stop Phase: {stopphase.ToString()}");
+                Log.Info($"Start: {start}");
+                Log.Info($"Stop: {stop}");
+                Log.Info($"Power: {power}");
+                Log.Info($"Number of Points: {points}");
+                Log.Info($"IF Bandwidth: {ifbw}");
+                Log.Info($"Start Power: {startpower}");
+                Log.Info($"Stop Power: {stoppower}");
+                Log.Info($"CW Freq: {cwfreq}");
+                Log.Info($"Start Phase: {startphase}");
+                Log.Info($"Stop Phase: {stopphase}");
 
 
 
