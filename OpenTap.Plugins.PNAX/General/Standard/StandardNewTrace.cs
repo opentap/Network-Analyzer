@@ -19,24 +19,6 @@ namespace OpenTap.Plugins.PNAX
     public class StandardNewTrace : GeneralStandardChannelBaseStep
     {
         #region Settings
-        private int _Channel;
-        public int Channel
-        {
-            get
-            {
-                try
-                {
-                    _Channel = GetParent<StandardChannel>().Channel;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-
-                return _Channel;
-            }
-        }
-
         private StandardTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public StandardTraceEnum Meas
