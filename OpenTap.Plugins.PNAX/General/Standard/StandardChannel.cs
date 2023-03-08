@@ -17,6 +17,9 @@ namespace OpenTap.Plugins.PNAX
     public class StandardChannel : TestStep
     {
         #region Settings
+        [Display("PNA", Order: 0.1)]
+        public PNAX PNAX { get; set; }
+
         private int _Channel;
         [Display("Channel", Order: 1)]
         public int Channel
@@ -47,7 +50,6 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(sweepType);
             this.ChildTestSteps.Add(timing);
             this.ChildTestSteps.Add(standardNewTrace);
-
         }
 
         public override void Run()

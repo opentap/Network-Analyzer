@@ -91,7 +91,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(StandardChannel))]
     [AllowAsChildIn(typeof(StandardNewTrace))]
     [Display("Standard Single Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardSingleTrace : TestStep
+    public class StandardSingleTrace : GeneralStandardChannelBaseStep
     {
         #region Settings
         private String _Trace;

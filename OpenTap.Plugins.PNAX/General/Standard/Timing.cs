@@ -27,11 +27,11 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(StandardChannel))]
     [Display("Timing", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class Timing : TestStep
+    public class Timing : GeneralStandardChannelBaseStep
     {
         #region Settings
         [EnabledIf("AutoSweepTime", false, HideIfDisabled = false)]
-        [Unit("S", UseEngineeringPrefix: true, PreScaling: 1e-3, StringFormat: "0.000")]
+        [Unit("S", UseEngineeringPrefix: true, PreScaling: 0.001, StringFormat: "0.000")]
         [Display("Sweep Time", Group: "Time", Order: 10)]
         public double SweepTime { get; set; }
 
@@ -62,11 +62,11 @@ namespace OpenTap.Plugins.PNAX
                 _StandardChannelSweepMode = value;
                 if (_StandardChannelSweepMode == StandardChannelSweepModeEnum.Auto)
                 {
-                    SweepTime = 16.884e-3;
+                    SweepTime = GeneralStandardSettings.Current.SweepTimeAuto;
                 }
                 else if (_StandardChannelSweepMode == StandardChannelSweepModeEnum.Stepped)
                 {
-                    SweepTime = 190.520e-3;
+                    SweepTime = GeneralStandardSettings.Current.SweepTimeStepped;
                 }
             }
         }
@@ -78,22 +78,33 @@ namespace OpenTap.Plugins.PNAX
 
         public Timing()
         {
-            DwellTime = 0;
-            SweepDelay = 0;
-            AutoSweepTime = true;
-            FastSweep = false;
-            StandardChannelSweepMode = StandardChannelSweepModeEnum.Auto;
-            StandardChannelSweepSequence = StandardChannelSweepSequenceEnum.Standard;
+            DwellTime = GeneralStandardSettings.Current.DwellTime;
+            SweepDelay = GeneralStandardSettings.Current.SweepDelay;
+            AutoSweepTime = GeneralStandardSettings.Current.AutoSweepTime;
+            FastSweep = GeneralStandardSettings.Current.FastSweep;
+            StandardChannelSweepMode = GeneralStandardSettings.Current.StandardChannelSweepMode;
+            StandardChannelSweepSequence = GeneralStandardSettings.Current.StandardChannelSweepSequence;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetAutoSweepTime(Channel, AutoSweepTime);
+            if (AutoSweepTime == false)
+            {
+                // TODO : BUG: if trying to use seconds when the prescale is set to 1e-3, the value can never be in seconds.
+                // BUG in general prescaling of decimal numbers is not working
+                PNAX.SetSweepTime(Channel, SweepTime);
+                PNAX.SetDwellTime(Channel, DwellTime);
+            }
+            PNAX.SetSweepDelay(Channel, SweepDelay);
+            PNAX.SetFastSweepMode(Channel, FastSweep);
+
+            PNAX.SetSweepMode(Channel, StandardChannelSweepMode);
+            PNAX.SetSweepSequence(Channel, StandardChannelSweepSequence);
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

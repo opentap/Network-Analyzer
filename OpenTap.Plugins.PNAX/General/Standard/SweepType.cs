@@ -15,25 +15,32 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum StandardSweepTypeEnum
     {
+        [Scpi("LINear")]
         [Display("Linear Frequency")]
         LinearFrequency,
+        [Scpi("LOGarithmic")]
         [Display("Log Frequency")]
         LogFrequency,
+        [Scpi("POWer")]
         [Display("Power Sweep")]
         PowerSweep,
+        [Scpi("CW")]
         [Display("CW Time")]
         CWTime,
+        [Scpi("SEGMent")]
         [Display("Segment Sweep")]
         SegmentSweep,
+        [Scpi("PHASe")]
         [Display("Phase Sweep")]
         PhaseSweep
     }
 
     [AllowAsChildIn(typeof(StandardChannel))]
     [Display("Sweep Type", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class SweepType : TestStep
+    public class SweepType : GeneralStandardChannelBaseStep
     {
         #region Settings
+
         [Browsable(false)]
         public bool EnableStartStop { get; set; }
         [Browsable(false)]
@@ -53,7 +60,7 @@ namespace OpenTap.Plugins.PNAX
 
 
         private StandardSweepTypeEnum _StandardSweepType;
-        [Display("Data Acquisition Mode", Order: 2)]
+        [Display("Data Acquisition Mode", Order: 10)]
         public StandardSweepTypeEnum StandardSweepType
         {
             get
@@ -181,17 +188,17 @@ namespace OpenTap.Plugins.PNAX
 
         public SweepType()
         {
-            StandardSweepType = StandardSweepTypeEnum.LinearFrequency;
-            SweepPropertiesStart = 10e6;
-            SweepPropertiesStop = 67e9;
-            SweepPropertiesStartPower = -10;
-            SweepPropertiesStopPower = 0;
-            SweepPropertiesStartPhase = 0;
-            SweepPropertiesStopPhase = 0;
-            SweepPropertiesCWFreq = 1e9;
-            SweepPropertiesPower = -5;
-            SweepPropertiesPoints = 201;
-            SweepPropertiesIFBandwidth = 100e3;
+            StandardSweepType = GeneralStandardSettings.Current.StandardSweepType;
+            SweepPropertiesStart = GeneralStandardSettings.Current.SweepPropertiesStart;
+            SweepPropertiesStop = GeneralStandardSettings.Current.SweepPropertiesStop;
+            SweepPropertiesStartPower = GeneralStandardSettings.Current.SweepPropertiesStartPower;
+            SweepPropertiesStopPower = GeneralStandardSettings.Current.SweepPropertiesStopPower;
+            SweepPropertiesStartPhase = GeneralStandardSettings.Current.SweepPropertiesStartPhase;
+            SweepPropertiesStopPhase = GeneralStandardSettings.Current.SweepPropertiesStopPhase;
+            SweepPropertiesCWFreq = GeneralStandardSettings.Current.SweepPropertiesCWFreq;
+            SweepPropertiesPower = GeneralStandardSettings.Current.SweepPropertiesPower;
+            SweepPropertiesPoints = GeneralStandardSettings.Current.SweepPropertiesPoints;
+            SweepPropertiesIFBandwidth = GeneralStandardSettings.Current.SweepPropertiesIFBandwidth;
         }
 
         public override void Run()
@@ -199,9 +206,44 @@ namespace OpenTap.Plugins.PNAX
             // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetStandardSweepType(Channel, StandardSweepType);
+            switch (StandardSweepType)
+            {
+                case StandardSweepTypeEnum.LinearFrequency:
+                case StandardSweepTypeEnum.LogFrequency:
+                    PNAX.SetStart(Channel, SweepPropertiesStart);
+                    PNAX.SetStop(Channel, SweepPropertiesStop);
+                    PNAX.SetPower(Channel, SweepPropertiesPower);
+                    PNAX.SetPoints(Channel, SweepPropertiesPoints);
+                    PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
+                    break;
+                case StandardSweepTypeEnum.PowerSweep:
+                    PNAX.SetStartPower(Channel, SweepPropertiesStartPower);
+                    PNAX.SetStopPower(Channel, SweepPropertiesStopPower);
+                    PNAX.SetCWFreq(Channel, SweepPropertiesCWFreq);
+                    PNAX.SetPoints(Channel, SweepPropertiesPoints);
+                    PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
+                    break;
+                case StandardSweepTypeEnum.CWTime:
+                    PNAX.SetPower(Channel, SweepPropertiesPower);
+                    PNAX.SetCWFreq(Channel, SweepPropertiesCWFreq);
+                    PNAX.SetPoints(Channel, SweepPropertiesPoints);
+                    PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
+                    break;
+                case StandardSweepTypeEnum.SegmentSweep:
+                    break;
+                case StandardSweepTypeEnum.PhaseSweep:
+                    PNAX.SetPhaseStart(Channel, SweepPropertiesStartPhase);
+                    PNAX.SetPhaseStop(Channel, SweepPropertiesStopPhase);
+                    PNAX.SetCWFreq(Channel, SweepPropertiesCWFreq);
+                    PNAX.SetPoints(Channel, SweepPropertiesPoints);
+                    PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
+                    break;
+            }
+            //PNAX.GetStandardSweepType
+
+            UpgradeVerdict(Verdict.Pass);
         }
+
     }
 }
