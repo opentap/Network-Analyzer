@@ -41,12 +41,17 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
+            // Delete dummy trace defined during channel setup
+            // DISPlay:MEASure<mnum>:DELete?
+            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DELete \'CH{Channel.ToString()}_DUMMY_1\'");
+
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
 
         [Browsable(true)]

@@ -27,4 +27,10 @@
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Examples\two channels - Standard.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
