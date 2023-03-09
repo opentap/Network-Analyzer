@@ -19,14 +19,13 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
 
         [Browsable(false)]
-        public virtual bool isControlledByParent { get; set; } = false;
-        [EnabledIf("isControlledByParent", false, HideIfDisabled = false)]
+        public virtual bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
 
         [Display("PNA", Group: "Instrument Settings", Order: 1)]
         public PNAX PNAX { get; set; }
 
-        private int _Channel;
-        [EnabledIf("isControlledByParent", false, HideIfDisabled = false)]
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Group: "Instrument Settings", Order: 2)]
         public virtual int Channel { get; set; }
         #endregion

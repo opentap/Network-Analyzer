@@ -62,11 +62,11 @@ namespace OpenTap.Plugins.PNAX
             Channel = 1;
 
             // Sweep Type
-            SweepType sweepType = new SweepType { isControlledByParent = true, Channel = this.Channel };
+            SweepType sweepType = new SweepType { IsControlledByParent = true, Channel = this.Channel };
             // Timing
-            Timing timing = new Timing { isControlledByParent = true, Channel = this.Channel };
+            Timing timing = new Timing { IsControlledByParent = true, Channel = this.Channel };
             // Traces
-            StandardNewTrace standardNewTrace = new StandardNewTrace { isControlledByParent = true, Channel = this.Channel };
+            StandardNewTrace standardNewTrace = new StandardNewTrace { IsControlledByParent = true, Channel = this.Channel };
 
             this.ChildTestSteps.Add(sweepType);
             this.ChildTestSteps.Add(timing);
