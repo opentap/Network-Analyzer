@@ -39,7 +39,7 @@ namespace OpenTap.Plugins.PNAX
         public string PortLo2;
     }
 
-    public class MixerValues
+    public class MixerPowerValues
     {
         public double Lo1Power;
         public double Lo2Power;
@@ -54,6 +54,59 @@ namespace OpenTap.Plugins.PNAX
         public double LO2SweptPowerStop;
         public double LO2SweptPowerStep;
     }
+
+    public class MixerFrequencyValues
+    {
+        public bool IsInputMixerFrequencyTypeStartStop;
+        public bool IsInputMixerFrequencyTypeCenterSpan;
+        public bool IsInputMixerFrequencyTypeFixed;
+        //public double InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
+        public double InputMixerFrequencyStart;
+        public double InputMixerFrequencyStop;
+        public double InputMixerFrequencyCenter;
+        public double InputMixerFrequencySpan;
+        public double InputMixerFrequencyFixed;
+        public bool IsLO1MixerFrequencyTypeStartStop;
+        public bool IsLO1MixerFrequencyTypeCenterSpan;
+        public bool IsLO1MixerFrequencyTypeFixed;
+        //public double LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+        public double LO1MixerFrequencyStart;
+        public double LO1MixerFrequencyStop;
+        public double LO1MixerFrequencyCenter;
+        public double LO1MixerFrequencySpan;
+        public double LO1MixerFrequencyFixed;
+        public bool InputGTLO1;
+        public bool IsIFMixerFrequencyTypeStartStop;
+        public bool IsIFMixerFrequencyTypeCenterSpan;
+        public bool IsIFMixerFrequencyTypeFixed;
+        //public double IFSidebandType = SidebandTypeEnum.Low;
+        //public double IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+        public double IFMixerFrequencyStart;
+        public double IFMixerFrequencyStop;
+        public double IFMixerFrequencyCenter;
+        public double IFMixerFrequencySpan;
+        public double IFMixerFrequencyFixed;
+        public bool IsLO2MixerFrequencyTypeStartStop;
+        public bool IsLO2MixerFrequencyTypeCenterSpan;
+        public bool IsLO2MixerFrequencyTypeFixed;
+        //public double LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+        public double LO2MixerFrequencyStart;
+        public double LO2MixerFrequencyStop;
+        public double LO2MixerFrequencyCenter;
+        public double LO2MixerFrequencySpan;
+        public double LO2MixerFrequencyFixed;
+        public bool IF1GTLO2 = true;
+        public bool IsOutputMixerFrequencyTypeStartStop;
+        public bool IsOutputMixerFrequencyTypeCenterSpan;
+        public bool IsOutputMixerFrequencyTypeFixed;
+        //public double OutputSidebandType = SidebandTypeEnum.Low;
+        //public double OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+        public double OutputMixerFrequencyStart;
+        public double OutputMixerFrequencyStop;
+        public double OutputMixerFrequencyCenter;
+        public double OutputMixerFrequencySpan;
+        public double OutputMixerFrequencyFixed;
+    }
     public partial class PNAX : ScpiInstrument
     {
         public StandardChannelValues GetStandardChannelValues(bool force = false)
@@ -64,13 +117,21 @@ namespace OpenTap.Plugins.PNAX
             return standardChannelValues;
         }
 
-        public MixerValues GetMixerValues()
+        public MixerPowerValues GetMixerPowerValues()
         {
-            return mixerValues;
+            return mixerPowerValues;
+        }
+
+        public MixerFrequencyValues GetMixerFrequencyValues()
+        {
+            return mixerFrequencyValues;
         }
 
         private void UpdateStandardValues()
         {
+            if (standardChannelValues == null)
+                standardChannelValues = new StandardChannelValues();
+
             Open();
             Log.Info("Getting default values for Standard Channel");
 
@@ -157,20 +218,89 @@ namespace OpenTap.Plugins.PNAX
             Close();
         }
 
-        private void UpdateMixerValues()
+        private void UpdateMixerPowerValues()
         {
-            mixerValues.Lo1Power = -15;
-            mixerValues.Lo2Power = -15;
-            mixerValues.SourceAttenuatorPowerPort3 = 0;
-            mixerValues.ReceiverAttenuatorPowerPort3 = 0;
-            mixerValues.SourceAttenuatorPowerPort4 = 0;
-            mixerValues.ReceiverAttenuatorPowerPort4 = 0;
-            mixerValues.LO1SweptPowerStart = -20;
-            mixerValues.LO1SweptPowerStop = -10;
-            mixerValues.LO1SweptPowerStep = 0.05;
-            mixerValues.LO2SweptPowerStart = -10;
-            mixerValues.LO2SweptPowerStop = -10;
-            mixerValues.LO2SweptPowerStep = 0.0;
+            if (mixerPowerValues == null)
+                mixerPowerValues = new MixerPowerValues();
+
+            mixerPowerValues.Lo1Power = -15;
+            mixerPowerValues.Lo2Power = -15;
+            mixerPowerValues.SourceAttenuatorPowerPort3 = 0;
+            mixerPowerValues.ReceiverAttenuatorPowerPort3 = 0;
+            mixerPowerValues.SourceAttenuatorPowerPort4 = 0;
+            mixerPowerValues.ReceiverAttenuatorPowerPort4 = 0;
+            mixerPowerValues.LO1SweptPowerStart = -20;
+            mixerPowerValues.LO1SweptPowerStop = -10;
+            mixerPowerValues.LO1SweptPowerStep = 0.05;
+            mixerPowerValues.LO2SweptPowerStart = -10;
+            mixerPowerValues.LO2SweptPowerStop = -10;
+            mixerPowerValues.LO2SweptPowerStep = 0.0;
+        }
+
+        private void UpdateMixerFrequencyValues()
+        {
+            if (mixerFrequencyValues == null)
+                mixerFrequencyValues = new MixerFrequencyValues();
+
+            mixerFrequencyValues.IsInputMixerFrequencyTypeStartStop = true;
+            mixerFrequencyValues.IsInputMixerFrequencyTypeCenterSpan = false;
+            mixerFrequencyValues.IsInputMixerFrequencyTypeFixed = false;
+
+            //InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
+            mixerFrequencyValues.InputMixerFrequencyStart = 10.5e6;
+            mixerFrequencyValues.InputMixerFrequencyStop = 66.9995e9;
+            mixerFrequencyValues.InputMixerFrequencyCenter = 33.505e9;
+            mixerFrequencyValues.InputMixerFrequencySpan = 66.989e9;
+            mixerFrequencyValues.InputMixerFrequencyFixed = 1e9;
+
+            mixerFrequencyValues.IsLO1MixerFrequencyTypeStartStop = false;
+            mixerFrequencyValues.IsLO1MixerFrequencyTypeCenterSpan = false;
+            mixerFrequencyValues.IsLO1MixerFrequencyTypeFixed = true;
+
+            //LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+            mixerFrequencyValues.LO1MixerFrequencyStart = 0;
+            mixerFrequencyValues.LO1MixerFrequencyStop = 0;
+            mixerFrequencyValues.LO1MixerFrequencyCenter = 0;
+            mixerFrequencyValues.LO1MixerFrequencySpan = 0;
+            mixerFrequencyValues.LO1MixerFrequencyFixed = 0;
+            mixerFrequencyValues.InputGTLO1 = true;
+
+            mixerFrequencyValues.IsIFMixerFrequencyTypeStartStop = false;
+            mixerFrequencyValues.IsIFMixerFrequencyTypeCenterSpan = true;
+            mixerFrequencyValues.IsIFMixerFrequencyTypeFixed = false;
+
+            //IFSidebandType = SidebandTypeEnum.Low;
+            //IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+            mixerFrequencyValues.IFMixerFrequencyStart = 10.5e6;
+            mixerFrequencyValues.IFMixerFrequencyStop = 66.9995e9;
+            mixerFrequencyValues.IFMixerFrequencyCenter = 33.505e9;
+            mixerFrequencyValues.IFMixerFrequencySpan = 66.989e9;
+            mixerFrequencyValues.IFMixerFrequencyFixed = 10e6;
+
+            mixerFrequencyValues.IsLO2MixerFrequencyTypeStartStop = false;
+            mixerFrequencyValues.IsLO2MixerFrequencyTypeCenterSpan = false;
+            mixerFrequencyValues.IsLO2MixerFrequencyTypeFixed = true;
+
+            //mixerFrequencyValues.LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+            mixerFrequencyValues.LO2MixerFrequencyStart = 0;
+            mixerFrequencyValues.LO2MixerFrequencyStop = 0;
+            mixerFrequencyValues.LO2MixerFrequencyCenter = 0;
+            mixerFrequencyValues.LO2MixerFrequencySpan = 0;
+            mixerFrequencyValues.LO2MixerFrequencyFixed = 0;
+            mixerFrequencyValues.IF1GTLO2 = true;
+
+
+            mixerFrequencyValues.IsOutputMixerFrequencyTypeStartStop = false;
+            mixerFrequencyValues.IsOutputMixerFrequencyTypeCenterSpan = true;
+            mixerFrequencyValues.IsOutputMixerFrequencyTypeFixed = false;
+
+            //mixerFrequencyValues.OutputSidebandType = SidebandTypeEnum.Low;
+            //mixerFrequencyValues.OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+            mixerFrequencyValues.OutputMixerFrequencyStart = 10.5e6;
+            mixerFrequencyValues.OutputMixerFrequencyStop = 66.9995e9;
+            mixerFrequencyValues.OutputMixerFrequencyCenter = 33.505e9;
+            mixerFrequencyValues.OutputMixerFrequencySpan = 66.989e9;
+            mixerFrequencyValues.OutputMixerFrequencyFixed = 10e6;
         }
     }
 }

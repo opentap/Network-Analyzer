@@ -22,7 +22,8 @@ namespace OpenTap.Plugins.PNAX
 
         private int TraceCount = 0;
         private StandardChannelValues standardChannelValues;
-        private MixerValues mixerValues;
+        private MixerPowerValues mixerPowerValues;
+        private MixerFrequencyValues mixerFrequencyValues;
 
         public PNAX()
         {
@@ -71,7 +72,8 @@ namespace OpenTap.Plugins.PNAX
                 return;
             }
             UpdateStandardValues();
-            UpdateMixerValues();
+            UpdateMixerPowerValues();
+            UpdateMixerFrequencyValues();
         }
 
         public int GetNewTraceID()
