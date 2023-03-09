@@ -20,6 +20,8 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
+        private int TraceCount = 0;
+
         public PNAX()
         {
             Name = "PNA-X";
@@ -34,6 +36,10 @@ namespace OpenTap.Plugins.PNAX
 
             base.Open();
             // TODO:  Open the connection to the instrument here
+
+            ScpiCommand("SYST:FPR");
+            WaitForOperationComplete();
+            TraceCount = 1;
 
             //if (!IdnString.Contains("Instrument ID"))
             //{
@@ -125,6 +131,11 @@ namespace OpenTap.Plugins.PNAX
 
                 Close();
             }
+        }
+
+        public int GetNewTraceID()
+        {
+            return TraceCount++;
         }
 
         #region Mixer Setup

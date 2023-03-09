@@ -209,9 +209,21 @@ namespace OpenTap.Plugins.PNAX
             // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            int traceid = PNAX.GetNewTraceID();
+
+            // Define the measurement
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
+
+            // Create a window if it doesn't exist already
+            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
+
+            // Display the measurement
+            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
+
+            // Select the measurement
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

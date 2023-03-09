@@ -19,6 +19,8 @@ namespace OpenTap.Plugins.PNAX
     public class ConverterChannelBase : TestStep
     {
         #region Settings
+        [Display("PNA", Order: 0.1)]
+        public PNAX PNAX { get; set; }
 
         private int _Channel;
         [Display("Channel", Order: 1)]
@@ -59,12 +61,16 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
+            int traceid = PNAX.GetNewTraceID();
+            // Define a dummy measurement so we can setup all channel parameters
+            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:MEAS{traceid.ToString()}:DEF \'CompIn21:Gain Compression Converters\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
