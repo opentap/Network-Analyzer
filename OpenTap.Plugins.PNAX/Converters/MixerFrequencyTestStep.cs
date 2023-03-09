@@ -32,6 +32,13 @@ namespace OpenTap.Plugins.PNAX
     public class MixerFrequencyTestStep : TestStep
     {
         #region Settings
+
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("PNA", Group: "Instrument Settings", Order: 0.1)]
+        public PNAX PNAX { get; set; }
+
         [Browsable(false)]
         public bool DoubleStage { get; set; }
 

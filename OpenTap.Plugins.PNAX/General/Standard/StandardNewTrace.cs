@@ -64,8 +64,6 @@ namespace OpenTap.Plugins.PNAX
             {
                 this.ChildTestSteps.Add(new StandardSingleTrace() { Meas = standardTrace, Channel = this.Channel });
             }
-
-
         }
 
     }

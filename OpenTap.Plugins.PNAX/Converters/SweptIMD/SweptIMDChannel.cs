@@ -25,11 +25,11 @@ namespace OpenTap.Plugins.PNAX
             // Add child steps in the order that is required
 
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep();
+            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true};
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep();
+            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true };
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep();
+            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true };
 
             // Tone Power
             TonePower power = new TonePower();

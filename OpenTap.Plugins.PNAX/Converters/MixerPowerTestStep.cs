@@ -25,6 +25,12 @@ namespace OpenTap.Plugins.PNAX
     public class MixerPowerTestStep : TestStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("PNA", Group: "Instrument Settings", Order: 1)]
+        public PNAX PNAX { get; set; }
+
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
 
@@ -142,26 +148,31 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerPowerTestStep()
         {
+            UpdateDefaultValues();
+        }
+
+        private void UpdateDefaultValues()
+        {
+            var defaultValues = PNAX.GetMixerValues();
+            if (defaultValues == null)
+                return;
+
             PortLO1 = LOEnum.NotControlled; // new Input<LOEnum>();
-            LO1Power = -15;
             SourceLevelingModeLO1 = SourceLevelingModeType.Internal;
-
             PortLO2 = LOEnum.NotControlled; // new Input<LOEnum>();
-            LO2Power = -15;
             SourceLevelingModeLO2 = SourceLevelingModeType.Internal;
-
-            SourceAttenuatorPowerPort3 = 0;
-            ReceiverAttenuatorPowerPort3 = 0;
-            SourceAttenuatorPowerPort4 = 0;
-            ReceiverAttenuatorPowerPort4 = 0;
-
-            LO1SweptPowerStart = -20;
-            LO1SweptPowerStop = -10;
-            LO1SweptPowerStep = 0.05;
-
-            LO2SweptPowerStart = -10;
-            LO2SweptPowerStop = -10;
-            LO2SweptPowerStep = 0.0;
+            LO1Power = defaultValues.Lo1Power;
+            LO2Power = defaultValues.Lo2Power;
+            SourceAttenuatorPowerPort3   = defaultValues.SourceAttenuatorPowerPort3;
+            ReceiverAttenuatorPowerPort3 = defaultValues.ReceiverAttenuatorPowerPort3;
+            SourceAttenuatorPowerPort4   = defaultValues.SourceAttenuatorPowerPort4;
+            ReceiverAttenuatorPowerPort4 = defaultValues.ReceiverAttenuatorPowerPort4;
+            LO1SweptPowerStart = defaultValues.LO1SweptPowerStart;
+            LO1SweptPowerStop  = defaultValues.LO1SweptPowerStop ;
+            LO1SweptPowerStep  = defaultValues.LO1SweptPowerStep ;
+            LO2SweptPowerStart = defaultValues.LO2SweptPowerStart;
+            LO2SweptPowerStop  = defaultValues.LO2SweptPowerStop ;
+            LO2SweptPowerStep  = defaultValues.LO2SweptPowerStep ;
         }
 
         public override void Run()

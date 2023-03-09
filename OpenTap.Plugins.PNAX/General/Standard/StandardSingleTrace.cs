@@ -88,7 +88,6 @@ namespace OpenTap.Plugins.PNAX
         AuxLn21
     }
 
-    [AllowAsChildIn(typeof(StandardChannel))]
     [AllowAsChildIn(typeof(StandardNewTrace))]
     [Display("Standard Single Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
     public class StandardSingleTrace : GeneralStandardChannelBaseStep
@@ -193,9 +192,9 @@ namespace OpenTap.Plugins.PNAX
             Trace = "1";
             Meas = StandardTraceEnum.S11;
             Class = TraceManagerChannelClassEnum.STD;
-            Channel = 1;
             Window = 1;
             Sheet = 1;
+            Channel = 1;
         }
 
         private void UpdateTestName()

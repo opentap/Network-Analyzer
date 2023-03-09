@@ -53,6 +53,12 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
 
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("PNA", Group: "Instrument Settings", Order: 1)]
+        public PNAX PNAX { get; set; }
+
         private ConverterStagesEnum _ConverterStagesEnum;
         [Display("Converter Stages", Order: 10)]
         public ConverterStagesEnum ConverterStages

@@ -188,17 +188,34 @@ namespace OpenTap.Plugins.PNAX
 
         public SweepType()
         {
-            StandardSweepType = GeneralStandardSettings.Current.StandardSweepType;
-            SweepPropertiesStart = GeneralStandardSettings.Current.SweepPropertiesStart;
-            SweepPropertiesStop = GeneralStandardSettings.Current.SweepPropertiesStop;
-            SweepPropertiesStartPower = GeneralStandardSettings.Current.SweepPropertiesStartPower;
-            SweepPropertiesStopPower = GeneralStandardSettings.Current.SweepPropertiesStopPower;
-            SweepPropertiesStartPhase = GeneralStandardSettings.Current.SweepPropertiesStartPhase;
-            SweepPropertiesStopPhase = GeneralStandardSettings.Current.SweepPropertiesStopPhase;
-            SweepPropertiesCWFreq = GeneralStandardSettings.Current.SweepPropertiesCWFreq;
-            SweepPropertiesPower = GeneralStandardSettings.Current.SweepPropertiesPower;
-            SweepPropertiesPoints = GeneralStandardSettings.Current.SweepPropertiesPoints;
-            SweepPropertiesIFBandwidth = GeneralStandardSettings.Current.SweepPropertiesIFBandwidth;
+            UpdateDefaultValues();
+            //StandardSweepType = GeneralStandardSettings.Current.StandardSweepType;
+            //SweepPropertiesStart = GeneralStandardSettings.Current.SweepPropertiesStart;
+            //SweepPropertiesStop = GeneralStandardSettings.Current.SweepPropertiesStop;
+            //SweepPropertiesStartPower = GeneralStandardSettings.Current.SweepPropertiesStartPower;
+            //SweepPropertiesStopPower = GeneralStandardSettings.Current.SweepPropertiesStopPower;
+            //SweepPropertiesStartPhase = GeneralStandardSettings.Current.SweepPropertiesStartPhase;
+            //SweepPropertiesStopPhase = GeneralStandardSettings.Current.SweepPropertiesStopPhase;
+            //SweepPropertiesCWFreq = GeneralStandardSettings.Current.SweepPropertiesCWFreq;
+            //SweepPropertiesPower = GeneralStandardSettings.Current.SweepPropertiesPower;
+            //SweepPropertiesPoints = GeneralStandardSettings.Current.SweepPropertiesPoints;
+            //SweepPropertiesIFBandwidth = GeneralStandardSettings.Current.SweepPropertiesIFBandwidth;
+            UpdateDefaultValues();
+        }
+
+        private void UpdateDefaultValues()
+        {
+            var defaultValues = PNAX.GetStandardChannelValues();
+            SweepPropertiesStart = defaultValues.Start;
+            SweepPropertiesStop = defaultValues.Stop;
+            SweepPropertiesStartPower = defaultValues.StartPower;
+            SweepPropertiesStopPower = defaultValues.StopPower;
+            SweepPropertiesStartPhase = defaultValues.StartPhase;
+            SweepPropertiesStopPhase = defaultValues.StopPhase;
+            SweepPropertiesCWFreq = defaultValues.CWFrequency;
+            SweepPropertiesPower = defaultValues.Power;
+            SweepPropertiesPoints = defaultValues.Points;
+            SweepPropertiesIFBandwidth = defaultValues.IFBandWidth;
         }
 
         public override void Run()
