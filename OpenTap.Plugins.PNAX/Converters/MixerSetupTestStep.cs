@@ -60,32 +60,6 @@ namespace OpenTap.Plugins.PNAX
     public class MixerSetupTestStep : ConverterCompressionBaseStep
     {
         #region Settings
-
-        private ConverterStagesEnum _ConverterStagesEnum;
-        [Display("Converter Stages", Order: 10)]
-        public ConverterStagesEnum ConverterStages
-        {
-            get
-            {
-                try
-                {
-                    _ConverterStagesEnum = GetParent<ConverterChannelBase>().ConverterStages;
-                    UpdateDoubleStage();
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-                return _ConverterStagesEnum;
-            }
-            set
-            {
-                _ConverterStagesEnum = value;
-                UpdateDoubleStage();
-            }
-        }
-
-
         [Display("Port", Group: "Input Port", Order: 30)]
         public PortsEnum PortInput { get; set;}
         [Display("Port", Group: "Output Port", Order: 60)]
@@ -211,7 +185,7 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerSetupTestStep()
         {
-            ConverterStages = GeneralStandardSettings.Current.ConverterStages;
+            //ConverterStages = GeneralStandardSettings.Current.ConverterStages;
             PortInput = GeneralStandardSettings.Current.PortInput;
             PortOutput = GeneralStandardSettings.Current.PortOutput;
             PortLO1 = GeneralStandardSettings.Current.PortLO1;

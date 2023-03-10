@@ -67,9 +67,9 @@ namespace OpenTap.Plugins.PNAX
 
         public bool PowerOnAllChannels { get; set; } = true;
         public double LO1Power { get; set; } = -15;
-        public SourceLevelingModeType SourceLevelingModeLO1 { get; set; } = SourceLevelingModeType.Internal;
+        public SourceLevelingModeType SourceLevelingModeLO1 { get; set; } = SourceLevelingModeType.INTernal;
         public double LO2Power { get; set; } = -15;
-        public SourceLevelingModeType SourceLevelingModeLO2 { get; set; } = SourceLevelingModeType.Internal;
+        public SourceLevelingModeType SourceLevelingModeLO2 { get; set; } = SourceLevelingModeType.INTernal;
         public double SourceAttenuatorPowerPort3 { get; set; } = 0;
         public double ReceiverAttenuatorPowerPort3 { get; set; } = 0;
         public double SourceAttenuatorPowerPort4 { get; set; } = 0;

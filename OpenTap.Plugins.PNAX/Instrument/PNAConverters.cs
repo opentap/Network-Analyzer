@@ -15,6 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     public partial class PNAX : ScpiInstrument
     {
+        #region Mixer Setup
         public ConverterStagesEnum GetConverterStages(int Channel)
         {
             ConverterStagesEnum retVal;
@@ -135,7 +136,7 @@ namespace OpenTap.Plugins.PNAX
         public void SetEnableEmbeddedLO(int Channel, bool value)
         {
             if (value == true)
-            {.
+            {
                 ScpiCommand($"SENS{Channel.ToString()}:MIXer:ELO:STATe 1");
             }
             else
@@ -278,5 +279,109 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENS{Channel.ToString()}:MIXer:ELO:LO:DELTa {value.ToString()}");
         }
+
+        #endregion
+
+        #region Mixer Power
+
+        public bool GetPowerOnAllChannels()
+        {
+            bool retVal = false;
+            retVal = ScpiQuery<bool>($"OUTPut:STATe?");
+            return retVal;
+        }
+
+        public void SetPowerOnAllChannels(bool value)
+        {
+            if (value == true)
+            {
+                ScpiCommand($"OUTPut:STATe 1");
+            }
+            else
+            {
+                ScpiCommand($"OUTPut:STATe 0");
+            }
+        }
+
+        public double GetLOPower(int Channel, int stage)
+        {
+            double retVal = 0;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:POWer?");
+            return retVal;
+        }
+
+        public void SetLOPower(int Channel, int stage, double power)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:POWer {power.ToString()}");
+        }
+
+        public string GetSourceLevelingMode(int Channel, int port)
+        {
+            string retVal = "";
+            retVal = ScpiQuery($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ALC:MODE?");
+            return retVal;
+        }
+
+        public void SetSourceLevelingMode(int Channel, int port, string mode)
+        {
+            ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ALC:MODE {mode}");
+        }
+
+        public string GetSourceLevelingModes(int Channel, int port)
+        {
+            string retVal = "";
+            retVal = ScpiQuery($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ALC:MODE:CATalog?");
+            return retVal;
+        }
+
+        public double GetSourceAttenuator(int Channel, int port)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation?");
+            return retVal;
+        }
+
+        public void SetSourceAttenuator(int Channel, int port, double value)
+        {
+            ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation {value.ToString()}");
+        }
+
+        public double GetReceiverAttenuator(int Channel, int port)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:RECeiver:TEST?");
+            return retVal;
+        }
+
+        public void SetReceiverAttenuator(int Channel, int port, double value)
+        {
+            ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:RECeiver:TEST {value.ToString()}");
+        }
+
+        public double GetLOSweptPowerStart(int Channel, int stage)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STARt?");
+            return retVal;
+        }
+
+        public void SetLOSweptPowerStart(int Channel, int stage, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STARt {value.ToString()}");
+        }
+
+        public double GetLOSweptPowerStop(int Channel, int stage)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STOP?");
+            return retVal;
+        }
+
+        public void SetLOSweptPowerStop(int Channel, int stage, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STOP {value.ToString()}");
+        }
+
+        #endregion
     }
 }

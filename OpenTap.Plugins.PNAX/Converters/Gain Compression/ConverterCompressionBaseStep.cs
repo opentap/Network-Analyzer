@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("ConverterCompressionBaseStep", Group: "OpenTap.Plugins.PNAX.Converters.Gain_Compression", Description: "Insert a description here")]
+    [Browsable(false)]
     public class ConverterCompressionBaseStep : TestStep
     {
         #region Settings
@@ -43,18 +43,27 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        private ConverterStagesEnum _ConverterStagesEnum;
+        protected ConverterStagesEnum _ConverterStagesEnum;
         [Display("Converter Stages", Order: 10)]
         public ConverterStagesEnum ConverterStages
         {
             get
             {
+                try
+                {
+                    _ConverterStagesEnum = GetParent<ConverterChannelBase>().ConverterStages;
+                }
+                catch (Exception ex)
+                {
+                    Log.Info(ex.Message);
+                }
+
                 return _ConverterStagesEnum;
             }
-            set
-            {
-                _ConverterStagesEnum = value;
-            }
+            //set
+            //{
+            //    _ConverterStagesEnum = value;
+            //}
         }
 
         #endregion
