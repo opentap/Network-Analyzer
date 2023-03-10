@@ -21,9 +21,9 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         private int TraceCount = 0;
-        private StandardChannelValues standardChannelValues;
-        private MixerPowerValues mixerPowerValues;
-        private MixerFrequencyValues mixerFrequencyValues;
+        public StandardChannelValues standardChannelValues;
+        public MixerPowerValues mixerPowerValues;
+        public MixerFrequencyValues mixerFrequencyValues;
 
         public PNAX()
         {
