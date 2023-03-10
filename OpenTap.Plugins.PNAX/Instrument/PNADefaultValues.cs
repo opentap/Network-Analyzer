@@ -72,6 +72,58 @@ namespace OpenTap.Plugins.PNAX
         public string PortLo2;
     }
 
+    public class MixerSetupValues
+    {
+        public ConverterStagesEnum ConverterStages;
+        public PortsEnum PortInput;
+        public PortsEnum PortOutput;
+        public LOEnum PortLO1;
+        public LOEnum PortLO2;
+        public int InputFractionalMultiplierNumerator;
+        public int InputFractionalMultiplierDenominator;
+        public int LO1FractionalMultiplierNumerator;
+        public int LO1FractionalMultiplierDenominator;
+        public int LO2FractionalMultiplierNumerator;
+        public int LO2FractionalMultiplierDenominator;
+        public bool EnableEmbeddedLO;
+        public TuningMethodEnum TuningMethod;
+        public TuningPointTypeEnum TuningPointType;
+        public int TuningPoint;
+        public int TuneEvery;
+        public int BroadBandSearch;
+        public int IFBW;
+        public int MaxIterations;
+        public int Tolerance;
+        public double LOFrequencyDelta;
+
+        public static MixerSetupValues GetPresetValues()
+        {
+            MixerSetupValues mixerSetupValues = new MixerSetupValues();
+            mixerSetupValues.ConverterStages = ConverterStagesEnum._1;
+            mixerSetupValues.PortInput = PortsEnum.Port1;
+            mixerSetupValues.PortOutput = PortsEnum.Port2;
+            mixerSetupValues.PortLO1 = LOEnum.NotControlled;
+            mixerSetupValues.PortLO2 = LOEnum.NotControlled;
+            mixerSetupValues.InputFractionalMultiplierNumerator = 1;
+            mixerSetupValues.InputFractionalMultiplierDenominator = 1;
+            mixerSetupValues.LO1FractionalMultiplierNumerator = 1;
+            mixerSetupValues.LO1FractionalMultiplierDenominator = 1;
+            mixerSetupValues.LO2FractionalMultiplierNumerator = 1;
+            mixerSetupValues.LO2FractionalMultiplierDenominator = 1;
+            mixerSetupValues.EnableEmbeddedLO = false;
+            mixerSetupValues.TuningMethod = TuningMethodEnum.BroadbandAndPrecise;
+            mixerSetupValues.TuningPointType = TuningPointTypeEnum.MiddlePoint;
+            mixerSetupValues.TuningPoint = 101;
+            mixerSetupValues.TuneEvery = 1;
+            mixerSetupValues.BroadBandSearch = 3000000;
+            mixerSetupValues.IFBW = 30000;
+            mixerSetupValues.MaxIterations = 5;
+            mixerSetupValues.Tolerance = 1;
+            mixerSetupValues.LOFrequencyDelta = 0;
+            return mixerSetupValues;
+        }
+    }
+
     public class MixerPowerValues
     {
         public double Lo1Power;
@@ -235,6 +287,13 @@ namespace OpenTap.Plugins.PNAX
             return standardChannelValues;
         }
 
+        public MixerSetupValues GetMixerSetupValues()
+        {
+            if (mixerSetupValues == null)
+                return MixerSetupValues.GetPresetValues();
+            return mixerSetupValues;
+        }
+
         public MixerPowerValues GetMixerPowerValues()
         {
             if (mixerPowerValues == null)
@@ -262,18 +321,6 @@ namespace OpenTap.Plugins.PNAX
                 this.WaitForOperationComplete();
 
                 // Channel 1 is Standard
-                //string sweepType = GetStandardSweepType(1);
-                //double start = GetStart(1);
-                //double stop = GetStop(1);
-                //double power = GetPower(1);
-                //int points = GetPoints(1);
-                //double ifbw = GetIFBandwidth(1);
-                //double startpower = GetStartPower(1);
-                //double stoppower = GetStopPower(1);
-                //double cwfreq = GetCWFreq(1);
-                //double startphase = GetPhaseStart(1);
-                //double stopphase = GetPhaseStop(1);
-
                 standardChannelValues.SweepType = GetStandardSweepType(1);
                 standardChannelValues.Start = GetStart(1);
                 standardChannelValues.Stop = GetStop(1);
@@ -286,34 +333,10 @@ namespace OpenTap.Plugins.PNAX
                 standardChannelValues.StopPhase = GetPhaseStop(1);
                 standardChannelValues.CWFrequency = GetCWFreq(1);
 
-                //Log.Info($"Sweep Type: {sweepType}");
-                //Log.Info($"Start: {start}");
-                //Log.Info($"Stop: {stop}");
-                //Log.Info($"Power: {power}");
-                //Log.Info($"Number of Points: {points}");
-                //Log.Info($"IF Bandwidth: {ifbw}");
-                //Log.Info($"Start Power: {startpower}");
-                //Log.Info($"Stop Power: {stoppower}");
-                //Log.Info($"CW Freq: {cwfreq}");
-                //Log.Info($"Start Phase: {startphase}");
-                //Log.Info($"Stop Phase: {stopphase}");
-
                 Log.Info("Getting default values for Gain Compression Converters Channel");
                 // Lets create Channel 2 - Gain Compression Converters
                 ScpiCommand("CALC2:MEAS2:DEF \"SC21:Gain Compression Converters\"");
                 WaitForOperationComplete();
-
-                //int converterstages = GetConverterStages(2);
-                //int portinput = GetPortInput(2);
-                //int portoutput = GetPortOutput(2);
-                //int inputfractionalmultipliernumerator = GetInputFractionalMultiplierNumerator(2);
-                //int inputfractionalmultiplierdenominator = GetInputFractionalMultiplierDenominator(2);
-                //int lo1fractionalmultipliernumerator = GetLOFractionalMultiplierNumerator(2, 1);
-                //int lo1fractionalmultiplierdenominator = GetLOFractionalMultiplierDenominator(2, 1);
-                ////int lo2fractionalmultipliernumerator = GetLOFractionalMultiplierNumerator(2, 2);
-                ////int lo2fractionalmultiplierdenominator = GetLOFractionalMultiplierDenominator(2, 2);
-                //String portlo1 = GetPortLO(2, 1);
-                ////String portlo2 = GetPortLO(2, 2);
 
                 standardChannelValues.ConverterStages = GetConverterStages(2);
                 standardChannelValues.PortInput = GetPortInput(2);
@@ -326,18 +349,6 @@ namespace OpenTap.Plugins.PNAX
                 standardChannelValues.PortLo1 = GetPortLO(2, 1);
                 standardChannelValues.PortLo2 = GetPortLO(2, 2);
 
-                //String portlo2 = GetPortLO(2, 2);
-                //Log.Info($"Converter Stages: {converterstages}");
-                //Log.Info($"Port Input: {portinput}");
-                //Log.Info($"Port Output: {portoutput}");
-                //Log.Info($"Input Fractional Multiplier Numerator: {inputfractionalmultipliernumerator}");
-                //Log.Info($"Input Fractional Multiplier Denominator: {inputfractionalmultiplierdenominator}");
-                //Log.Info($"LO1 Fractional Multiplier Numerator: {lo1fractionalmultipliernumerator}");
-                //Log.Info($"LO1 Fractional Multiplier Denominator: {lo1fractionalmultiplierdenominator}");
-                ////Log.Info($"LO2 Fractional Multiplier Numerator: {lo2fractionalmultipliernumerator}");
-                ////Log.Info($"LO2 Fractional Multiplier Denominator: {lo2fractionalmultiplierdenominator}");
-                //Log.Info($"Port LO1: {portlo1}");
-
                 Close();
             }
             catch (Exception)
@@ -346,6 +357,34 @@ namespace OpenTap.Plugins.PNAX
                 return;
             }
             
+        }
+
+        private void UpdateMixerSetupValues()
+        {
+            if (mixerSetupValues == null)
+                mixerSetupValues = new MixerSetupValues();
+
+            mixerSetupValues.ConverterStages = ConverterStagesEnum._1;
+            mixerSetupValues.PortInput = PortsEnum.Port1;
+            mixerSetupValues.PortOutput = PortsEnum.Port2;
+            mixerSetupValues.PortLO1 = LOEnum.NotControlled;
+            mixerSetupValues.PortLO2 = LOEnum.NotControlled;
+            mixerSetupValues.InputFractionalMultiplierNumerator = 1;
+            mixerSetupValues.InputFractionalMultiplierDenominator = 1;
+            mixerSetupValues.LO1FractionalMultiplierNumerator = 1;
+            mixerSetupValues.LO1FractionalMultiplierDenominator = 1;
+            mixerSetupValues.LO2FractionalMultiplierNumerator = 1;
+            mixerSetupValues.LO2FractionalMultiplierDenominator = 1;
+            mixerSetupValues.EnableEmbeddedLO = false;
+            mixerSetupValues.TuningMethod = TuningMethodEnum.BroadbandAndPrecise;
+            mixerSetupValues.TuningPointType = TuningPointTypeEnum.MiddlePoint;
+            mixerSetupValues.TuningPoint = 101;
+            mixerSetupValues.TuneEvery = 1;
+            mixerSetupValues.BroadBandSearch = 3000000;
+            mixerSetupValues.IFBW = 30000;
+            mixerSetupValues.MaxIterations = 5;
+            mixerSetupValues.Tolerance = 1;
+            mixerSetupValues.LOFrequencyDelta = 0;
         }
 
         private void UpdateMixerPowerValues()

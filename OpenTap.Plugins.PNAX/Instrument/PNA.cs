@@ -24,6 +24,7 @@ namespace OpenTap.Plugins.PNAX
         public StandardChannelValues standardChannelValues;
         public MixerPowerValues mixerPowerValues;
         public MixerFrequencyValues mixerFrequencyValues;
+        public MixerSetupValues mixerSetupValues;
 
         public PNAX()
         {
@@ -72,6 +73,7 @@ namespace OpenTap.Plugins.PNAX
                 return;
             }
             UpdateStandardValues();
+            UpdateMixerSetupValues();
             UpdateMixerPowerValues();
             UpdateMixerFrequencyValues();
         }
