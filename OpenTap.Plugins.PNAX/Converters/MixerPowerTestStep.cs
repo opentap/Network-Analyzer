@@ -15,22 +15,18 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum SourceLevelingModeType
     {
-        Internal,
-        OpenLoop
+        [Display("Internal")]
+        INTernal,
+        [Display("Open Loop")]
+        OPENloop
     }
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [Display("Mixer Power", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert a description here", Order: 2)]
-    public class MixerPowerTestStep : TestStep
+    public class MixerPowerTestStep : ConverterCompressionBaseStep
     {
         #region Settings
-        [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = false;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("PNA", Group: "Instrument Settings", Order: 1)]
-        public PNAX PNAX { get; set; }
-
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
 
@@ -120,7 +116,10 @@ namespace OpenTap.Plugins.PNAX
         [Unit("dB", UseEngineeringPrefix: true)]
         public double ReceiverAttenuatorPowerPort4 { get; set; }
 
-
+        // TODO
+        // Hide these group only for Converters Gain Compression
+        // For all aother Converters, these are available
+        // TODO
         [Display("Start", Groups: new[] { "Swept Power Settings", "LO1 Swept Power" }, Order: 60)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO1SweptPowerStart { get; set; }
@@ -157,10 +156,8 @@ namespace OpenTap.Plugins.PNAX
             if (defaultValues == null)
                 return;
 
-            PortLO1 = LOEnum.NotControlled; // new Input<LOEnum>();
-            SourceLevelingModeLO1 = SourceLevelingModeType.Internal;
-            PortLO2 = LOEnum.NotControlled; // new Input<LOEnum>();
-            SourceLevelingModeLO2 = SourceLevelingModeType.Internal;
+            PortLO2 = GeneralStandardSettings.Current.PortLO2; // new Input<LOEnum>();
+            SourceLevelingModeLO2 = SourceLevelingModeType.INTernal;
             LO1Power = defaultValues.Lo1Power;
             LO2Power = defaultValues.Lo2Power;
             SourceAttenuatorPowerPort3   = defaultValues.SourceAttenuatorPowerPort3;
@@ -180,9 +177,33 @@ namespace OpenTap.Plugins.PNAX
             // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
+            PNAX.SetLOPower(Channel, 1, LO1Power);
+            // We are assuming Port 3, but we need to get this value from MixerSetupTestStep:PortLO1
+            PNAX.SetSourceLevelingMode(Channel, 3, SourceLevelingModeLO1.ToString());
+
+            if(ConverterStages == ConverterStagesEnum._2)
+            {
+                PNAX.SetLOPower(Channel, 2, LO2Power);
+                // We are assuming Port 4, but we need to get this value from MixerSetupTestStep:PortLO2
+                PNAX.SetSourceLevelingMode(Channel, 4, SourceLevelingModeLO2.ToString());
+            }
+
+            PNAX.SetSourceAttenuator(Channel, 3, SourceAttenuatorPowerPort3);
+            PNAX.SetReceiverAttenuator(Channel, 3, ReceiverAttenuatorPowerPort3);
+
+            PNAX.SetSourceAttenuator(Channel, 4, SourceAttenuatorPowerPort4);
+            PNAX.SetReceiverAttenuator(Channel, 4, ReceiverAttenuatorPowerPort4);
+
+            PNAX.SetLOSweptPowerStart(Channel, 1, LO1SweptPowerStart);
+            PNAX.SetLOSweptPowerStop(Channel, 1, LO1SweptPowerStop);
+
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                PNAX.SetLOSweptPowerStart(Channel, 2, LO2SweptPowerStart);
+                PNAX.SetLOSweptPowerStop(Channel, 2, LO2SweptPowerStop);
+            }
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

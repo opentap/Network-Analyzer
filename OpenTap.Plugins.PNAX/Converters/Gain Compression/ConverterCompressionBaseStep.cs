@@ -14,48 +14,56 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    [AllowAnyChild]
-    [Display("Converter Channel", Groups: new[] { "Converters" }, Description: "Insert a description here")]
-    public class ConverterChannelBase : TestStep
+    public class ConverterCompressionBaseStep : TestStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        private int _Channel;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Order: 1)]
-        public int Channel
+        public virtual int Channel { get; set; }
+
+        [Browsable(false)]
+        public bool DoubleStage { get; set; }
+
+
+        private void UpdateConverterStages()
         {
-            set
+            if (_ConverterStagesEnum == ConverterStagesEnum._2)
             {
-                _Channel = value;
+                DoubleStage = true;
             }
-            get
+            else
             {
-                return _Channel;
+                DoubleStage = false;
             }
         }
 
-        private ConverterStagesEnum _ConverterStagesEnum;
+        protected ConverterStagesEnum _ConverterStagesEnum;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 10)]
         public ConverterStagesEnum ConverterStages
         {
             get
             {
+                try
+                {
+                    _ConverterStagesEnum = GetParent<ConverterChannelBase>().ConverterStages;
+                }
+                catch (Exception ex)
+                {
+                    Log.Info(ex.Message);
+                }
+                UpdateConverterStages();
                 return _ConverterStagesEnum;
             }
             set
             {
                 _ConverterStagesEnum = value;
-
-                // Update children
-                foreach(var a in this.ChildTestSteps)
-                {
-                    if (a is ConverterCompressionBaseStep)
-                    {
-                        (a as ConverterCompressionBaseStep).ConverterStages = _ConverterStagesEnum;
-                    }
-                }
             }
         }
 
@@ -63,15 +71,12 @@ namespace OpenTap.Plugins.PNAX
 
 
 
-        public ConverterChannelBase()
+        public ConverterCompressionBaseStep()
         {
-            Channel = 1;
-            ConverterStages = GeneralStandardSettings.Current.ConverterStages;
         }
 
         public override void Run()
         {
-
         }
     }
 }

@@ -13,6 +13,39 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+
+    public enum ConverterStagesEnum
+    {
+        [Display("1")]
+        _1,
+        [Display("2")]
+        _2
+    }
+
+    public enum PortsEnum
+    {
+        [Scpi("1")]
+        Port1,
+        [Scpi("2")]
+        Port2,
+        [Scpi("3")]
+        Port3,
+        [Scpi("4")]
+        Port4
+    }
+
+    public enum LOEnum
+    {
+        [Scpi("Not controlled")]
+        NotControlled,
+        [Scpi("Port 3")]
+        Port3,
+        [Scpi("Port 4")]
+        Port4,
+        [Scpi("Source 3")]
+        Source3
+    }
+
     public class StandardChannelValues
     {
         public string SweepType;
@@ -26,7 +59,7 @@ namespace OpenTap.Plugins.PNAX
         public double CWFrequency;
         public double StartPhase;
         public double StopPhase;
-        public int ConverterStages;
+        public ConverterStagesEnum ConverterStages;
         public int PortInput;
         public int PortOutput;
         public int InputFracMultiNumerator;

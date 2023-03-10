@@ -29,7 +29,7 @@ namespace OpenTap.Plugins.PNAX
                     _pNAX = value;
                     foreach (var step in this.ChildTestSteps)
                     {
-                        var childType = ((GeneralStandardChannelBaseStep)(step));
+                        var childType = ((GeneralChannelBaseStep)(step));
                         childType.PNAX = value;
                     }
                 }
@@ -49,7 +49,7 @@ namespace OpenTap.Plugins.PNAX
                 _Channel = value;
                 foreach (var step in this.ChildTestSteps)
                 {
-                    var childType = ((GeneralStandardChannelBaseStep)(step));
+                    var childType = ((GeneralChannelBaseStep)(step));
                     childType.Channel = value;
                 }
             }
@@ -78,7 +78,6 @@ namespace OpenTap.Plugins.PNAX
             int traceid = PNAX.GetNewTraceID();
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:MEAS{traceid.ToString()}:DEF \'S11:Standard\'");
             PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_1\',\'Standard\',\'S11\'");
 
             RunChildSteps(); //If the step supports child steps.

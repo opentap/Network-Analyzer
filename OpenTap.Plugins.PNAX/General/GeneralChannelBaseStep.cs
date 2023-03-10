@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class GeneralStandardChannelBaseStep : TestStep
+    public class GeneralChannelBaseStep : TestStep
     {
         #region Settings
 
@@ -30,7 +30,7 @@ namespace OpenTap.Plugins.PNAX
         public virtual int Channel { get; set; }
         #endregion
 
-        public GeneralStandardChannelBaseStep()
+        public GeneralChannelBaseStep()
         {
 
         }

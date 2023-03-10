@@ -27,7 +27,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(StandardChannel))]
     [Display("Timing", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class Timing : GeneralStandardChannelBaseStep
+    public class Timing : GeneralChannelBaseStep
     {
         #region Settings
         [EnabledIf("AutoSweepTime", false, HideIfDisabled = false)]
