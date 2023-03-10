@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(StandardChannel))]
     [Display("Sweep Type", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class SweepType : GeneralStandardChannelBaseStep
+    public class SweepType : GeneralChannelBaseStep
     {
         #region Settings
 

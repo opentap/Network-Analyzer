@@ -13,15 +13,15 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Browsable(false)]
-    public class GeneralStandardChannelBaseStep : TestStep
+    [Display("ConverterCompressionBaseStep", Group: "OpenTap.Plugins.PNAX.Converters.Gain_Compression", Description: "Insert a description here")]
+    public class ConverterCompressionBaseStep : TestStep
     {
         #region Settings
-        [Display("PNA", Group: "Instrument Settings", Order: 1)]
+        [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
         private int _Channel;
-        [Display("Channel", Group: "Instrument Settings", Order: 2)]
+        [Display("Channel", Order: 1)]
         public int Channel
         {
             //set
@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 try
                 {
-                    _Channel = GetParent<StandardChannel>().Channel;
+                    _Channel = GetParent<ConverterChannelBase>().Channel;
                 }
                 catch (Exception ex)
                 {
@@ -42,16 +42,31 @@ namespace OpenTap.Plugins.PNAX
                 return _Channel;
             }
         }
+
+        private ConverterStagesEnum _ConverterStagesEnum;
+        [Display("Converter Stages", Order: 10)]
+        public ConverterStagesEnum ConverterStages
+        {
+            get
+            {
+                return _ConverterStagesEnum;
+            }
+            set
+            {
+                _ConverterStagesEnum = value;
+            }
+        }
+
         #endregion
 
-        public GeneralStandardChannelBaseStep()
-        {
 
+
+        public ConverterCompressionBaseStep()
+        {
         }
 
         public override void Run()
         {
-
         }
     }
 }

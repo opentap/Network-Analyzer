@@ -114,7 +114,10 @@ namespace OpenTap.Plugins.PNAX
         [Unit("dB", UseEngineeringPrefix: true)]
         public double ReceiverAttenuatorPowerPort4 { get; set; }
 
-
+        // TODO
+        // Hide these group only for Converters Gain Compression
+        // For all aother Converters, these are available
+        // TODO
         [Display("Start", Groups: new[] { "Swept Power Settings", "LO1 Swept Power" }, Order: 60)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO1SweptPowerStart { get; set; }
@@ -142,26 +145,27 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerPowerTestStep()
         {
-            PortLO1 = LOEnum.NotControlled; // new Input<LOEnum>();
-            LO1Power = -15;
+            PowerOnAllChannels = GeneralStandardSettings.Current.PowerOnAllChannels;
+            PortLO1 = GeneralStandardSettings.Current.PortLO1; // new Input<LOEnum>();
+            LO1Power = GeneralStandardSettings.Current.LO1Power;
             SourceLevelingModeLO1 = SourceLevelingModeType.Internal;
 
-            PortLO2 = LOEnum.NotControlled; // new Input<LOEnum>();
-            LO2Power = -15;
+            PortLO2 = GeneralStandardSettings.Current.PortLO2; // new Input<LOEnum>();
+            LO2Power = GeneralStandardSettings.Current.LO2Power;
             SourceLevelingModeLO2 = SourceLevelingModeType.Internal;
 
-            SourceAttenuatorPowerPort3 = 0;
-            ReceiverAttenuatorPowerPort3 = 0;
-            SourceAttenuatorPowerPort4 = 0;
-            ReceiverAttenuatorPowerPort4 = 0;
+            SourceAttenuatorPowerPort3 = GeneralStandardSettings.Current.SourceAttenuatorPowerPort3;
+            ReceiverAttenuatorPowerPort3 = GeneralStandardSettings.Current.ReceiverAttenuatorPowerPort3;
+            SourceAttenuatorPowerPort4 = GeneralStandardSettings.Current.SourceAttenuatorPowerPort4;
+            ReceiverAttenuatorPowerPort4 = GeneralStandardSettings.Current.ReceiverAttenuatorPowerPort4;
 
-            LO1SweptPowerStart = -20;
-            LO1SweptPowerStop = -10;
-            LO1SweptPowerStep = 0.05;
+            LO1SweptPowerStart = GeneralStandardSettings.Current.LO1SweptPowerStart;
+            LO1SweptPowerStop = GeneralStandardSettings.Current.LO1SweptPowerStop;
+            LO1SweptPowerStep = GeneralStandardSettings.Current.LO1SweptPowerStep;
 
-            LO2SweptPowerStart = -10;
-            LO2SweptPowerStop = -10;
-            LO2SweptPowerStep = 0.0;
+            LO2SweptPowerStart = GeneralStandardSettings.Current.LO2SweptPowerStart;
+            LO2SweptPowerStop = GeneralStandardSettings.Current.LO2SweptPowerStop;
+            LO2SweptPowerStep = GeneralStandardSettings.Current.LO2SweptPowerStep;
         }
 
         public override void Run()

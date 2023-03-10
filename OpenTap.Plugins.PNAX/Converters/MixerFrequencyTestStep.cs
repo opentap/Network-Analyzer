@@ -437,67 +437,67 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerFrequencyTestStep()
         {
-            ConverterStages = ConverterStagesEnum._1;
+            //ConverterStages = ConverterStagesEnum._1;
 
-            IsInputMixerFrequencyTypeStartStop = true;
-            IsInputMixerFrequencyTypeCenterSpan = false;
-            IsInputMixerFrequencyTypeFixed = false;
+            //IsInputMixerFrequencyTypeStartStop = true;
+            //IsInputMixerFrequencyTypeCenterSpan = false;
+            //IsInputMixerFrequencyTypeFixed = false;
 
-            InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
-            InputMixerFrequencyStart = 10.5e6;
-            InputMixerFrequencyStop = 66.9995e9;
-            InputMixerFrequencyCenter = 33.505e9;
-            InputMixerFrequencySpan = 66.989e9;
-            InputMixerFrequencyFixed = 1e9;
+            InputMixerFrequencyType = GeneralStandardSettings.Current.InputMixerFrequencyType;
+            InputMixerFrequencyStart = GeneralStandardSettings.Current.InputMixerFrequencyStart;
+            InputMixerFrequencyStop = GeneralStandardSettings.Current.InputMixerFrequencyStop;
+            InputMixerFrequencyCenter = GeneralStandardSettings.Current.InputMixerFrequencyCenter;
+            InputMixerFrequencySpan = GeneralStandardSettings.Current.InputMixerFrequencySpan;
+            InputMixerFrequencyFixed = GeneralStandardSettings.Current.InputMixerFrequencyFixed;
 
-            IsLO1MixerFrequencyTypeStartStop = false;
-            IsLO1MixerFrequencyTypeCenterSpan = false;
-            IsLO1MixerFrequencyTypeFixed = true;
+            //IsLO1MixerFrequencyTypeStartStop = false;
+            //IsLO1MixerFrequencyTypeCenterSpan = false;
+            //IsLO1MixerFrequencyTypeFixed = true;
 
-            LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
-            LO1MixerFrequencyStart = 0;
-            LO1MixerFrequencyStop = 0;
-            LO1MixerFrequencyCenter = 0;
-            LO1MixerFrequencySpan = 0;
-            LO1MixerFrequencyFixed = 0;
-            InputGTLO1 = true;
+            LO1MixerFrequencyType = GeneralStandardSettings.Current.LO1MixerFrequencyType;
+            LO1MixerFrequencyStart = GeneralStandardSettings.Current.LO1MixerFrequencyStart;
+            LO1MixerFrequencyStop = GeneralStandardSettings.Current.LO1MixerFrequencyStop;
+            LO1MixerFrequencyCenter = GeneralStandardSettings.Current.LO1MixerFrequencyCenter;
+            LO1MixerFrequencySpan = GeneralStandardSettings.Current.LO1MixerFrequencySpan;
+            LO1MixerFrequencyFixed = GeneralStandardSettings.Current.LO1MixerFrequencyFixed;
+            InputGTLO1 = GeneralStandardSettings.Current.InputGTLO1;
 
-            IsIFMixerFrequencyTypeStartStop = false;
-            IsIFMixerFrequencyTypeCenterSpan = true;
-            IsIFMixerFrequencyTypeFixed = false;
+            //IsIFMixerFrequencyTypeStartStop = false;
+            //IsIFMixerFrequencyTypeCenterSpan = true;
+            //IsIFMixerFrequencyTypeFixed = false;
 
-            IFSidebandType = SidebandTypeEnum.Low;
-            IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
-            IFMixerFrequencyStart = 10.5e6;
-            IFMixerFrequencyStop = 66.9995e9;
-            IFMixerFrequencyCenter = 33.505e9;
-            IFMixerFrequencySpan = 66.989e9;
-            IFMixerFrequencyFixed = 10e6;
+            IFSidebandType = GeneralStandardSettings.Current.IFSidebandType;
+            IFMixerFrequencyType = GeneralStandardSettings.Current.IFMixerFrequencyType;
+            IFMixerFrequencyStart = GeneralStandardSettings.Current.IFMixerFrequencyStart;
+            IFMixerFrequencyStop = GeneralStandardSettings.Current.IFMixerFrequencyStop;
+            IFMixerFrequencyCenter = GeneralStandardSettings.Current.IFMixerFrequencyCenter;
+            IFMixerFrequencySpan = GeneralStandardSettings.Current.IFMixerFrequencySpan;
+            IFMixerFrequencyFixed = GeneralStandardSettings.Current.IFMixerFrequencyFixed;
 
-            IsLO2MixerFrequencyTypeStartStop = false;
-            IsLO2MixerFrequencyTypeCenterSpan = false;
-            IsLO2MixerFrequencyTypeFixed = true;
+            //IsLO2MixerFrequencyTypeStartStop = false;
+            //IsLO2MixerFrequencyTypeCenterSpan = false;
+            //IsLO2MixerFrequencyTypeFixed = true;
 
-            LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
-            LO2MixerFrequencyStart = 0;
-            LO2MixerFrequencyStop = 0;
-            LO2MixerFrequencyCenter = 0;
-            LO2MixerFrequencySpan = 0;
-            LO2MixerFrequencyFixed = 0;
-            IF1GTLO2 = true;
+            LO2MixerFrequencyType = GeneralStandardSettings.Current.LO2MixerFrequencyType;
+            LO2MixerFrequencyStart = GeneralStandardSettings.Current.LO2MixerFrequencyStart;
+            LO2MixerFrequencyStop = GeneralStandardSettings.Current.LO2MixerFrequencyStop;
+            LO2MixerFrequencyCenter = GeneralStandardSettings.Current.LO2MixerFrequencyCenter;
+            LO2MixerFrequencySpan = GeneralStandardSettings.Current.LO2MixerFrequencySpan;
+            LO2MixerFrequencyFixed = GeneralStandardSettings.Current.LO2MixerFrequencyFixed;
+            IF1GTLO2 = GeneralStandardSettings.Current.IF1GTLO2;
 
 
-            IsOutputMixerFrequencyTypeStartStop = false;
-            IsOutputMixerFrequencyTypeCenterSpan = true;
-            IsOutputMixerFrequencyTypeFixed = false;
+            //IsOutputMixerFrequencyTypeStartStop = false;
+            //IsOutputMixerFrequencyTypeCenterSpan = true;
+            //IsOutputMixerFrequencyTypeFixed = false;
 
-            OutputSidebandType = SidebandTypeEnum.Low;
-            OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
-            OutputMixerFrequencyStart = 10.5e6;
-            OutputMixerFrequencyStop = 66.9995e9;
-            OutputMixerFrequencyCenter = 33.505e9;
-            OutputMixerFrequencySpan = 66.989e9;
-            OutputMixerFrequencyFixed = 10e6;
+            OutputSidebandType = GeneralStandardSettings.Current.OutputSidebandType;
+            OutputMixerFrequencyType = GeneralStandardSettings.Current.OutputMixerFrequencyType;
+            OutputMixerFrequencyStart = GeneralStandardSettings.Current.OutputMixerFrequencyStart;
+            OutputMixerFrequencyStop = GeneralStandardSettings.Current.OutputMixerFrequencyStop;
+            OutputMixerFrequencyCenter = GeneralStandardSettings.Current.OutputMixerFrequencyCenter;
+            OutputMixerFrequencySpan = GeneralStandardSettings.Current.OutputMixerFrequencySpan;
+            OutputMixerFrequencyFixed = GeneralStandardSettings.Current.OutputMixerFrequencyFixed;
 
         }
 

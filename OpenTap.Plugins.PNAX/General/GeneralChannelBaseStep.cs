@@ -14,50 +14,39 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    [AllowAnyChild]
-    [Display("Converter Channel", Groups: new[] { "Converters" }, Description: "Insert a description here")]
-    public class ConverterChannelBase : TestStep
+    public class GeneralChannelBaseStep : TestStep
     {
         #region Settings
-        [Display("PNA", Order: 0.1)]
+        [Display("PNA", Group: "Instrument Settings", Order: 1)]
         public PNAX PNAX { get; set; }
 
         private int _Channel;
-        [Display("Channel", Order: 1)]
+        [Display("Channel", Group: "Instrument Settings", Order: 2)]
         public int Channel
         {
-            set
-            {
-                _Channel = value;
-            }
+            //set
+            //{
+            //    _Channel = value;
+            //}
             get
             {
+                try
+                {
+                    _Channel = GetParent<StandardChannel>().Channel;
+                }
+                catch (Exception ex)
+                {
+                    Log.Info(ex.Message);
+                }
+
                 return _Channel;
             }
         }
-
-        private ConverterStagesEnum _ConverterStagesEnum;
-        [Display("Converter Stages", Order: 10)]
-        public ConverterStagesEnum ConverterStages
-        {
-            get
-            {
-                return _ConverterStagesEnum;
-            }
-            set
-            {
-                _ConverterStagesEnum = value;
-            }
-        }
-
         #endregion
 
-
-
-        public ConverterChannelBase()
+        public GeneralChannelBaseStep()
         {
-            Channel = 1;
-            ConverterStages = GeneralStandardSettings.Current.ConverterStages;
+
         }
 
         public override void Run()

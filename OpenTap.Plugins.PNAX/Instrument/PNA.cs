@@ -107,7 +107,7 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand("CALC2:MEAS2:DEF \"SC21:Gain Compression Converters\"");
                 WaitForOperationComplete();
 
-                int converterstages = GetConverterStages(2);
+                ConverterStagesEnum converterstages = GetConverterStages(2);
                 int portinput = GetPortInput(2);
                 int portoutput = GetPortOutput(2);
                 int inputfractionalmultipliernumerator = GetInputFractionalMultiplierNumerator(2);
@@ -137,65 +137,5 @@ namespace OpenTap.Plugins.PNAX
         {
             return TraceCount++;
         }
-
-        #region Mixer Setup
-        public int GetConverterStages(int Channel)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:MIXer:STAGe?");
-            return retVal;
-        }
-
-        public int GetPortInput(int Channel)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:MIX:PMAP:INP?");
-            return retVal;
-        }
-
-        public int GetPortOutput(int Channel)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:MIX:PMAP:OUTP?");
-            return retVal;
-        }
-
-        public int GetInputFractionalMultiplierNumerator(int Channel)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:MIXer:INPut:FREQ:NUMerator?");
-            return retVal;
-        }
-
-        public int GetInputFractionalMultiplierDenominator(int Channel)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:MIXer:INPut:FREQ:DENominator?");
-            return retVal;
-        }
-
-        public int GetLOFractionalMultiplierNumerator(int Channel, int Stage)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:MIXer:LO{Stage.ToString()}:FREQuency:NUMerator?");
-            return retVal;
-        }
-
-        public int GetLOFractionalMultiplierDenominator(int Channel, int Stage)
-        {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:MIXer:LO{Stage.ToString()}:FREQuency:DENominator?");
-            return retVal;
-        }
-
-        // SENSe<ch>:MIXer:LO<n>:NAME?
-        public String GetPortLO(int Channel, int Stage)
-        {
-            String retVal;
-            retVal = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:LO{Stage.ToString()}:NAME?");
-            return retVal;
-        }
-        #endregion
-
     }
 }
