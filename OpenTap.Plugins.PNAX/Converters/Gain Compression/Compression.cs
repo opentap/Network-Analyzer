@@ -15,29 +15,38 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum CompressionMethodEnum
     {
+        [Scpi("CFLG")]
         [Display("Compression From Linear Gain")]
         CompressionFromLinearGain,
+        [Scpi("CFMG")]
         [Display("Compression From Max Gain")]
         CompressionFromMaxGain,
+        [Scpi("BACKoff")]
         [Display("Compression From Back Off")]
         CompressionFromBackOff,
+        [Scpi("XYCOM")]
         [Display("X/Y Compression")]
         XYCompression,
+        [Scpi("SAT")]
         [Display("Compression From Saturation")]
         CompressionFromSaturation
     }
 
     public enum EndOfSweepConditionEnum
     {
+        [Scpi("STAN")]
         Default,
+        [Scpi("POFF")]
         RFOff,
+        [Scpi("PSTA")]
         StartPower,
+        [Scpi("PSTO")]
         StopPower
     }
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [Display("Compression", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class Compression : TestStep
+    public class Compression : ConverterCompressionBaseStep
     {
         [Browsable(false)]
         public bool IsCompressionFromGain { get; set; } = false;
@@ -148,6 +157,10 @@ namespace OpenTap.Plugins.PNAX
         [Display("Max Output Power", Group: "SMART Sweep", Order: 28)]
         public double SMARTSweepMaxOutputPower { get; set; }
 
+        [Display("Compression Point Interpolation", Group: "2D Sweep", Order: 29)]
+        public bool CompressionPointInterpolation { get; set; }
+
+
         [Display("End of Sweep Condition", Group: "Sweep", Order: 30)]
         public EndOfSweepConditionEnum EndOfSweepCondition { get; set; }
 
@@ -166,11 +179,18 @@ namespace OpenTap.Plugins.PNAX
             CompressionDeltaY = 9;
             CompressionFromMaxPout = 0.1;
 
+            SMARTSweepTolerance = 0.05;
+            SMARTSweepIterations = 20;
+            SMARTSweepShowIterations = false;
+            SMARTSweepReadDC = false;
+
             SMARTSweepSafeMode = false;
             SMARTSweepCoarseIncrement = 3;
             SMARTSweepFineIncrement = 1;
             SMARTSweepFineThreshold = 0.5;
             SMARTSweepMaxOutputPower = 30;
+
+            CompressionPointInterpolation = false;
 
             EndOfSweepCondition = EndOfSweepConditionEnum.Default;
             SettlingTime = 0.000;
@@ -178,12 +198,45 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetCompressionMethod(Channel, CompressionMethod);
+            switch (CompressionMethod)
+            {
+                case CompressionMethodEnum.CompressionFromLinearGain:
+                case CompressionMethodEnum.CompressionFromMaxGain:
+                    PNAX.SetCompressionLevel(Channel, CompressionLevel);
+                    break;
+                case CompressionMethodEnum.CompressionFromBackOff:
+                    PNAX.SetCompressionLevel(Channel, CompressionLevel);
+                    PNAX.SetCompressionBackoffLevel(Channel, CompressionBackOff);
+                    break;
+                case CompressionMethodEnum.XYCompression:
+                    PNAX.SetCompressionDeltaX(Channel, CompressionDeltaX);
+                    PNAX.SetCompressionDeltaY(Channel, CompressionDeltaY);
+                    break;
+                case CompressionMethodEnum.CompressionFromSaturation:
+                    PNAX.SetCompressionSaturation(Channel, CompressionFromMaxPout);
+                    break;
+            }
+
+            PNAX.SetSMARTSweepTolerance(Channel, SMARTSweepTolerance);
+            PNAX.SetSMARTSweepMaximumIterations(Channel, SMARTSweepIterations);
+            PNAX.SetSMARTSweepShowIterations(Channel, SMARTSweepShowIterations);
+            PNAX.SetSMARTSweepReadDCAtCompression(Channel, SMARTSweepReadDC);
+
+            PNAX.SetSMARTSweepSafeMode(Channel, SMARTSweepSafeMode);
+            PNAX.SetSMARTSweepSafeModeCoarseIncrement(Channel, SMARTSweepCoarseIncrement);
+            PNAX.SetSMARTSweepSafeModeFineIncrement(Channel, SMARTSweepFineIncrement);
+            PNAX.SetSMARTSweepSafeModeFineThreshold(Channel, SMARTSweepFineThreshold);
+            PNAX.SetSMARTSweepSafeModeMaxOutputPower(Channel, SMARTSweepMaxOutputPower);
+
+            PNAX.Set2DSweepCompressionPointInterpolation(Channel, CompressionPointInterpolation);
+
+            PNAX.SetCompressionEndOfSweepCondition(Channel, EndOfSweepCondition);
+            PNAX.SetCompressionSettlingTime(Channel, SettlingTime);
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
