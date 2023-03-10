@@ -28,7 +28,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [Display("Power", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class Power : TestStep
+    public class Power : ConverterCompressionBaseStep
     {
         #region Settings
         [Display("Power On (All Channels)", Order: 10)]
@@ -96,34 +96,49 @@ namespace OpenTap.Plugins.PNAX
 
         public Power()
         {
-            PowerOnAllChannels = true;
-            PortInput = PortsEnum.Port1;
-            InputPortLinearInputPower = -25;
-            InputPortSourceAttenuator = 0;
-            InputPortReceiverAttenuator = 0;
-            InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            PowerOnAllChannels = GeneralStandardSettings.Current.PowerOnAllChannels;
+            PortInput = GeneralStandardSettings.Current.PortInput;
+            InputPortLinearInputPower = -GeneralStandardSettings.Current.InputPortLinearInputPower;
+            InputPortSourceAttenuator = GeneralStandardSettings.Current.InputPortSourceAttenuator;
+            InputPortReceiverAttenuator = GeneralStandardSettings.Current.InputPortReceiverAttenuator;
+            InputSourceLevelingMode = GeneralStandardSettings.Current.InputSourceLevelingMode;
 
-            PortOutput = PortsEnum.Port2;
-            OutputPortReversePower = -5;
-            AutoOutputPortSourceAttenuator = false;
-            OutputPortSourceAttenuator = 0;
-            OutputPortReceiverAttenuator = 0;
-            OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            PortOutput = GeneralStandardSettings.Current.PortOutput;
+            OutputPortReversePower = GeneralStandardSettings.Current.OutputPortReversePower;
+            AutoOutputPortSourceAttenuator = GeneralStandardSettings.Current.AutoOutputPortSourceAttenuator;
+            OutputPortSourceAttenuator = GeneralStandardSettings.Current.OutputPortSourceAttenuator;
+            OutputPortReceiverAttenuator = GeneralStandardSettings.Current.OutputPortReceiverAttenuator;
+            OutputSourceLevelingMode = GeneralStandardSettings.Current.OutputSourceLevelingMode;
 
-            PowerSweepStartPower = -25;
-            PowerSweepStopPower = -5;
-            PowerSweepPowerPoints = 21;
-            PowerSweepPowerStep = 1;
+            PowerSweepStartPower = GeneralStandardSettings.Current.PowerSweepStartPower;
+            PowerSweepStopPower = GeneralStandardSettings.Current.PowerSweepStopPower;
+            PowerSweepPowerPoints = GeneralStandardSettings.Current.PowerSweepPowerPoints;
+            PowerSweepPowerStep = GeneralStandardSettings.Current.PowerSweepPowerStep;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
+
+            PNAX.SetGCPortInputOutput(Channel, PortInput, PortOutput);
+            PNAX.SetPowerLinearInputPower(Channel, InputPortLinearInputPower);
+            PNAX.SetSourceAttenuator(Channel, PortInput, InputPortSourceAttenuator);
+            PNAX.SetReceiverAttenuator(Channel, PortInput, InputPortReceiverAttenuator);
+            PNAX.SetSourceLevelingMode(Channel, PortInput, InputSourceLevelingMode.ToString());
+
+            PNAX.SetPowerReversePower(Channel, OutputPortReversePower);
+            PNAX.SetSourceAttenuatorAutoMode(Channel, PortOutput, AutoOutputPortSourceAttenuator);
+            PNAX.SetSourceAttenuator(Channel, PortOutput, OutputPortSourceAttenuator);
+            PNAX.SetReceiverAttenuator(Channel, PortOutput, OutputPortReceiverAttenuator);
+            PNAX.SetSourceLevelingMode(Channel, PortOutput, OutputSourceLevelingMode.ToString());
+
+            PNAX.SetPowerSweepStartPower(Channel, PowerSweepStartPower);
+            PNAX.SetPowerSweepStopPower(Channel, PowerSweepStopPower);
+            PNAX.SetPowerSweepPowerPoints(Channel, PowerSweepPowerPoints);
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

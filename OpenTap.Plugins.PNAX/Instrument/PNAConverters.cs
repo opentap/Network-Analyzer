@@ -327,6 +327,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ALC:MODE {mode}");
         }
 
+        public void SetSourceLevelingMode(int Channel, PortsEnum port, string mode)
+        {
+            String strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ALC:MODE {mode}");
+        }
+
         public string GetSourceLevelingModes(int Channel, int port)
         {
             string retVal = "";
@@ -346,6 +352,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation {value.ToString()}");
         }
 
+        public void SetSourceAttenuator(int Channel, PortsEnum port, double value)
+        {
+            String strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ATTenuation {value.ToString()}");
+        }
+
         public double GetReceiverAttenuator(int Channel, int port)
         {
             double retVal = double.NaN;
@@ -356,6 +368,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetReceiverAttenuator(int Channel, int port, double value)
         {
             ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:RECeiver:TEST {value.ToString()}");
+        }
+
+        public void SetReceiverAttenuator(int Channel, PortsEnum port, double value)
+        {
+            String strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ATTenuation:RECeiver:TEST {value.ToString()}");
         }
 
         public double GetLOSweptPowerStart(int Channel, int stage)

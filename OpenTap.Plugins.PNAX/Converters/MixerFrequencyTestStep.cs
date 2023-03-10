@@ -511,26 +511,29 @@ namespace OpenTap.Plugins.PNAX
             #endregion
 
             #region IF
-            if (IFMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+            if (ConverterStages == ConverterStagesEnum._2)
             {
-                PNAX.SetFrequencyIFStart(Channel, IFMixerFrequencyStart);
-                PNAX.SetFrequencyIFStop(Channel, IFMixerFrequencyStop);
+                if (IFMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+                {
+                    PNAX.SetFrequencyIFStart(Channel, IFMixerFrequencyStart);
+                    PNAX.SetFrequencyIFStop(Channel, IFMixerFrequencyStop);
+                }
+                else if (IFMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
+                {
+                    // Calculate Start/Stop from Center/Span
+                    double start = IFMixerFrequencyCenter - (IFMixerFrequencySpan / 2);
+                    double stop = IFMixerFrequencyCenter + (IFMixerFrequencySpan / 2);
+                    PNAX.SetFrequencyIFStart(Channel, start);
+                    PNAX.SetFrequencyIFStop(Channel, stop);
+                }
+                else
+                {
+                    // Fixed
+                    // TODO find command for IF Fixed
+                    // PNAX.SetFrequencyIFFixed(Channel, IFMixerFrequencyFixed);
+                }
+                PNAX.SetFrequencyIFSideband(Channel, IFSidebandType);
             }
-            else if (IFMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-            {
-                // Calculate Start/Stop from Center/Span
-                double start = IFMixerFrequencyCenter - (IFMixerFrequencySpan / 2);
-                double stop = IFMixerFrequencyCenter + (IFMixerFrequencySpan / 2);
-                PNAX.SetFrequencyIFStart(Channel, start);
-                PNAX.SetFrequencyIFStop(Channel, stop);
-            }
-            else
-            {
-                // Fixed
-                // TODO find command for IF Fixed
-                // PNAX.SetFrequencyIFFixed(Channel, IFMixerFrequencyFixed);
-            }
-            PNAX.SetFrequencyIFSideband(Channel, IFSidebandType);
             #endregion
 
             #region LO2

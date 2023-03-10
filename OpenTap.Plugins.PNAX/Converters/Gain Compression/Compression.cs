@@ -172,28 +172,28 @@ namespace OpenTap.Plugins.PNAX
 
         public Compression()
         {
-            CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
-            CompressionLevel = 1;
-            CompressionBackOff = 10;
-            CompressionDeltaX = 10;
-            CompressionDeltaY = 9;
-            CompressionFromMaxPout = 0.1;
+            CompressionMethod = GeneralStandardSettings.Current.CompressionMethod;
+            CompressionLevel = GeneralStandardSettings.Current.CompressionLevel;
+            CompressionBackOff = GeneralStandardSettings.Current.CompressionBackOff;
+            CompressionDeltaX = GeneralStandardSettings.Current.CompressionDeltaX;
+            CompressionDeltaY = GeneralStandardSettings.Current.CompressionDeltaY;
+            CompressionFromMaxPout = GeneralStandardSettings.Current.CompressionFromMaxPout;
 
-            SMARTSweepTolerance = 0.05;
-            SMARTSweepIterations = 20;
-            SMARTSweepShowIterations = false;
-            SMARTSweepReadDC = false;
+            SMARTSweepTolerance = GeneralStandardSettings.Current.SMARTSweepTolerance;
+            SMARTSweepIterations = GeneralStandardSettings.Current.SMARTSweepIterations;
+            SMARTSweepShowIterations = GeneralStandardSettings.Current.SMARTSweepShowIterations;
+            SMARTSweepReadDC = GeneralStandardSettings.Current.SMARTSweepReadDC;
 
-            SMARTSweepSafeMode = false;
-            SMARTSweepCoarseIncrement = 3;
-            SMARTSweepFineIncrement = 1;
-            SMARTSweepFineThreshold = 0.5;
-            SMARTSweepMaxOutputPower = 30;
+            SMARTSweepSafeMode = GeneralStandardSettings.Current.SMARTSweepSafeMode;
+            SMARTSweepCoarseIncrement = GeneralStandardSettings.Current.SMARTSweepCoarseIncrement;
+            SMARTSweepFineIncrement = GeneralStandardSettings.Current.SMARTSweepFineIncrement;
+            SMARTSweepFineThreshold = GeneralStandardSettings.Current.SMARTSweepFineThreshold;
+            SMARTSweepMaxOutputPower = GeneralStandardSettings.Current.SMARTSweepMaxOutputPower;
 
-            CompressionPointInterpolation = false;
+            CompressionPointInterpolation = GeneralStandardSettings.Current.CompressionPointInterpolation;
 
-            EndOfSweepCondition = EndOfSweepConditionEnum.Default;
-            SettlingTime = 0.000;
+            EndOfSweepCondition = GeneralStandardSettings.Current.EndOfSweepCondition;
+            SettlingTime = GeneralStandardSettings.Current.SettlingTime;
         }
 
         public override void Run()
