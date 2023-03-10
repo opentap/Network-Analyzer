@@ -43,6 +43,22 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        [Browsable(false)]
+        public bool DoubleStage { get; set; }
+
+
+        private void UpdateConverterStages()
+        {
+            if (_ConverterStagesEnum == ConverterStagesEnum._2)
+            {
+                DoubleStage = true;
+            }
+            else
+            {
+                DoubleStage = false;
+            }
+        }
+
         protected ConverterStagesEnum _ConverterStagesEnum;
         [Display("Converter Stages", Order: 10)]
         public ConverterStagesEnum ConverterStages
@@ -57,13 +73,13 @@ namespace OpenTap.Plugins.PNAX
                 {
                     Log.Info(ex.Message);
                 }
-
+                UpdateConverterStages();
                 return _ConverterStagesEnum;
             }
-            //set
-            //{
-            //    _ConverterStagesEnum = value;
-            //}
+            set
+            {
+                _ConverterStagesEnum = value;
+            }
         }
 
         #endregion

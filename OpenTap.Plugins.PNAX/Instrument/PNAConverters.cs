@@ -383,5 +383,268 @@ namespace OpenTap.Plugins.PNAX
         }
 
         #endregion
+
+        #region Mixer Frequency
+        public double GetFrequencyInputStart(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:INPut:FREQuency:STARt?");
+            return retVal;
+        }
+
+        public void SetFrequencyInputStart(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:INPut:FREQuency:STARt {value.ToString()}");
+        }
+
+        public double GetFrequencyInputStop(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:INPut:FREQuency:STOP?");
+            return retVal;
+        }
+
+        public void SetFrequencyInputStop(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:INPut:FREQuency:STOP {value.ToString()}");
+        }
+
+        public double GetFrequencyInputFixed(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:INPut:FREQuency:FIXed?");
+            return retVal;
+        }
+
+        public void SetFrequencyInputFixed(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:INPut:FREQuency:FIXed {value.ToString()}");
+        }
+
+
+
+
+
+
+        public double GetFrequencyLOStart(int Channel, int stage)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STARt?");
+            return retVal;
+        }
+
+        public void SetFrequencyLOStart(int Channel, int stage, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STARt {value.ToString()}");
+        }
+
+        public double GetFrequencyLOStop(int Channel, int stage)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STOP?");
+            return retVal;
+        }
+
+        public void SetFrequencyLOStop(int Channel, int stage, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:STOP {value.ToString()}");
+        }
+
+        public double GetFrequencyLOFixed(int Channel, int stage)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:FIXed?");
+            return retVal;
+        }
+
+        public void SetFrequencyLOFixed(int Channel, int stage, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:FIXed {value.ToString()}");
+        }
+
+        public bool GetLOILTI(int Channel, int stage)
+        {
+            bool retVal;
+            retVal = ScpiQuery<bool>($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:ILTI?");
+            return retVal;
+        }
+
+        public void SetLOILTI(int Channel, int stage, bool value)
+        {
+            if (value == true)
+            {
+                ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:ILTI 1");
+            }
+            else
+            {
+                ScpiCommand($"SENS{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:ILTI 0");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        public double GetFrequencyIFStart(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:IF:FREQuency:STARt?");
+            return retVal;
+        }
+
+        public void SetFrequencyIFStart(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:IF:FREQuency:STARt {value.ToString()}");
+        }
+
+        public double GetFrequencyIFStop(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:IF:FREQuency:STOP?");
+            return retVal;
+        }
+
+        public void SetFrequencyIFStop(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:IF:FREQuency:STOP {value.ToString()}");
+        }
+
+        // TODO
+        // How to setup IF Fixed?
+        // Mixer Frequency Tab shows this as an option
+        // TODO
+        //public double GetFrequencyIFFixed(int Channel)
+        //{
+        //    double retVal = double.NaN;
+        //    retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:IF:FREQuency:FIXed?");
+        //    return retVal;
+        //}
+
+        //public void SetFrequencyIFFixed(int Channel, double value)
+        //{
+        //    ScpiCommand($"SENS{Channel.ToString()}:MIXer:IF:FREQuency:FIXed {value.ToString()}");
+        //}
+
+        public SidebandTypeEnum GetFrequencyIFSideband(int Channel)
+        {
+            SidebandTypeEnum retVal;
+            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:IF:FREQuency:SIDeband?");
+            if (retStr.Equals("HIGH"))
+            {
+                retVal = SidebandTypeEnum.High;
+            }
+            else if (retStr.Equals("LOW"))
+            {
+                retVal = SidebandTypeEnum.Low;
+            }
+            else
+            {
+                throw new Exception("unknown side band");
+            }
+            return retVal;
+        }
+
+        public void SetFrequencyIFSideband(int Channel, SidebandTypeEnum sideband)
+        {
+            if (sideband == SidebandTypeEnum.High)
+            {
+                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:IF:FREQuency:SIDeband HIGH");
+            }
+            else if (sideband == SidebandTypeEnum.Low)
+            {
+                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:IF:FREQuency:SIDeband LOW");
+            }
+            else
+            {
+                throw new Exception("unknown side band");
+            }
+        }
+
+
+
+
+
+
+
+
+
+        public double GetFrequencyOutputStart(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:OUTPut:FREQuency:STARt?");
+            return retVal;
+        }
+
+        public void SetFrequencyOutputStart(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:OUTPut:FREQuency:STARt {value.ToString()}");
+        }
+
+        public double GetFrequencyOutputStop(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:OUTPut:FREQuency:STOP?");
+            return retVal;
+        }
+
+        public void SetFrequencyOutputStop(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:OUTPut:FREQuency:STOP {value.ToString()}");
+        }
+
+        public double GetFrequencyOutputFixed(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENS{Channel.ToString()}:MIXer:OUTPut:FREQuency:FIXed?");
+            return retVal;
+        }
+
+        public void SetFrequencyOutputFixed(int Channel, double value)
+        {
+            ScpiCommand($"SENS{Channel.ToString()}:MIXer:OUTPut:FREQuency:FIXed {value.ToString()}");
+        }
+
+        public SidebandTypeEnum GetFrequencyOutputSideband(int Channel)
+        {
+            SidebandTypeEnum retVal;
+            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:OUTPut:FREQuency:SIDeband?");
+            if (retStr.Equals("HIGH"))
+            {
+                retVal = SidebandTypeEnum.High;
+            }
+            else if (retStr.Equals("LOW"))
+            {
+                retVal = SidebandTypeEnum.Low;
+            }
+            else
+            {
+                throw new Exception("unknown side band");
+            }
+            return retVal;
+        }
+
+        public void SetFrequencyOutputSideband(int Channel, SidebandTypeEnum sideband)
+        {
+            if (sideband == SidebandTypeEnum.High)
+            {
+                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:OUTPut:FREQuency:SIDeband HIGH");
+            }
+            else if (sideband == SidebandTypeEnum.Low)
+            {
+                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:OUTPut:FREQuency:SIDeband LOW");
+            }
+            else
+            {
+                throw new Exception("unknown side band");
+            }
+        }
+
+        #endregion
     }
 }

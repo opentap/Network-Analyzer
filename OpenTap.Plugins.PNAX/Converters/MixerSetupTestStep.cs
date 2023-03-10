@@ -89,20 +89,6 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public int LO2FractionalMultiplierDenominator { get; set; }
 
-        [Browsable(false)]
-        public bool DoubleStage { get; set; }
-
-        private void UpdateDoubleStage()
-        {
-            if (_ConverterStagesEnum == ConverterStagesEnum._2)
-            {
-                DoubleStage = true;
-            }
-            else
-            {
-                DoubleStage = false;
-            }
-        }
 
 
 

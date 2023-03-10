@@ -107,7 +107,7 @@ namespace OpenTap.Plugins.PNAX
         public double IFMixerFrequencyFixed { get; set; } = 1e9;
 
 
-        public MixerFrequencyTypeEnum LO2MixerFrequencyType { get; set; }
+        public MixerFrequencyTypeEnum LO2MixerFrequencyType { get; set; } = MixerFrequencyTypeEnum.Fixed;
         public double LO2MixerFrequencyStart { get; set; } = 0;
         public double LO2MixerFrequencyStop { get; set; } = 0;
         public double LO2MixerFrequencyCenter { get; set; } = 0;

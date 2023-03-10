@@ -29,47 +29,9 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [Display("Mixer Frequency", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert a description here", Order: 3)]
-    public class MixerFrequencyTestStep : TestStep
+    public class MixerFrequencyTestStep : ConverterCompressionBaseStep
     {
         #region Settings
-        [Browsable(false)]
-        public bool DoubleStage { get; set; }
-
-        private ConverterStagesEnum _ConverterStagesEnum;
-        [Display("Converter Stages", Order: 1)]
-        public ConverterStagesEnum ConverterStages
-        {
-            get
-            {
-                try
-                {
-                    _ConverterStagesEnum = GetParent<ConverterChannelBase>().ConverterStages;
-                    UpdateConverterStages();
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-                return _ConverterStagesEnum;
-            }
-            set
-            {
-                _ConverterStagesEnum = value;
-                UpdateConverterStages();
-            }
-        }
-
-        private void UpdateConverterStages()
-        {
-            if (_ConverterStagesEnum == ConverterStagesEnum._2)
-            {
-                DoubleStage = true;
-            }
-            else
-            {
-                DoubleStage = false;
-            }
-        }
 
 
         #region Input
@@ -503,12 +465,123 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            #region Input
+            if (InputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+            {
+                PNAX.SetFrequencyInputStart(Channel, InputMixerFrequencyStart);
+                PNAX.SetFrequencyInputStop(Channel, InputMixerFrequencyStop);
+            }
+            else if (InputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
+            {
+                // Calculate Start/Stop from Center/Span
+                double start = InputMixerFrequencyCenter - (InputMixerFrequencySpan / 2);
+                double stop = InputMixerFrequencyCenter + (InputMixerFrequencySpan / 2);
+                PNAX.SetFrequencyInputStart(Channel, start);
+                PNAX.SetFrequencyInputStop(Channel, stop);
+            }
+            else
+            {
+                // Fixed
+                PNAX.SetFrequencyInputFixed(Channel, InputMixerFrequencyFixed);
+            }
+            #endregion
+
+            #region LO1
+            if (LO1MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+            {
+                PNAX.SetFrequencyLOStart(Channel, 1, LO1MixerFrequencyStart);
+                PNAX.SetFrequencyLOStop(Channel, 1, LO1MixerFrequencyStop);
+            }
+            else if (LO1MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
+            {
+                // Calculate Start/Stop from Center/Span
+                double start = LO1MixerFrequencyCenter - (LO1MixerFrequencySpan / 2);
+                double stop = LO1MixerFrequencyCenter + (LO1MixerFrequencySpan / 2);
+                PNAX.SetFrequencyLOStart(Channel, 1, start);
+                PNAX.SetFrequencyLOStop(Channel, 1, stop);
+            }
+            else
+            {
+                // Fixed
+                PNAX.SetFrequencyLOFixed(Channel, 1, LO1MixerFrequencyFixed);
+            }
+            PNAX.SetLOILTI(Channel, 1, InputGTLO1);
+            #endregion
+
+            #region IF
+            if (IFMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+            {
+                PNAX.SetFrequencyIFStart(Channel, IFMixerFrequencyStart);
+                PNAX.SetFrequencyIFStop(Channel, IFMixerFrequencyStop);
+            }
+            else if (IFMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
+            {
+                // Calculate Start/Stop from Center/Span
+                double start = IFMixerFrequencyCenter - (IFMixerFrequencySpan / 2);
+                double stop = IFMixerFrequencyCenter + (IFMixerFrequencySpan / 2);
+                PNAX.SetFrequencyIFStart(Channel, start);
+                PNAX.SetFrequencyIFStop(Channel, stop);
+            }
+            else
+            {
+                // Fixed
+                // TODO find command for IF Fixed
+                // PNAX.SetFrequencyIFFixed(Channel, IFMixerFrequencyFixed);
+            }
+            PNAX.SetFrequencyIFSideband(Channel, IFSidebandType);
+            #endregion
+
+            #region LO2
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                if (LO2MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+                {
+                    PNAX.SetFrequencyLOStart(Channel, 2, LO2MixerFrequencyStart);
+                    PNAX.SetFrequencyLOStop(Channel, 2, LO2MixerFrequencyStop);
+                }
+                else if (LO2MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
+                {
+                    // Calculate Start/Stop from Center/Span
+                    double start = LO2MixerFrequencyCenter - (LO2MixerFrequencySpan / 2);
+                    double stop = LO2MixerFrequencyCenter + (LO2MixerFrequencySpan / 2);
+                    PNAX.SetFrequencyLOStart(Channel, 2, start);
+                    PNAX.SetFrequencyLOStop(Channel, 2, stop);
+                }
+                else
+                {
+                    // Fixed
+                    PNAX.SetFrequencyLOFixed(Channel, 2, LO2MixerFrequencyFixed);
+                }
+                PNAX.SetLOILTI(Channel, 2, IF1GTLO2);
+            }
+            #endregion
+
+            #region Output
+            if (OutputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
+            {
+                PNAX.SetFrequencyOutputStart(Channel, OutputMixerFrequencyStart);
+                PNAX.SetFrequencyOutputStop(Channel, OutputMixerFrequencyStop);
+            }
+            else if (OutputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
+            {
+                // Calculate Start/Stop from Center/Span
+                double start = OutputMixerFrequencyCenter - (OutputMixerFrequencySpan / 2);
+                double stop = OutputMixerFrequencyCenter + (OutputMixerFrequencySpan / 2);
+                PNAX.SetFrequencyOutputStart(Channel, start);
+                PNAX.SetFrequencyOutputStop(Channel, stop);
+            }
+            else
+            {
+                // Fixed
+                PNAX.SetFrequencyOutputFixed(Channel, OutputMixerFrequencyFixed);
+            }
+            PNAX.SetFrequencyOutputSideband(Channel, OutputSidebandType);
+            #endregion
+
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

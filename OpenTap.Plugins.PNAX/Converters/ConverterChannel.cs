@@ -47,6 +47,15 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _ConverterStagesEnum = value;
+
+                // Update children
+                foreach(var a in this.ChildTestSteps)
+                {
+                    if (a is ConverterCompressionBaseStep)
+                    {
+                        (a as ConverterCompressionBaseStep).ConverterStages = _ConverterStagesEnum;
+                    }
+                }
             }
         }
 
