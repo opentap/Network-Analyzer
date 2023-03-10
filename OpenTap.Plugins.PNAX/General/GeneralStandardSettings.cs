@@ -174,9 +174,9 @@ namespace OpenTap.Plugins.PNAX
         public int SweepSettingsNumberOfPoints { get; set; } = 201;
         public double SweepSettingsIFBandwidth { get; set; } = 100e3;
         public double SweepSettingsStart { get; set; } = 10e6;
-        public double SweepSettingsStop { get; set; } = 67e9;
-        public double SweepSettingsCenter { get; set; } = 33.505e9;
-        public double SweepSettingsSpan { get; set; } = 66.99e9;
+        public double SweepSettingsStop { get; set; } = 50e9;
+        public double SweepSettingsCenter { get; set; } = 25.005e9;
+        public double SweepSettingsSpan { get; set; } = 49.99e9;
         public double SweepSettingsFixed { get; set; } = 1e9;
 
         #endregion

@@ -457,11 +457,63 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         #region Frequency
+        public SweepTypeEnum GetSweepType(int Channel)
+        {
+            SweepTypeEnum retVal = SweepTypeEnum.LinearSweep;
+            String retString = ScpiQuery($"SENSe{Channel.ToString()}:SWEep:TYPE?");
+            if (retString.Equals("LIN"))
+            {
+                retVal = SweepTypeEnum.LinearSweep;
+            }
+            //else if (retString.Equals("LOG"))
+            //{
+            //    retVal = SweepTypeEnum.CompressionFromMaxGain;
+            //}
+            //else if (retString.StartsWith("POW"))
+            //{
+            //    retVal = SweepTypeEnum.CompressionFromBackOff;
+            //}
+            else if (retString.Equals("CW"))
+            {
+                retVal = SweepTypeEnum.CWFrequency;
+            }
+            //else if (retString.Equals("SEGM"))
+            //{
+            //    retVal = SweepTypeEnum.CompressionFromSaturation;
+            //}
+            return retVal;
+        }
 
+        public void SetSweepType(int Channel, SweepTypeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+        }
 
+        public DataAcquisitionModeEnum GetDataAcquisitionMode(int Channel)
+        {
+            DataAcquisitionModeEnum retVal = DataAcquisitionModeEnum.SMARTSweep;
+            String retString = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:AMODe?");
+            if (retString.Equals("SMAR"))
+            {
+                retVal = DataAcquisitionModeEnum.SMARTSweep;
+            }
+            else if (retString.Equals("PFREQ"))
+            {
+                retVal = DataAcquisitionModeEnum.SweepPowerPerFrequency2D;
+            }
+            else if (retString.StartsWith("FPOW"))
+            {
+                retVal = DataAcquisitionModeEnum.SweepFrequencyPerPower2D;
+            }
+            return retVal;
+        }
 
-
-
+        public void SetDataAcquisitionMode(int Channel, DataAcquisitionModeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:AMODe {sweep}");
+        }
         #endregion
     }
 }
