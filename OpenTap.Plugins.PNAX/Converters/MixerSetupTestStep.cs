@@ -148,7 +148,7 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateDefaultValues()
         {
-            var defaultValues = PNAX.GetMixerSetupValues();
+            var defaultValues = PNAX.GetMixerSetupDefaultValues();
             ConverterStages = defaultValues.ConverterStages;
             PortInput = defaultValues.PortInput;
             PortOutput = defaultValues.PortOutput;

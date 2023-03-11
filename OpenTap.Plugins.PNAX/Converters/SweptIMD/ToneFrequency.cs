@@ -39,6 +39,11 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsToneFrequencyLOPowerSweep { get; set; }
 
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("PNA", Order: 0.1)]
+        public PNAX PNAX { get; set; }
 
         private ToneFrequencySweepTypeEnum _ToneFrequencySweepType;
         [Display("Sweep Type", Groups: new[] { "Tone Frequency", "Sweep Type" }, Order: 1)]
@@ -174,25 +179,29 @@ namespace OpenTap.Plugins.PNAX
 
         public ToneFrequency()
         {
-            ToneFrequencySweepType = ToneFrequencySweepTypeEnum.SweepFc;
-            SweepFcStartFc = 10.5e6;
-            SweepFcStopFc = 66.9995e9;
-            SweepFcCenterFc = 33.505e9;
-            SweepFcSpanFc = 66.9995e9;
-            SweepFcFixedDeltaF = 1e6;
-            SweepFcNumberOfPoints = 201;
-            SweepFcMixedToneIFBW = 1e3;
-            SweepFcIMToneIFBW = 1e3;
-            SweepFcReduceIFBW = true;
+            UpdateDefaultValues();
+        }
 
-            SweepDeltaFStartDeltaF = 1e6;
-            SweepDeltaFStopDeltaF = 10e6;
-            SweepDeltaFFixedFc = 1e9;
-
-            PowerSweepCWF1 = 999.5e6;
-            PowerSweepCWF2 = 1.0005e9;
-            PowerSweepCWFc = 1e9;
-            PowerSweepCWDeltaF = 1e6;
+        private void UpdateDefaultValues()
+        {
+            var DefaultValues = PNAX.GetToneFrequencyDefaultValues();
+            ToneFrequencySweepType = DefaultValues.ToneFrequencySweepType;
+            SweepFcStartFc = DefaultValues.SweepFcStartFc;
+            SweepFcStopFc = DefaultValues.SweepFcStopFc;
+            SweepFcCenterFc = DefaultValues.SweepFcCenterFc;
+            SweepFcSpanFc = DefaultValues.SweepFcSpanFc;
+            SweepFcFixedDeltaF = DefaultValues.SweepFcFixedDeltaF;
+            SweepFcNumberOfPoints = DefaultValues.SweepFcNumberOfPoints;
+            SweepFcMixedToneIFBW = DefaultValues.SweepFcMixedToneIFBW;
+            SweepFcIMToneIFBW = DefaultValues.SweepFcIMToneIFBW;
+            SweepFcReduceIFBW = DefaultValues.SweepFcReduceIFBW;
+            SweepDeltaFStartDeltaF = DefaultValues.SweepDeltaFStartDeltaF;
+            SweepDeltaFStopDeltaF = DefaultValues.SweepDeltaFStopDeltaF;
+            SweepDeltaFFixedFc = DefaultValues.SweepDeltaFFixedFc;
+            PowerSweepCWF1 = DefaultValues.PowerSweepCWF1;
+            PowerSweepCWF2 = DefaultValues.PowerSweepCWF2;
+            PowerSweepCWFc = DefaultValues.PowerSweepCWFc;
+            PowerSweepCWDeltaF = DefaultValues.PowerSweepCWDeltaF;
         }
 
         public override void Run()

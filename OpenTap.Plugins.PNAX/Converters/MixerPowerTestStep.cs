@@ -152,7 +152,7 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateDefaultValues()
         {
-            var defaultValues = PNAX.GetMixerPowerValues();
+            var defaultValues = PNAX.GetMixerPowerDefaultValues();
             if (defaultValues == null)
                 return;
 

@@ -21,15 +21,17 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         private int TraceCount = 0;
-        public StandardChannelValues standardChannelValues;
-        public MixerPowerValues mixerPowerValues;
-        public MixerFrequencyValues mixerFrequencyValues;
-        public MixerSetupValues mixerSetupValues;
+        public StandardChannelValues DefaultStandardChannelValues;
+        public MixerPowerValues DefaultMixerPowerValues;
+        public MixerFrequencyValues DefaultMixerFrequencyValues;
+        public MixerSetupValues DefaultMixerSetupValues;
+        public ToneFrequencyValues DefaultToneFrequencyValues;
+        public TonePowerValues DefaultTonePowerValues;
 
         public PNAX()
         {
             Name = "PNA-X";
-            standardChannelValues = new StandardChannelValues();
+            DefaultStandardChannelValues = new StandardChannelValues();
             // ToDo: Set default values for properties / settings.
         }
 
@@ -76,6 +78,8 @@ namespace OpenTap.Plugins.PNAX
             UpdateMixerSetupValues();
             UpdateMixerPowerValues();
             UpdateMixerFrequencyValues();
+            UpdateToneFrequencyValues();
+            UpdateTonePowerValues();
         }
 
         public int GetNewTraceID()

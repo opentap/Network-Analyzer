@@ -403,7 +403,7 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateDefaultValues()
         {
-            var defaultValues = PNAX.GetMixerFrequencyValues();
+            var defaultValues = PNAX.GetMixerFrequencyDefaultValues();
             if (defaultValues == null)
                 return;
 

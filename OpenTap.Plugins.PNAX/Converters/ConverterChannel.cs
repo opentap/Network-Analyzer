@@ -22,19 +22,8 @@ namespace OpenTap.Plugins.PNAX
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        private int _Channel;
         [Display("Channel", Order: 1)]
-        public int Channel
-        {
-            set
-            {
-                _Channel = value;
-            }
-            get
-            {
-                return _Channel;
-            }
-        }
+        public int Channel { get; set; }
 
         private ConverterStagesEnum _ConverterStagesEnum;
         [Display("Converter Stages", Order: 10)]
