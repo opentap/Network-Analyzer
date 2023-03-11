@@ -30,19 +30,6 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool DoubleStage { get; set; }
 
-
-        private void UpdateConverterStages()
-        {
-            if (_ConverterStagesEnum == ConverterStagesEnum._2)
-            {
-                DoubleStage = true;
-            }
-            else
-            {
-                DoubleStage = false;
-            }
-        }
-
         protected ConverterStagesEnum _ConverterStagesEnum;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 10)]
@@ -50,20 +37,12 @@ namespace OpenTap.Plugins.PNAX
         {
             get
             {
-                try
-                {
-                    _ConverterStagesEnum = GetParent<ConverterChannelBase>().ConverterStages;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-                UpdateConverterStages();
                 return _ConverterStagesEnum;
             }
             set
             {
                 _ConverterStagesEnum = value;
+                DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
             }
         }
 
