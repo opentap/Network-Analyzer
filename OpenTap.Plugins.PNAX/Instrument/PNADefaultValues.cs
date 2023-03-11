@@ -347,6 +347,52 @@ namespace OpenTap.Plugins.PNAX
         }
     }
 
+    public class CompressionValues
+    {
+        public CompressionMethodEnum CompressionMethod;
+        public double CompressionLevel;
+        public double CompressionBackOff;
+        public double CompressionDeltaX;
+        public double CompressionDeltaY;
+        public double CompressionFromMaxPout;
+        public double SMARTSweepTolerance;
+        public int SMARTSweepIterations;
+        public bool SMARTSweepShowIterations;
+        public bool SMARTSweepReadDC;
+        public bool SMARTSweepSafeMode;
+        public int SMARTSweepCoarseIncrement;
+        public double SMARTSweepFineIncrement;
+        public double SMARTSweepFineThreshold;
+        public double SMARTSweepMaxOutputPower;
+        public bool CompressionPointInterpolation;
+        public EndOfSweepConditionEnum EndOfSweepCondition;
+        public double SettlingTime;
+
+        public static CompressionValues GetPresetValues()
+        {
+            CompressionValues compressionValues = new CompressionValues();
+            compressionValues.CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
+            compressionValues.CompressionLevel = 1;
+            compressionValues.CompressionBackOff = 10;
+            compressionValues.CompressionDeltaX = 10;
+            compressionValues.CompressionDeltaY = 9;
+            compressionValues.CompressionFromMaxPout = 0.1;
+            compressionValues.SMARTSweepTolerance = 0.05;
+            compressionValues.SMARTSweepIterations = 20;
+            compressionValues.SMARTSweepShowIterations = false;
+            compressionValues.SMARTSweepReadDC = false;
+            compressionValues.SMARTSweepSafeMode = false;
+            compressionValues.SMARTSweepCoarseIncrement = 3;
+            compressionValues.SMARTSweepFineIncrement = 1;
+            compressionValues.SMARTSweepFineThreshold = 0.5;
+            compressionValues.SMARTSweepMaxOutputPower = 30;
+            compressionValues.CompressionPointInterpolation = false;
+            compressionValues.EndOfSweepCondition = EndOfSweepConditionEnum.Default;
+            compressionValues.SettlingTime = 0;
+            return compressionValues;
+        }
+    }
+
 
     public partial class PNAX : ScpiInstrument
     {
@@ -589,6 +635,38 @@ namespace OpenTap.Plugins.PNAX
             DefaultTonePowerValues.StopF2Power = -10;
             DefaultTonePowerValues.StepF1Power = 0.070;
             DefaultTonePowerValues.StepF2Power = 0.070;
+        }
+
+        public CompressionValues GetCompressionDefaultValues()
+        {
+            if (DefaultCompressionValues == null)
+                return CompressionValues.GetPresetValues();
+            return DefaultCompressionValues;
+        }
+
+        private void UpdateCompressionValues()
+        {
+            if (DefaultCompressionValues == null)
+                DefaultCompressionValues = new CompressionValues();
+
+            DefaultCompressionValues.CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
+            DefaultCompressionValues.CompressionLevel = 1;
+            DefaultCompressionValues.CompressionBackOff = 10;
+            DefaultCompressionValues.CompressionDeltaX = 10;
+            DefaultCompressionValues.CompressionDeltaY = 9;
+            DefaultCompressionValues.CompressionFromMaxPout = 0.1;
+            DefaultCompressionValues.SMARTSweepTolerance = 0.05;
+            DefaultCompressionValues.SMARTSweepIterations = 20;
+            DefaultCompressionValues.SMARTSweepShowIterations = false;
+            DefaultCompressionValues.SMARTSweepReadDC = false;
+            DefaultCompressionValues.SMARTSweepSafeMode = false;
+            DefaultCompressionValues.SMARTSweepCoarseIncrement = 3;
+            DefaultCompressionValues.SMARTSweepFineIncrement = 1;
+            DefaultCompressionValues.SMARTSweepFineThreshold = 0.5;
+            DefaultCompressionValues.SMARTSweepMaxOutputPower = 30;
+            DefaultCompressionValues.CompressionPointInterpolation = false;
+            DefaultCompressionValues.EndOfSweepCondition = EndOfSweepConditionEnum.Default;
+            DefaultCompressionValues.SettlingTime = 0;
         }
     }
 }

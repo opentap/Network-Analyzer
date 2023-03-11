@@ -27,6 +27,7 @@ namespace OpenTap.Plugins.PNAX
         public MixerSetupValues DefaultMixerSetupValues;
         public ToneFrequencyValues DefaultToneFrequencyValues;
         public TonePowerValues DefaultTonePowerValues;
+        public CompressionValues DefaultCompressionValues;
 
         public PNAX()
         {
@@ -80,6 +81,7 @@ namespace OpenTap.Plugins.PNAX
             UpdateMixerFrequencyValues();
             UpdateToneFrequencyValues();
             UpdateTonePowerValues();
+            UpdateCompressionValues();
         }
 
         public int GetNewTraceID()
