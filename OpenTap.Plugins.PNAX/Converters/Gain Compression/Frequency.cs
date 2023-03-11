@@ -15,25 +15,30 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum SweepTypeEnum
     {
+        [Scpi("LIN")]
         [Display("Linear Sweep")]
         LinearSweep,
+        [Scpi("CW")]
         [Display("CW Frequency")]
         CWFrequency
     }
 
     public enum DataAcquisitionModeEnum
     {
+        [Scpi("SMAR")]
         [Display("SMART Sweep")]
         SMARTSweep,
+        [Scpi("PFREQ")]
         [Display("Sweep Power Per Frequency 2D")]
         SweepPowerPerFrequency2D,
+        [Scpi("FPOW")]
         [Display("Sweep Frequency Per Power 2D")]
         SweepFrequencyPerPower2D
     }
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [Display("Frequency", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class Frequency : TestStep
+    public class Frequency : ConverterCompressionBaseStep
     {
         #region Settings
         [Browsable(false)]
@@ -144,27 +149,43 @@ namespace OpenTap.Plugins.PNAX
 
         public Frequency()
         {
-            SweepType = SweepTypeEnum.LinearSweep;
-            DataAcquisitionMode = DataAcquisitionModeEnum.SMARTSweep;
+            SweepType = GeneralStandardSettings.Current.SweepType;
+            DataAcquisitionMode = GeneralStandardSettings.Current.DataAcquisitionMode;
 
-            SweepSettingsNumberOfPoints = 201;
-            SweepSettingsIFBandwidth = 100e3;
-            SweepSettingsStart = 10e6;
-            SweepSettingsStop = 67e9;
-            SweepSettingsCenter = 33.505e9;
-            SweepSettingsSpan = 66.99e9;
+            SweepSettingsNumberOfPoints = GeneralStandardSettings.Current.SweepSettingsNumberOfPoints;
+            SweepSettingsIFBandwidth = GeneralStandardSettings.Current.SweepSettingsIFBandwidth;
+            SweepSettingsStart = GeneralStandardSettings.Current.SweepSettingsStart;
+            SweepSettingsStop = GeneralStandardSettings.Current.SweepSettingsStop;
+            SweepSettingsCenter = GeneralStandardSettings.Current.SweepSettingsCenter;
+            SweepSettingsSpan = GeneralStandardSettings.Current.SweepSettingsSpan;
 
-            SweepSettingsFixed = 1e9;
+            SweepSettingsFixed = GeneralStandardSettings.Current.SweepSettingsFixed;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetSweepType(Channel, SweepType);
+
+            PNAX.SetDataAcquisitionMode(Channel, DataAcquisitionMode);
+
+            PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
+            PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
+
+            if (SweepType == SweepTypeEnum.LinearSweep)
+            {
+                PNAX.SetStart(Channel, SweepSettingsStart);
+                PNAX.SetStop(Channel, SweepSettingsStop);
+                PNAX.SetCenter(Channel, SweepSettingsCenter);
+                PNAX.SetSpan(Channel, SweepSettingsSpan);
+            }
+            else if (SweepType == SweepTypeEnum.CWFrequency)
+            {
+                PNAX.SetCWFreq(Channel, SweepSettingsFixed);
+            }
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace OpenTap.Plugins.PNAX
             int traceid = PNAX.GetNewTraceID();
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_1\',\'Gain Compression Converters\',\'SC21\'");
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
 
             RunChildSteps(); //If the step supports child steps.
 

@@ -53,6 +53,30 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel.ToString()}:FREQuency:STOP {freq.ToString()}");
         }
 
+        public double GetCenter(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:FREQuency:CENTer?");
+            return retVal;
+        }
+
+        public void SetCenter(int Channel, double freq)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:FREQuency:CENTer {freq.ToString()}");
+        }
+
+        public double GetSpan(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:FREQuency:SPAN?");
+            return retVal;
+        }
+
+        public void SetSpan(int Channel, double freq)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:FREQuency:SPAN {freq.ToString()}");
+        }
+
         public double GetPower(int Channel)
         {
             return ScpiQuery<double>($"SOURce{Channel.ToString()}:POWer?");

@@ -16,26 +16,9 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowChildrenOfType(typeof(CompressionSingleTrace))]
     [Display("Compression Traces", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class GainCompressionNewTrace : TestStep
+    public class GainCompressionNewTrace : ConverterCompressionBaseStep
     {
         #region Settings
-        private int _Channel;
-        public int Channel
-        {
-            get
-            {
-                try
-                {
-                    _Channel = GetParent<GainCompressionChannel>().Channel;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-
-                return _Channel;
-            }
-        }
 
         private CompressionTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
@@ -60,12 +43,16 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
+            // Delete dummy trace defined during channel setup
+            // DISPlay:MEASure<mnum>:DELete?
+            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DELete \'CH{Channel.ToString()}_DUMMY_SC21_1\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
 
 

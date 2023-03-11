@@ -205,7 +205,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             int traceid = PNAX.GetNewTraceID();

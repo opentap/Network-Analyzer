@@ -128,9 +128,57 @@ namespace OpenTap.Plugins.PNAX
 
         #region Converters|Gain Compression
 
-
+        public CompressionMethodEnum CompressionMethod { get; set; } = CompressionMethodEnum.CompressionFromLinearGain;
+        public double CompressionLevel { get; set; } = 1;
+        public double CompressionBackOff { get; set; } = 10;
+        public double CompressionDeltaX { get; set; } = 10;
+        public double CompressionDeltaY { get; set; } = 9;
+        public double CompressionFromMaxPout { get; set; } = 0.1;
+        public double SMARTSweepTolerance { get; set; } = 0.05;
+        public int SMARTSweepIterations { get; set; } = 20;
+        public bool SMARTSweepShowIterations { get; set; } = false;
+        public bool SMARTSweepReadDC { get; set; } = false;
+        public bool SMARTSweepSafeMode { get; set; } = false;
+        public int SMARTSweepCoarseIncrement { get; set; } = 3;
+        public double SMARTSweepFineIncrement { get; set; } = 1;
+        public double SMARTSweepFineThreshold { get; set; } = 0.5;
+        public double SMARTSweepMaxOutputPower { get; set; } = 30;
+        public bool CompressionPointInterpolation { get; set; } = false;
+        public EndOfSweepConditionEnum EndOfSweepCondition { get; set; } = EndOfSweepConditionEnum.Default;
+        public double SettlingTime { get; set; } = 0.000;
 
         #endregion
 
+        #region Converters||Power
+        // public bool PowerOnAllChannels { get; set; } // Already defined
+        // public PortsEnum PortInput { get; set; }// Already defined
+        public double InputPortLinearInputPower { get; set; } = -25;
+        public double InputPortSourceAttenuator { get; set; } = 0;
+        public double InputPortReceiverAttenuator { get; set; } = 0;
+        public InputSourceLevelingModeEnum InputSourceLevelingMode { get; set; } = InputSourceLevelingModeEnum.Internal;
+        // public PortsEnum PortOutput { get; set; }// Already defined
+        public double OutputPortReversePower { get; set; } = -5;
+        public bool AutoOutputPortSourceAttenuator { get; set; } = false;
+        public double OutputPortSourceAttenuator { get; set; } = 0;
+        public double OutputPortReceiverAttenuator { get; set; } = 0;
+        public OutputSourceLevelingModeEnum OutputSourceLevelingMode { get; set; } = OutputSourceLevelingModeEnum.Internal;
+        public double PowerSweepStartPower { get; set; } = -25;
+        public double PowerSweepStopPower { get; set; } = -5;
+        public int PowerSweepPowerPoints { get; set; } = 21;
+        public double PowerSweepPowerStep { get; set; } = 1;
+        #endregion
+
+        #region Converters|Frequency
+        public SweepTypeEnum SweepType { get; set; } = SweepTypeEnum.LinearSweep;
+        public DataAcquisitionModeEnum DataAcquisitionMode { get; set; } = DataAcquisitionModeEnum.SMARTSweep;
+        public int SweepSettingsNumberOfPoints { get; set; } = 201;
+        public double SweepSettingsIFBandwidth { get; set; } = 100e3;
+        public double SweepSettingsStart { get; set; } = 10e6;
+        public double SweepSettingsStop { get; set; } = 50e9;
+        public double SweepSettingsCenter { get; set; } = 25.005e9;
+        public double SweepSettingsSpan { get; set; } = 49.99e9;
+        public double SweepSettingsFixed { get; set; } = 1e9;
+
+        #endregion
     }
 }

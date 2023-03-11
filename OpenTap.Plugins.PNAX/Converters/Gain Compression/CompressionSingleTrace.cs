@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(GainCompressionNewTrace))]
     [Display("Compression Single Trace", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class CompressionSingleTrace : TestStep
+    public class CompressionSingleTrace : ConverterCompressionBaseStep
     {
         #region Settings
         private String _Trace;
@@ -138,12 +138,25 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            int traceid = PNAX.GetNewTraceID();
+
+            // Define the measurement
+            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
+            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
+
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'Gain Compression Converters\',\'{Meas.ToString()}\'");
+
+            // Create a window if it doesn't exist already
+            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
+
+            // Display the measurement
+            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
+
+            // Select the measurement
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

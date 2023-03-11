@@ -15,6 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     public partial class PNAX : ScpiInstrument
     {
+        #region Compression
         public CompressionMethodEnum GetCompressionMethod(int Channel)
         {
             CompressionMethodEnum retVal = CompressionMethodEnum.CompressionFromLinearGain;
@@ -328,7 +329,191 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:STIMe {time.ToString()}");
         }
+        #endregion
+
+        #region Power
+        public int GetGCPortInput(int Channel)
+        {
+            int retVal;
+            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:GCSetup:PMAP:INP?");
+            return retVal;
+        }
+
+        public int GetGCPortOutput(int Channel)
+        {
+            int retVal;
+            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:GCSetup:PMAP:OUTP?");
+            return retVal;
+        }
+
+        public void SetGCPortInputOutput(int Channel, PortsEnum inport, PortsEnum outport)
+        {
+            String inp = Scpi.Format("{0}", inport);
+            String outp = Scpi.Format("{0}", outport);
+            ScpiCommand($"SENS{Channel.ToString()}:GCSetup:PMAP {inp},{outp}");
+        }
+
+        public double GetPowerLinearInputPower(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:LINear:INPut:LEVel?");
+            return retVal;
+        }
+
+        public void SetPowerLinearInputPower(int Channel, double power)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:LINear:INPut:LEVel {power.ToString()}");
+        }
+
+        public double GetPowerReversePower(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:REVerse:LEVel?");
+            return retVal;
+        }
+
+        public void SetPowerReversePower(int Channel, double power)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:REVerse:LEVel {power.ToString()}");
+        }
+
+        public bool GetSourceAttenuatorAutoMode(int Channel, int port)
+        {
+            bool retVal = false;
+            String retStr = ScpiQuery($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:AUTO?");
+            if (retStr.Equals("0"))
+            {
+                retVal = false;
+            }
+            else
+            {
+                retVal = true;
+            }
+            return retVal;
+        }
+
+        public void SetSourceAttenuatorAutoMode(int Channel, int port, bool mode)
+        {
+            if (mode == true)
+            {
+                ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:AUTO 1");
+            }
+            else
+            {
+                ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:AUTO 0");
+            }
+        }
+
+        public void SetSourceAttenuatorAutoMode(int Channel, PortsEnum port, bool mode)
+        {
+            String strPort = Scpi.Format("{0}", port);
+            if (mode == true)
+            {
+                ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ATTenuation:AUTO 1");
+            }
+            else
+            {
+                ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ATTenuation:AUTO 0");
+            }
+        }
+
+        public double GetPowerSweepStartPower(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:STARt:LEVel?");
+            return retVal;
+        }
+
+        public void SetPowerSweepStartPower(int Channel, double power)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:STARt:LEVel {power.ToString()}");
+        }
+
+        public double GetPowerSweepStopPower(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:STOP:LEVel?");
+            return retVal;
+        }
+
+        public void SetPowerSweepStopPower(int Channel, double power)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:STOP:LEVel {power.ToString()}");
+        }
+
+        public double GetPowerSweepPowerPoints(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SWEep:POWer:POINts?");
+            return retVal;
+        }
+
+        public void SetPowerSweepPowerPoints(int Channel, double power)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SWEep:POWer:POINts {power.ToString()}");
+        }
 
 
+        #endregion
+
+        #region Frequency
+        public SweepTypeEnum GetSweepType(int Channel)
+        {
+            SweepTypeEnum retVal = SweepTypeEnum.LinearSweep;
+            String retString = ScpiQuery($"SENSe{Channel.ToString()}:SWEep:TYPE?");
+            if (retString.Equals("LIN"))
+            {
+                retVal = SweepTypeEnum.LinearSweep;
+            }
+            //else if (retString.Equals("LOG"))
+            //{
+            //    retVal = SweepTypeEnum.CompressionFromMaxGain;
+            //}
+            //else if (retString.StartsWith("POW"))
+            //{
+            //    retVal = SweepTypeEnum.CompressionFromBackOff;
+            //}
+            else if (retString.Equals("CW"))
+            {
+                retVal = SweepTypeEnum.CWFrequency;
+            }
+            //else if (retString.Equals("SEGM"))
+            //{
+            //    retVal = SweepTypeEnum.CompressionFromSaturation;
+            //}
+            return retVal;
+        }
+
+        public void SetSweepType(int Channel, SweepTypeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+        }
+
+        public DataAcquisitionModeEnum GetDataAcquisitionMode(int Channel)
+        {
+            DataAcquisitionModeEnum retVal = DataAcquisitionModeEnum.SMARTSweep;
+            String retString = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:AMODe?");
+            if (retString.Equals("SMAR"))
+            {
+                retVal = DataAcquisitionModeEnum.SMARTSweep;
+            }
+            else if (retString.Equals("PFREQ"))
+            {
+                retVal = DataAcquisitionModeEnum.SweepPowerPerFrequency2D;
+            }
+            else if (retString.StartsWith("FPOW"))
+            {
+                retVal = DataAcquisitionModeEnum.SweepFrequencyPerPower2D;
+            }
+            return retVal;
+        }
+
+        public void SetDataAcquisitionMode(int Channel, DataAcquisitionModeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:AMODe {sweep}");
+        }
+        #endregion
     }
 }
