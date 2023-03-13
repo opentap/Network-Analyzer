@@ -32,7 +32,6 @@ namespace OpenTap.Plugins.PNAX
         public PNAX()
         {
             Name = "PNA-X";
-            DefaultStandardChannelValues = new StandardChannelValues();
             // ToDo: Set default values for properties / settings.
         }
 

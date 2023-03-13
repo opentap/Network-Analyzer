@@ -48,7 +48,7 @@ namespace OpenTap.Plugins.PNAX
 
     public class StandardChannelValues
     {
-        public string SweepType;
+        public StandardSweepTypeEnum SweepType;
         public double Start;
         public double Stop;
         public double Power;
@@ -59,17 +59,23 @@ namespace OpenTap.Plugins.PNAX
         public double CWFrequency;
         public double StartPhase;
         public double StopPhase;
-        public ConverterStagesEnum ConverterStages;
-        public int PortInput;
-        public int PortOutput;
-        public int InputFracMultiNumerator;
-        public int InputFracMultiDenominator;
-        public int Lo1FracMultiNumerator;
-        public int Lo1FracMultiDenominator;
-        public int Lo2FracMultiNumerator;
-        public int Lo2FracMultiDenominator;
-        public string PortLo1;
-        public string PortLo2;
+
+        public static StandardChannelValues GetPresetValues()
+        {
+            StandardChannelValues standardChannelValues = new StandardChannelValues();
+            standardChannelValues.SweepType = StandardSweepTypeEnum.LinearFrequency;
+            standardChannelValues.Start = 10e6;
+            standardChannelValues.Stop = 50e9;
+            standardChannelValues.Power = -15;
+            standardChannelValues.Points = 0;
+            standardChannelValues.IFBandWidth = 100e3;
+            standardChannelValues.StartPower = -10;
+            standardChannelValues.StopPower = 0;
+            standardChannelValues.CWFrequency = 1e9;
+            standardChannelValues.StartPhase = 0;
+            standardChannelValues.StopPhase = 0;
+            return standardChannelValues;
+        }
     }
 
     public class MixerSetupValues
@@ -396,10 +402,10 @@ namespace OpenTap.Plugins.PNAX
 
     public partial class PNAX : ScpiInstrument
     {
-        public StandardChannelValues GetStandardChannelValues(bool force = false)
+        public StandardChannelValues GetStandardChannelDefaultValues()
         {
-            if (force)
-                this.UpdateDefaultValues();
+            if (DefaultStandardChannelValues == null)
+                return StandardChannelValues.GetPresetValues();
 
             return DefaultStandardChannelValues;
         }
@@ -416,7 +422,7 @@ namespace OpenTap.Plugins.PNAX
                 this.WaitForOperationComplete();
 
                 // Channel 1 is Standard
-                DefaultStandardChannelValues.SweepType = GetStandardSweepType(1);
+                //DefaultStandardChannelValues.SweepType = GetStandardSweepType(1);
                 DefaultStandardChannelValues.Start = GetStart(1);
                 DefaultStandardChannelValues.Stop = GetStop(1);
                 DefaultStandardChannelValues.Power = GetPower(1);
@@ -433,16 +439,18 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand("CALC2:MEAS2:DEF \"SC21:Gain Compression Converters\"");
                 WaitForOperationComplete();
 
-                DefaultStandardChannelValues.ConverterStages = GetConverterStages(2);
-                DefaultStandardChannelValues.PortInput = GetPortInput(2);
-                DefaultStandardChannelValues.InputFracMultiNumerator = GetInputFractionalMultiplierNumerator(2);
-                DefaultStandardChannelValues.InputFracMultiDenominator = GetInputFractionalMultiplierDenominator(2);
-                DefaultStandardChannelValues.Lo1FracMultiNumerator = GetLOFractionalMultiplierNumerator(2, 1);
-                DefaultStandardChannelValues.Lo1FracMultiDenominator = GetLOFractionalMultiplierDenominator(2, 1);
-                DefaultStandardChannelValues.Lo2FracMultiNumerator = GetLOFractionalMultiplierNumerator(2, 2);
-                DefaultStandardChannelValues.Lo2FracMultiDenominator = GetLOFractionalMultiplierDenominator(2, 2);
-                DefaultStandardChannelValues.PortLo1 = GetPortLO(2, 1);
-                DefaultStandardChannelValues.PortLo2 = GetPortLO(2, 2);
+                //DefaultStandardChannelValues.ConverterStages = GetConverterStages(2);
+                ////DefaultStandardChannelValues.PortInput = GetPortInput(2);
+                //DefaultStandardChannelValues.InputFracMultiNumerator = GetInputFractionalMultiplierNumerator(2);
+                //DefaultStandardChannelValues.InputFracMultiDenominator = GetInputFractionalMultiplierDenominator(2);
+                //DefaultStandardChannelValues.Lo1FracMultiNumerator = GetLOFractionalMultiplierNumerator(2, 1);
+                //DefaultStandardChannelValues.Lo1FracMultiDenominator = GetLOFractionalMultiplierDenominator(2, 1);
+                //DefaultStandardChannelValues.Lo2FracMultiNumerator = GetLOFractionalMultiplierNumerator(2, 2);
+                //DefaultStandardChannelValues.Lo2FracMultiDenominator = GetLOFractionalMultiplierDenominator(2, 2);
+                //DefaultStandardChannelValues.PortLo1 = GetPortLO(2, 1);
+                //DefaultStandardChannelValues.PortLo2 = GetPortLO(2, 2);
+
+                // TODO: MixerPowerDefaultValue updated by INstrument
 
                 Close();
             }
