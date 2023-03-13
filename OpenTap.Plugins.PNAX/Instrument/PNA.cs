@@ -42,6 +42,8 @@ namespace OpenTap.Plugins.PNAX
         {
 
             base.Open();
+
+            this.QueryErrorAfterCommand = true;
             // TODO:  Open the connection to the instrument here
 
             ScpiCommand("SYST:FPR");

@@ -13,5 +13,7 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
       <SetAssemblyInfo Attributes="Version"/>
       <!--ObfuscateWithDotfuscator/-->
     </File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/two channels - Standard and GCA.tapplan" SourcePath="Examples/two channels - Standard and GCA.TapPlan" ></File>
+	  <File Path="Packages/OpenTap.Plugins.PNAX/Examples/two channels - Standard.tapplan" SourcePath="Examples/two channels - Standard.TapPlan" ></File>
   </Files>
 </Package>

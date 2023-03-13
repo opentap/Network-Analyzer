@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\two channels - Standard and GCA.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\two channels - Standard.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
