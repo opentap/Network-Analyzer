@@ -353,7 +353,7 @@ namespace OpenTap.Plugins.PNAX
         }
     }
 
-    public class CompressionValues
+    public class ConverterCompressionValues
     {
         public CompressionMethodEnum CompressionMethod;
         public double CompressionLevel;
@@ -374,9 +374,9 @@ namespace OpenTap.Plugins.PNAX
         public EndOfSweepConditionEnum EndOfSweepCondition;
         public double SettlingTime;
 
-        public static CompressionValues GetPresetValues()
+        public static ConverterCompressionValues GetPresetValues()
         {
-            CompressionValues compressionValues = new CompressionValues();
+            ConverterCompressionValues compressionValues = new ConverterCompressionValues();
             compressionValues.CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
             compressionValues.CompressionLevel = 1;
             compressionValues.CompressionBackOff = 10;
@@ -396,6 +396,35 @@ namespace OpenTap.Plugins.PNAX
             compressionValues.EndOfSweepCondition = EndOfSweepConditionEnum.Default;
             compressionValues.SettlingTime = 0;
             return compressionValues;
+        }
+    }
+
+    public class ConverterFrequencyValues
+    {
+        public SweepTypeEnum SweepType;
+        public DataAcquisitionModeEnum DataAcquisitionMode;
+        public int SweepSettingsNumberOfPoints;
+        public double SweepSettingsIFBandwidth;
+        public double SweepSettingsStart;
+        public double SweepSettingsStop;
+        public double SweepSettingsCenter;
+        public double SweepSettingsSpan;
+        public double SweepSettingsFixed;
+
+        public static ConverterFrequencyValues GetPresetValues()
+        {
+            ConverterFrequencyValues converterFrequencyValues = new ConverterFrequencyValues();
+            converterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
+            converterFrequencyValues.DataAcquisitionMode = DataAcquisitionModeEnum.SMARTSweep;
+            converterFrequencyValues.SweepSettingsNumberOfPoints = 201;
+            converterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
+            converterFrequencyValues.SweepSettingsStart = 10e6;
+            converterFrequencyValues.SweepSettingsStop = 50e9;
+            converterFrequencyValues.SweepSettingsCenter = 25.005e9;
+            converterFrequencyValues.SweepSettingsSpan = 49.99e9;
+            converterFrequencyValues.SweepSettingsFixed = 1e9;
+
+            return converterFrequencyValues;
         }
     }
 
@@ -645,36 +674,56 @@ namespace OpenTap.Plugins.PNAX
             DefaultTonePowerValues.StepF2Power = 0.070;
         }
 
-        public CompressionValues GetCompressionDefaultValues()
+        public ConverterCompressionValues GetConverterCompressionDefaultValues()
         {
-            if (DefaultCompressionValues == null)
-                return CompressionValues.GetPresetValues();
-            return DefaultCompressionValues;
+            if (DefaultConverterCompressionValues == null)
+                return ConverterCompressionValues.GetPresetValues();
+            return DefaultConverterCompressionValues;
         }
 
         private void UpdateCompressionValues()
         {
-            if (DefaultCompressionValues == null)
-                DefaultCompressionValues = new CompressionValues();
+            if (DefaultConverterCompressionValues == null)
+                DefaultConverterCompressionValues = new ConverterCompressionValues();
 
-            DefaultCompressionValues.CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
-            DefaultCompressionValues.CompressionLevel = 1;
-            DefaultCompressionValues.CompressionBackOff = 10;
-            DefaultCompressionValues.CompressionDeltaX = 10;
-            DefaultCompressionValues.CompressionDeltaY = 9;
-            DefaultCompressionValues.CompressionFromMaxPout = 0.1;
-            DefaultCompressionValues.SMARTSweepTolerance = 0.05;
-            DefaultCompressionValues.SMARTSweepIterations = 20;
-            DefaultCompressionValues.SMARTSweepShowIterations = false;
-            DefaultCompressionValues.SMARTSweepReadDC = false;
-            DefaultCompressionValues.SMARTSweepSafeMode = false;
-            DefaultCompressionValues.SMARTSweepCoarseIncrement = 3;
-            DefaultCompressionValues.SMARTSweepFineIncrement = 1;
-            DefaultCompressionValues.SMARTSweepFineThreshold = 0.5;
-            DefaultCompressionValues.SMARTSweepMaxOutputPower = 30;
-            DefaultCompressionValues.CompressionPointInterpolation = false;
-            DefaultCompressionValues.EndOfSweepCondition = EndOfSweepConditionEnum.Default;
-            DefaultCompressionValues.SettlingTime = 0;
+            DefaultConverterCompressionValues.CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
+            DefaultConverterCompressionValues.CompressionLevel = 1;
+            DefaultConverterCompressionValues.CompressionBackOff = 10;
+            DefaultConverterCompressionValues.CompressionDeltaX = 10;
+            DefaultConverterCompressionValues.CompressionDeltaY = 9;
+            DefaultConverterCompressionValues.CompressionFromMaxPout = 0.1;
+            DefaultConverterCompressionValues.SMARTSweepTolerance = 0.05;
+            DefaultConverterCompressionValues.SMARTSweepIterations = 20;
+            DefaultConverterCompressionValues.SMARTSweepShowIterations = false;
+            DefaultConverterCompressionValues.SMARTSweepReadDC = false;
+            DefaultConverterCompressionValues.SMARTSweepSafeMode = false;
+            DefaultConverterCompressionValues.SMARTSweepCoarseIncrement = 3;
+            DefaultConverterCompressionValues.SMARTSweepFineIncrement = 1;
+            DefaultConverterCompressionValues.SMARTSweepFineThreshold = 0.5;
+            DefaultConverterCompressionValues.SMARTSweepMaxOutputPower = 30;
+            DefaultConverterCompressionValues.CompressionPointInterpolation = false;
+            DefaultConverterCompressionValues.EndOfSweepCondition = EndOfSweepConditionEnum.Default;
+            DefaultConverterCompressionValues.SettlingTime = 0;
+        }
+
+        public ConverterFrequencyValues GetConverterFrequencyDefaultValues()
+        {
+            if (DefaultConverterFrequencyValues == null)
+                return ConverterFrequencyValues.GetPresetValues();
+            return DefaultConverterFrequencyValues;
+        }
+
+        private void UpdateConverterFrequencyValues()
+        {
+            DefaultConverterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
+            DefaultConverterFrequencyValues.DataAcquisitionMode = DataAcquisitionModeEnum.SMARTSweep;
+            DefaultConverterFrequencyValues.SweepSettingsNumberOfPoints = 201;
+            DefaultConverterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
+            DefaultConverterFrequencyValues.SweepSettingsStart = 10e6;
+            DefaultConverterFrequencyValues.SweepSettingsStop = 50e9;
+            DefaultConverterFrequencyValues.SweepSettingsCenter = 25.005e9;
+            DefaultConverterFrequencyValues.SweepSettingsSpan = 49.99e9;
+            DefaultConverterFrequencyValues.SweepSettingsFixed = 1e9;
         }
     }
 }

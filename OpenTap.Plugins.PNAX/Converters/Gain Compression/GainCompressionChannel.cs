@@ -33,9 +33,9 @@ namespace OpenTap.Plugins.PNAX
             // Compression
             Compression compression = new Compression { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Power
-            Power power = new Power();
+            Power power = new Power { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Frequency
-            Frequency frequency = new Frequency();
+            Frequency frequency = new Frequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Traces
             GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace();

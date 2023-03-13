@@ -177,7 +177,7 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateDefaultValues()
         {
-            var DefaultValues = PNAX.GetCompressionDefaultValues();
+            var DefaultValues = PNAX.GetConverterCompressionDefaultValues();
             CompressionMethod = DefaultValues.CompressionMethod;
             CompressionLevel = DefaultValues.CompressionLevel;
             CompressionBackOff = DefaultValues.CompressionBackOff;

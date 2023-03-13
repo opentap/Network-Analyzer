@@ -153,10 +153,9 @@ namespace OpenTap.Plugins.PNAX
         private void UpdateDefaultValues()
         {
             var defaultValues = PNAX.GetMixerPowerDefaultValues();
-            if (defaultValues == null)
-                return;
-
-            PortLO2 = GeneralStandardSettings.Current.PortLO2; // new Input<LOEnum>();
+            var defaultMixerSetupValues = PNAX.GetMixerSetupDefaultValues();
+            PortLO1 = defaultMixerSetupValues.PortLO1;
+            PortLO2 = defaultMixerSetupValues.PortLO2;
             SourceLevelingModeLO2 = SourceLevelingModeType.INTernal;
             LO1Power = defaultValues.Lo1Power;
             LO2Power = defaultValues.Lo2Power;

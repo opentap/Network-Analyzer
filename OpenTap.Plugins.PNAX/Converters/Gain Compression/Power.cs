@@ -96,6 +96,11 @@ namespace OpenTap.Plugins.PNAX
 
         public Power()
         {
+            UpdateDefaultValues();
+        }
+
+        public void UpdateDefaultValues()
+        {
             PowerOnAllChannels = GeneralStandardSettings.Current.PowerOnAllChannels;
             PortInput = GeneralStandardSettings.Current.PortInput;
             InputPortLinearInputPower = -GeneralStandardSettings.Current.InputPortLinearInputPower;
@@ -114,6 +119,7 @@ namespace OpenTap.Plugins.PNAX
             PowerSweepStopPower = GeneralStandardSettings.Current.PowerSweepStopPower;
             PowerSweepPowerPoints = GeneralStandardSettings.Current.PowerSweepPowerPoints;
             PowerSweepPowerStep = GeneralStandardSettings.Current.PowerSweepPowerStep;
+
         }
 
         public override void Run()
