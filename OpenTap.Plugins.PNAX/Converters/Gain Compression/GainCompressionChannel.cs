@@ -38,7 +38,7 @@ namespace OpenTap.Plugins.PNAX
             Frequency frequency = new Frequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Traces
-            GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace();
+            GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);

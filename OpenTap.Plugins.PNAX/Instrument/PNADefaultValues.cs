@@ -345,10 +345,10 @@ namespace OpenTap.Plugins.PNAX
             tonePowerValues.FixedF2Power = -24;
             tonePowerValues.StartF1Power = -24;
             tonePowerValues.StartF2Power = -24;
-            tonePowerValues.StopF1Power = -10;
-            tonePowerValues.StopF2Power = -10;
-            tonePowerValues.StepF1Power = 0.070;
-            tonePowerValues.StepF2Power = 0.070;
+            tonePowerValues.StopF1Power  = -10;
+            tonePowerValues.StopF2Power  = -10;
+            tonePowerValues.StepF1Power  = 0.070;
+            tonePowerValues.StepF2Power  = 0.070;
             return tonePowerValues;
         }
     }
@@ -426,6 +426,51 @@ namespace OpenTap.Plugins.PNAX
 
             return converterFrequencyValues;
         }
+    }
+
+    public class ConverterPowerValues
+    {
+        public bool PowerOnAllChannels;
+        public PortsEnum PortInput;
+        public PortsEnum PortOutput;
+        public double InputPortLinearInputPower;
+        public double InputPortSourceAttenuator;
+        public double InputPortReceiverAttenuator;
+        public InputSourceLevelingModeEnum InputSourceLevelingMode;
+        public double OutputPortReversePower;
+        public bool AutoOutputPortSourceAttenuator;
+        public double OutputPortSourceAttenuator;
+        public double OutputPortReceiverAttenuator;
+        public OutputSourceLevelingModeEnum OutputSourceLevelingMode;
+        public double PowerSweepStartPower;
+        public double PowerSweepStopPower;
+        public int PowerSweepPowerPoints;
+        public double PowerSweepPowerStep;
+
+        public static ConverterPowerValues GetPresetValues()
+        {
+            ConverterPowerValues converterPowerValues = new ConverterPowerValues();
+
+            converterPowerValues.PowerOnAllChannels             = true;
+            converterPowerValues.PortInput                      = PortsEnum.Port1;
+            converterPowerValues.PortOutput                     = PortsEnum.Port2;
+            converterPowerValues.InputSourceLevelingMode        = InputSourceLevelingModeEnum.Internal;
+            converterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
+            converterPowerValues.InputPortLinearInputPower      = -25;
+            converterPowerValues.InputPortSourceAttenuator      = 0;
+            converterPowerValues.InputPortReceiverAttenuator    = 0;
+            converterPowerValues.OutputPortReversePower         = -5;
+            converterPowerValues.AutoOutputPortSourceAttenuator = false;
+            converterPowerValues.OutputPortSourceAttenuator     = 0;
+            converterPowerValues.OutputPortReceiverAttenuator   = 0;
+            converterPowerValues.PowerSweepStartPower           = -25;
+            converterPowerValues.PowerSweepStopPower            = -5;
+            converterPowerValues.PowerSweepPowerPoints          = 21;
+            converterPowerValues.PowerSweepPowerStep            = 1;
+
+            return converterPowerValues;
+        }
+
     }
 
 
@@ -715,6 +760,9 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateConverterFrequencyValues()
         {
+            if (DefaultConverterFrequencyValues == null)
+                DefaultConverterFrequencyValues = new ConverterFrequencyValues();
+
             DefaultConverterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
             DefaultConverterFrequencyValues.DataAcquisitionMode = DataAcquisitionModeEnum.SMARTSweep;
             DefaultConverterFrequencyValues.SweepSettingsNumberOfPoints = 201;
@@ -724,6 +772,36 @@ namespace OpenTap.Plugins.PNAX
             DefaultConverterFrequencyValues.SweepSettingsCenter = 25.005e9;
             DefaultConverterFrequencyValues.SweepSettingsSpan = 49.99e9;
             DefaultConverterFrequencyValues.SweepSettingsFixed = 1e9;
+        }
+
+        public ConverterPowerValues GetConverterPowerDefaultValues()
+        {
+            if (DefaultConverterPowerValues == null)
+                return ConverterPowerValues.GetPresetValues();
+            return DefaultConverterPowerValues;
+        }
+
+        private void UpdateConverterPowerValues()
+        {
+            if (DefaultConverterPowerValues == null)
+                DefaultConverterPowerValues = new ConverterPowerValues();
+
+            DefaultConverterPowerValues.PowerOnAllChannels             = true;
+            DefaultConverterPowerValues.PortInput                      = PortsEnum.Port1;
+            DefaultConverterPowerValues.PortOutput                     = PortsEnum.Port2;
+            DefaultConverterPowerValues.InputSourceLevelingMode        = InputSourceLevelingModeEnum.Internal;
+            DefaultConverterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
+            DefaultConverterPowerValues.InputPortLinearInputPower      = -25;
+            DefaultConverterPowerValues.InputPortSourceAttenuator      = 0;
+            DefaultConverterPowerValues.InputPortReceiverAttenuator    = 0;
+            DefaultConverterPowerValues.OutputPortReversePower         = -5;
+            DefaultConverterPowerValues.AutoOutputPortSourceAttenuator = false;
+            DefaultConverterPowerValues.OutputPortSourceAttenuator     = 0;
+            DefaultConverterPowerValues.OutputPortReceiverAttenuator   = 0;
+            DefaultConverterPowerValues.PowerSweepStartPower           = -25;
+            DefaultConverterPowerValues.PowerSweepStopPower            = -5;
+            DefaultConverterPowerValues.PowerSweepPowerPoints          = 21;
+            DefaultConverterPowerValues.PowerSweepPowerStep            = 1;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace OpenTap.Plugins.PNAX
         public TonePowerValues DefaultTonePowerValues;
         public ConverterCompressionValues DefaultConverterCompressionValues;
         public ConverterFrequencyValues DefaultConverterFrequencyValues;
+        public ConverterPowerValues DefaultConverterPowerValues;
 
         public PNAX()
         {
@@ -85,6 +86,7 @@ namespace OpenTap.Plugins.PNAX
             UpdateTonePowerValues();
             UpdateCompressionValues();
             UpdateConverterFrequencyValues();
+            UpdateConverterPowerValues();
         }
 
         public int GetNewTraceID()
