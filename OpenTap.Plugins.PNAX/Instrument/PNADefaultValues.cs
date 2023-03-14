@@ -485,8 +485,7 @@ namespace OpenTap.Plugins.PNAX
         }
         private void UpdateStandardValues()
         {
-            if (DefaultStandardChannelValues == null)
-                DefaultStandardChannelValues = new StandardChannelValues();
+
             try
             {
                 Open();
@@ -494,6 +493,9 @@ namespace OpenTap.Plugins.PNAX
 
                 this.ScpiCommand("SYSTem:PRESet");
                 this.WaitForOperationComplete();
+
+                if (DefaultStandardChannelValues == null)
+                    DefaultStandardChannelValues = new StandardChannelValues();
 
                 // Channel 1 is Standard
                 //DefaultStandardChannelValues.SweepType = GetStandardSweepType(1);
