@@ -169,7 +169,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsInputMixerFrequencyTypeStartStop;
         public bool IsInputMixerFrequencyTypeCenterSpan;
         public bool IsInputMixerFrequencyTypeFixed;
-        //public double InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
+        public MixerFrequencyTypeEnum InputMixerFrequencyType;
         public double InputMixerFrequencyStart;
         public double InputMixerFrequencyStop;
         public double InputMixerFrequencyCenter;
@@ -178,7 +178,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsLO1MixerFrequencyTypeStartStop;
         public bool IsLO1MixerFrequencyTypeCenterSpan;
         public bool IsLO1MixerFrequencyTypeFixed;
-        //public double LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+        public MixerFrequencyTypeEnum LO1MixerFrequencyType;
         public double LO1MixerFrequencyStart;
         public double LO1MixerFrequencyStop;
         public double LO1MixerFrequencyCenter;
@@ -188,8 +188,8 @@ namespace OpenTap.Plugins.PNAX
         public bool IsIFMixerFrequencyTypeStartStop;
         public bool IsIFMixerFrequencyTypeCenterSpan;
         public bool IsIFMixerFrequencyTypeFixed;
-        //public double IFSidebandType = SidebandTypeEnum.Low;
-        //public double IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+        public SidebandTypeEnum IFSidebandType;
+        public MixerFrequencyTypeEnum IFMixerFrequencyType;
         public double IFMixerFrequencyStart;
         public double IFMixerFrequencyStop;
         public double IFMixerFrequencyCenter;
@@ -198,7 +198,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsLO2MixerFrequencyTypeStartStop;
         public bool IsLO2MixerFrequencyTypeCenterSpan;
         public bool IsLO2MixerFrequencyTypeFixed;
-        //public double LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+        public MixerFrequencyTypeEnum LO2MixerFrequencyType;
         public double LO2MixerFrequencyStart;
         public double LO2MixerFrequencyStop;
         public double LO2MixerFrequencyCenter;
@@ -208,8 +208,8 @@ namespace OpenTap.Plugins.PNAX
         public bool IsOutputMixerFrequencyTypeStartStop;
         public bool IsOutputMixerFrequencyTypeCenterSpan;
         public bool IsOutputMixerFrequencyTypeFixed;
-        //public double OutputSidebandType = SidebandTypeEnum.Low;
-        //public double OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+        public SidebandTypeEnum OutputSidebandType;
+        public MixerFrequencyTypeEnum OutputMixerFrequencyType;
         public double OutputMixerFrequencyStart;
         public double OutputMixerFrequencyStop;
         public double OutputMixerFrequencyCenter;
@@ -224,7 +224,7 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.IsInputMixerFrequencyTypeCenterSpan = false;
             mixerFrequencyValues.IsInputMixerFrequencyTypeFixed = false;
 
-            //InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
+            mixerFrequencyValues.InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
             mixerFrequencyValues.InputMixerFrequencyStart = 10.5e6;
             mixerFrequencyValues.InputMixerFrequencyStop = 66.9995e9;
             mixerFrequencyValues.InputMixerFrequencyCenter = 33.505e9;
@@ -235,7 +235,7 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.IsLO1MixerFrequencyTypeCenterSpan = false;
             mixerFrequencyValues.IsLO1MixerFrequencyTypeFixed = true;
 
-            //LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+            mixerFrequencyValues.LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
             mixerFrequencyValues.LO1MixerFrequencyStart = 0;
             mixerFrequencyValues.LO1MixerFrequencyStop = 0;
             mixerFrequencyValues.LO1MixerFrequencyCenter = 0;
@@ -247,8 +247,8 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.IsIFMixerFrequencyTypeCenterSpan = true;
             mixerFrequencyValues.IsIFMixerFrequencyTypeFixed = false;
 
-            //IFSidebandType = SidebandTypeEnum.Low;
-            //IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+            mixerFrequencyValues.IFSidebandType = SidebandTypeEnum.Low;
+            mixerFrequencyValues.IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
             mixerFrequencyValues.IFMixerFrequencyStart = 10.5e6;
             mixerFrequencyValues.IFMixerFrequencyStop = 66.9995e9;
             mixerFrequencyValues.IFMixerFrequencyCenter = 33.505e9;
@@ -259,7 +259,7 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.IsLO2MixerFrequencyTypeCenterSpan = false;
             mixerFrequencyValues.IsLO2MixerFrequencyTypeFixed = true;
 
-            //mixerFrequencyValues.LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
+            mixerFrequencyValues.LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
             mixerFrequencyValues.LO2MixerFrequencyStart = 0;
             mixerFrequencyValues.LO2MixerFrequencyStop = 0;
             mixerFrequencyValues.LO2MixerFrequencyCenter = 0;
@@ -272,8 +272,8 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.IsOutputMixerFrequencyTypeCenterSpan = true;
             mixerFrequencyValues.IsOutputMixerFrequencyTypeFixed = false;
 
-            //mixerFrequencyValues.OutputSidebandType = SidebandTypeEnum.Low;
-            //mixerFrequencyValues.OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
+            mixerFrequencyValues.OutputSidebandType = SidebandTypeEnum.Low;
+            mixerFrequencyValues.OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
             mixerFrequencyValues.OutputMixerFrequencyStart = 10.5e6;
             mixerFrequencyValues.OutputMixerFrequencyStop = 66.9995e9;
             mixerFrequencyValues.OutputMixerFrequencyCenter = 33.505e9;

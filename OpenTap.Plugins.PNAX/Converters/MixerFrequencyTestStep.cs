@@ -412,7 +412,7 @@ namespace OpenTap.Plugins.PNAX
             defaultValues.IsInputMixerFrequencyTypeCenterSpan = false;
             defaultValues.IsInputMixerFrequencyTypeFixed = false;
 
-            InputMixerFrequencyType = GeneralStandardSettings.Current.InputMixerFrequencyType;
+            InputMixerFrequencyType = defaultValues.InputMixerFrequencyType;
             defaultValues.InputMixerFrequencyStart = 10.5e6;
             defaultValues.InputMixerFrequencyStop = 66.9995e9;
             defaultValues.InputMixerFrequencyCenter = 33.505e9;
@@ -423,7 +423,7 @@ namespace OpenTap.Plugins.PNAX
             defaultValues.IsLO1MixerFrequencyTypeCenterSpan = false;
             defaultValues.IsLO1MixerFrequencyTypeFixed = true;
 
-            LO1MixerFrequencyType = GeneralStandardSettings.Current.LO1MixerFrequencyType;
+            LO1MixerFrequencyType = defaultValues.LO1MixerFrequencyType;
             defaultValues.LO1MixerFrequencyStart = 0;
             defaultValues.LO1MixerFrequencyStop = 0;
             defaultValues.LO1MixerFrequencyCenter = 0;
@@ -435,8 +435,8 @@ namespace OpenTap.Plugins.PNAX
             defaultValues.IsIFMixerFrequencyTypeCenterSpan = true;
             defaultValues.IsIFMixerFrequencyTypeFixed = false;
 
-            IFSidebandType = GeneralStandardSettings.Current.IFSidebandType;
-            IFMixerFrequencyType = GeneralStandardSettings.Current.IFMixerFrequencyType;
+            IFSidebandType = defaultValues.IFSidebandType;
+            IFMixerFrequencyType = defaultValues.IFMixerFrequencyType;
             defaultValues.IFMixerFrequencyStart = 10.5e6;
             defaultValues.IFMixerFrequencyStop = 66.9995e9;
             defaultValues.IFMixerFrequencyCenter = 33.505e9;
@@ -447,7 +447,7 @@ namespace OpenTap.Plugins.PNAX
             defaultValues.IsLO2MixerFrequencyTypeCenterSpan = false;
             defaultValues.IsLO2MixerFrequencyTypeFixed = true;
 
-            LO2MixerFrequencyType = GeneralStandardSettings.Current.LO2MixerFrequencyType;
+            LO2MixerFrequencyType = defaultValues.LO2MixerFrequencyType;
             defaultValues.LO2MixerFrequencyStart = 0;
             defaultValues.LO2MixerFrequencyStop = 0;
             defaultValues.LO2MixerFrequencyCenter = 0;
@@ -459,8 +459,8 @@ namespace OpenTap.Plugins.PNAX
             defaultValues.IsOutputMixerFrequencyTypeCenterSpan = true;
             defaultValues.IsOutputMixerFrequencyTypeFixed = false;
 
-            OutputSidebandType = GeneralStandardSettings.Current.OutputSidebandType;
-            OutputMixerFrequencyType = GeneralStandardSettings.Current.OutputMixerFrequencyType;
+            OutputSidebandType = defaultValues.OutputSidebandType;
+            OutputMixerFrequencyType = defaultValues.OutputMixerFrequencyType;
             defaultValues.OutputMixerFrequencyStart = 10.5e6;
             defaultValues.OutputMixerFrequencyStop = 66.9995e9;
             defaultValues.OutputMixerFrequencyCenter = 33.505e9;

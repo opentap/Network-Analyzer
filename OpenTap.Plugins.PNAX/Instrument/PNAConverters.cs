@@ -244,14 +244,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetPowerOnAllChannels(bool value)
         {
-            if (value)
-            {
-                ScpiCommand($"OUTPut:STATe 1");
-            }
-            else
-            {
-                ScpiCommand($"OUTPut:STATe 0");
-            }
+            ScpiCommand($"OUTPut:STATe {Convert.ToInt32(value)}");
         }
 
         public double GetLOPower(int Channel, int stage)
@@ -261,7 +254,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetLOPower(int Channel, int stage, double power)
         {
-            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:POWer {power.ToString()}");
+            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:POWer { power }");
         }
 
         public string GetSourceLevelingMode(int Channel, int port)
@@ -342,19 +335,17 @@ namespace OpenTap.Plugins.PNAX
         #region Mixer Frequency
         public void MixerApply(int Channel)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:APPLY");
+            ScpiCommand($"SENSe{ Channel }:MIXer:APPLY");
         }
 
-        public String GetMixerFrequencyInputMode(int Channel)
+        public string GetMixerFrequencyInputMode(int Channel)
         {
-            String retVal = "";
-            retVal = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:INPut:FREQuency:MODE?");
-            return retVal;
+            return ScpiQuery($"SENSe{ Channel }:MIXer:INPut:FREQuency:MODE?");
         }
 
-        public void SetMixerFrequencyInputMode(int Channel, String mode)
+        public void SetMixerFrequencyInputMode(int Channel, string mode)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:INPut:FREQuency:MODE {mode}");
+            ScpiCommand($"SENSe{ Channel }:MIXer:INPut:FREQuency:MODE {mode}");
         }
 
         public double GetFrequencyInputStart(int Channel)
@@ -388,11 +379,9 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
-        public String GetMixerFrequencyLOMode(int Channel, int stage)
+        public string GetMixerFrequencyLOMode(int Channel, int stage)
         {
-            String retVal = "";
-            retVal = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:MODE?");
-            return retVal;
+            return ScpiQuery($"SENSe{ Channel }:MIXer:LO{ stage }:FREQuency:MODE?");
         }
 
         public void SetMixerFrequencyLOMode(int Channel, int stage, String mode)
@@ -436,14 +425,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetLOILTI(int Channel, int stage, bool value)
         {
-            if (value)
-            {
-                ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:ILTI 1");
-            }
-            else
-            {
-                ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:ILTI 0");
-            }
+            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:ILTI {Convert.ToInt32(value)}");
         }
 
         public double GetFrequencyIFStart(int Channel)
@@ -516,14 +498,6 @@ namespace OpenTap.Plugins.PNAX
                 throw new Exception("unknown side band");
             }
         }
-
-
-
-
-
-
-
-
 
         public double GetFrequencyOutputStart(int Channel)
         {
