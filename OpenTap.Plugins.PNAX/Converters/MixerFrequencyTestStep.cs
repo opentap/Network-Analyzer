@@ -470,6 +470,7 @@ namespace OpenTap.Plugins.PNAX
             #region Input
             if (InputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
             {
+                PNAX.SetMixerFrequencyInputMode(Channel, "SWEPT");
                 PNAX.SetFrequencyInputStart(Channel, InputMixerFrequencyStart);
                 PNAX.SetFrequencyInputStop(Channel, InputMixerFrequencyStop);
             }
@@ -478,12 +479,14 @@ namespace OpenTap.Plugins.PNAX
                 // Calculate Start/Stop from Center/Span
                 double start = InputMixerFrequencyCenter - (InputMixerFrequencySpan / 2);
                 double stop = InputMixerFrequencyCenter + (InputMixerFrequencySpan / 2);
+                PNAX.SetMixerFrequencyInputMode(Channel, "SWEPT");
                 PNAX.SetFrequencyInputStart(Channel, start);
                 PNAX.SetFrequencyInputStop(Channel, stop);
             }
             else
             {
                 // Fixed
+                PNAX.SetMixerFrequencyInputMode(Channel, "FIXED");
                 PNAX.SetFrequencyInputFixed(Channel, InputMixerFrequencyFixed);
             }
             #endregion
@@ -491,6 +494,7 @@ namespace OpenTap.Plugins.PNAX
             #region LO1
             if (LO1MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
             {
+                PNAX.SetMixerFrequencyLOMode(Channel, 1, "SWEPT");
                 PNAX.SetFrequencyLOStart(Channel, 1, LO1MixerFrequencyStart);
                 PNAX.SetFrequencyLOStop(Channel, 1, LO1MixerFrequencyStop);
             }
@@ -499,12 +503,14 @@ namespace OpenTap.Plugins.PNAX
                 // Calculate Start/Stop from Center/Span
                 double start = LO1MixerFrequencyCenter - (LO1MixerFrequencySpan / 2);
                 double stop = LO1MixerFrequencyCenter + (LO1MixerFrequencySpan / 2);
+                PNAX.SetMixerFrequencyLOMode(Channel, 1, "SWEPT");
                 PNAX.SetFrequencyLOStart(Channel, 1, start);
                 PNAX.SetFrequencyLOStop(Channel, 1, stop);
             }
             else
             {
                 // Fixed
+                PNAX.SetMixerFrequencyLOMode(Channel, 1, "FIXED");
                 PNAX.SetFrequencyLOFixed(Channel, 1, LO1MixerFrequencyFixed);
             }
             PNAX.SetLOILTI(Channel, 1, InputGTLO1);
@@ -541,6 +547,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (LO2MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
                 {
+                    PNAX.SetMixerFrequencyLOMode(Channel, 1, "SWEPT");
                     PNAX.SetFrequencyLOStart(Channel, 2, LO2MixerFrequencyStart);
                     PNAX.SetFrequencyLOStop(Channel, 2, LO2MixerFrequencyStop);
                 }
@@ -549,12 +556,14 @@ namespace OpenTap.Plugins.PNAX
                     // Calculate Start/Stop from Center/Span
                     double start = LO2MixerFrequencyCenter - (LO2MixerFrequencySpan / 2);
                     double stop = LO2MixerFrequencyCenter + (LO2MixerFrequencySpan / 2);
+                    PNAX.SetMixerFrequencyLOMode(Channel, 1, "SWEPT");
                     PNAX.SetFrequencyLOStart(Channel, 2, start);
                     PNAX.SetFrequencyLOStop(Channel, 2, stop);
                 }
                 else
                 {
                     // Fixed
+                    PNAX.SetMixerFrequencyLOMode(Channel, 1, "FIXED");
                     PNAX.SetFrequencyLOFixed(Channel, 2, LO2MixerFrequencyFixed);
                 }
                 PNAX.SetLOILTI(Channel, 2, IF1GTLO2);
@@ -583,6 +592,7 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetFrequencyOutputSideband(Channel, OutputSidebandType);
             #endregion
 
+            PNAX.MixerApply(Channel);
 
             UpgradeVerdict(Verdict.Pass);
         }
