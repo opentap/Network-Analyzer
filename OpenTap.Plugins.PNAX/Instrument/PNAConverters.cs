@@ -340,6 +340,23 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         #region Mixer Frequency
+        public void MixerApply(int Channel)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:APPLY");
+        }
+
+        public String GetMixerFrequencyInputMode(int Channel)
+        {
+            String retVal = "";
+            retVal = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:INPut:FREQuency:MODE?");
+            return retVal;
+        }
+
+        public void SetMixerFrequencyInputMode(int Channel, String mode)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:INPut:FREQuency:MODE {mode}");
+        }
+
         public double GetFrequencyInputStart(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:INPut:FREQuency:STARt?");
@@ -370,6 +387,18 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:INPut:FREQuency:FIXed { value }");
         }
 
+
+        public String GetMixerFrequencyLOMode(int Channel, int stage)
+        {
+            String retVal = "";
+            retVal = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:MODE?");
+            return retVal;
+        }
+
+        public void SetMixerFrequencyLOMode(int Channel, int stage, String mode)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:MODE {mode}");
+        }
         public double GetFrequencyLOStart(int Channel, int stage)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STARt?");
