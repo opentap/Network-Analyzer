@@ -41,148 +41,64 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
 
-        [Browsable(false)]
-        public bool EnableStartStop { get; set; }
-        [Browsable(false)]
-        public bool EnablePower { get; set; }
-        [Browsable(false)]
-        public bool EnablePoints { get; set; }
-        [Browsable(false)]
-        public bool EnableIFBandwidth { get; set; }
-        [Browsable(false)]
-        public bool EnableStartStopPower { get; set; }
-        [Browsable(false)]
-        public bool EnableCWFreq { get; set; }
-        [Browsable(false)]
-        public bool EnableSegmentTable { get; set; }
-        [Browsable(false)]
-        public bool EnablePhaseSweep { get; set; }
-
-
-        private StandardSweepTypeEnum _StandardSweepType;
         [Display("Data Acquisition Mode", Order: 10)]
-        public StandardSweepTypeEnum StandardSweepType
-        {
-            get
-            {
-                return _StandardSweepType;
-            }
-            set
-            {
-                _StandardSweepType = value;
-
-                EnableStartStop = false;
-                EnablePower = false;
-                EnablePoints = false;
-                EnableIFBandwidth = false;
-                EnableStartStopPower = false;
-                EnableCWFreq = false;
-                EnableSegmentTable = false;
-                EnablePhaseSweep = false;
-                switch (_StandardSweepType)
-                {
-                    case StandardSweepTypeEnum.LinearFrequency:
-                        EnableStartStop = true;
-                        EnablePower = true;
-                        EnablePoints = true;
-                        EnableIFBandwidth = true;
-                        break;
-                    case StandardSweepTypeEnum.LogFrequency:
-                        EnableStartStop = true;
-                        EnablePower = true;
-                        EnablePoints = true;
-                        EnableIFBandwidth = true;
-                        break;
-                    case StandardSweepTypeEnum.PowerSweep:
-                        EnableStartStopPower = true;
-                        EnableCWFreq = true;
-                        EnablePoints = true;
-                        EnableIFBandwidth = true;
-                        break;
-                    case StandardSweepTypeEnum.CWTime:
-                        EnableCWFreq = true;
-                        EnablePower = true;
-                        EnablePoints = true;
-                        EnableIFBandwidth = true;
-                        break;
-                    case StandardSweepTypeEnum.SegmentSweep:
-                        EnableSegmentTable = true;
-                        break;
-                    case StandardSweepTypeEnum.PhaseSweep:
-                        EnablePhaseSweep = true;
-                        EnableCWFreq = true;
-                        EnablePoints = true;
-                        EnableIFBandwidth = true;
-                        break;
-                }
-            }
-        }
+        public StandardSweepTypeEnum StandardSweepType { get; set; }
 
 
-
-
-
-
-
-
-        [EnabledIf("EnableStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
         [Display("Start", Group: "Sweep Properties", Order: 20)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SweepPropertiesStart { get; set; }
 
-        [EnabledIf("EnableStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
         [Display("Stop", Group: "Sweep Properties", Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesStop { get; set; }
 
-        [EnabledIf("EnableStartStopPower", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
         [Display("Start Power", Group: "Sweep Properties", Order: 20)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double SweepPropertiesStartPower { get; set; }
 
-        [EnabledIf("EnableStartStopPower", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
         [Display("Stop Power", Group: "Sweep Properties", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double SweepPropertiesStopPower { get; set; }
 
-        [EnabledIf("EnablePhaseSweep", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PhaseSweep, HideIfDisabled = true)]
         [Display("Start Phase", Group: "Sweep Properties", Order: 20)]
         [Unit("°", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesStartPhase { get; set; }
 
-        [EnabledIf("EnablePhaseSweep", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PhaseSweep, HideIfDisabled = true)]
         [Display("Stop Phase", Group: "Sweep Properties", Order: 21)]
         [Unit("°", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesStopPhase { get; set; }
 
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
         [EnabledIf("EnableCWFreq", true, HideIfDisabled = true)]
         [Display("CW Freq", Group: "Sweep Properties", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesCWFreq { get; set; }
 
-        [EnabledIf("EnablePower", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, StandardSweepTypeEnum.CWTime, HideIfDisabled = true)]
         [Display("Power", Group: "Sweep Properties", Order: 22)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double SweepPropertiesPower { get; set; }
 
-        [EnabledIf("EnablePoints", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
         [Display("Points", Group: "Sweep Properties", Order: 23)]
         public int SweepPropertiesPoints { get; set; }
 
-        [EnabledIf("EnableIFBandwidth", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
         [Display("IF Bandwidth", Group: "Sweep Properties", Order: 24)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesIFBandwidth { get; set; }
 
 
-        [EnabledIf("EnableSegmentTable", true, HideIfDisabled = true)]
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
         [Display("Segment Table", Group: "Sweep Properties", Order: 25)]
-        public String SegmentTable { get; set; }
-
-
-
-
-
+        public string SegmentTable { get; set; }
 
         #endregion
 

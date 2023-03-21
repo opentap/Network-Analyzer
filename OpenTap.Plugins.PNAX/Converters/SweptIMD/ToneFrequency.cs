@@ -29,131 +29,74 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
 
         [Browsable(false)]
-        public bool IsToneFrequencySweepFc { get; set; }
-        [Browsable(false)]
-        public bool IsToneFrequencySweepDeltaF { get; set; }
-        [Browsable(false)]
-        public bool IsToneFrequencyPowerSweep { get; set; }
-        [Browsable(false)]
-        public bool IsToneFrequencyCW { get; set; }
-        [Browsable(false)]
-        public bool IsToneFrequencyLOPowerSweep { get; set; }
-
-        [Browsable(false)]
         public bool IsControlledByParent { get; set; } = false;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        private ToneFrequencySweepTypeEnum _ToneFrequencySweepType;
         [Display("Sweep Type", Groups: new[] { "Tone Frequency", "Sweep Type" }, Order: 1)]
-        public ToneFrequencySweepTypeEnum ToneFrequencySweepType
-        {
-            get
-            {
-                return _ToneFrequencySweepType;
-            }
-            set
-            {
-                _ToneFrequencySweepType = value;
+        public ToneFrequencySweepTypeEnum ToneFrequencySweepType { get; set; }
 
-                IsToneFrequencySweepFc = false;
-                IsToneFrequencySweepDeltaF = false;
-                IsToneFrequencyPowerSweep = false;
-                IsToneFrequencyCW = false;
-                IsToneFrequencyLOPowerSweep = false;
-                switch (_ToneFrequencySweepType)
-                {
-                    case ToneFrequencySweepTypeEnum.SweepFc:
-                        IsToneFrequencySweepFc = true;
-                        break;
-                    case ToneFrequencySweepTypeEnum.SweepDeltaF:
-                        IsToneFrequencySweepDeltaF = true;
-                        break;
-                    case ToneFrequencySweepTypeEnum.PowerSweep:
-                        IsToneFrequencyPowerSweep = true;
-                        break;
-                    case ToneFrequencySweepTypeEnum.CW:
-                        IsToneFrequencyCW = true;
-                        break;
-                    case ToneFrequencySweepTypeEnum.LOPowerSweep:
-                        IsToneFrequencyLOPowerSweep = true;
-                        break;
-                }
-            }
-        }
-
-
-        [EnabledIf("IsToneFrequencySweepFc", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
         [Display("Start fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 10)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcStartFc { get; set; }
 
-        [EnabledIf("IsToneFrequencySweepFc", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
         [Display("Stop fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 11)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcStopFc { get; set; }
 
-        [EnabledIf("IsToneFrequencySweepFc", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
         [Display("Center fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 12)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcCenterFc { get; set; }
 
-        [EnabledIf("IsToneFrequencySweepFc", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
         [Display("Span fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 13)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcSpanFc { get; set; }
 
-        [EnabledIf("IsToneFrequencySweepFc", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
         [Display("Fixed DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 14)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcFixedDeltaF { get; set; }
 
 
 
-
-        [EnabledIf("IsToneFrequencySweepDeltaF", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
         [Display("Start DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 20)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepDeltaFStartDeltaF { get; set; }
 
-        [EnabledIf("IsToneFrequencySweepDeltaF", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
         [Display("Stop DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepDeltaFStopDeltaF { get; set; }
 
-        [EnabledIf("IsToneFrequencySweepDeltaF", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
         [Display("Fixed fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepDeltaFFixedFc { get; set; }
 
 
 
-
-        [EnabledIf("IsToneFrequencyPowerSweep", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyCW", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyLOPowerSweep", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.PowerSweep, ToneFrequencySweepTypeEnum.CW, ToneFrequencySweepTypeEnum.LOPowerSweep, HideIfDisabled = true)]
         [Display("CW f1", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 30)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double PowerSweepCWF1 { get; set; }
 
-        [EnabledIf("IsToneFrequencyPowerSweep", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyCW", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyLOPowerSweep", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.PowerSweep, ToneFrequencySweepTypeEnum.CW, ToneFrequencySweepTypeEnum.LOPowerSweep, HideIfDisabled = true)]
         [Display("CW f2", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 31)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double PowerSweepCWF2 { get; set; }
 
-        [EnabledIf("IsToneFrequencyPowerSweep", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyCW", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyLOPowerSweep", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.PowerSweep, ToneFrequencySweepTypeEnum.CW, ToneFrequencySweepTypeEnum.LOPowerSweep, HideIfDisabled = true)]
         [Display("CW fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double PowerSweepCWFc { get; set; }
 
-        [EnabledIf("IsToneFrequencyPowerSweep", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyCW", true, HideIfDisabled = true)]
-        [EnabledIf("IsToneFrequencyLOPowerSweep", true, HideIfDisabled = true)]
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.PowerSweep, ToneFrequencySweepTypeEnum.CW, ToneFrequencySweepTypeEnum.LOPowerSweep, HideIfDisabled = true)]
         [Display("CW DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 33)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double PowerSweepCWDeltaF { get; set; }

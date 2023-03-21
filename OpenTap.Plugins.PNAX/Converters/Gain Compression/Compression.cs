@@ -48,73 +48,32 @@ namespace OpenTap.Plugins.PNAX
     [Display("Compression", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
     public class Compression : ConverterBaseStep
     {
-        [Browsable(false)]
-        public bool IsCompressionFromGain { get; set; } = false;
-        [Browsable(false)]
-        public bool IsCompressionFromBackOff { get; set; } = false;
-        [Browsable(false)]
-        public bool IsCompressionXY { get; set; } = false;
-        [Browsable(false)]
-        public bool IsCompressionFromSaturation { get; set; } = false;
 
         #region Settings
-        private CompressionMethodEnum _CompressionMethodEnum;
         [Display("Compression Method", Group: "Compression Method", Order: 10)]
-        public CompressionMethodEnum CompressionMethod 
-        {
-            get
-            {
-                return _CompressionMethodEnum;
-            }
-            set 
-            {
-                _CompressionMethodEnum = value;
-                IsCompressionFromBackOff = false;
-                IsCompressionFromGain = false;
-                IsCompressionXY = false;
-                IsCompressionFromSaturation = false;
-                if ((_CompressionMethodEnum == CompressionMethodEnum.CompressionFromMaxGain) || 
-                    (_CompressionMethodEnum == CompressionMethodEnum.CompressionFromLinearGain))
-                {
-                    IsCompressionFromGain = true;
-                }
-                else if (_CompressionMethodEnum == CompressionMethodEnum.CompressionFromBackOff)
-                {
-                    IsCompressionFromGain = true;
-                    IsCompressionFromBackOff = true;
-                }
-                else if (_CompressionMethodEnum == CompressionMethodEnum.XYCompression)
-                {
-                    IsCompressionXY = true;
-                }
-                else if (_CompressionMethodEnum == CompressionMethodEnum.CompressionFromSaturation)
-                {
-                    IsCompressionFromSaturation = true;
-                }
-            }
-        }
+        public CompressionMethodEnum CompressionMethod { get; set; }
 
-        [EnabledIf("IsCompressionFromGain", true, HideIfDisabled = true)]
+        [EnabledIf("CompressionMethod", CompressionMethodEnum.CompressionFromMaxGain, CompressionMethodEnum.CompressionFromLinearGain, CompressionMethodEnum.CompressionFromBackOff, HideIfDisabled = true)]
         [Display("Level", Group: "Compression Method", Order: 11)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionLevel { get; set; }
 
-        [EnabledIf("IsCompressionFromBackOff", true, HideIfDisabled =true)]
+        [EnabledIf("CompressionMethod", CompressionMethodEnum.CompressionFromBackOff, HideIfDisabled = true)]
         [Display("Back Off", Group: "Compression Method", Order: 12)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionBackOff { get; set; }
 
-        [EnabledIf("IsCompressionXY", true, HideIfDisabled = true)]
+        [EnabledIf("CompressionMethod", CompressionMethodEnum.XYCompression, HideIfDisabled = true)]
         [Display("Delta X", Group: "Compression Method", Order: 13)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionDeltaX { get; set; }
 
-        [EnabledIf("IsCompressionXY", true, HideIfDisabled = true)]
+        [EnabledIf("CompressionMethod", CompressionMethodEnum.XYCompression, HideIfDisabled = true)]
         [Display("Delta Y", Group: "Compression Method", Order: 14)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionDeltaY { get; set; }
 
-        [EnabledIf("IsCompressionFromSaturation", true, HideIfDisabled = true)]
+        [EnabledIf("CompressionMethod", CompressionMethodEnum.CompressionFromSaturation, HideIfDisabled = true)]
         [Display("From Max Pout", Group: "Compression Method", Order: 15)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double CompressionFromMaxPout { get; set; }
