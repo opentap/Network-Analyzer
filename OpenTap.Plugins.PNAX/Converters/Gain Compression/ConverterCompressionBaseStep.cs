@@ -17,68 +17,32 @@ namespace OpenTap.Plugins.PNAX
     public class ConverterCompressionBaseStep : TestStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        private int _Channel;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Order: 1)]
-        public int Channel
-        {
-            //set
-            //{
-            //    _Channel = value;
-            //}
-            get
-            {
-                try
-                {
-                    _Channel = GetParent<ConverterChannelBase>().Channel;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-
-                return _Channel;
-            }
-        }
+        public virtual int Channel { get; set; }
 
         [Browsable(false)]
         public bool DoubleStage { get; set; }
 
-
-        private void UpdateConverterStages()
-        {
-            if (_ConverterStagesEnum == ConverterStagesEnum._2)
-            {
-                DoubleStage = true;
-            }
-            else
-            {
-                DoubleStage = false;
-            }
-        }
-
         protected ConverterStagesEnum _ConverterStagesEnum;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 10)]
         public ConverterStagesEnum ConverterStages
         {
             get
             {
-                try
-                {
-                    _ConverterStagesEnum = GetParent<ConverterChannelBase>().ConverterStages;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-                UpdateConverterStages();
                 return _ConverterStagesEnum;
             }
             set
             {
                 _ConverterStagesEnum = value;
+                DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
             }
         }
 

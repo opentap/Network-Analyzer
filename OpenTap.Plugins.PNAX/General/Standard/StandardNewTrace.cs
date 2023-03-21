@@ -19,7 +19,6 @@ namespace OpenTap.Plugins.PNAX
     public class StandardNewTrace : GeneralChannelBaseStep
     {
         #region Settings
-
         private StandardTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public StandardTraceEnum Meas
@@ -65,8 +64,6 @@ namespace OpenTap.Plugins.PNAX
             {
                 this.ChildTestSteps.Add(new StandardSingleTrace() { Meas = standardTrace, Channel = this.Channel });
             }
-
-
         }
 
     }

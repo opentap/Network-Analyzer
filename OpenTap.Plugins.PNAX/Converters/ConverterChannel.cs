@@ -22,20 +22,23 @@ namespace OpenTap.Plugins.PNAX
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        private int _Channel;
+        private int _channel;
         [Display("Channel", Order: 1)]
         public int Channel
         {
+            get { return _channel; }
             set
             {
-                _Channel = value;
-            }
-            get
-            {
-                return _Channel;
+                _channel = value;
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is ConverterCompressionBaseStep)
+                    {
+                        (a as ConverterCompressionBaseStep).Channel = value;
+                    }
+                }
             }
         }
-
         private ConverterStagesEnum _ConverterStagesEnum;
         [Display("Converter Stages", Order: 10)]
         public ConverterStagesEnum ConverterStages

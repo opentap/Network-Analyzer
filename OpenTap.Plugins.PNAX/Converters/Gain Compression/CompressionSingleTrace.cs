@@ -131,8 +131,8 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateTestName()
         {
-            this.Trace = $"CH{Channel.ToString()}_{Meas}";
-            this.Name = $"CH{Channel.ToString()}_{Meas}";
+            this.Trace = $"CH{Channel}_{Meas}";
+            this.Name = $"CH{Channel}_{Meas}";
         }
 
 

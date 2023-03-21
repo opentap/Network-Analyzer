@@ -96,24 +96,34 @@ namespace OpenTap.Plugins.PNAX
 
         public Power()
         {
-            PowerOnAllChannels = GeneralStandardSettings.Current.PowerOnAllChannels;
-            PortInput = GeneralStandardSettings.Current.PortInput;
-            InputPortLinearInputPower = -GeneralStandardSettings.Current.InputPortLinearInputPower;
-            InputPortSourceAttenuator = GeneralStandardSettings.Current.InputPortSourceAttenuator;
-            InputPortReceiverAttenuator = GeneralStandardSettings.Current.InputPortReceiverAttenuator;
-            InputSourceLevelingMode = GeneralStandardSettings.Current.InputSourceLevelingMode;
+            UpdateDefaultValues();
+        }
 
-            PortOutput = GeneralStandardSettings.Current.PortOutput;
-            OutputPortReversePower = GeneralStandardSettings.Current.OutputPortReversePower;
-            AutoOutputPortSourceAttenuator = GeneralStandardSettings.Current.AutoOutputPortSourceAttenuator;
-            OutputPortSourceAttenuator = GeneralStandardSettings.Current.OutputPortSourceAttenuator;
-            OutputPortReceiverAttenuator = GeneralStandardSettings.Current.OutputPortReceiverAttenuator;
-            OutputSourceLevelingMode = GeneralStandardSettings.Current.OutputSourceLevelingMode;
+        public void UpdateDefaultValues()
+        {
+            var defaultValuesSetup = PNAX.GetMixerSetupDefaultValues();
+            PortInput = defaultValuesSetup.PortInput;
+            PortOutput = defaultValuesSetup.PortOutput;
 
-            PowerSweepStartPower = GeneralStandardSettings.Current.PowerSweepStartPower;
-            PowerSweepStopPower = GeneralStandardSettings.Current.PowerSweepStopPower;
-            PowerSweepPowerPoints = GeneralStandardSettings.Current.PowerSweepPowerPoints;
-            PowerSweepPowerStep = GeneralStandardSettings.Current.PowerSweepPowerStep;
+            var DefaultValues = PNAX.GetConverterPowerDefaultValues();
+
+            PowerOnAllChannels             = DefaultValues.PowerOnAllChannels;
+            //PortInput                      = DefaultValues.PortInput;
+            // TODO Double check of this - sign
+            InputPortLinearInputPower      = -DefaultValues.InputPortLinearInputPower;
+            InputPortSourceAttenuator      = DefaultValues.InputPortSourceAttenuator;
+            InputPortReceiverAttenuator    = DefaultValues.InputPortReceiverAttenuator;
+            InputSourceLevelingMode        = DefaultValues.InputSourceLevelingMode;
+            //PortOutput                     = DefaultValues.PortOutput;
+            OutputPortReversePower         = DefaultValues.OutputPortReversePower;
+            AutoOutputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
+            OutputPortSourceAttenuator     = DefaultValues.OutputPortSourceAttenuator;
+            OutputPortReceiverAttenuator   = DefaultValues.OutputPortReceiverAttenuator;
+            OutputSourceLevelingMode       = DefaultValues.OutputSourceLevelingMode;
+            PowerSweepStartPower           = DefaultValues.PowerSweepStartPower;
+            PowerSweepStopPower            = DefaultValues.PowerSweepStopPower;
+            PowerSweepPowerPoints          = DefaultValues.PowerSweepPowerPoints;
+            PowerSweepPowerStep            = DefaultValues.PowerSweepPowerStep;
         }
 
         public override void Run()

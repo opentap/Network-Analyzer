@@ -42,10 +42,15 @@ namespace OpenTap.Plugins.PNAX
     public class TonePower : TestStep
     {
         #region Settings
+
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("PNA", Order: 0.1)]
+        public PNAX PNAX { get; set; }
+
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
-
-
 
         [Display("Input Port", Group: "DUT Input", Order: 30)]
         public DutInputPortsEnum PortInput { get; set; }
@@ -122,14 +127,20 @@ namespace OpenTap.Plugins.PNAX
             PowerOnAllChannels = true;
             CoupleTonePowers = true;
             ALCOn = true;
-            FixedF1Power = -24;
-            FixedF2Power = -24;
-            StartF1Power = -24;
-            StartF2Power = -24;
-            StopF1Power = -10;
-            StopF2Power = -10;
-            StepF1Power = 0.070;
-            StepF2Power = 0.070;
+            UpdateDefaultValues();
+        }
+
+        private void UpdateDefaultValues()
+        {
+            var DefaultValues = PNAX.GetTonePowerDefaultValues();
+            FixedF1Power = DefaultValues.FixedF1Power;
+            FixedF2Power = DefaultValues.FixedF2Power;
+            StartF1Power = DefaultValues.StartF1Power;
+            StartF2Power = DefaultValues.StartF2Power;
+            StopF1Power  = DefaultValues.StopF1Power;
+            StopF2Power  = DefaultValues.StopF2Power;
+            StepF1Power  = DefaultValues.StepF1Power;
+            StepF2Power  = DefaultValues.StepF2Power;
         }
 
         public override void Run()

@@ -7,37 +7,6 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    public enum ConverterStagesEnum
-    {
-        [Display("1")]
-        _1,
-        [Display("2")]
-        _2
-    }
-
-    public enum PortsEnum
-    {
-        [Scpi("1")]
-        Port1,
-        [Scpi("2")]
-        Port2,
-        [Scpi("3")]
-        Port3,
-        [Scpi("4")]
-        Port4
-    }
-
-    public enum LOEnum
-    {
-        [Scpi("Not controlled")]
-        NotControlled,
-        [Scpi("Port 3")]
-        Port3,
-        [Scpi("Port 4")]
-        Port4,
-        [Scpi("Source 3")]
-        Source3
-    }
 
     public enum TuningMethodEnum
     {
@@ -171,31 +140,37 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerSetupTestStep()
         {
-            //ConverterStages = GeneralStandardSettings.Current.ConverterStages;
-            PortInput = GeneralStandardSettings.Current.PortInput;
-            PortOutput = GeneralStandardSettings.Current.PortOutput;
-            PortLO1 = GeneralStandardSettings.Current.PortLO1;
-            PortLO2 = GeneralStandardSettings.Current.PortLO2;
-            InputFractionalMultiplierNumerator = GeneralStandardSettings.Current.InputFractionalMultiplierNumerator;
-            InputFractionalMultiplierDenominator = GeneralStandardSettings.Current.InputFractionalMultiplierDenominator;
-            LO1FractionalMultiplierNumerator = GeneralStandardSettings.Current.LO1FractionalMultiplierNumerator;
-            LO1FractionalMultiplierDenominator = GeneralStandardSettings.Current.LO1FractionalMultiplierDenominator;
-            LO2FractionalMultiplierNumerator = GeneralStandardSettings.Current.LO2FractionalMultiplierNumerator;
-            LO2FractionalMultiplierDenominator = GeneralStandardSettings.Current.LO2FractionalMultiplierDenominator;
 
-            EnableEmbeddedLO = GeneralStandardSettings.Current.EnableEmbeddedLO;
-            TuningMethod = GeneralStandardSettings.Current.TuningMethod;
-            TuningPointType = GeneralStandardSettings.Current.TuningPointType;
-            TuningPoint = GeneralStandardSettings.Current.TuningPoint;
-            TuneEvery = GeneralStandardSettings.Current.TuneEvery;
-            BroadBandSearch = GeneralStandardSettings.Current.BroadBandSearch;
-            IFBW = GeneralStandardSettings.Current.IFBW;
-            MaxIterations = GeneralStandardSettings.Current.MaxIterations;
-            Tolerance = GeneralStandardSettings.Current.Tolerance;
-            LOFrequencyDelta = GeneralStandardSettings.Current.LOFrequencyDelta;
-
+            UpdateDefaultValues();
             // TODO
             // Add rule to indicate PortInput has to be different than PortOutput
+        }
+
+        private void UpdateDefaultValues()
+        {
+            var defaultValues = PNAX.GetMixerSetupDefaultValues();
+            ConverterStages = defaultValues.ConverterStages;
+            PortInput = defaultValues.PortInput;
+            PortOutput = defaultValues.PortOutput;
+            PortLO1 = defaultValues.PortLO1;
+            PortLO2 = defaultValues.PortLO2;
+            InputFractionalMultiplierNumerator = defaultValues.InputFractionalMultiplierNumerator;
+            InputFractionalMultiplierDenominator = defaultValues.InputFractionalMultiplierDenominator;
+            LO1FractionalMultiplierNumerator = defaultValues.LO1FractionalMultiplierNumerator;
+            LO1FractionalMultiplierDenominator = defaultValues.LO1FractionalMultiplierDenominator;
+            LO2FractionalMultiplierNumerator = defaultValues.LO2FractionalMultiplierNumerator;
+            LO2FractionalMultiplierDenominator = defaultValues.LO2FractionalMultiplierDenominator;
+
+            EnableEmbeddedLO = defaultValues.EnableEmbeddedLO;
+            TuningMethod = defaultValues.TuningMethod;
+            TuningPointType = defaultValues.TuningPointType;
+            TuningPoint = defaultValues.TuningPoint;
+            TuneEvery = defaultValues.TuneEvery;
+            BroadBandSearch = defaultValues.BroadBandSearch;
+            IFBW = defaultValues.IFBW;
+            MaxIterations = defaultValues.MaxIterations;
+            Tolerance = defaultValues.Tolerance;
+            LOFrequencyDelta = defaultValues.LOFrequencyDelta;
         }
 
         public override void Run()

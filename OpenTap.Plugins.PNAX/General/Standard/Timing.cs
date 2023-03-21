@@ -50,6 +50,8 @@ namespace OpenTap.Plugins.PNAX
         [Display("Fast Sweep - Reduce settling time", Group: "Time", Order: 14)]
         public bool FastSweep { get; set; }
 
+        private double _SweepTimeAuto;
+        private double _SweepTimeStepped;
         private StandardChannelSweepModeEnum _StandardChannelSweepMode;
         [Display("Sweep Mode", Group: "Sweep Mode", Order: 20)]
         public StandardChannelSweepModeEnum StandardChannelSweepMode {
@@ -62,11 +64,11 @@ namespace OpenTap.Plugins.PNAX
                 _StandardChannelSweepMode = value;
                 if (_StandardChannelSweepMode == StandardChannelSweepModeEnum.Auto)
                 {
-                    SweepTime = GeneralStandardSettings.Current.SweepTimeAuto;
+                    SweepTime = _SweepTimeAuto;
                 }
                 else if (_StandardChannelSweepMode == StandardChannelSweepModeEnum.Stepped)
                 {
-                    SweepTime = GeneralStandardSettings.Current.SweepTimeStepped;
+                    SweepTime = _SweepTimeStepped;
                 }
             }
         }
@@ -78,12 +80,20 @@ namespace OpenTap.Plugins.PNAX
 
         public Timing()
         {
-            DwellTime = GeneralStandardSettings.Current.DwellTime;
-            SweepDelay = GeneralStandardSettings.Current.SweepDelay;
-            AutoSweepTime = GeneralStandardSettings.Current.AutoSweepTime;
-            FastSweep = GeneralStandardSettings.Current.FastSweep;
-            StandardChannelSweepMode = GeneralStandardSettings.Current.StandardChannelSweepMode;
-            StandardChannelSweepSequence = GeneralStandardSettings.Current.StandardChannelSweepSequence;
+            UpdateDefaultValues();
+        }
+
+        private void UpdateDefaultValues()
+        {
+            var defaultValues = PNAX.GetStandardChannelDefaultValues();
+            _SweepTimeAuto = defaultValues.SweepTimeAuto;
+            _SweepTimeStepped = defaultValues.SweepTimeStepped;
+            DwellTime = defaultValues.DwellTime;
+            SweepDelay = defaultValues.SweepDelay;
+            AutoSweepTime = defaultValues.AutoSweepTime;
+            FastSweep = defaultValues.FastSweep;
+            StandardChannelSweepMode = defaultValues.StandardChannelSweepMode;
+            StandardChannelSweepSequence = defaultValues.StandardChannelSweepSequence;
         }
 
         public override void Run()

@@ -21,6 +21,15 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         private int TraceCount = 0;
+        public StandardChannelValues DefaultStandardChannelValues;
+        public MixerPowerValues DefaultMixerPowerValues;
+        public MixerFrequencyValues DefaultMixerFrequencyValues;
+        public MixerSetupValues DefaultMixerSetupValues;
+        public ToneFrequencyValues DefaultToneFrequencyValues;
+        public TonePowerValues DefaultTonePowerValues;
+        public ConverterCompressionValues DefaultConverterCompressionValues;
+        public ConverterFrequencyValues DefaultConverterFrequencyValues;
+        public ConverterPowerValues DefaultConverterPowerValues;
 
         public PNAX()
         {
@@ -67,72 +76,17 @@ namespace OpenTap.Plugins.PNAX
             if (IsConnected)
             {
                 Log.Info("Disconnect before Updating ports!");
+                return;
             }
-            else
-            {
-                Open();
-                Log.Info("Getting default values for Standard Channel");
-
-                this.ScpiCommand("SYSTem:PRESet");
-                this.WaitForOperationComplete();
-
-                // Channel 1 is Standard
-                String sweepType = GetStandardSweepType(1);
-                double start = GetStart(1);
-                double stop = GetStop(1);
-                double power = GetPower(1);
-                int points = GetPoints(1);
-                double ifbw = GetIFBandwidth(1);
-                double startpower = GetStartPower(1);
-                double stoppower = GetStopPower(1);
-                double cwfreq = GetCWFreq(1);
-                double startphase = GetPhaseStart(1);
-                double stopphase = GetPhaseStop(1);
-
-                Log.Info($"Sweep Type: {sweepType}");
-                Log.Info($"Start: {start.ToString()}");
-                Log.Info($"Stop: {stop.ToString()}");
-                Log.Info($"Power: {power.ToString()}");
-                Log.Info($"Number of Points: {points.ToString()}");
-                Log.Info($"IF Bandwidth: {ifbw.ToString()}");
-                Log.Info($"Start Power: {startpower.ToString()}");
-                Log.Info($"Stop Power: {stoppower.ToString()}");
-                Log.Info($"CW Freq: {cwfreq.ToString()}");
-                Log.Info($"Start Phase: {startphase.ToString()}");
-                Log.Info($"Stop Phase: {stopphase.ToString()}");
-
-
-
-
-                Log.Info("Getting default values for Gain Compression Converters Channel");
-                // Lets create Channel 2 - Gain Compression Converters
-                ScpiCommand("CALC2:MEAS2:DEF \"SC21:Gain Compression Converters\"");
-                WaitForOperationComplete();
-
-                ConverterStagesEnum converterstages = GetConverterStages(2);
-                int portinput = GetPortInput(2);
-                int portoutput = GetPortOutput(2);
-                int inputfractionalmultipliernumerator = GetInputFractionalMultiplierNumerator(2);
-                int inputfractionalmultiplierdenominator = GetInputFractionalMultiplierDenominator(2);
-                int lo1fractionalmultipliernumerator = GetLOFractionalMultiplierNumerator(2, 1);
-                int lo1fractionalmultiplierdenominator = GetLOFractionalMultiplierDenominator(2, 1);
-                //int lo2fractionalmultipliernumerator = GetLOFractionalMultiplierNumerator(2, 2);
-                //int lo2fractionalmultiplierdenominator = GetLOFractionalMultiplierDenominator(2, 2);
-                String portlo1 = GetPortLO(2, 1);
-                //String portlo2 = GetPortLO(2, 2);
-                Log.Info($"Converter Stages: {converterstages}");
-                Log.Info($"Port Input: {portinput}");
-                Log.Info($"Port Output: {portoutput}");
-                Log.Info($"Input Fractional Multiplier Numerator: {inputfractionalmultipliernumerator}");
-                Log.Info($"Input Fractional Multiplier Denominator: {inputfractionalmultiplierdenominator}");
-                Log.Info($"LO1 Fractional Multiplier Numerator: {lo1fractionalmultipliernumerator}");
-                Log.Info($"LO1 Fractional Multiplier Denominator: {lo1fractionalmultiplierdenominator}");
-                //Log.Info($"LO2 Fractional Multiplier Numerator: {lo2fractionalmultipliernumerator}");
-                //Log.Info($"LO2 Fractional Multiplier Denominator: {lo2fractionalmultiplierdenominator}");
-                Log.Info($"Port LO1: {portlo1}");
-
-                Close();
-            }
+            UpdateStandardValues();
+            UpdateMixerSetupValues();
+            UpdateMixerPowerValues();
+            UpdateMixerFrequencyValues();
+            UpdateToneFrequencyValues();
+            UpdateTonePowerValues();
+            UpdateCompressionValues();
+            UpdateConverterFrequencyValues();
+            UpdateConverterPowerValues();
         }
 
         public int GetNewTraceID()

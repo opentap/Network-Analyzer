@@ -147,27 +147,30 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerPowerTestStep()
         {
-            PowerOnAllChannels = GeneralStandardSettings.Current.PowerOnAllChannels;
-            PortLO1 = GeneralStandardSettings.Current.PortLO1; // new Input<LOEnum>();
-            LO1Power = GeneralStandardSettings.Current.LO1Power;
-            SourceLevelingModeLO1 = SourceLevelingModeType.INTernal;
+            UpdateDefaultValues();
+        }
 
-            PortLO2 = GeneralStandardSettings.Current.PortLO2; // new Input<LOEnum>();
-            LO2Power = GeneralStandardSettings.Current.LO2Power;
-            SourceLevelingModeLO2 = SourceLevelingModeType.INTernal;
-
-            SourceAttenuatorPowerPort3 = GeneralStandardSettings.Current.SourceAttenuatorPowerPort3;
-            ReceiverAttenuatorPowerPort3 = GeneralStandardSettings.Current.ReceiverAttenuatorPowerPort3;
-            SourceAttenuatorPowerPort4 = GeneralStandardSettings.Current.SourceAttenuatorPowerPort4;
-            ReceiverAttenuatorPowerPort4 = GeneralStandardSettings.Current.ReceiverAttenuatorPowerPort4;
-
-            LO1SweptPowerStart = GeneralStandardSettings.Current.LO1SweptPowerStart;
-            LO1SweptPowerStop = GeneralStandardSettings.Current.LO1SweptPowerStop;
-            LO1SweptPowerStep = GeneralStandardSettings.Current.LO1SweptPowerStep;
-
-            LO2SweptPowerStart = GeneralStandardSettings.Current.LO2SweptPowerStart;
-            LO2SweptPowerStop = GeneralStandardSettings.Current.LO2SweptPowerStop;
-            LO2SweptPowerStep = GeneralStandardSettings.Current.LO2SweptPowerStep;
+        private void UpdateDefaultValues()
+        {
+            var defaultValues = PNAX.GetMixerPowerDefaultValues();
+            var defaultMixerSetupValues = PNAX.GetMixerSetupDefaultValues();
+            PowerOnAllChannels = defaultValues.PowerOnAllChannels;
+            PortLO1 = defaultMixerSetupValues.PortLO1;  // TODO get this value from TestStep MixerSetupTestStep.cs
+            SourceLevelingModeLO1 = defaultValues.SourceLevelingModeLO1;
+            PortLO2 = defaultMixerSetupValues.PortLO2;  // TODO get this value from TestStep MixerSetupTestStep.cs
+            SourceLevelingModeLO2 = defaultValues.SourceLevelingModeLO2;
+            LO1Power = defaultValues.Lo1Power;
+            LO2Power = defaultValues.Lo2Power;
+            SourceAttenuatorPowerPort3   = defaultValues.SourceAttenuatorPowerPort3;
+            ReceiverAttenuatorPowerPort3 = defaultValues.ReceiverAttenuatorPowerPort3;
+            SourceAttenuatorPowerPort4   = defaultValues.SourceAttenuatorPowerPort4;
+            ReceiverAttenuatorPowerPort4 = defaultValues.ReceiverAttenuatorPowerPort4;
+            LO1SweptPowerStart = defaultValues.LO1SweptPowerStart;
+            LO1SweptPowerStop  = defaultValues.LO1SweptPowerStop ;
+            LO1SweptPowerStep  = defaultValues.LO1SweptPowerStep ;
+            LO2SweptPowerStart = defaultValues.LO2SweptPowerStart;
+            LO2SweptPowerStop  = defaultValues.LO2SweptPowerStop ;
+            LO2SweptPowerStep  = defaultValues.LO2SweptPowerStep ;
         }
 
         public override void Run()
@@ -177,13 +180,13 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
             PNAX.SetLOPower(Channel, 1, LO1Power);
-            // We are assuming Port 3, but we need to get this value from MixerSetupTestStep:PortLO1
+            // We are assuming Port 3, but we need to get this value from MixerSetupTestStep:PortLO1 "PortLO1"
             PNAX.SetSourceLevelingMode(Channel, 3, SourceLevelingModeLO1.ToString());
 
             if(ConverterStages == ConverterStagesEnum._2)
             {
                 PNAX.SetLOPower(Channel, 2, LO2Power);
-                // We are assuming Port 4, but we need to get this value from MixerSetupTestStep:PortLO2
+                // We are assuming Port 4, but we need to get this value from MixerSetupTestStep:PortLO2 "PortLO2"
                 PNAX.SetSourceLevelingMode(Channel, 4, SourceLevelingModeLO2.ToString());
             }
 
