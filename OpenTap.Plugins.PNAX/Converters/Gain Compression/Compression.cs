@@ -46,7 +46,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [Display("Compression", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class Compression : ConverterCompressionBaseStep
+    public class Compression : ConverterBaseStep
     {
         [Browsable(false)]
         public bool IsCompressionFromGain { get; set; } = false;

@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class ConverterCompressionBaseStep : TestStep
+    public class ConverterBaseStep : TestStep
     {
         #region Settings
         [Browsable(false)]
@@ -50,7 +50,7 @@ namespace OpenTap.Plugins.PNAX
 
 
 
-        public ConverterCompressionBaseStep()
+        public ConverterBaseStep()
         {
         }
 

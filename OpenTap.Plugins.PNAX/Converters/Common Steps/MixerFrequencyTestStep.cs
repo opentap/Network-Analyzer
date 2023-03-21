@@ -28,8 +28,9 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(SweptIMDChannel))]
+    [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [Display("Mixer Frequency", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert a description here", Order: 3)]
-    public class MixerFrequencyTestStep : ConverterCompressionBaseStep
+    public class MixerFrequencyTestStep : ConverterBaseStep
     {
         #region Settings
 
