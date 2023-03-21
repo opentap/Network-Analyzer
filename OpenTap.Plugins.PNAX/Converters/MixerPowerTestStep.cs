@@ -154,9 +154,11 @@ namespace OpenTap.Plugins.PNAX
         {
             var defaultValues = PNAX.GetMixerPowerDefaultValues();
             var defaultMixerSetupValues = PNAX.GetMixerSetupDefaultValues();
-            PortLO1 = defaultMixerSetupValues.PortLO1;
-            PortLO2 = defaultMixerSetupValues.PortLO2;
-            SourceLevelingModeLO2 = SourceLevelingModeType.INTernal;
+            PowerOnAllChannels = defaultValues.PowerOnAllChannels;
+            PortLO1 = defaultMixerSetupValues.PortLO1;  // TODO get this value from TestStep MixerSetupTestStep.cs
+            SourceLevelingModeLO1 = defaultValues.SourceLevelingModeLO1;
+            PortLO2 = defaultMixerSetupValues.PortLO2;  // TODO get this value from TestStep MixerSetupTestStep.cs
+            SourceLevelingModeLO2 = defaultValues.SourceLevelingModeLO2;
             LO1Power = defaultValues.Lo1Power;
             LO2Power = defaultValues.Lo2Power;
             SourceAttenuatorPowerPort3   = defaultValues.SourceAttenuatorPowerPort3;
@@ -178,13 +180,13 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
             PNAX.SetLOPower(Channel, 1, LO1Power);
-            // We are assuming Port 3, but we need to get this value from MixerSetupTestStep:PortLO1
+            // We are assuming Port 3, but we need to get this value from MixerSetupTestStep:PortLO1 "PortLO1"
             PNAX.SetSourceLevelingMode(Channel, 3, SourceLevelingModeLO1.ToString());
 
             if(ConverterStages == ConverterStagesEnum._2)
             {
                 PNAX.SetLOPower(Channel, 2, LO2Power);
-                // We are assuming Port 4, but we need to get this value from MixerSetupTestStep:PortLO2
+                // We are assuming Port 4, but we need to get this value from MixerSetupTestStep:PortLO2 "PortLO2"
                 PNAX.SetSourceLevelingMode(Channel, 4, SourceLevelingModeLO2.ToString());
             }
 

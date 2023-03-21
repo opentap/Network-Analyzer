@@ -60,6 +60,15 @@ namespace OpenTap.Plugins.PNAX
         public double StartPhase;
         public double StopPhase;
 
+        public double SweepTimeAuto;
+        public double SweepTimeStepped;
+        public double DwellTime;
+        public double SweepDelay;
+        public bool AutoSweepTime;
+        public bool FastSweep;
+        public StandardChannelSweepModeEnum StandardChannelSweepMode;
+        public StandardChannelSweepSequenceEnum StandardChannelSweepSequence;
+
         public static StandardChannelValues GetPresetValues()
         {
             StandardChannelValues standardChannelValues = new StandardChannelValues();
@@ -67,13 +76,23 @@ namespace OpenTap.Plugins.PNAX
             standardChannelValues.Start = 10e6;
             standardChannelValues.Stop = 50e9;
             standardChannelValues.Power = -15;
-            standardChannelValues.Points = 0;
+            standardChannelValues.Points = 201;
             standardChannelValues.IFBandWidth = 100e3;
             standardChannelValues.StartPower = -10;
             standardChannelValues.StopPower = 0;
             standardChannelValues.CWFrequency = 1e9;
             standardChannelValues.StartPhase = 0;
             standardChannelValues.StopPhase = 0;
+
+            standardChannelValues.SweepTimeAuto = 0.016884;
+            standardChannelValues.SweepTimeStepped = 0.002010;        // for N5247B: 190.520e-3;
+            standardChannelValues.DwellTime = 0;
+            standardChannelValues.SweepDelay = 0;
+            standardChannelValues.AutoSweepTime = true;
+            standardChannelValues.FastSweep = false;
+            standardChannelValues.StandardChannelSweepMode = StandardChannelSweepModeEnum.Auto;
+            standardChannelValues.StandardChannelSweepSequence = StandardChannelSweepSequenceEnum.Standard;
+
             return standardChannelValues;
         }
     }
@@ -132,8 +151,11 @@ namespace OpenTap.Plugins.PNAX
 
     public class MixerPowerValues
     {
+        public bool PowerOnAllChannels;
         public double Lo1Power;
+        public SourceLevelingModeType SourceLevelingModeLO1;
         public double Lo2Power;
+        public SourceLevelingModeType SourceLevelingModeLO2;
         public double SourceAttenuatorPowerPort3;
         public double ReceiverAttenuatorPowerPort3;
         public double SourceAttenuatorPowerPort4;
@@ -148,8 +170,11 @@ namespace OpenTap.Plugins.PNAX
         public static MixerPowerValues GetPresetValues()
         {
             MixerPowerValues mixerPowerValues = new MixerPowerValues();
+            mixerPowerValues.PowerOnAllChannels = true;
             mixerPowerValues.Lo1Power = -15;
+            mixerPowerValues.SourceLevelingModeLO1 = SourceLevelingModeType.INTernal;
             mixerPowerValues.Lo2Power = -15;
+            mixerPowerValues.SourceLevelingModeLO2 = SourceLevelingModeType.INTernal;
             mixerPowerValues.SourceAttenuatorPowerPort3 = 0;
             mixerPowerValues.ReceiverAttenuatorPowerPort3 = 0;
             mixerPowerValues.SourceAttenuatorPowerPort4 = 0;
@@ -166,18 +191,13 @@ namespace OpenTap.Plugins.PNAX
 
     public class MixerFrequencyValues
     {
-        public bool IsInputMixerFrequencyTypeStartStop;
-        public bool IsInputMixerFrequencyTypeCenterSpan;
-        public bool IsInputMixerFrequencyTypeFixed;
         public MixerFrequencyTypeEnum InputMixerFrequencyType;
         public double InputMixerFrequencyStart;
         public double InputMixerFrequencyStop;
         public double InputMixerFrequencyCenter;
         public double InputMixerFrequencySpan;
         public double InputMixerFrequencyFixed;
-        public bool IsLO1MixerFrequencyTypeStartStop;
-        public bool IsLO1MixerFrequencyTypeCenterSpan;
-        public bool IsLO1MixerFrequencyTypeFixed;
+
         public MixerFrequencyTypeEnum LO1MixerFrequencyType;
         public double LO1MixerFrequencyStart;
         public double LO1MixerFrequencyStop;
@@ -185,9 +205,7 @@ namespace OpenTap.Plugins.PNAX
         public double LO1MixerFrequencySpan;
         public double LO1MixerFrequencyFixed;
         public bool InputGTLO1;
-        public bool IsIFMixerFrequencyTypeStartStop;
-        public bool IsIFMixerFrequencyTypeCenterSpan;
-        public bool IsIFMixerFrequencyTypeFixed;
+
         public SidebandTypeEnum IFSidebandType;
         public MixerFrequencyTypeEnum IFMixerFrequencyType;
         public double IFMixerFrequencyStart;
@@ -195,9 +213,7 @@ namespace OpenTap.Plugins.PNAX
         public double IFMixerFrequencyCenter;
         public double IFMixerFrequencySpan;
         public double IFMixerFrequencyFixed;
-        public bool IsLO2MixerFrequencyTypeStartStop;
-        public bool IsLO2MixerFrequencyTypeCenterSpan;
-        public bool IsLO2MixerFrequencyTypeFixed;
+
         public MixerFrequencyTypeEnum LO2MixerFrequencyType;
         public double LO2MixerFrequencyStart;
         public double LO2MixerFrequencyStop;
@@ -205,9 +221,7 @@ namespace OpenTap.Plugins.PNAX
         public double LO2MixerFrequencySpan;
         public double LO2MixerFrequencyFixed;
         public bool IF1GTLO2 = true;
-        public bool IsOutputMixerFrequencyTypeStartStop;
-        public bool IsOutputMixerFrequencyTypeCenterSpan;
-        public bool IsOutputMixerFrequencyTypeFixed;
+
         public SidebandTypeEnum OutputSidebandType;
         public MixerFrequencyTypeEnum OutputMixerFrequencyType;
         public double OutputMixerFrequencyStart;
@@ -220,20 +234,12 @@ namespace OpenTap.Plugins.PNAX
         {
             MixerFrequencyValues mixerFrequencyValues = new MixerFrequencyValues();
 
-            mixerFrequencyValues.IsInputMixerFrequencyTypeStartStop = true;
-            mixerFrequencyValues.IsInputMixerFrequencyTypeCenterSpan = false;
-            mixerFrequencyValues.IsInputMixerFrequencyTypeFixed = false;
-
             mixerFrequencyValues.InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
-            mixerFrequencyValues.InputMixerFrequencyStart = 10.5e6;
-            mixerFrequencyValues.InputMixerFrequencyStop = 66.9995e9;
-            mixerFrequencyValues.InputMixerFrequencyCenter = 33.505e9;
-            mixerFrequencyValues.InputMixerFrequencySpan = 66.989e9;
+            mixerFrequencyValues.InputMixerFrequencyStart = 10e6;
+            mixerFrequencyValues.InputMixerFrequencyStop = 50e9;
+            mixerFrequencyValues.InputMixerFrequencyCenter = 25.005e9;
+            mixerFrequencyValues.InputMixerFrequencySpan = 49.99e9;
             mixerFrequencyValues.InputMixerFrequencyFixed = 1e9;
-
-            mixerFrequencyValues.IsLO1MixerFrequencyTypeStartStop = false;
-            mixerFrequencyValues.IsLO1MixerFrequencyTypeCenterSpan = false;
-            mixerFrequencyValues.IsLO1MixerFrequencyTypeFixed = true;
 
             mixerFrequencyValues.LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
             mixerFrequencyValues.LO1MixerFrequencyStart = 0;
@@ -243,21 +249,13 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.LO1MixerFrequencyFixed = 0;
             mixerFrequencyValues.InputGTLO1 = true;
 
-            mixerFrequencyValues.IsIFMixerFrequencyTypeStartStop = false;
-            mixerFrequencyValues.IsIFMixerFrequencyTypeCenterSpan = true;
-            mixerFrequencyValues.IsIFMixerFrequencyTypeFixed = false;
-
             mixerFrequencyValues.IFSidebandType = SidebandTypeEnum.Low;
-            mixerFrequencyValues.IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
-            mixerFrequencyValues.IFMixerFrequencyStart = 10.5e6;
-            mixerFrequencyValues.IFMixerFrequencyStop = 66.9995e9;
-            mixerFrequencyValues.IFMixerFrequencyCenter = 33.505e9;
-            mixerFrequencyValues.IFMixerFrequencySpan = 66.989e9;
-            mixerFrequencyValues.IFMixerFrequencyFixed = 10e6;
-
-            mixerFrequencyValues.IsLO2MixerFrequencyTypeStartStop = false;
-            mixerFrequencyValues.IsLO2MixerFrequencyTypeCenterSpan = false;
-            mixerFrequencyValues.IsLO2MixerFrequencyTypeFixed = true;
+            mixerFrequencyValues.IFMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
+            mixerFrequencyValues.IFMixerFrequencyStart = 10e6;
+            mixerFrequencyValues.IFMixerFrequencyStop = 50e9;
+            mixerFrequencyValues.IFMixerFrequencyCenter = 25.005e9;
+            mixerFrequencyValues.IFMixerFrequencySpan = 49.99e9;
+            mixerFrequencyValues.IFMixerFrequencyFixed = 1e9;
 
             mixerFrequencyValues.LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
             mixerFrequencyValues.LO2MixerFrequencyStart = 0;
@@ -267,18 +265,13 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyValues.LO2MixerFrequencyFixed = 0;
             mixerFrequencyValues.IF1GTLO2 = true;
 
-
-            mixerFrequencyValues.IsOutputMixerFrequencyTypeStartStop = false;
-            mixerFrequencyValues.IsOutputMixerFrequencyTypeCenterSpan = true;
-            mixerFrequencyValues.IsOutputMixerFrequencyTypeFixed = false;
-
             mixerFrequencyValues.OutputSidebandType = SidebandTypeEnum.Low;
-            mixerFrequencyValues.OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
-            mixerFrequencyValues.OutputMixerFrequencyStart = 10.5e6;
-            mixerFrequencyValues.OutputMixerFrequencyStop = 66.9995e9;
-            mixerFrequencyValues.OutputMixerFrequencyCenter = 33.505e9;
-            mixerFrequencyValues.OutputMixerFrequencySpan = 66.989e9;
-            mixerFrequencyValues.OutputMixerFrequencyFixed = 10e6;
+            mixerFrequencyValues.OutputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
+            mixerFrequencyValues.OutputMixerFrequencyStart = 10e6;
+            mixerFrequencyValues.OutputMixerFrequencyStop = 50e9;
+            mixerFrequencyValues.OutputMixerFrequencyCenter = 25.005e9;
+            mixerFrequencyValues.OutputMixerFrequencySpan = 49.99e9;
+            mixerFrequencyValues.OutputMixerFrequencyFixed = 1e9;
 
             return mixerFrequencyValues;
         }
@@ -431,17 +424,19 @@ namespace OpenTap.Plugins.PNAX
     public class ConverterPowerValues
     {
         public bool PowerOnAllChannels;
-        public PortsEnum PortInput;
-        public PortsEnum PortOutput;
+        //public PortsEnum PortInput;
         public double InputPortLinearInputPower;
         public double InputPortSourceAttenuator;
         public double InputPortReceiverAttenuator;
         public InputSourceLevelingModeEnum InputSourceLevelingMode;
+
+        //public PortsEnum PortOutput;
         public double OutputPortReversePower;
         public bool AutoOutputPortSourceAttenuator;
         public double OutputPortSourceAttenuator;
         public double OutputPortReceiverAttenuator;
         public OutputSourceLevelingModeEnum OutputSourceLevelingMode;
+
         public double PowerSweepStartPower;
         public double PowerSweepStopPower;
         public int PowerSweepPowerPoints;
@@ -452,17 +447,19 @@ namespace OpenTap.Plugins.PNAX
             ConverterPowerValues converterPowerValues = new ConverterPowerValues();
 
             converterPowerValues.PowerOnAllChannels             = true;
-            converterPowerValues.PortInput                      = PortsEnum.Port1;
-            converterPowerValues.PortOutput                     = PortsEnum.Port2;
-            converterPowerValues.InputSourceLevelingMode        = InputSourceLevelingModeEnum.Internal;
-            converterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
-            converterPowerValues.InputPortLinearInputPower      = -25;
-            converterPowerValues.InputPortSourceAttenuator      = 0;
-            converterPowerValues.InputPortReceiverAttenuator    = 0;
+            //converterPowerValues.PortInput                      = PortsEnum.Port1;
+            converterPowerValues.InputPortLinearInputPower = -25;
+            converterPowerValues.InputPortSourceAttenuator = 0;
+            converterPowerValues.InputPortReceiverAttenuator = 0;
+            converterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+
+            //converterPowerValues.PortOutput                     = PortsEnum.Port2;
             converterPowerValues.OutputPortReversePower         = -5;
             converterPowerValues.AutoOutputPortSourceAttenuator = false;
             converterPowerValues.OutputPortSourceAttenuator     = 0;
             converterPowerValues.OutputPortReceiverAttenuator   = 0;
+            converterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+
             converterPowerValues.PowerSweepStartPower           = -25;
             converterPowerValues.PowerSweepStopPower            = -5;
             converterPowerValues.PowerSweepPowerPoints          = 21;
@@ -608,20 +605,12 @@ namespace OpenTap.Plugins.PNAX
             if (DefaultMixerFrequencyValues == null)
                 DefaultMixerFrequencyValues = new MixerFrequencyValues();
 
-            DefaultMixerFrequencyValues.IsInputMixerFrequencyTypeStartStop = true;
-            DefaultMixerFrequencyValues.IsInputMixerFrequencyTypeCenterSpan = false;
-            DefaultMixerFrequencyValues.IsInputMixerFrequencyTypeFixed = false;
-
             //InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
             DefaultMixerFrequencyValues.InputMixerFrequencyStart = 10.5e6;
             DefaultMixerFrequencyValues.InputMixerFrequencyStop = 66.9995e9;
             DefaultMixerFrequencyValues.InputMixerFrequencyCenter = 33.505e9;
             DefaultMixerFrequencyValues.InputMixerFrequencySpan = 66.989e9;
             DefaultMixerFrequencyValues.InputMixerFrequencyFixed = 1e9;
-
-            DefaultMixerFrequencyValues.IsLO1MixerFrequencyTypeStartStop = false;
-            DefaultMixerFrequencyValues.IsLO1MixerFrequencyTypeCenterSpan = false;
-            DefaultMixerFrequencyValues.IsLO1MixerFrequencyTypeFixed = true;
 
             //LO1MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
             DefaultMixerFrequencyValues.LO1MixerFrequencyStart = 0;
@@ -631,10 +620,6 @@ namespace OpenTap.Plugins.PNAX
             DefaultMixerFrequencyValues.LO1MixerFrequencyFixed = 0;
             DefaultMixerFrequencyValues.InputGTLO1 = true;
 
-            DefaultMixerFrequencyValues.IsIFMixerFrequencyTypeStartStop = false;
-            DefaultMixerFrequencyValues.IsIFMixerFrequencyTypeCenterSpan = true;
-            DefaultMixerFrequencyValues.IsIFMixerFrequencyTypeFixed = false;
-
             //IFSidebandType = SidebandTypeEnum.Low;
             //IFMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
             DefaultMixerFrequencyValues.IFMixerFrequencyStart = 10.5e6;
@@ -643,10 +628,6 @@ namespace OpenTap.Plugins.PNAX
             DefaultMixerFrequencyValues.IFMixerFrequencySpan = 66.989e9;
             DefaultMixerFrequencyValues.IFMixerFrequencyFixed = 10e6;
 
-            DefaultMixerFrequencyValues.IsLO2MixerFrequencyTypeStartStop = false;
-            DefaultMixerFrequencyValues.IsLO2MixerFrequencyTypeCenterSpan = false;
-            DefaultMixerFrequencyValues.IsLO2MixerFrequencyTypeFixed = true;
-
             //mixerFrequencyValues.LO2MixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
             DefaultMixerFrequencyValues.LO2MixerFrequencyStart = 0;
             DefaultMixerFrequencyValues.LO2MixerFrequencyStop = 0;
@@ -654,11 +635,6 @@ namespace OpenTap.Plugins.PNAX
             DefaultMixerFrequencyValues.LO2MixerFrequencySpan = 0;
             DefaultMixerFrequencyValues.LO2MixerFrequencyFixed = 0;
             DefaultMixerFrequencyValues.IF1GTLO2 = true;
-
-
-            DefaultMixerFrequencyValues.IsOutputMixerFrequencyTypeStartStop = false;
-            DefaultMixerFrequencyValues.IsOutputMixerFrequencyTypeCenterSpan = true;
-            DefaultMixerFrequencyValues.IsOutputMixerFrequencyTypeFixed = false;
 
             //mixerFrequencyValues.OutputSidebandType = SidebandTypeEnum.Low;
             //mixerFrequencyValues.OutputMixerFrequencyType = MixerFrequencyTypeEnum.CenterSpan;
@@ -789,8 +765,8 @@ namespace OpenTap.Plugins.PNAX
                 DefaultConverterPowerValues = new ConverterPowerValues();
 
             DefaultConverterPowerValues.PowerOnAllChannels             = true;
-            DefaultConverterPowerValues.PortInput                      = PortsEnum.Port1;
-            DefaultConverterPowerValues.PortOutput                     = PortsEnum.Port2;
+            //DefaultConverterPowerValues.PortInput                      = PortsEnum.Port1;
+            //DefaultConverterPowerValues.PortOutput                     = PortsEnum.Port2;
             DefaultConverterPowerValues.InputSourceLevelingMode        = InputSourceLevelingModeEnum.Internal;
             DefaultConverterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
             DefaultConverterPowerValues.InputPortLinearInputPower      = -25;

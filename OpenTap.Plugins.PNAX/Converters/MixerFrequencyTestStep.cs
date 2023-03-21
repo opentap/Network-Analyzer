@@ -407,65 +407,44 @@ namespace OpenTap.Plugins.PNAX
             if (defaultValues == null)
                 return;
 
-
-            defaultValues.IsInputMixerFrequencyTypeStartStop = true;
-            defaultValues.IsInputMixerFrequencyTypeCenterSpan = false;
-            defaultValues.IsInputMixerFrequencyTypeFixed = false;
-
             InputMixerFrequencyType = defaultValues.InputMixerFrequencyType;
-            defaultValues.InputMixerFrequencyStart = 10.5e6;
-            defaultValues.InputMixerFrequencyStop = 66.9995e9;
-            defaultValues.InputMixerFrequencyCenter = 33.505e9;
-            defaultValues.InputMixerFrequencySpan = 66.989e9;
-            defaultValues.InputMixerFrequencyFixed = 1e9;
-
-            defaultValues.IsLO1MixerFrequencyTypeStartStop = false;
-            defaultValues.IsLO1MixerFrequencyTypeCenterSpan = false;
-            defaultValues.IsLO1MixerFrequencyTypeFixed = true;
+            InputMixerFrequencyStart = defaultValues.InputMixerFrequencyStart;
+            InputMixerFrequencyStop = defaultValues.InputMixerFrequencyStop;
+            InputMixerFrequencyCenter = defaultValues.InputMixerFrequencyCenter;
+            InputMixerFrequencySpan = defaultValues.InputMixerFrequencySpan;
+            InputMixerFrequencyFixed = defaultValues.InputMixerFrequencyFixed;
 
             LO1MixerFrequencyType = defaultValues.LO1MixerFrequencyType;
-            defaultValues.LO1MixerFrequencyStart = 0;
-            defaultValues.LO1MixerFrequencyStop = 0;
-            defaultValues.LO1MixerFrequencyCenter = 0;
-            defaultValues.LO1MixerFrequencySpan = 0;
-            defaultValues.LO1MixerFrequencyFixed = 0;
-            defaultValues.InputGTLO1 = true;
-
-            defaultValues.IsIFMixerFrequencyTypeStartStop = false;
-            defaultValues.IsIFMixerFrequencyTypeCenterSpan = true;
-            defaultValues.IsIFMixerFrequencyTypeFixed = false;
+            LO1MixerFrequencyStart = defaultValues.LO1MixerFrequencyStart;
+            LO1MixerFrequencyStop = defaultValues.LO1MixerFrequencyStop;
+            LO1MixerFrequencyCenter = defaultValues.LO1MixerFrequencyCenter;
+            LO1MixerFrequencySpan = defaultValues.LO1MixerFrequencySpan;
+            LO1MixerFrequencyFixed = defaultValues.LO1MixerFrequencyFixed;
+            InputGTLO1 = defaultValues.InputGTLO1;
 
             IFSidebandType = defaultValues.IFSidebandType;
             IFMixerFrequencyType = defaultValues.IFMixerFrequencyType;
-            defaultValues.IFMixerFrequencyStart = 10.5e6;
-            defaultValues.IFMixerFrequencyStop = 66.9995e9;
-            defaultValues.IFMixerFrequencyCenter = 33.505e9;
-            defaultValues.IFMixerFrequencySpan = 66.989e9;
-            defaultValues.IFMixerFrequencyFixed = 10e6;
-
-            defaultValues.IsLO2MixerFrequencyTypeStartStop = false;
-            defaultValues.IsLO2MixerFrequencyTypeCenterSpan = false;
-            defaultValues.IsLO2MixerFrequencyTypeFixed = true;
+            IFMixerFrequencyStart = defaultValues.IFMixerFrequencyStart;
+            IFMixerFrequencyStop = defaultValues.IFMixerFrequencyStop;
+            IFMixerFrequencyCenter = defaultValues.IFMixerFrequencyCenter;
+            IFMixerFrequencySpan = defaultValues.IFMixerFrequencySpan;
+            IFMixerFrequencyFixed = defaultValues.IFMixerFrequencyFixed;
 
             LO2MixerFrequencyType = defaultValues.LO2MixerFrequencyType;
-            defaultValues.LO2MixerFrequencyStart = 0;
-            defaultValues.LO2MixerFrequencyStop = 0;
-            defaultValues.LO2MixerFrequencyCenter = 0;
-            defaultValues.LO2MixerFrequencySpan = 0;
-            defaultValues.LO2MixerFrequencyFixed = 0;
-            defaultValues.IF1GTLO2 = true;
-
-            defaultValues.IsOutputMixerFrequencyTypeStartStop = false;
-            defaultValues.IsOutputMixerFrequencyTypeCenterSpan = true;
-            defaultValues.IsOutputMixerFrequencyTypeFixed = false;
+            LO2MixerFrequencyStart = defaultValues.LO2MixerFrequencyStart;
+            LO2MixerFrequencyStop = defaultValues.LO2MixerFrequencyStop;
+            LO2MixerFrequencyCenter = defaultValues.LO2MixerFrequencyCenter;
+            LO2MixerFrequencySpan = defaultValues.LO2MixerFrequencySpan;
+            LO2MixerFrequencyFixed = defaultValues.LO2MixerFrequencyFixed;
+            IF1GTLO2 = defaultValues.IF1GTLO2;
 
             OutputSidebandType = defaultValues.OutputSidebandType;
             OutputMixerFrequencyType = defaultValues.OutputMixerFrequencyType;
-            defaultValues.OutputMixerFrequencyStart = 10.5e6;
-            defaultValues.OutputMixerFrequencyStop = 66.9995e9;
-            defaultValues.OutputMixerFrequencyCenter = 33.505e9;
-            defaultValues.OutputMixerFrequencySpan = 66.989e9;
-            defaultValues.OutputMixerFrequencyFixed = 10e6;
+            OutputMixerFrequencyStart = defaultValues.OutputMixerFrequencyStart;
+            OutputMixerFrequencyStop = defaultValues.OutputMixerFrequencyStop;
+            OutputMixerFrequencyCenter = defaultValues.OutputMixerFrequencyCenter;
+            OutputMixerFrequencySpan = defaultValues.OutputMixerFrequencySpan;
+            OutputMixerFrequencyFixed = defaultValues.OutputMixerFrequencyFixed;
         }
 
         public override void Run()

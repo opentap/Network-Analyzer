@@ -157,12 +157,14 @@ namespace OpenTap.Plugins.PNAX
             var DefaultValues = PNAX.GetConverterFrequencyDefaultValues();
             SweepType                   = DefaultValues.SweepType;
             DataAcquisitionMode         = DefaultValues.DataAcquisitionMode;
+
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
             SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
             SweepSettingsStart          = DefaultValues.SweepSettingsStart;
             SweepSettingsStop           = DefaultValues.SweepSettingsStop;
             SweepSettingsCenter         = DefaultValues.SweepSettingsCenter;
             SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
+
             SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
 
         }

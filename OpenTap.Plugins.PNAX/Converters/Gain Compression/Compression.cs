@@ -184,16 +184,20 @@ namespace OpenTap.Plugins.PNAX
             CompressionDeltaX = DefaultValues.CompressionDeltaX;
             CompressionDeltaY = DefaultValues.CompressionDeltaY;
             CompressionFromMaxPout = DefaultValues.CompressionFromMaxPout;
+
             SMARTSweepTolerance = DefaultValues.SMARTSweepTolerance;
             SMARTSweepIterations = DefaultValues.SMARTSweepIterations;
             SMARTSweepShowIterations = DefaultValues.SMARTSweepShowIterations;
             SMARTSweepReadDC = DefaultValues.SMARTSweepReadDC;
+
             SMARTSweepSafeMode = DefaultValues.SMARTSweepSafeMode;
             SMARTSweepCoarseIncrement = DefaultValues.SMARTSweepCoarseIncrement;
             SMARTSweepFineIncrement = DefaultValues.SMARTSweepFineIncrement;
             SMARTSweepFineThreshold = DefaultValues.SMARTSweepFineThreshold;
             SMARTSweepMaxOutputPower = DefaultValues.SMARTSweepMaxOutputPower;
+
             CompressionPointInterpolation = DefaultValues.CompressionPointInterpolation;
+
             EndOfSweepCondition = DefaultValues.EndOfSweepCondition;
             SettlingTime = DefaultValues.SettlingTime;
         }
