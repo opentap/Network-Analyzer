@@ -15,14 +15,18 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum DutInputPortsEnum
     {
-        Port1,
-        Port3,
+        [Scpi("1")]
+        Port1 = 1,
+        [Scpi("3")]
+        Port3 = 3,
     }
 
     public enum DutOutputPortsEnum
     {
-        Port2,
-        Port4
+        [Scpi("2")]
+        Port2 = 2,
+        [Scpi("4")]
+        Port4 = 4
     }
 
     public enum PowerLevelingEnum
@@ -39,15 +43,34 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [Display("Tone Power", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
-    public class TonePower : TestStep
+    public class TonePower : ConverterCompressionBaseStep
     {
         #region Settings
-
         [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = false;
+        public bool IsPowerSweep { get; set; }
+
+        private ToneFrequencySweepTypeEnum _ToneFrequencySweepType;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
+        [Display("Sweep Type", Order: 0.5)]
+        public ToneFrequencySweepTypeEnum ToneFrequencySweepType 
+        {
+            get
+            {
+                return _ToneFrequencySweepType;
+            }
+            set
+            {
+                _ToneFrequencySweepType = value;
+                if (_ToneFrequencySweepType == ToneFrequencySweepTypeEnum.PowerSweep)
+                {
+                    IsPowerSweep = true;
+                }
+                else
+                {
+                    IsPowerSweep = false;
+                }
+            } 
+        }
 
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
@@ -79,8 +102,25 @@ namespace OpenTap.Plugins.PNAX
 
 
 
+        private bool _CoupleTonePowers;
         [Display("Coupled Tone Powers", Group: "Tone Powers", Order: 50)]
-        public bool CoupleTonePowers { get; set; }
+        public bool CoupleTonePowers 
+        {
+            get
+            {
+                return _CoupleTonePowers;
+            }
+            set
+            {
+                _CoupleTonePowers = value;
+
+                // Update f2 values as f1 values
+                FixedF2Power = FixedF1Power;
+                StartF2Power = StartF1Power;
+                StopF2Power = StopF1Power;
+                //StepF2Power = StepF1Power;
+            }
+        }
 
         [Display("ALC On", Group: "Tone Powers", Order: 51)]
         public bool ALCOn { get; set; }
@@ -88,69 +128,133 @@ namespace OpenTap.Plugins.PNAX
         [Display("Power Leveling", Group: "Tone Powers", Order: 52)]
         public PowerLevelingEnum PowerLeveling { get; set; }
 
+        [EnabledIf("IsPowerSweep", false, HideIfDisabled = false)]
         [Display("Fixed f1 Power", Group: "Tone Powers", Order: 53)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double FixedF1Power { get; set; }
 
+        // TODO if coupled then disable this property and when the user 
+        // provides f1, then assign the same value to f2
+        [EnabledIf("IsPowerSweep", false, HideIfDisabled = false)]
         [Display("Fixed f2 Power", Group: "Tone Powers", Order: 54)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double FixedF2Power { get; set; }
 
+        [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Start f1 Power", Group: "Tone Powers", Order: 55)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double StartF1Power { get; set; }
 
+        // TODO if coupled then disable this property and when the user 
+        // provides f1, then assign the same value to f2
+        [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Start f2 Power", Group: "Tone Powers", Order: 56)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double StartF2Power { get; set; }
 
+        [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Stop f1 Power", Group: "Tone Powers", Order: 57)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double StopF1Power { get; set; }
 
+        // TODO if coupled then disable this property and when the user 
+        // provides f1, then assign the same value to f2
+        [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Stop f2 Power", Group: "Tone Powers", Order: 58)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double StopF2Power { get; set; }
 
-        [Display("Step f1 Power", Group: "Tone Powers", Order: 59)]
-        [Unit("dBm", UseEngineeringPrefix: true)]
-        public double StepF1Power { get; set; }
+        // TODO
+        // Step is calucalted as [Start - Stop ]/ Number of Points
+        // the user is not providing this value
+        //[Display("Step f1 Power", Group: "Tone Powers", Order: 59)]
+        //[Unit("dBm", UseEngineeringPrefix: true)]
+        //public double StepF1Power { get; set; }
 
-        [Display("Step f2 Power", Group: "Tone Powers", Order: 60)]
-        [Unit("dBm", UseEngineeringPrefix: true)]
-        public double StepF2Power { get; set; }
+        //[Display("Step f2 Power", Group: "Tone Powers", Order: 60)]
+        //[Unit("dBm", UseEngineeringPrefix: true)]
+        //public double StepF2Power { get; set; }
 
         #endregion
 
         public TonePower()
         {
             PowerOnAllChannels = true;
-            CoupleTonePowers = true;
-            ALCOn = true;
             UpdateDefaultValues();
         }
 
         private void UpdateDefaultValues()
         {
             var DefaultValues = PNAX.GetTonePowerDefaultValues();
+            PortInput = DefaultValues.PortInput;
+            PortOutput = DefaultValues.PortOutput;
+            SourceAttenuatorDutInput = DefaultValues.InputPortSourceAttenuator;
+            ReceiverAttenuatorDutInput = DefaultValues.InputPortReceiverAttenuator;
+            SourceAttenuatorDutOutput = DefaultValues.OutputPortSourceAttenuator;
+            ReceiverAttenuatorDutOutput = DefaultValues.OutputPortReceiverAttenuator;
+
+            CoupleTonePowers = DefaultValues.CoupleTonePowers;
+            ALCOn = DefaultValues.ALCOn;
+            PowerLeveling = DefaultValues.PowerLeveling;
             FixedF1Power = DefaultValues.FixedF1Power;
             FixedF2Power = DefaultValues.FixedF2Power;
             StartF1Power = DefaultValues.StartF1Power;
             StartF2Power = DefaultValues.StartF2Power;
             StopF1Power  = DefaultValues.StopF1Power;
             StopF2Power  = DefaultValues.StopF2Power;
-            StepF1Power  = DefaultValues.StepF1Power;
-            StepF2Power  = DefaultValues.StepF2Power;
+            //StepF1Power  = DefaultValues.StepF1Power;
+            //StepF2Power  = DefaultValues.StepF2Power;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
+
+            PNAX.SetIMDPortInputOutput(Channel, PortInput, PortOutput);
+            PNAX.SetSourceAttenuator(Channel, (int)PortInput, SourceAttenuatorDutInput);
+            PNAX.SetReceiverAttenuator(Channel, (int)PortInput, ReceiverAttenuatorDutInput);
+            PNAX.SetSourceAttenuator(Channel, (int)PortOutput, SourceAttenuatorDutOutput);
+            PNAX.SetReceiverAttenuator(Channel, (int)PortOutput, ReceiverAttenuatorDutOutput);
+
+            PNAX.SetIMDCoupledTonePowers(Channel, CoupleTonePowers);
+            PNAX.SetIMDALCHardware(Channel, (int)PortInput, ALCOn);
+
+            PNAX.SetIMDPowerLevelingMode(Channel, PowerLeveling);
+            switch (PowerLeveling)
+            {
+                case PowerLevelingEnum.SetInputPower:
+                    PNAX.SetIMDReceiverLevelingMode(Channel, (int)PortInput, false);
+                    break;
+                case PowerLevelingEnum.SetInputPowerReceiverLeveling:
+                    PNAX.SetIMDReceiverLevelingMode(Channel, (int)PortInput, true);
+                    break;
+                case PowerLevelingEnum.SetInputPowerEqualTonesAtOutput:
+                    PNAX.SetIMDReceiverLevelingMode(Channel, (int)PortInput, false);
+                    break;
+                case PowerLevelingEnum.SetOutputPowerReceiverLeveling:
+                    PNAX.SetIMDReceiverLevelingMode(Channel, (int)PortInput, true);
+                    break;
+            }
+
+            if (ToneFrequencySweepType != ToneFrequencySweepTypeEnum.PowerSweep)
+            {
+                // All power sweeps use Fixed f1 and f2
+                PNAX.SetIMDFixedPowerF1(Channel, FixedF1Power);
+                PNAX.SetIMDFixedPowerF2(Channel, FixedF2Power);
+            }
+            else
+            {
+                // except for Power Sweep that uses Start and Stop
+                PNAX.SetIMDStartPowerF1(Channel, StartF1Power);
+                PNAX.SetIMDStartPowerF2(Channel, StartF2Power);
+                PNAX.SetIMDStopPowerF1(Channel, StopF1Power);
+                PNAX.SetIMDStopPowerF2(Channel, StopF2Power);
+
+            }
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

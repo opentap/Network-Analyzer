@@ -262,6 +262,7 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery($"SOURce{ Channel }:POWer{ port }:ALC:MODE?");
         }
 
+        // TODO same as SetIMDALCHardware
         public void SetSourceLevelingMode(int Channel, int port, string mode)
         {
             ScpiCommand($"SOURce{ Channel }:POWer{ port }:ALC:MODE {mode}");
@@ -312,22 +313,22 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetLOSweptPowerStart(int Channel, int stage)
         {
-            return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STARt?");
+            return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:POWer:STARt?");
         }
 
         public void SetLOSweptPowerStart(int Channel, int stage, double value)
         {
-            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STARt { value }");
+            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:POWer:STARt { value }");
         }
 
         public double GetLOSweptPowerStop(int Channel, int stage)
         {
-            return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STOP?");
+            return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:POWer:STOP?");
         }
 
         public void SetLOSweptPowerStop(int Channel, int stage, double value)
         {
-            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STOP { value }");
+            ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:POWer:STOP { value }");
         }
 
         #endregion

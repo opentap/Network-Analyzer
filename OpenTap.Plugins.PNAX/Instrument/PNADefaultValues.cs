@@ -296,15 +296,16 @@ namespace OpenTap.Plugins.PNAX
         public double PowerSweepCWF2;
         public double PowerSweepCWFc;
         public double PowerSweepCWDeltaF;
+        public XAxisDisplayAnnotationEnum XAxisDisplayAnnotation;
 
         public static ToneFrequencyValues GetPresetValues()
         {
             ToneFrequencyValues toneFrequencyValues = new ToneFrequencyValues();
             toneFrequencyValues.ToneFrequencySweepType = ToneFrequencySweepTypeEnum.SweepFc;
             toneFrequencyValues.SweepFcStartFc = 10.5e6;
-            toneFrequencyValues.SweepFcStopFc = 66.9995e9;
-            toneFrequencyValues.SweepFcCenterFc = 33.505e9;
-            toneFrequencyValues.SweepFcSpanFc = 66.9995e9;
+            toneFrequencyValues.SweepFcStopFc = 49.9995e9;
+            toneFrequencyValues.SweepFcCenterFc = 25.005e9;
+            toneFrequencyValues.SweepFcSpanFc = 49.9895e9;
             toneFrequencyValues.SweepFcFixedDeltaF = 1e6;
             toneFrequencyValues.SweepFcNumberOfPoints = 201;
             toneFrequencyValues.SweepFcMixedToneIFBW = 1e3;
@@ -317,12 +318,24 @@ namespace OpenTap.Plugins.PNAX
             toneFrequencyValues.PowerSweepCWF2 = 1.0005e9;
             toneFrequencyValues.PowerSweepCWFc = 1e9;
             toneFrequencyValues.PowerSweepCWDeltaF = 1e6;
+            toneFrequencyValues.XAxisDisplayAnnotation = XAxisDisplayAnnotationEnum.Output;
             return toneFrequencyValues;
         }
     }
 
     public class TonePowerValues
     {
+        public DutInputPortsEnum PortInput;
+        public DutOutputPortsEnum PortOutput;
+
+        public double InputPortSourceAttenuator;
+        public double InputPortReceiverAttenuator;
+        public double OutputPortSourceAttenuator;
+        public double OutputPortReceiverAttenuator;
+
+        public bool CoupleTonePowers;
+        public bool ALCOn;
+        public PowerLevelingEnum PowerLeveling;
         public double FixedF1Power;
         public double FixedF2Power;
         public double StartF1Power;
@@ -334,6 +347,15 @@ namespace OpenTap.Plugins.PNAX
         public static TonePowerValues GetPresetValues()
         {
             TonePowerValues tonePowerValues = new TonePowerValues();
+            tonePowerValues.PortInput = DutInputPortsEnum.Port1;
+            tonePowerValues.PortOutput = DutOutputPortsEnum.Port2;
+            tonePowerValues.InputPortSourceAttenuator = 0;
+            tonePowerValues.InputPortReceiverAttenuator = 0;
+            tonePowerValues.OutputPortSourceAttenuator = 10;
+            tonePowerValues.OutputPortReceiverAttenuator = 0;
+            tonePowerValues.CoupleTonePowers = true;
+            tonePowerValues.ALCOn = true;
+            tonePowerValues.PowerLeveling = PowerLevelingEnum.SetInputPower;
             tonePowerValues.FixedF1Power = -24;
             tonePowerValues.FixedF2Power = -24;
             tonePowerValues.StartF1Power = -24;
