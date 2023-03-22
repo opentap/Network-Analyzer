@@ -100,8 +100,6 @@ namespace OpenTap.Plugins.PNAX
         public double ReceiverAttenuatorDutOutput { get; set; }
 
 
-
-
         private bool _CoupleTonePowers;
         [Display("Coupled Tone Powers", Group: "Tone Powers", Order: 50)]
         public bool CoupleTonePowers 
@@ -118,7 +116,6 @@ namespace OpenTap.Plugins.PNAX
                 FixedF2Power = FixedF1Power;
                 StartF2Power = StartF1Power;
                 StopF2Power = StopF1Power;
-                //StepF2Power = StepF1Power;
             }
         }
 
@@ -128,52 +125,62 @@ namespace OpenTap.Plugins.PNAX
         [Display("Power Leveling", Group: "Tone Powers", Order: 52)]
         public PowerLevelingEnum PowerLeveling { get; set; }
 
+        private double _fixedF1Power;
         [EnabledIf("IsPowerSweep", false, HideIfDisabled = false)]
         [Display("Fixed f1 Power", Group: "Tone Powers", Order: 53)]
         [Unit("dBm", UseEngineeringPrefix: true)]
-        public double FixedF1Power { get; set; }
+        public double FixedF1Power
+        {
+            get { return _fixedF1Power; }
+            set
+            {
+                _fixedF1Power = value;
+                FixedF2Power = value;
+            }
+        }
 
-        // TODO if coupled then disable this property and when the user 
-        // provides f1, then assign the same value to f2
         [EnabledIf("IsPowerSweep", false, HideIfDisabled = false)]
         [Display("Fixed f2 Power", Group: "Tone Powers", Order: 54)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double FixedF2Power { get; set; }
 
+        private double _startF1Power;
         [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Start f1 Power", Group: "Tone Powers", Order: 55)]
         [Unit("dBm", UseEngineeringPrefix: true)]
-        public double StartF1Power { get; set; }
+        public double StartF1Power
+        {
+            get { return _startF1Power; }
+            set
+            {
+                _startF1Power = value;
+                StartF2Power = value;
+            }
+        }
 
-        // TODO if coupled then disable this property and when the user 
-        // provides f1, then assign the same value to f2
         [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Start f2 Power", Group: "Tone Powers", Order: 56)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double StartF2Power { get; set; }
 
+        private double _stopF1Power;
         [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Stop f1 Power", Group: "Tone Powers", Order: 57)]
         [Unit("dBm", UseEngineeringPrefix: true)]
-        public double StopF1Power { get; set; }
+        public double StopF1Power
+        {
+            get { return _stopF1Power; }
+            set
+            {
+                _stopF1Power = value;
+                StopF2Power = value;
+            }
+        }
 
-        // TODO if coupled then disable this property and when the user 
-        // provides f1, then assign the same value to f2
         [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Stop f2 Power", Group: "Tone Powers", Order: 58)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double StopF2Power { get; set; }
-
-        // TODO
-        // Step is calucalted as [Start - Stop ]/ Number of Points
-        // the user is not providing this value
-        //[Display("Step f1 Power", Group: "Tone Powers", Order: 59)]
-        //[Unit("dBm", UseEngineeringPrefix: true)]
-        //public double StepF1Power { get; set; }
-
-        //[Display("Step f2 Power", Group: "Tone Powers", Order: 60)]
-        //[Unit("dBm", UseEngineeringPrefix: true)]
-        //public double StepF2Power { get; set; }
 
         #endregion
 
@@ -202,8 +209,6 @@ namespace OpenTap.Plugins.PNAX
             StartF2Power = DefaultValues.StartF2Power;
             StopF1Power  = DefaultValues.StopF1Power;
             StopF2Power  = DefaultValues.StopF2Power;
-            //StepF1Power  = DefaultValues.StepF1Power;
-            //StepF2Power  = DefaultValues.StepF2Power;
         }
 
         public override void Run()

@@ -342,8 +342,7 @@ namespace OpenTap.Plugins.PNAX
         public double StartF2Power;
         public double StopF1Power;
         public double StopF2Power;
-        public double StepF1Power;
-        public double StepF2Power;
+
         public static TonePowerValues GetPresetValues()
         {
             TonePowerValues tonePowerValues = new TonePowerValues();
@@ -362,8 +361,6 @@ namespace OpenTap.Plugins.PNAX
             tonePowerValues.StartF2Power = -24;
             tonePowerValues.StopF1Power = -10;
             tonePowerValues.StopF2Power = -10;
-            tonePowerValues.StepF1Power = 0.070;
-            tonePowerValues.StepF2Power = 0.070;
             return tonePowerValues;
         }
     }
@@ -780,8 +777,6 @@ namespace OpenTap.Plugins.PNAX
             DefaultTonePowerValues.StartF2Power = -24;
             DefaultTonePowerValues.StopF1Power = -10;
             DefaultTonePowerValues.StopF2Power = -10;
-            DefaultTonePowerValues.StepF1Power = 0.070;
-            DefaultTonePowerValues.StepF2Power = 0.070;
         }
 
         public ConverterCompressionValues GetConverterCompressionDefaultValues()
