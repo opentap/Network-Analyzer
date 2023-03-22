@@ -51,12 +51,12 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowChildrenOfType(typeof(SweptIMDSingleTrace))]
     [Display("Swept IMD Traces", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
-    public class SweptIMDNewTrace : TestStep
+    public class SweptIMDNewTrace : ConverterCompressionBaseStep
     {
         #region Settings
 
         private int _Channel;
-        public int Channel
+        public override int Channel
         {
             get
             {
@@ -316,12 +316,16 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
+            // Delete dummy trace defined during channel setup
+            // DISPlay:MEASure<mnum>:DELete?
+            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_PwrMain_1\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
