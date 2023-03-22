@@ -43,12 +43,11 @@ namespace OpenTap.Plugins.PNAX
             SweepType                   = DefaultValues.SweepType;
 
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
-            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
+            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth / 100;
             SweepSettingsStart          = DefaultValues.SweepSettingsStart;
             SweepSettingsStop           = DefaultValues.SweepSettingsStop;
             SweepSettingsCenter         = DefaultValues.SweepSettingsCenter;
             SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
-
             SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
 
         }

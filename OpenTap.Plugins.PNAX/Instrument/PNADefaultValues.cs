@@ -410,9 +410,9 @@ namespace OpenTap.Plugins.PNAX
             converterFrequencyValues.SweepSettingsNumberOfPoints = 201;
             converterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
             converterFrequencyValues.SweepSettingsStart = 10e6;
-            converterFrequencyValues.SweepSettingsStop = 50e9;
-            converterFrequencyValues.SweepSettingsCenter = 25.005e9;
-            converterFrequencyValues.SweepSettingsSpan = 49.99e9;
+            converterFrequencyValues.SweepSettingsStop = 67e9;
+            converterFrequencyValues.SweepSettingsCenter = 33.505e9;
+            converterFrequencyValues.SweepSettingsSpan = 66.99e9;
             converterFrequencyValues.SweepSettingsFixed = 1e9;
 
             return converterFrequencyValues;
@@ -803,6 +803,7 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateConverterFrequencyValues()
         {
+            // TODO: If values are from instrument, split into gaincompression frequency and noise figure
             if (DefaultConverterFrequencyValues == null)
                 DefaultConverterFrequencyValues = new ConverterFrequencyValues();
 
@@ -810,9 +811,9 @@ namespace OpenTap.Plugins.PNAX
             DefaultConverterFrequencyValues.SweepSettingsNumberOfPoints = 201;
             DefaultConverterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
             DefaultConverterFrequencyValues.SweepSettingsStart = 10e6;
-            DefaultConverterFrequencyValues.SweepSettingsStop = 50e9;
-            DefaultConverterFrequencyValues.SweepSettingsCenter = 25.005e9;
-            DefaultConverterFrequencyValues.SweepSettingsSpan = 49.99e9;
+            DefaultConverterFrequencyValues.SweepSettingsStop = 67e9;
+            DefaultConverterFrequencyValues.SweepSettingsCenter = 33.505e9;
+            DefaultConverterFrequencyValues.SweepSettingsSpan = 66.99e9;
             DefaultConverterFrequencyValues.SweepSettingsFixed = 1e9;
         }
 
@@ -913,7 +914,7 @@ namespace OpenTap.Plugins.PNAX
             DefaultNoiseFigureConverterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
             DefaultNoiseFigureConverterPowerValues.OutputPortReversePower         = -20;
             DefaultNoiseFigureConverterPowerValues.AutoOutputPortSourceAttenuator = false;
-            DefaultNoiseFigureConverterPowerValues.OutputPortSourceAttenuator     = 10;
+            DefaultNoiseFigureConverterPowerValues.OutputPortSourceAttenuator     = 20;
             DefaultNoiseFigureConverterPowerValues.OutputPortReceiverAttenuator   = 0;
         }
     }

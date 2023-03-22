@@ -35,9 +35,23 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool HasPortPowersCoupled { get; set; } = false;
+        private bool _portPowersCoupled;
         [EnabledIf("HasPortPowersCoupled", true, HideIfDisabled = true)]
         [Display("Port Powers Coupled", Order: 11)]
-        public bool PortPowersCoupled { get; set; }
+        public bool PortPowersCoupled
+        {
+            get { return _portPowersCoupled; }
+            set
+            {
+                _portPowersCoupled = value;
+                if (value)
+                {
+                    OutputPower = InputPower;
+                    AutoOutputPortSourceAttenuator = AutoInputPortSourceAttenuator;
+                    OutputPortSourceAttenuator = InputPortSourceAttenuator;
+                }
+            }
+        }
 
         [Display("Input Port", Group: "DUT Input Port", Order: 20)]
         public PortsEnum PortInput { get; set; }

@@ -69,13 +69,11 @@ namespace OpenTap.Plugins.PNAX
             var DefaultValues = PNAX.GetMixerConverterPowerDefaultValues();
 
             PowerOnAllChannels             = DefaultValues.PowerOnAllChannels;
-            //PortInput                      = DefaultValues.PortInput;
-            // TODO Double check of this - sign
-            InputPower                     = -DefaultValues.InputPortLinearInputPower;
+            InputPower                     = DefaultValues.InputPortLinearInputPower;
             InputPortSourceAttenuator      = DefaultValues.InputPortSourceAttenuator;
             InputPortReceiverAttenuator    = DefaultValues.InputPortReceiverAttenuator;
             InputSourceLevelingMode        = DefaultValues.InputSourceLevelingMode;
-            //PortOutput                     = DefaultValues.PortOutput;
+
             OutputPower                    = DefaultValues.OutputPortReversePower;
             AutoOutputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
             OutputPortSourceAttenuator     = DefaultValues.OutputPortSourceAttenuator;

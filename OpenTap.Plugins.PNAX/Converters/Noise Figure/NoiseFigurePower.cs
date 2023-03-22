@@ -62,7 +62,7 @@ namespace OpenTap.Plugins.PNAX
             PowerOnAllChannels = DefaultValues.PowerOnAllChannels;
             PortPowersCoupled  = DefaultValues.PortPowersCoupled;
             // TODO Double check of this - sign
-            InputPower                    = -DefaultValues.InputPortLinearInputPower;
+            InputPower                    = DefaultValues.InputPortLinearInputPower;
             AutoInputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
             InputPortSourceAttenuator     = DefaultValues.InputPortSourceAttenuator;
             InputPortReceiverAttenuator   = DefaultValues.InputPortReceiverAttenuator;
