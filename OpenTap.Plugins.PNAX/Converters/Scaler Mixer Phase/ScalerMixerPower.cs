@@ -21,12 +21,14 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool EnablePowerSweepOutputEdit { get; set; } = false;
 
-        [EnabledIf("EnablePowerSweepOutputEdit", true)]
+        [EnabledIf("AutoIntputPortSourceAttenuator", false)]
+        [EnabledIf("PortPowersCoupled", false)]
         [Display("Power Level", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double InputPower { get; set; }
 
-        [EnabledIf("EnablePowerSweepOutputEdit", true)]
+        [EnabledIf("AutoOutputPortSourceAttenuator", false)]
+        [EnabledIf("PortPowersCoupled", false)]
         [Display("Power Level", Group: "DUT Output Port", Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double OutputPower { get; set; }
@@ -64,6 +66,15 @@ namespace OpenTap.Plugins.PNAX
         public ScalerMixerPower()
         {
             // ToDo: Set default values for properties / settings.
+            UpdateDefaultValues();
+        }
+
+        private void UpdateDefaultValues()
+        {
+            HasPortPowersCoupled = true;
+            PortPowersCoupled = true;
+            AutoInputPortSourceAttenuator = true;
+            AutoOutputPortSourceAttenuator = true;
         }
 
         public override void Run()

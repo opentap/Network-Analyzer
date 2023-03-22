@@ -18,11 +18,19 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigurePower : PowerBaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
+        [EnabledIf("AutoInputPortSourceAttenuator", false)]
+        [EnabledIf("PortPowersCoupled", false)]
         [Display("Power Level", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double InputPower { get; set; }
 
+        public bool OutputPortEnabled { get; set; } = false;
+        [EnabledIf("OutputPortEnabled", true)]
+        [Display("Output Port", Group: "DUT Output Port", Order: 30)]
+        public override PortsEnum PortOutput { get; set; }
+
+        [EnabledIf("AutoOutputPortSourceAttenuator", false)]
+        [EnabledIf("PortPowersCoupled", false)]
         [Display("Power Level", Group: "DUT Output Port", Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double OutputPower { get; set; }
@@ -30,7 +38,10 @@ namespace OpenTap.Plugins.PNAX
 
         public NoiseFigurePower()
         {
-            this.AutoInputPortSourceAttenuator = true;
+            HasPortPowersCoupled = true;
+            PortPowersCoupled = false;
+            AutoInputPortSourceAttenuator = false;
+            AutoOutputPortSourceAttenuator = false;
             UpdateDefaultValues();
         }
         private void UpdateDefaultValues()
