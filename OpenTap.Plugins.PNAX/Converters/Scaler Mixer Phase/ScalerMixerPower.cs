@@ -21,14 +21,21 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool EnablePowerSweepOutputEdit { get; set; } = false;
 
-        [EnabledIf("AutoIntputPortSourceAttenuator", false)]
-        [EnabledIf("PortPowersCoupled", false)]
+        private double _inputPower;
         [Display("Power Level", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
-        public override double InputPower { get; set; }
+        public override double InputPower
+        {
+            get { return _inputPower; }
+            set
+            {
+                _inputPower = value;
+                if (PortPowersCoupled)
+                    OutputPower = value;
+            }
+        }
 
         [EnabledIf("AutoOutputPortSourceAttenuator", false)]
-        [EnabledIf("PortPowersCoupled", false)]
         [Display("Power Level", Group: "DUT Output Port", Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double OutputPower { get; set; }
@@ -65,16 +72,35 @@ namespace OpenTap.Plugins.PNAX
 
         public ScalerMixerPower()
         {
-            // ToDo: Set default values for properties / settings.
+            HasPortPowersCoupled = true;
+            HasAutoInputPort = true;
             UpdateDefaultValues();
         }
 
         private void UpdateDefaultValues()
         {
-            HasPortPowersCoupled = true;
-            PortPowersCoupled = true;
-            AutoInputPortSourceAttenuator = true;
-            AutoOutputPortSourceAttenuator = true;
+            var defaultValuesSetup = PNAX.GetMixerSetupDefaultValues();
+            PortInput  = defaultValuesSetup.PortInput;
+            PortOutput = defaultValuesSetup.PortOutput;
+
+            var DefaultValues = PNAX.GetScalarMixerConverterPowerDefaultValues();
+            PowerOnAllChannels = DefaultValues.PowerOnAllChannels;
+            PortPowersCoupled = DefaultValues.PortPowersCoupled;
+
+            InputPower                    = DefaultValues.InputPortLinearInputPower;
+            InputPortSourceAttenuator     = DefaultValues.InputPortSourceAttenuator;
+            AutoInputPortSourceAttenuator = DefaultValues.AutoInputPortSourceAttenuator;
+            InputPortReceiverAttenuator   = DefaultValues.InputPortReceiverAttenuator;
+            InputSourceLevelingMode       = DefaultValues.InputSourceLevelingMode;
+
+            OutputPower                    = DefaultValues.OutputPortReversePower;
+            AutoOutputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
+            OutputPortSourceAttenuator     = DefaultValues.OutputPortSourceAttenuator;
+            OutputPortReceiverAttenuator   = DefaultValues.OutputPortReceiverAttenuator;
+            OutputSourceLevelingMode       = DefaultValues.OutputSourceLevelingMode;
+
+            InputPortSourceAttenuatorAutoValue  = InputPortSourceAttenuator;
+            OutputPortSourceAttenuatorAutoValue = OutputPortSourceAttenuator;
         }
 
         public override void Run()

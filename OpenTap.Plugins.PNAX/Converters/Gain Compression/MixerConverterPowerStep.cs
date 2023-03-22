@@ -19,10 +19,19 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
         // ToDo: Add property here for each parameter the end user should be able to change
+        private double _inputPower;
         [Display("Linear Input Power", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
-        public override double InputPower { get; set; }
-
+        public override double InputPower
+        {
+            get { return _inputPower; }
+            set
+            {
+                _inputPower = value;
+                if (PortPowersCoupled)
+                    OutputPower = value;
+            }
+        }
         [Display("Reverse Power", Group: "DUT Output Port", Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double OutputPower { get; set; }
@@ -47,6 +56,7 @@ namespace OpenTap.Plugins.PNAX
         public MixerConverterPowerStep()
         {
             // ToDo: Set default values for properties / settings.
+            AutoInputPortSourceAttenuator = false;
             UpdateDefaultValues();
         }
 
@@ -56,7 +66,7 @@ namespace OpenTap.Plugins.PNAX
             PortInput = defaultValuesSetup.PortInput;
             PortOutput = defaultValuesSetup.PortOutput;
 
-            var DefaultValues = PNAX.GetConverterPowerDefaultValues();
+            var DefaultValues = PNAX.GetMixerConverterPowerDefaultValues();
 
             PowerOnAllChannels             = DefaultValues.PowerOnAllChannels;
             //PortInput                      = DefaultValues.PortInput;

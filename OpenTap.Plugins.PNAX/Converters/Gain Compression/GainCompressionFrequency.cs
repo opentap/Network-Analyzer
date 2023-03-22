@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
         {
             var DefaultValues = PNAX.GetConverterFrequencyDefaultValues();
             SweepType                   = DefaultValues.SweepType;
-            DataAcquisitionMode         = DefaultValues.DataAcquisitionMode;
+            DataAcquisitionMode         = DataAcquisitionModeEnum.SMARTSweep;
 
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
             SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;

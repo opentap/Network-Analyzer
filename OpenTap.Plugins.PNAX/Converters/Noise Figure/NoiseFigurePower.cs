@@ -18,18 +18,26 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigurePower : PowerBaseStep
     {
         #region Settings
-        [EnabledIf("AutoInputPortSourceAttenuator", false)]
-        [EnabledIf("PortPowersCoupled", false)]
+        private double _inputPower;
         [Display("Power Level", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
-        public override double InputPower { get; set; }
+        public override double InputPower
+        {
+            get { return _inputPower; }
+            set
+            {
+                _inputPower = value;
+                if (PortPowersCoupled)
+                    OutputPower = value;
+            }
+        }
 
+        [Browsable(false)]
         public bool OutputPortEnabled { get; set; } = false;
         [EnabledIf("OutputPortEnabled", true)]
         [Display("Output Port", Group: "DUT Output Port", Order: 30)]
         public override PortsEnum PortOutput { get; set; }
 
-        [EnabledIf("AutoOutputPortSourceAttenuator", false)]
         [EnabledIf("PortPowersCoupled", false)]
         [Display("Power Level", Group: "DUT Output Port", Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
@@ -40,8 +48,7 @@ namespace OpenTap.Plugins.PNAX
         {
             HasPortPowersCoupled = true;
             PortPowersCoupled = false;
-            AutoInputPortSourceAttenuator = false;
-            AutoOutputPortSourceAttenuator = false;
+            HasAutoInputPort = true;
             UpdateDefaultValues();
         }
         private void UpdateDefaultValues()
@@ -50,21 +57,25 @@ namespace OpenTap.Plugins.PNAX
             PortInput = defaultValuesSetup.PortInput;
             PortOutput = defaultValuesSetup.PortOutput;
 
-            var DefaultValues = PNAX.GetConverterPowerDefaultValues();
+            var DefaultValues = PNAX.GetNoiseFigureConverterPowerDefaultValues();
 
-            PowerOnAllChannels             = DefaultValues.PowerOnAllChannels;
-            //PortInput                      = DefaultValues.PortInput;
+            PowerOnAllChannels = DefaultValues.PowerOnAllChannels;
+            PortPowersCoupled  = DefaultValues.PortPowersCoupled;
             // TODO Double check of this - sign
-            InputPower                     = -DefaultValues.InputPortLinearInputPower;
-            InputPortSourceAttenuator      = DefaultValues.InputPortSourceAttenuator;
-            InputPortReceiverAttenuator    = DefaultValues.InputPortReceiverAttenuator;
-            InputSourceLevelingMode        = DefaultValues.InputSourceLevelingMode;
-            //PortOutput                     = DefaultValues.PortOutput;
+            InputPower                    = -DefaultValues.InputPortLinearInputPower;
+            AutoInputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
+            InputPortSourceAttenuator     = DefaultValues.InputPortSourceAttenuator;
+            InputPortReceiverAttenuator   = DefaultValues.InputPortReceiverAttenuator;
+            InputSourceLevelingMode       = DefaultValues.InputSourceLevelingMode;
+
             OutputPower                    = DefaultValues.OutputPortReversePower;
             AutoOutputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
             OutputPortSourceAttenuator     = DefaultValues.OutputPortSourceAttenuator;
             OutputPortReceiverAttenuator   = DefaultValues.OutputPortReceiverAttenuator;
             OutputSourceLevelingMode       = DefaultValues.OutputSourceLevelingMode;
+
+            InputPortSourceAttenuatorAutoValue  = InputPortSourceAttenuator;
+            OutputPortSourceAttenuatorAutoValue = OutputPortSourceAttenuator;
 
         }
         public override void Run()
