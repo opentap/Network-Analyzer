@@ -50,7 +50,6 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigure : ConverterBaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
         [Display("Noise Bandwidth", Group: "Bandwidth/Average", Order: 21)]
         public NoiseBandwidth NoiseBandwidth { get; set; }
 
