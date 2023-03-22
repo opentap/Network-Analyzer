@@ -15,27 +15,76 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum ToneFrequencySweepTypeEnum
     {
+        [Scpi("FCEN")]
+        [Display("Sweep fc")]
         SweepFc,
+        [Scpi("DFR")]
+        [Display("Sweep DeltaF")]
         SweepDeltaF,
+        [Scpi("POW")]
+        [Display("Power Sweep")]
         PowerSweep,
+        [Scpi("CW")]
+        [Display("CW")]
         CW,
+        [Scpi("LOP")]
+        [Display("LO Power Sweep")]
         LOPowerSweep
+    }
+
+    public enum XAxisDisplayAnnotationEnum
+    {
+        [Scpi("INP")]
+        [Display("Input")]
+        Input,
+        [Scpi("OUTP")]
+        [Display("Output")]
+        Output,
+        [Scpi("LO_1")]
+        [Display("LO 1")]
+        LO1,
+        [Scpi("LO_2")]
+        [Display("LO 2")]
+        LO2
     }
 
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [Display("Tone Frequency", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here", Order: 4)]
-    public class ToneFrequency : TestStep
+    public class ToneFrequency : ConverterBaseStep
     {
         #region Settings
 
         [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = false;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
 
+        private ToneFrequencySweepTypeEnum _ToneFrequencySweepType;
         [Display("Sweep Type", Groups: new[] { "Tone Frequency", "Sweep Type" }, Order: 1)]
-        public ToneFrequencySweepTypeEnum ToneFrequencySweepType { get; set; }
+        public ToneFrequencySweepTypeEnum ToneFrequencySweepType
+        {
+            get
+            {
+                return _ToneFrequencySweepType;
+            }
+            set
+            {
+                _ToneFrequencySweepType = value;
+                // Update Channel value
+                try
+                {
+                    var a = GetParent<SweptIMDChannel>();
+                    // only if there is a parent of type SweptIMDChannel
+                    if (a != null)
+                    {
+                        a.UpdateChannelSweepType(_ToneFrequencySweepType);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
+            }
+        }
+
 
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
         [Display("Start fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 10)]
@@ -62,8 +111,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcFixedDeltaF { get; set; }
 
-
-
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
         [Display("Start DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 20)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -78,8 +125,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Fixed fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepDeltaFFixedFc { get; set; }
-
-
 
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.PowerSweep, ToneFrequencySweepTypeEnum.CW, ToneFrequencySweepTypeEnum.LOPowerSweep, HideIfDisabled = true)]
         [Display("CW f1", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 30)]
@@ -101,8 +146,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double PowerSweepCWDeltaF { get; set; }
 
-
-
         [Display("Number of Points", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 40)]
         public int SweepFcNumberOfPoints { get; set; }
 
@@ -118,6 +161,8 @@ namespace OpenTap.Plugins.PNAX
         public bool SweepFcReduceIFBW { get; set; }
 
 
+        [Display("Annotation", Groups: new[] { "Tone Frequency", "X-Axis Display" }, Order: 50)]
+        public XAxisDisplayAnnotationEnum XAxisDisplayAnnotation { get; set; }
         #endregion
 
         public ToneFrequency()
@@ -145,16 +190,55 @@ namespace OpenTap.Plugins.PNAX
             PowerSweepCWF2 = DefaultValues.PowerSweepCWF2;
             PowerSweepCWFc = DefaultValues.PowerSweepCWFc;
             PowerSweepCWDeltaF = DefaultValues.PowerSweepCWDeltaF;
+            XAxisDisplayAnnotation = DefaultValues.XAxisDisplayAnnotation;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetIMDSweepType(Channel, ToneFrequencySweepType);
+
+            switch (ToneFrequencySweepType)
+            {
+                case ToneFrequencySweepTypeEnum.SweepFc:
+                    PNAX.SetIMDSweepSettingsStartfc(Channel, SweepFcStartFc);
+                    PNAX.SetIMDSweepSettingsStopfc(Channel, SweepFcStopFc);
+                    PNAX.SetIMDSweepSettingsCenterfc(Channel, SweepFcCenterFc);
+                    PNAX.SetIMDSweepSettingsSpanfc(Channel, SweepFcSpanFc);
+                    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, SweepFcFixedDeltaF);
+                    break;
+                case ToneFrequencySweepTypeEnum.SweepDeltaF:
+                    PNAX.SetIMDSweepSettingsStartDeltaF(Channel, SweepDeltaFStartDeltaF);
+                    PNAX.SetIMDSweepSettingsStopDeltaF(Channel, SweepDeltaFStopDeltaF);
+                    PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, SweepDeltaFFixedFc);
+                    break;
+                case ToneFrequencySweepTypeEnum.PowerSweep:
+                case ToneFrequencySweepTypeEnum.CW:
+                    PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
+                    PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);
+                    PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, PowerSweepCWFc);
+                    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
+                    break;
+                case ToneFrequencySweepTypeEnum.LOPowerSweep:
+                    // LO - These values are set on the MixerFrequencyTestStep
+                    // so no need to set these values here
+                    //PNAX.SetLOSweptPowerStart(Channel, 1, LO1SweptPowerStart);
+                    //PNAX.SetLOSweptPowerStop(Channel, 1, LO1SweptPowerStop);
+
+                    PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
+                    PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);
+                    PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, PowerSweepCWFc);
+                    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
+                    break;
+            }
+
+            PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
+            PNAX.SetIMDSweepSettingsMainToneIFBW(Channel, SweepFcMixedToneIFBW);
+            PNAX.SetIMDSweepSettingsIMToneIFBW(Channel, SweepFcIMToneIFBW);
+            PNAX.SetLFAutoBW(Channel, SweepFcReduceIFBW);
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

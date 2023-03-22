@@ -69,7 +69,8 @@ namespace OpenTap.Plugins.PNAX
         public ConverterChannelBase()
         {
             Channel = 1;
-            ConverterStages = GeneralStandardSettings.Current.ConverterStages;
+            var defaultValues = PNAX.GetMixerSetupDefaultValues();
+            ConverterStages = defaultValues.ConverterStages;
         }
 
         public override void Run()

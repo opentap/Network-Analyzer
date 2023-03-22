@@ -141,7 +141,7 @@ namespace OpenTap.Plugins.PNAX
 
         private int _Channel;
         [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
-        public int Channel
+        public override int Channel
         {
             get
             {

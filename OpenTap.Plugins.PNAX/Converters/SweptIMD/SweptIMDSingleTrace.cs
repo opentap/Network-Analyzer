@@ -258,7 +258,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowAsChildIn(typeof(SweptIMDNewTrace))]
     [Display("Swept IMD Single Trace", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
-    public class SweptIMDSingleTrace : TestStep
+    public class SweptIMDSingleTrace : ConverterBaseStep
     {
         #region Settings
         private String _Trace;
@@ -309,7 +309,7 @@ namespace OpenTap.Plugins.PNAX
 
         private int _Channel;
         [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
-        public int Channel
+        public override int Channel
         {
             get
             {
@@ -375,59 +375,27 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            int traceid = PNAX.GetNewTraceID();
+
+            // Define the measurement
+            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
+            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
+
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'Swept IMD Converters\',\'{Meas.ToString()}\'");
+
+            // Create a window if it doesn't exist already
+            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
+
+            // Display the measurement
+            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
+
+            // Select the measurement
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 
-    //public class TraceDefinition
-    //{
-    //    [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
-    //    public String Trace { get; set; }
 
-    //    [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-    //    public SweptIMDTraceEnum Meas { get; set; }
-
-    //    [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-    //    public TraceManagerChannelClassEnum Class { get; set; }
-
-    //    [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
-    //    public int Channel { get; set; }
-
-    //    [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-    //    public int Window { get; set; }
-
-    //    [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-    //    public int Sheet { get; set; }
-
-    //    public TraceDefinition()
-    //    {
-    //        Trace = "1";
-    //        Meas = SweptIMDTraceEnum.Pwr2Hi;
-    //        Class = TraceManagerChannelClassEnum.IMDX;
-    //        Channel = 1;
-    //        Window = 1;
-    //        Sheet = 1;
-    //    }
-    //}
-
-    //[Display("Swept IMD Multiple Trace", Group: "Swept IMD Converters", Description: "Insert a description here")]
-    //public class SweptIMDMultipleTrace : TestStep
-    //{
-    //    public List<TraceDefinition> traceDefinitions { get; set; } = new List<TraceDefinition>();
-
-    //    public SweptIMDMultipleTrace()
-    //    {
-    //    }
-
-    //    public override void Run()
-    //    {
-    //        // ToDo: Add test case code.
-    //        RunChildSteps(); //If the step supports child steps.
-    //    }
-    //}
 }
