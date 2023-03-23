@@ -32,6 +32,7 @@ namespace OpenTap.Plugins.PNAX
         public MixerConverterPowerValue DefaultMixerConverterPowerValues;
         public ScalarMixerConverterPowerValue DefaultScalarMixerConverterPowerValues;
         public NoiseFigureConverterPowerValue DefaultNoiseFigureConverterPowerValues;
+        public MixerSweepValue DefaultMixerSweepValue;
 
 
         public PNAX()
@@ -90,6 +91,7 @@ namespace OpenTap.Plugins.PNAX
             UpdateCompressionValues();
             UpdateConverterFrequencyValues();
             UpdateConverterPowerValues();
+            UpdateMixerSweepDefaultValues();
         }
 
         public int GetNewTraceID()
