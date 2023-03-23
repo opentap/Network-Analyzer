@@ -29,7 +29,10 @@ namespace OpenTap.Plugins.PNAX
         public TonePowerValues DefaultTonePowerValues;
         public ConverterCompressionValues DefaultConverterCompressionValues;
         public ConverterFrequencyValues DefaultConverterFrequencyValues;
-        public ConverterPowerValues DefaultConverterPowerValues;
+        public MixerConverterPowerValue DefaultMixerConverterPowerValues;
+        public ScalarMixerConverterPowerValue DefaultScalarMixerConverterPowerValues;
+        public NoiseFigureConverterPowerValue DefaultNoiseFigureConverterPowerValues;
+
 
         public PNAX()
         {

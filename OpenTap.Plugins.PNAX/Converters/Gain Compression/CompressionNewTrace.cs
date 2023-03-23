@@ -16,29 +16,16 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowChildrenOfType(typeof(CompressionSingleTrace))]
     [Display("Compression Traces", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class GainCompressionNewTrace : ConverterCompressionBaseStep
+    public class GainCompressionNewTrace : ConverterNewTraceBaseStep
     {
         #region Settings
-
-        private CompressionTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-        public CompressionTraceEnum Meas
-        {
-            get
-            {
-                return _Meas;
-            }
-            set
-            {
-                _Meas = value;
-            }
-        }
+        public CompressionTraceEnum Meas { get; set; }
 
         #endregion
 
         public GainCompressionNewTrace()
         {
-            // ToDo: Set default values for properties / settings.
         }
 
         public override void Run()
@@ -55,19 +42,15 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-
-        [Browsable(true)]
-        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 10)]
-        [Layout(LayoutMode.FullRow)]
-        public void AddNewTrace()
+        protected override void AddNewTrace()
         {
-            CompressionTraceEnum compressionTrace;
-            if (Enum.TryParse<CompressionTraceEnum>(Meas.ToString(), out compressionTrace))
-            {
-                this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = compressionTrace, Channel = this.Channel });
-            }
+            this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = this.Meas, Channel = this.Channel });
 
-
+            //CompressionTraceEnum compressionTrace;
+            //if (Enum.TryParse<CompressionTraceEnum>(Meas.ToString(), out compressionTrace))
+            //{
+            //    this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = compressionTrace, Channel = this.Channel });
+            //}
         }
 
     }

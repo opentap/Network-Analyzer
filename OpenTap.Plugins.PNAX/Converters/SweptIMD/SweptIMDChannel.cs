@@ -49,7 +49,7 @@ namespace OpenTap.Plugins.PNAX
             ToneFrequency frequency = new ToneFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Traces
-            SweptIMDNewTrace sweptIMDNewTrace = new SweptIMDNewTrace();
+            SweptIMDNewTrace sweptIMDNewTrace = new SweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);

@@ -51,37 +51,15 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowChildrenOfType(typeof(SweptIMDSingleTrace))]
     [Display("Swept IMD Traces", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
-    public class SweptIMDNewTrace : ConverterCompressionBaseStep
+    public class SweptIMDNewTrace : ConverterNewTraceBaseStep
     {
         #region Settings
-
-        private int _Channel;
-        public override int Channel
-        {
-            get
-            {
-                try
-                {
-                    _Channel = GetParent<SweptIMDChannel>().Channel;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex.Message);
-                }
-
-                return _Channel;
-            }
-        }
-
 
         private IMDTraceTypeEnum _IMDTraceType;
         [Display("Type", Groups: new[] { "Trace" }, Order: 1)]
         public IMDTraceTypeEnum IMDTraceType
         {
-            get
-            {
-                return _IMDTraceType;
-            }
+            get { return _IMDTraceType; }
             set
             {
                 _IMDTraceType = value;
@@ -161,16 +139,16 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public String ParamName { get; set; }
+        public string ParamName { get; set; }
 
         #endregion
 
         private void UpdateTestName()
         {
-            String TypeString = "";
-            String OrderString = "";
-            String MeasAtString = "";
-            String ToneString = "";
+            string TypeString = "";
+            string OrderString = "";
+            string MeasAtString = "";
+            string ToneString = "";
 
             if (IMDMeasureAt == IMDMeasureAtEnum.DUTIN)
             {
@@ -294,24 +272,13 @@ namespace OpenTap.Plugins.PNAX
             UpdateTestName();
         }
 
-        [Browsable(false)]
-        public bool EnableButton { get; set; }
-
-
-
-        [Browsable(true)]
-        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 10)]
-        [Layout(LayoutMode.FullRow)]
-        [EnabledIf("EnableButton", true, HideIfDisabled = false)]
-        public void AddNewTrace()
+        protected override void AddNewTrace()
         {
             SweptIMDTraceEnum sweptIMD;
             if (Enum.TryParse<SweptIMDTraceEnum>(ParamName, out sweptIMD))
             {
                 this.ChildTestSteps.Add(new SweptIMDSingleTrace() { Meas = sweptIMD, Channel = this.Channel });
             }
-
-
         }
 
         public override void Run()

@@ -32,9 +32,9 @@ namespace OpenTap.Plugins.PNAX
                 _channel = value;
                 foreach (var a in this.ChildTestSteps)
                 {
-                    if (a is ConverterCompressionBaseStep)
+                    if (a is ConverterBaseStep)
                     {
-                        (a as ConverterCompressionBaseStep).Channel = value;
+                        (a as ConverterBaseStep).Channel = value;
                     }
                 }
             }
@@ -54,9 +54,9 @@ namespace OpenTap.Plugins.PNAX
                 // Update children
                 foreach(var a in this.ChildTestSteps)
                 {
-                    if (a is ConverterCompressionBaseStep)
+                    if (a is ConverterBaseStep)
                     {
-                        (a as ConverterCompressionBaseStep).ConverterStages = _ConverterStagesEnum;
+                        (a as ConverterBaseStep).ConverterStages = _ConverterStagesEnum;
                     }
                 }
             }

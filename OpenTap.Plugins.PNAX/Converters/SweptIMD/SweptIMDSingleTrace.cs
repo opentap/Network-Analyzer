@@ -258,32 +258,14 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowAsChildIn(typeof(SweptIMDNewTrace))]
     [Display("Swept IMD Single Trace", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
-    public class SweptIMDSingleTrace : ConverterCompressionBaseStep
+    public class SweptIMDSingleTrace : ConverterSingleTraceBaseStep
     {
         #region Settings
-        private String _Trace;
-        [Display("Trace", Groups: new[] { "Trace"}, Order: 10)]
-        public String Trace 
-        {
-            get
-            {
-                return _Trace;
-            }
-            set
-            {
-                _Trace = value;
-                //UpdateTestName();
-            } 
-        }
-
         private SweptIMDTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public SweptIMDTraceEnum Meas
         {
-            get
-            {
-                return _Meas;
-            }
+            get { return _Meas; }
             set
             {
                 _Meas = value;
@@ -295,61 +277,10 @@ namespace OpenTap.Plugins.PNAX
         [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
         public TraceManagerChannelClassEnum Class
         {
-            get
-            {
-                return _Class;
-            }
+            get { return _Class; }
             set
             {
                 _Class = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Channel;
-        [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
-        public override int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Window;
-        [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public int Window
-        {
-            get
-            {
-                return _Window;
-            }
-            set
-            {
-                _Window = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Sheet;
-        [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-        public int Sheet
-        {
-            get
-            {
-                return _Sheet;
-            }
-            set
-            {
-                _Sheet = value;
                 UpdateTestName();
             }
         }
@@ -367,7 +298,7 @@ namespace OpenTap.Plugins.PNAX
             Sheet = 1;
         }
 
-        private void UpdateTestName()
+        protected override void UpdateTestName()
         {
             this.Trace = $"CH{Channel.ToString()}_{Meas}";
             this.Name = $"CH{Channel.ToString()}_{Meas}";

@@ -37,86 +37,20 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(GainCompressionNewTrace))]
     [Display("Compression Single Trace", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class CompressionSingleTrace : ConverterCompressionBaseStep
+    public class CompressionSingleTrace : ConverterSingleTraceBaseStep
     {
         #region Settings
-        private String _Trace;
-        [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
-        public String Trace
-        {
-            get
-            {
-                return _Trace;
-            }
-            set
-            {
-                _Trace = value;
-                //UpdateTestName();
-            }
-        }
-
         private CompressionTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public CompressionTraceEnum Meas
         {
-            get
-            {
-                return _Meas;
-            }
+            get { return _Meas; }
             set
             {
                 _Meas = value;
                 UpdateTestName();
             }
         }
-
-        private int _Channel;
-        [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
-        public override int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Window;
-        [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public int Window
-        {
-            get
-            {
-                return _Window;
-            }
-            set
-            {
-                _Window = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Sheet;
-        [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-        public int Sheet
-        {
-            get
-            {
-                return _Sheet;
-            }
-            set
-            {
-                _Sheet = value;
-                UpdateTestName();
-            }
-        }
-
 
         #endregion
 
@@ -129,7 +63,7 @@ namespace OpenTap.Plugins.PNAX
             Sheet = 1;
         }
 
-        private void UpdateTestName()
+        protected override void UpdateTestName()
         {
             this.Trace = $"CH{Channel}_{Meas}";
             this.Name = $"CH{Channel}_{Meas}";

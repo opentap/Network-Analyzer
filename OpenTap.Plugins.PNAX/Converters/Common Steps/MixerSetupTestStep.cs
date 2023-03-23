@@ -25,8 +25,10 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(SweptIMDChannel))]
+    [AllowAsChildIn(typeof(NoiseFigureChannel))]
+    [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Setup", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert description here", Order: 1)]
-    public class MixerSetupTestStep : ConverterCompressionBaseStep
+    public class MixerSetupTestStep : ConverterBaseStep
     {
         #region Settings
         [Display("Port", Group: "Input Port", Order: 30)]

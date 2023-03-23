@@ -13,16 +13,15 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Gain Compression Channel", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
-    public class GainCompressionChannel : ConverterChannelBase
+    [Display("Noise Figure Channel", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
+    public class NoiseFigureChannel : ConverterChannelBase
     {
         #region Settings
+        // ToDo: Add property here for each parameter the end user should be able to change
         #endregion
 
-        public GainCompressionChannel()
+        public NoiseFigureChannel()
         {
-            // Add child steps in the order that is required
-
             // Mixer Setup
             MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Mixer Power
@@ -31,36 +30,32 @@ namespace OpenTap.Plugins.PNAX
             MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Compression
-            Compression compression = new Compression { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigure noiseFigure = new NoiseFigure { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Power
-            MixerConverterPowerStep power = new MixerConverterPowerStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigurePower power = new NoiseFigurePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Frequency
-            GainCompressionFrequency frequency = new GainCompressionFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureFrequency frequency = new NoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
-            // Traces
-            GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            // Traces TODO
+            NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);
             this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(compression);
+            this.ChildTestSteps.Add(noiseFigure);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(frequency);
-            this.ChildTestSteps.Add(gainCompressionNewTrace);
+            this.ChildTestSteps.Add(noiseFigureNewTrace);
         }
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID();
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
-
+            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            UpgradeVerdict(Verdict.Pass);
+            // UpgradeVerdict(Verdict.Pass);
         }
     }
 }
