@@ -35,9 +35,9 @@ namespace OpenTap.Plugins.PNAX
         SpecifyPoint
     }
 
-    [AllowAsChildIn(typeof(ScalerMixerChannel))]
+    [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Scaler Mixer Sweep", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalerMixerSweep : ConverterBaseStep
+    public class ScalarMixerSweep : ConverterBaseStep
     {
         #region Settings
         private ScalerMixerSweepType _sweepType;
@@ -126,7 +126,7 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-        public ScalerMixerSweep()
+        public ScalarMixerSweep()
         {
             // ToDo: Set default values for properties / settings.
         }

@@ -24,7 +24,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [AllowAsChildIn(typeof(ScalerMixerChannel))]
+    [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Power", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert a description here", Order: 2)]
     public class MixerPowerTestStep : ConverterBaseStep
     {

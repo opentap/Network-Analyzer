@@ -14,13 +14,13 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Scaler Mixer Channel", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalerMixerChannel : ConverterChannelBase
+    public class ScalarMixerChannel : ConverterChannelBase
     {
         #region Settings
         // ToDo: Add property here for each parameter the end user should be able to change
         #endregion
 
-        public ScalerMixerChannel()
+        public ScalarMixerChannel()
         {
             // Mixer Setup
             MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
@@ -30,19 +30,19 @@ namespace OpenTap.Plugins.PNAX
             MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Compression
-            ScalerMixerSweep scalerMixerSweep = new ScalerMixerSweep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerSweep scalerMixerSweep = new ScalarMixerSweep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Power
-            ScalerMixerPower power = new ScalerMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerPower power = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Traces TODO
-            //GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);
             this.ChildTestSteps.Add(mixerFrequencyTestStep);
             this.ChildTestSteps.Add(scalerMixerSweep);
             this.ChildTestSteps.Add(power);
-            //this.ChildTestSteps.Add(gainCompressionNewTrace);
+            this.ChildTestSteps.Add(scalarMixerNewTrace);
         }
 
         public override void Run()

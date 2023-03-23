@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
             NoiseFigureFrequency frequency = new NoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Traces TODO
-            //GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);
@@ -45,7 +45,7 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(noiseFigure);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(frequency);
-            //this.ChildTestSteps.Add(gainCompressionNewTrace);
+            this.ChildTestSteps.Add(noiseFigureNewTrace);
         }
 
         public override void Run()

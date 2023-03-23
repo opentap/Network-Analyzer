@@ -13,9 +13,9 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(ScalerMixerChannel))]
+    [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Scaler Mixer Power", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalerMixerPower : PowerBaseStep
+    public class ScalarMixerPower : PowerBaseStep
     {
         #region Settings
         [Browsable(false)]
@@ -70,7 +70,7 @@ namespace OpenTap.Plugins.PNAX
         public double OutputPowerSweepStopPower { get; set; }
         #endregion
 
-        public ScalerMixerPower()
+        public ScalarMixerPower()
         {
             HasPortPowersCoupled = true;
             HasAutoInputPort = true;
