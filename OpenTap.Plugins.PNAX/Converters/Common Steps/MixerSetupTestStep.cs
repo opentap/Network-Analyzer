@@ -71,41 +71,34 @@ namespace OpenTap.Plugins.PNAX
         [Display("Tuning Method", Group: "Embedded LO", Order: 71)]
         public TuningMethodEnum TuningMethod { get; set; }
 
-        private TuningPointTypeEnum _TuningPointType;
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point Type", Group: "Embedded LO", Order: 72)]
-        public TuningPointTypeEnum TuningPointType
-        {
-            get
-            { 
-                return _TuningPointType; 
-            }
-            set
-            { 
-                _TuningPointType = value;
+        public TuningPointTypeEnum TuningPointType { get; set; }
 
-                // TODO need to read Sweep Number of Points
-                // so we can update last point and middle point
-                //switch (_TuningPointType)
-                //{
-                //    case TuningPointTypeEnum.FirstPoint:
-                //        TuningPoint = 1;
-                //        break;
-                //    case TuningPointTypeEnum.LastPoint:
-
-                //        break;
-                //    case TuningPointTypeEnum.MiddlePoint:
-                //        break;
-                //    case TuningPointTypeEnum.Custom:
-                //        break;
-                //}
-                // TODO
-            }
-        }
-
+        // TODO: FIgure out those numbers
+        private int _tuningPoint;
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point", Group: "Embedded LO", Order: 73)]
-        public int TuningPoint { get; set; }
+        public int TuningPoint 
+        {
+            get
+            {
+                switch (TuningPointType)
+                {
+                    case TuningPointTypeEnum.FirstPoint:
+                        return 1;
+                    case TuningPointTypeEnum.MiddlePoint:
+                        return 2;
+                    case TuningPointTypeEnum.LastPoint:
+                        return 3;
+                    case TuningPointTypeEnum.Custom:
+                        return _tuningPoint;
+                    default:
+                        return _tuningPoint;
+                }
+            }
+            set { _tuningPoint = value; }
+        }
 
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tune Every", Group: "Embedded LO", Order: 74)]
@@ -177,7 +170,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             PNAX.SetConverterStages(Channel, ConverterStages);
