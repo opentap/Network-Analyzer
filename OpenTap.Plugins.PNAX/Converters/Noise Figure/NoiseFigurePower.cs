@@ -80,12 +80,27 @@ namespace OpenTap.Plugins.PNAX
         }
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
+            PNAX.SetNFCoupledTonePowers(Channel, PortPowersCoupled);
+
+            PNAX.SetNFPortInputOutput(Channel, PortInput, PortOutput);
+
+            PNAX.SetNFPowerLevel(Channel, PortInput, InputPower);
+            PNAX.SetSourceAttenuator(Channel, (int)PortInput, InputPortSourceAttenuator);
+            PNAX.SetReceiverAttenuator(Channel, (int)PortInput, InputPortReceiverAttenuator);
+            PNAX.SetSourceLevelingMode(Channel, PortInput, InputSourceLevelingMode);
+            PNAX.SetSourceAttenuatorAutoMode(Channel, PortInput, AutoInputPortSourceAttenuator);
+
+
+            PNAX.SetNFPowerLevel(Channel, PortOutput, OutputPower);
+            PNAX.SetSourceAttenuator(Channel, (int)PortOutput, OutputPortSourceAttenuator);
+            PNAX.SetReceiverAttenuator(Channel, (int)PortOutput, OutputPortReceiverAttenuator);
+            PNAX.SetSourceLevelingMode(Channel, PortOutput, OutputSourceLevelingMode);
+            PNAX.SetSourceAttenuatorAutoMode(Channel, PortOutput, AutoOutputPortSourceAttenuator);
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

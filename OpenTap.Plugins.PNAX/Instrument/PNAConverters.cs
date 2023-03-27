@@ -274,6 +274,20 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SOURce{ Channel }:POWer{strPort}:ALC:MODE {mode}");
         }
 
+        public void SetSourceLevelingMode(int Channel, PortsEnum port, InputSourceLevelingModeEnum mode)
+        {
+            string strPort = Scpi.Format("{0}", port);
+            string strMode = Scpi.Format("{0}", mode);
+            ScpiCommand($"SOURce{ Channel }:POWer{strPort}:ALC:MODE {strMode}");
+        }
+
+        public void SetSourceLevelingMode(int Channel, PortsEnum port, OutputSourceLevelingModeEnum mode)
+        {
+            string strPort = Scpi.Format("{0}", port);
+            string strMode = Scpi.Format("{0}", mode);
+            ScpiCommand($"SOURce{ Channel }:POWer{strPort}:ALC:MODE {strMode}");
+        }
+
         public string GetSourceLevelingModes(int Channel, int port)
         {
             return ScpiQuery($"SOURce{ Channel }:POWer{ port }:ALC:MODE:CATalog?");

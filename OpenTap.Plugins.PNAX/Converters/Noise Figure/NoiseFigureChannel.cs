@@ -50,12 +50,16 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
+            int traceid = PNAX.GetNewTraceID();
+            // Define a dummy measurement so we can setup all channel parameters
+            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_NF_1\',\'Noise Figure Converters\',\'NF\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
