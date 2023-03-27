@@ -18,22 +18,33 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigureNewTrace : ConverterNewTraceBaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
+        [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
+        public NoiseFigureTraceEnum Meas { get; set; }
         #endregion
 
         public NoiseFigureNewTrace()
         {
-            // ToDo: Set default values for properties / settings.
+            Meas = NoiseFigureTraceEnum.NF;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
+            // Delete dummy trace defined during channel setup
+            // DISPlay:MEASure<mnum>:DELete?
+            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_NF_1\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
+
+        protected override void AddNewTrace()
+        {
+            this.ChildTestSteps.Add(new NoiseFigureSingleTrace() { Meas = this.Meas, Channel = this.Channel });
+        }
+
     }
 }

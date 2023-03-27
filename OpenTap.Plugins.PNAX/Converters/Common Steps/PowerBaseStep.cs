@@ -15,7 +15,9 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum InputSourceLevelingModeEnum
     {
+        [Scpi("INT")]
         Internal,
+        [Scpi("OPEN")]
         OpenLoop,
         ReceiverR1
     }
