@@ -26,7 +26,6 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
         [Display("X-Axis Annotation", Order: 1)]
         public XAxisAnnotation XAxisAnnotation { get; set; }
         #endregion
@@ -53,12 +52,27 @@ namespace OpenTap.Plugins.PNAX
         }
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetSweepType(Channel, SweepType);
+
+            PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
+            PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
+
+            if (SweepType == SweepTypeEnum.LinearSweep)
+            {
+                PNAX.SetStart(Channel, SweepSettingsStart);
+                PNAX.SetStop(Channel, SweepSettingsStop);
+                PNAX.SetCenter(Channel, SweepSettingsCenter);
+                PNAX.SetSpan(Channel, SweepSettingsSpan);
+            }
+            else if (SweepType == SweepTypeEnum.CWFrequency)
+            {
+                PNAX.SetCWFreq(Channel, SweepSettingsFixed);
+            }
+
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
