@@ -45,9 +45,7 @@ namespace OpenTap.Plugins.PNAX
                 DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
             }
         }
-
         #endregion
-
 
 
         public ConverterBaseStep()

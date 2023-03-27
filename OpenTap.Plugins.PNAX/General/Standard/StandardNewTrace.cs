@@ -36,7 +36,6 @@ namespace OpenTap.Plugins.PNAX
 
         public StandardNewTrace()
         {
-            // ToDo: Set default values for properties / settings.
         }
 
         public override void Run()

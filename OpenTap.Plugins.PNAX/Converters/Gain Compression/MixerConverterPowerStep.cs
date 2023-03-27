@@ -18,7 +18,6 @@ namespace OpenTap.Plugins.PNAX
     public class MixerConverterPowerStep : PowerBaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
         private double _inputPower;
         [Display("Linear Input Power", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
@@ -55,7 +54,6 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerConverterPowerStep()
         {
-            // ToDo: Set default values for properties / settings.
             AutoInputPortSourceAttenuator = false;
             UpdateDefaultValues();
         }
