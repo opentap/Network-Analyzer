@@ -17,7 +17,6 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigureChannel : ConverterChannelBase
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
         #endregion
 
         public NoiseFigureChannel()
@@ -36,7 +35,7 @@ namespace OpenTap.Plugins.PNAX
             // Frequency
             NoiseFigureFrequency frequency = new NoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
-            // Traces TODO
+            // Trace
             NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
@@ -50,7 +49,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.

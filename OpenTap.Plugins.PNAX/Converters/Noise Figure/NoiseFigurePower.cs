@@ -61,7 +61,7 @@ namespace OpenTap.Plugins.PNAX
 
             PowerOnAllChannels = DefaultValues.PowerOnAllChannels;
             PortPowersCoupled  = DefaultValues.PortPowersCoupled;
-            // TODO Double check of this - sign
+
             InputPower                    = DefaultValues.InputPortLinearInputPower;
             AutoInputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
             InputPortSourceAttenuator     = DefaultValues.InputPortSourceAttenuator;
@@ -80,7 +80,6 @@ namespace OpenTap.Plugins.PNAX
         }
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.

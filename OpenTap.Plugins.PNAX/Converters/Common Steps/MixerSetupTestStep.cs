@@ -36,12 +36,56 @@ namespace OpenTap.Plugins.PNAX
         [Display("Port", Group: "Output Port", Order: 60)]
         public PortsEnum PortOutput { get; set; }
 
+        private LOEnum _portLO1;
         [Output]
         [Display("Port", Group: "LO1 Port", Order: 40)]
-        public LOEnum PortLO1 { get; set; }
+        public LOEnum PortLO1
+        {
+            get { return _portLO1; }
+            set
+            {
+                _portLO1 = value;
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type SweptIMDChannel
+                    if (a != null)
+                    {
+                        a.PortLO1 = value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+            }
+        }
+
+        private LOEnum _portLO2;
+
         [Display("Port", Group: "LO2 Port", Order: 50)]
         [EnabledIf("DoubleStage", true ,HideIfDisabled =true)]
-        public LOEnum PortLO2 { get; set; }
+        public LOEnum PortLO2
+        {
+            get { return _portLO2; }
+            set
+            {
+                _portLO2 = value;
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type SweptIMDChannel
+                    if (a != null)
+                    {
+                        a.PortLO2 = value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+            }
+        }
 
         [Display("Fractional Multiplier Numerator", Group: "Input Port", Order: 31)]
         public int InputFractionalMultiplierNumerator { get; set; }

@@ -26,14 +26,12 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
         [Display("X-Axis Annotation", Order: 1)]
         public XAxisAnnotation XAxisAnnotation { get; set; }
         #endregion
 
         public NoiseFigureFrequency()
         {
-            // ToDo: Set default values for properties / settings.
             UpdateDefaultValues();
         }
 
@@ -53,7 +51,6 @@ namespace OpenTap.Plugins.PNAX
         }
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.

@@ -38,7 +38,6 @@ namespace OpenTap.Plugins.PNAX
         public PNAX()
         {
             Name = "PNA-X";
-            // ToDo: Set default values for properties / settings.
         }
 
         /// <summary>

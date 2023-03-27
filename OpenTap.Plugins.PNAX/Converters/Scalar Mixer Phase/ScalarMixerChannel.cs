@@ -17,7 +17,6 @@ namespace OpenTap.Plugins.PNAX
     public class ScalarMixerChannel : ConverterChannelBase
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
         #endregion
 
         public ScalarMixerChannel()
@@ -34,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
             // Power
             ScalarMixerPower power = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
-            // Traces TODO
+            // Traces
             ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             this.ChildTestSteps.Add(mixerSetupTestStep);
@@ -47,7 +46,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
