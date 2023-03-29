@@ -904,13 +904,13 @@ namespace OpenTap.Plugins.PNAX
             return DefaultMixerConverterPowerValues;
         }
 
-        }
-
         public NoiseFigureConverterValues GetNoiseFigureConverterDefaultValues()
         {
             if (DefaultNoiseFigureConverterValues == null)
                 return NoiseFigureConverterValues.GetPresetValues();
             return DefaultNoiseFigureConverterValues;
+
+        }
         private void UpdateMixerConverterPowerValues()
         {
             if (DefaultMixerConverterPowerValues == null)
