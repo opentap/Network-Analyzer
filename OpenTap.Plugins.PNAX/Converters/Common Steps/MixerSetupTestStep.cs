@@ -31,6 +31,33 @@ namespace OpenTap.Plugins.PNAX
     public class MixerSetupTestStep : ConverterBaseStep
     {
         #region Settings
+        private ConverterStagesEnum _ConverterStagesEnum;
+        [Display("Converter Stages", Order: 10)]
+        public override ConverterStagesEnum ConverterStages
+        {
+            get
+            {
+                return _ConverterStagesEnum;
+            }
+            set
+            {
+                _ConverterStagesEnum = value;
+                DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    if (a != null)
+                    {
+                        a.ConverterStages = value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+            }
+        }
+
         [Display("Port", Group: "Input Port", Order: 30)]
         public PortsEnum PortInput { get; set;}
         [Display("Port", Group: "Output Port", Order: 60)]
@@ -179,7 +206,7 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerSetupTestStep()
         {
-
+            IsChildEditable = true;
             UpdateDefaultValues();
             // TODO
             // Add rule to indicate PortInput has to be different than PortOutput

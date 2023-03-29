@@ -51,14 +51,18 @@ namespace OpenTap.Plugins.PNAX
             {
                 _ConverterStagesEnum = value;
 
-                // Update children
-                foreach(var a in this.ChildTestSteps)
+                if (this.ChildTestSteps != null)
                 {
-                    if (a is ConverterBaseStep)
+                    // Update children
+                    foreach (var a in this.ChildTestSteps)
                     {
-                        (a as ConverterBaseStep).ConverterStages = _ConverterStagesEnum;
+                        if (a is ConverterBaseStep && !(a is MixerSetupTestStep) )
+                        {
+                            (a as ConverterBaseStep).ConverterStages = _ConverterStagesEnum;
+                        }
                     }
                 }
+
             }
         }
 

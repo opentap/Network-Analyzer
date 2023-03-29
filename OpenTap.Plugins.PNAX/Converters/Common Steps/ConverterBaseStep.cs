@@ -30,10 +30,12 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool DoubleStage { get; set; }
 
-        protected ConverterStagesEnum _ConverterStagesEnum;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Browsable(false)]
+        public bool IsChildEditable { get; set; } = false;
+        private ConverterStagesEnum _ConverterStagesEnum;
+        [EnabledIf("IsChildEditable", true, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 10)]
-        public ConverterStagesEnum ConverterStages
+        public virtual ConverterStagesEnum ConverterStages
         {
             get
             {
