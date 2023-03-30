@@ -595,6 +595,28 @@ namespace OpenTap.Plugins.PNAX
 
     }
 
+    public class MixerSweepValue
+    {
+        public ScalerMixerSweepType SweepType;
+        public bool IsXAxisPointSpacing;
+        public bool IsReversedPortTwoCoupler;
+        public bool IsAvoidSpurs;
+        public int NumberOfPoints;
+        public double IFBandwidth;
+ 
+        public static MixerSweepValue GetPresetValues()
+        {
+            MixerSweepValue mixerSweepValue = new MixerSweepValue();
+            mixerSweepValue.SweepType = ScalerMixerSweepType.LinearFrequency;
+            mixerSweepValue.IsXAxisPointSpacing = false;
+            mixerSweepValue.IsReversedPortTwoCoupler = false;
+            mixerSweepValue.IsAvoidSpurs = false;
+            mixerSweepValue.NumberOfPoints = 201;
+            mixerSweepValue.IFBandwidth = 10;
+            return mixerSweepValue;
+        }
+    }
+
 
     public partial class PNAX : ScpiInstrument
     {
@@ -882,6 +904,37 @@ namespace OpenTap.Plugins.PNAX
             return DefaultMixerConverterPowerValues;
         }
 
+        public NoiseFigureConverterValues GetNoiseFigureConverterDefaultValues()
+        {
+            if (DefaultNoiseFigureConverterValues == null)
+                return NoiseFigureConverterValues.GetPresetValues();
+            return DefaultNoiseFigureConverterValues;
+
+        }
+        private void UpdateMixerConverterPowerValues()
+        {
+            if (DefaultMixerConverterPowerValues == null)
+                DefaultMixerConverterPowerValues = new MixerConverterPowerValue();
+
+            DefaultMixerConverterPowerValues.PowerOnAllChannels = true;
+
+            DefaultMixerConverterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            DefaultMixerConverterPowerValues.InputPortLinearInputPower = -25;
+            DefaultMixerConverterPowerValues.InputPortSourceAttenuator = 0;
+            DefaultMixerConverterPowerValues.InputPortReceiverAttenuator = 0;
+
+            DefaultMixerConverterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            DefaultMixerConverterPowerValues.OutputPortReversePower = -5;
+            DefaultMixerConverterPowerValues.AutoOutputPortSourceAttenuator = false;
+            DefaultMixerConverterPowerValues.OutputPortSourceAttenuator = 0;
+            DefaultMixerConverterPowerValues.OutputPortReceiverAttenuator = 0;
+
+            DefaultMixerConverterPowerValues.PowerSweepStartPower = -25;
+            DefaultMixerConverterPowerValues.PowerSweepStopPower = -5;
+            DefaultMixerConverterPowerValues.PowerSweepPowerPoints = 21;
+            DefaultMixerConverterPowerValues.PowerSweepPowerStep = 1;
+        }
+
         public ScalarMixerConverterPowerValue GetScalarMixerConverterPowerDefaultValues()
         {
             if (DefaultScalarMixerConverterPowerValues == null)
@@ -889,11 +942,32 @@ namespace OpenTap.Plugins.PNAX
             return DefaultScalarMixerConverterPowerValues;
         }
 
-        public NoiseFigureConverterValues GetNoiseFigureConverterDefaultValues()
+        private void UpdateScalarMixerConverterPowerValues()
         {
-            if (DefaultNoiseFigureConverterValues == null)
-                return NoiseFigureConverterValues.GetPresetValues();
-            return DefaultNoiseFigureConverterValues;
+            if (DefaultScalarMixerConverterPowerValues == null)
+                DefaultScalarMixerConverterPowerValues = new ScalarMixerConverterPowerValue();
+
+            DefaultScalarMixerConverterPowerValues.PowerOnAllChannels = true;
+            DefaultScalarMixerConverterPowerValues.PortPowersCoupled = true;
+
+            DefaultScalarMixerConverterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            DefaultScalarMixerConverterPowerValues.InputPortLinearInputPower = -15;
+            DefaultScalarMixerConverterPowerValues.AutoInputPortSourceAttenuator = true;
+            DefaultScalarMixerConverterPowerValues.InputPortSourceAttenuator = 0;
+            DefaultScalarMixerConverterPowerValues.InputPortReceiverAttenuator = 0;
+
+            DefaultScalarMixerConverterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            DefaultScalarMixerConverterPowerValues.OutputPortReversePower = -15;
+            DefaultScalarMixerConverterPowerValues.AutoOutputPortSourceAttenuator = true;
+            DefaultScalarMixerConverterPowerValues.OutputPortSourceAttenuator = 0;
+            DefaultScalarMixerConverterPowerValues.OutputPortReceiverAttenuator = 0;
+
+            DefaultScalarMixerConverterPowerValues.InputPowerSweepStartPower = -15;
+            DefaultScalarMixerConverterPowerValues.InputPowerSweepStopPower = -15;
+            DefaultScalarMixerConverterPowerValues.InputPowerSweepPowerPoints = 201;
+            DefaultScalarMixerConverterPowerValues.InputPowerSweepPowerStep = 0;
+            DefaultScalarMixerConverterPowerValues.OutputPowerSweepStartPower = -15;
+            DefaultScalarMixerConverterPowerValues.OutputPowerSweepStopPower = -15;
         }
 
         public NoiseFigureConverterPowerValue GetNoiseFigureConverterPowerDefaultValues()
@@ -910,77 +984,46 @@ namespace OpenTap.Plugins.PNAX
             UpdateNoiseFigureConverterPowerValues();
         }
 
-        private void UpdateMixerConverterPowerValues()
-        {
-            if (DefaultMixerConverterPowerValues == null)
-                DefaultMixerConverterPowerValues = new MixerConverterPowerValue();
-
-            DefaultMixerConverterPowerValues.PowerOnAllChannels = true;
-
-            DefaultMixerConverterPowerValues.InputSourceLevelingMode     = InputSourceLevelingModeEnum.Internal;
-            DefaultMixerConverterPowerValues.InputPortLinearInputPower   = -25;
-            DefaultMixerConverterPowerValues.InputPortSourceAttenuator   = 0;
-            DefaultMixerConverterPowerValues.InputPortReceiverAttenuator = 0;
-
-            DefaultMixerConverterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
-            DefaultMixerConverterPowerValues.OutputPortReversePower         = -5;
-            DefaultMixerConverterPowerValues.AutoOutputPortSourceAttenuator = false;
-            DefaultMixerConverterPowerValues.OutputPortSourceAttenuator     = 0;
-            DefaultMixerConverterPowerValues.OutputPortReceiverAttenuator   = 0;
-
-            DefaultMixerConverterPowerValues.PowerSweepStartPower  = -25;
-            DefaultMixerConverterPowerValues.PowerSweepStopPower   = -5;
-            DefaultMixerConverterPowerValues.PowerSweepPowerPoints = 21;
-            DefaultMixerConverterPowerValues.PowerSweepPowerStep   = 1;
-        }
-
-        private void UpdateScalarMixerConverterPowerValues()
-        {
-            if (DefaultScalarMixerConverterPowerValues == null)
-                DefaultScalarMixerConverterPowerValues = new ScalarMixerConverterPowerValue();
-
-            DefaultScalarMixerConverterPowerValues.PowerOnAllChannels = true;
-            DefaultScalarMixerConverterPowerValues.PortPowersCoupled  = true;
-
-            DefaultScalarMixerConverterPowerValues.InputSourceLevelingMode       = InputSourceLevelingModeEnum.Internal;
-            DefaultScalarMixerConverterPowerValues.InputPortLinearInputPower     = -15;
-            DefaultScalarMixerConverterPowerValues.AutoInputPortSourceAttenuator = true;
-            DefaultScalarMixerConverterPowerValues.InputPortSourceAttenuator     = 0;
-            DefaultScalarMixerConverterPowerValues.InputPortReceiverAttenuator   = 0;
-
-            DefaultScalarMixerConverterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
-            DefaultScalarMixerConverterPowerValues.OutputPortReversePower         = -15;
-            DefaultScalarMixerConverterPowerValues.AutoOutputPortSourceAttenuator = true;
-            DefaultScalarMixerConverterPowerValues.OutputPortSourceAttenuator     = 0;
-            DefaultScalarMixerConverterPowerValues.OutputPortReceiverAttenuator   = 0;
-
-            DefaultScalarMixerConverterPowerValues.InputPowerSweepStartPower  = -15;
-            DefaultScalarMixerConverterPowerValues.InputPowerSweepStopPower   = -15;
-            DefaultScalarMixerConverterPowerValues.InputPowerSweepPowerPoints = 201;
-            DefaultScalarMixerConverterPowerValues.InputPowerSweepPowerStep   = 0;
-            DefaultScalarMixerConverterPowerValues.OutputPowerSweepStartPower = -15;
-            DefaultScalarMixerConverterPowerValues.OutputPowerSweepStopPower  = -15;
-        }
-
         private void UpdateNoiseFigureConverterPowerValues()
         {
             if (DefaultNoiseFigureConverterPowerValues == null)
                 DefaultNoiseFigureConverterPowerValues = new NoiseFigureConverterPowerValue();
 
             DefaultNoiseFigureConverterPowerValues.PowerOnAllChannels = true;
-            DefaultNoiseFigureConverterPowerValues.PortPowersCoupled  = true;
+            DefaultNoiseFigureConverterPowerValues.PortPowersCoupled = true;
 
-            DefaultNoiseFigureConverterPowerValues.InputSourceLevelingMode       = InputSourceLevelingModeEnum.Internal;
-            DefaultNoiseFigureConverterPowerValues.InputPortLinearInputPower     = -30;
+            DefaultNoiseFigureConverterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            DefaultNoiseFigureConverterPowerValues.InputPortLinearInputPower = -30;
             DefaultNoiseFigureConverterPowerValues.AutoInputPortSourceAttenuator = false;
-            DefaultNoiseFigureConverterPowerValues.InputPortSourceAttenuator     = 20;
-            DefaultNoiseFigureConverterPowerValues.InputPortReceiverAttenuator   = 0;
+            DefaultNoiseFigureConverterPowerValues.InputPortSourceAttenuator = 20;
+            DefaultNoiseFigureConverterPowerValues.InputPortReceiverAttenuator = 0;
 
-            DefaultNoiseFigureConverterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
-            DefaultNoiseFigureConverterPowerValues.OutputPortReversePower         = -20;
+            DefaultNoiseFigureConverterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            DefaultNoiseFigureConverterPowerValues.OutputPortReversePower = -20;
             DefaultNoiseFigureConverterPowerValues.AutoOutputPortSourceAttenuator = false;
-            DefaultNoiseFigureConverterPowerValues.OutputPortSourceAttenuator     = 20;
-            DefaultNoiseFigureConverterPowerValues.OutputPortReceiverAttenuator   = 0;
+            DefaultNoiseFigureConverterPowerValues.OutputPortSourceAttenuator = 20;
+            DefaultNoiseFigureConverterPowerValues.OutputPortReceiverAttenuator = 0;
         }
+
+        public MixerSweepValue GetMixerSweepDefaultValues()
+        {
+            if (DefaultMixerSweepValue == null)
+                return MixerSweepValue.GetPresetValues();
+            return DefaultMixerSweepValue;
+        }
+
+        private void UpdateMixerSweepDefaultValues()
+        {
+            if (DefaultMixerSweepValue == null)
+                DefaultMixerSweepValue = new MixerSweepValue();
+
+            DefaultMixerSweepValue.SweepType = ScalerMixerSweepType.LinearFrequency;
+            DefaultMixerSweepValue.IsXAxisPointSpacing = false;
+            DefaultMixerSweepValue.IsReversedPortTwoCoupler = false;
+            DefaultMixerSweepValue.IsAvoidSpurs = false;
+            DefaultMixerSweepValue.NumberOfPoints = 201;
+            DefaultMixerSweepValue.IFBandwidth = 10;
+        }
+
     }
 }

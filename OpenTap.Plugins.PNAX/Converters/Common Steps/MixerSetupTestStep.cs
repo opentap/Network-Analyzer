@@ -31,17 +31,88 @@ namespace OpenTap.Plugins.PNAX
     public class MixerSetupTestStep : ConverterBaseStep
     {
         #region Settings
+        private ConverterStagesEnum _ConverterStagesEnum;
+        [Display("Converter Stages", Order: 10)]
+        public override ConverterStagesEnum ConverterStages
+        {
+            get
+            {
+                return _ConverterStagesEnum;
+            }
+            set
+            {
+                _ConverterStagesEnum = value;
+                DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    if (a != null)
+                    {
+                        a.ConverterStages = value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+            }
+        }
+
         [Display("Port", Group: "Input Port", Order: 30)]
         public PortsEnum PortInput { get; set;}
         [Display("Port", Group: "Output Port", Order: 60)]
         public PortsEnum PortOutput { get; set; }
 
+        private LOEnum _portLO1;
         [Output]
         [Display("Port", Group: "LO1 Port", Order: 40)]
-        public LOEnum PortLO1 { get; set; }
+        public LOEnum PortLO1
+        {
+            get { return _portLO1; }
+            set
+            {
+                _portLO1 = value;
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type SweptIMDChannel
+                    if (a != null)
+                    {
+                        a.PortLO1 = value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+            }
+        }
+
+        private LOEnum _portLO2;
+
         [Display("Port", Group: "LO2 Port", Order: 50)]
         [EnabledIf("DoubleStage", true ,HideIfDisabled =true)]
-        public LOEnum PortLO2 { get; set; }
+        public LOEnum PortLO2
+        {
+            get { return _portLO2; }
+            set
+            {
+                _portLO2 = value;
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type SweptIMDChannel
+                    if (a != null)
+                    {
+                        a.PortLO2 = value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+            }
+        }
 
         [Display("Fractional Multiplier Numerator", Group: "Input Port", Order: 31)]
         public int InputFractionalMultiplierNumerator { get; set; }
@@ -71,41 +142,34 @@ namespace OpenTap.Plugins.PNAX
         [Display("Tuning Method", Group: "Embedded LO", Order: 71)]
         public TuningMethodEnum TuningMethod { get; set; }
 
-        private TuningPointTypeEnum _TuningPointType;
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point Type", Group: "Embedded LO", Order: 72)]
-        public TuningPointTypeEnum TuningPointType
-        {
-            get
-            { 
-                return _TuningPointType; 
-            }
-            set
-            { 
-                _TuningPointType = value;
+        public TuningPointTypeEnum TuningPointType { get; set; }
 
-                // TODO need to read Sweep Number of Points
-                // so we can update last point and middle point
-                //switch (_TuningPointType)
-                //{
-                //    case TuningPointTypeEnum.FirstPoint:
-                //        TuningPoint = 1;
-                //        break;
-                //    case TuningPointTypeEnum.LastPoint:
-
-                //        break;
-                //    case TuningPointTypeEnum.MiddlePoint:
-                //        break;
-                //    case TuningPointTypeEnum.Custom:
-                //        break;
-                //}
-                // TODO
-            }
-        }
-
+        // TODO: FIgure out those numbers
+        private int _tuningPoint;
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point", Group: "Embedded LO", Order: 73)]
-        public int TuningPoint { get; set; }
+        public int TuningPoint 
+        {
+            get
+            {
+                switch (TuningPointType)
+                {
+                    case TuningPointTypeEnum.FirstPoint:
+                        return 1;
+                    case TuningPointTypeEnum.MiddlePoint:
+                        return 2;
+                    case TuningPointTypeEnum.LastPoint:
+                        return 3;
+                    case TuningPointTypeEnum.Custom:
+                        return _tuningPoint;
+                    default:
+                        return _tuningPoint;
+                }
+            }
+            set { _tuningPoint = value; }
+        }
 
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tune Every", Group: "Embedded LO", Order: 74)]
@@ -142,7 +206,7 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerSetupTestStep()
         {
-
+            IsChildEditable = true;
             UpdateDefaultValues();
             // TODO
             // Add rule to indicate PortInput has to be different than PortOutput
@@ -177,7 +241,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             PNAX.SetConverterStages(Channel, ConverterStages);

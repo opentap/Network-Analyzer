@@ -24,7 +24,6 @@ namespace OpenTap.Plugins.PNAX
 
         public GainCompressionFrequency()
         {
-            // ToDo: Set default values for properties / settings.
             UpdateDefaultValues();
         }
 

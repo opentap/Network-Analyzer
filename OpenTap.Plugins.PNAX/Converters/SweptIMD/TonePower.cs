@@ -61,14 +61,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _ToneFrequencySweepType = value;
-                if (_ToneFrequencySweepType == ToneFrequencySweepTypeEnum.PowerSweep)
-                {
-                    IsPowerSweep = true;
-                }
-                else
-                {
-                    IsPowerSweep = false;
-                }
+                IsPowerSweep = _ToneFrequencySweepType == ToneFrequencySweepTypeEnum.PowerSweep;
             } 
         }
 

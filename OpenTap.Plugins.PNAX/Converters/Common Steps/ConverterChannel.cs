@@ -51,20 +51,67 @@ namespace OpenTap.Plugins.PNAX
             {
                 _ConverterStagesEnum = value;
 
-                // Update children
-                foreach(var a in this.ChildTestSteps)
+                if (this.ChildTestSteps != null)
                 {
-                    if (a is ConverterBaseStep)
+                    // Update children
+                    foreach (var a in this.ChildTestSteps)
                     {
-                        (a as ConverterBaseStep).ConverterStages = _ConverterStagesEnum;
+                        if (a is ConverterBaseStep && !(a is MixerSetupTestStep) )
+                        {
+                            (a as ConverterBaseStep).ConverterStages = _ConverterStagesEnum;
+                        }
                     }
                 }
+
+            }
+        }
+
+        private LOEnum _portLO1;
+        [Browsable(false)]
+        public LOEnum PortLO1
+        {
+            get { return _portLO1; }
+            set
+            {
+                _portLO1 = value;
+                UpdateMixerPortLO1();
+            }
+        }
+        private LOEnum _portLO2;
+        [Browsable(false)]
+        public LOEnum PortLO2
+        {
+            get { return _portLO2; }
+            set
+            {
+                _portLO2 = value;
+                UpdateMixerPortLO2();
             }
         }
 
         #endregion
 
+        private void UpdateMixerPortLO1()
+        {
+            foreach (TestStep step in ChildTestSteps)
+            {
+                if (step is MixerPowerTestStep)
+                {
+                    (step as MixerPowerTestStep).PortLO1 = PortLO1;
+                }
+            }
+        }
 
+        private void UpdateMixerPortLO2()
+        {
+            foreach (TestStep step in ChildTestSteps)
+            {
+                if (step is MixerPowerTestStep)
+                {
+                    (step as MixerPowerTestStep).PortLO2 = PortLO2;
+                }
+            }
+        }
 
         public ConverterChannelBase()
         {

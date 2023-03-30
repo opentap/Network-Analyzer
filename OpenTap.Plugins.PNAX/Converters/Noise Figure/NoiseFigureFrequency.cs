@@ -32,7 +32,6 @@ namespace OpenTap.Plugins.PNAX
 
         public NoiseFigureFrequency()
         {
-            // ToDo: Set default values for properties / settings.
             UpdateDefaultValues();
         }
 

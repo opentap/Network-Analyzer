@@ -14,35 +14,15 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
 
-    public enum ScalerMixerSweepType
-    {
-        LinearFrequency = StandardSweepTypeEnum.LinearFrequency,
-        CWTime = StandardSweepTypeEnum.CWTime,
-        SegmentSweep = StandardSweepTypeEnum.SegmentSweep,
-        [Display("Power")]
-        Power = StandardSweepTypeEnum.PowerSweep
-    }
-
-    public enum ScalerMixerPhasePoint
-    {
-        [Display("Normalize First Point")]
-        FirstPoint,
-        [Display("Normalize Middle Point")]
-        MiddlePoint,
-        [Display("Normalize Last Point")]
-        LastPoint,
-        [Display("Specify Normalization Point")]
-        SpecifyPoint
-    }
 
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Scaler Mixer Sweep", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalarMixerSweep : ConverterBaseStep
+    public class ScalarMixerSweep : MixerSweepBaseStep
     {
         #region Settings
         private ScalerMixerSweepType _sweepType;
         [Display("Sweep Type", Order: 21)]
-        public ScalerMixerSweepType SweepType
+        public override ScalerMixerSweepType SweepType
         {
             get { return _sweepType; }
             set
@@ -53,32 +33,8 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [Display("X-Axis Point Spacing", Order: 22)]
-        public bool IsXAxisPointSpacing { get; set; }
-
-        [Display("Avoid Spurs", Order: 23)]
-        public bool IsAvoidSpurs { get; set; }
-
         [Display("Reversed Port 2 Coupler", Order: 24)]
         public bool IsReversedPortTwoCoupler { get; set; }
-
-        private int _numberOfPoints;
-        [EnabledIf("SweepType", ScalerMixerSweepType.LinearFrequency, ScalerMixerSweepType.CWTime, ScalerMixerSweepType.Power)]
-        [Display("Number Of Points", Order: 25)]
-        public int NumberOfPoints
-        {
-            get
-            {
-                if (SweepType == ScalerMixerSweepType.SegmentSweep)
-                    return 21;
-                else
-                    return _numberOfPoints;
-            }
-            set
-            {
-                _numberOfPoints = value;
-            }
-        }
 
         [Display("IF Bandwidth", Order: 26)]
         [Unit("kHz", UseEngineeringPrefix: true, StringFormat: "0.000")]
@@ -111,7 +67,7 @@ namespace OpenTap.Plugins.PNAX
                         case ScalerMixerPhasePoint.MiddlePoint:
                             return (int)Math.Ceiling(NumberOfPoints / 2.0);
                         case ScalerMixerPhasePoint.LastPoint:
-                            return _numberOfPoints;
+                            return NumberOfPoints;
                         case ScalerMixerPhasePoint.SpecifyPoint:
                             return _phasePointValue;
                         default:
@@ -128,12 +84,22 @@ namespace OpenTap.Plugins.PNAX
 
         public ScalarMixerSweep()
         {
-            // ToDo: Set default values for properties / settings.
+            UpdateDefaultValues();
         }
+        
+        private void UpdateDefaultValues()
+        {
+            var DefaultValues = PNAX.GetMixerSweepDefaultValues();
 
+            SweepType                = DefaultValues.SweepType;
+            IsXAxisPointSpacing      = DefaultValues.IsXAxisPointSpacing;
+            IsReversedPortTwoCoupler = DefaultValues.IsReversedPortTwoCoupler;
+            IsAvoidSpurs             = DefaultValues.IsAvoidSpurs;
+            NumberOfPoints           = DefaultValues.NumberOfPoints;
+            IFBandwidth              = DefaultValues.IFBandwidth;
+        }
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
