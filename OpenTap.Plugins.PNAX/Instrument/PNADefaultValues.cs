@@ -305,7 +305,7 @@ namespace OpenTap.Plugins.PNAX
             toneFrequencyValues.SweepFcStartFc = 10.5e6;
             toneFrequencyValues.SweepFcStopFc = 49.9995e9;
             toneFrequencyValues.SweepFcCenterFc = 25.005e9;
-            toneFrequencyValues.SweepFcSpanFc = 49.9895e9;
+            toneFrequencyValues.SweepFcSpanFc = 49.989e9;
             toneFrequencyValues.SweepFcFixedDeltaF = 1e6;
             toneFrequencyValues.SweepFcNumberOfPoints = 201;
             toneFrequencyValues.SweepFcMixedToneIFBW = 1e3;
@@ -427,7 +427,7 @@ namespace OpenTap.Plugins.PNAX
             ConverterFrequencyValues converterFrequencyValues = new ConverterFrequencyValues();
             converterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
             converterFrequencyValues.SweepSettingsNumberOfPoints = 201;
-            converterFrequencyValues.SweepSettingsIFBandwidth = 1e3;
+            converterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
             converterFrequencyValues.SweepSettingsStart = 10e6;
             converterFrequencyValues.SweepSettingsStop = 50e9;
             converterFrequencyValues.SweepSettingsCenter = 1e9;
@@ -593,6 +593,33 @@ namespace OpenTap.Plugins.PNAX
             return converterPowerValues;
         }
 
+    }
+
+    public class NoiseFigureConverterFrequencyValues
+    {
+        public SweepTypeEnum SweepType;
+        public int SweepSettingsNumberOfPoints;
+        public double SweepSettingsIFBandwidth;
+        public double SweepSettingsStart;
+        public double SweepSettingsStop;
+        public double SweepSettingsCenter;
+        public double SweepSettingsSpan;
+        public double SweepSettingsFixed;
+
+        public static NoiseFigureConverterFrequencyValues GetPresetValues()
+        {
+            NoiseFigureConverterFrequencyValues converterFrequencyValues = new NoiseFigureConverterFrequencyValues();
+            converterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
+            converterFrequencyValues.SweepSettingsNumberOfPoints = 201;
+            converterFrequencyValues.SweepSettingsIFBandwidth = 1e3;
+            converterFrequencyValues.SweepSettingsStart = 10e6;
+            converterFrequencyValues.SweepSettingsStop = 50e9;
+            converterFrequencyValues.SweepSettingsCenter = 1e9;
+            converterFrequencyValues.SweepSettingsSpan = 0;
+            converterFrequencyValues.SweepSettingsFixed = 1e9;
+
+            return converterFrequencyValues;
+        }
     }
 
     public class MixerSweepValue
@@ -805,9 +832,9 @@ namespace OpenTap.Plugins.PNAX
 
             DefaultToneFrequencyValues.ToneFrequencySweepType = ToneFrequencySweepTypeEnum.SweepFc;
             DefaultToneFrequencyValues.SweepFcStartFc = 10.5e6;
-            DefaultToneFrequencyValues.SweepFcStopFc = 66.9995e9;
-            DefaultToneFrequencyValues.SweepFcCenterFc = 33.505e9;
-            DefaultToneFrequencyValues.SweepFcSpanFc = 66.9995e9;
+            DefaultToneFrequencyValues.SweepFcStopFc = 49.9995e9;
+            DefaultToneFrequencyValues.SweepFcCenterFc = 25.005e9;
+            DefaultToneFrequencyValues.SweepFcSpanFc = 49.989e9;
             DefaultToneFrequencyValues.SweepFcFixedDeltaF = 1e6;
             DefaultToneFrequencyValues.SweepFcNumberOfPoints = 201;
             DefaultToneFrequencyValues.SweepFcMixedToneIFBW = 1e3;
@@ -975,6 +1002,13 @@ namespace OpenTap.Plugins.PNAX
             if (DefaultNoiseFigureConverterPowerValues == null)
                 return NoiseFigureConverterPowerValue.GetPresetValues();
             return DefaultNoiseFigureConverterPowerValues;
+        }
+
+        public NoiseFigureConverterFrequencyValues GetNoiseFigureConverterFrequencyDefaultValues()
+        {
+            if (DefaultNoiseFigureConverterFrequencyValues == null)
+                return NoiseFigureConverterFrequencyValues.GetPresetValues();
+            return DefaultNoiseFigureConverterFrequencyValues;
         }
 
         private void UpdateConverterPowerValues()

@@ -33,6 +33,7 @@ namespace OpenTap.Plugins.PNAX
         public ScalarMixerConverterPowerValue DefaultScalarMixerConverterPowerValues;
         public NoiseFigureConverterValues DefaultNoiseFigureConverterValues;
         public NoiseFigureConverterPowerValue DefaultNoiseFigureConverterPowerValues;
+        public NoiseFigureConverterFrequencyValues DefaultNoiseFigureConverterFrequencyValues;
         public MixerSweepValue DefaultMixerSweepValue;
 
 

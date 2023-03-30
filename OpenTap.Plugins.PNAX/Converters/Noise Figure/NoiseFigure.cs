@@ -110,8 +110,10 @@ namespace OpenTap.Plugins.PNAX
         private bool IsAverageOnNoise;
         private bool IsAverageOnNormal;
 
+        private int _AverageNumber;
         [Display("Average Number", Group: "Bandwidth/Average", Order: 22)]
         public int AverageNumber { get; set; }
+
 
         [Display("Average On", Group: "Bandwidth/Average", Order: 23)]
         public bool IsAverageOn { get; set; }
@@ -193,11 +195,11 @@ namespace OpenTap.Plugins.PNAX
         {
             var NFDefault = PNAX.GetNoiseFigureConverterDefaultValues();
 
-            NoiseReceiver = NFDefault.NoiseReceiver;
             NoiseBandwidthNoise = NFDefault.NoiseBandwidthNoise;
             NoiseBandwidthNormal = NFDefault.NoiseBandwidthNormal;
             AverageNumberNoise = NFDefault.AverageNumberNoise;
             AverageNumberNormal = NFDefault.AverageNumberNormal;
+            NoiseReceiver = NFDefault.NoiseReceiver;    // After AverageNumberNoise and AverageNumberNormal have been set
             IsAverageOnNoise = NFDefault.IsAverageOnNoise;
             IsAverageOnNormal = NFDefault.IsAverageOnNormal;
             UseNarrowbandCompensation = NFDefault.UseNarrowbandCompensation;

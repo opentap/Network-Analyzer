@@ -37,11 +37,11 @@ namespace OpenTap.Plugins.PNAX
 
         public void UpdateDefaultValues()
         {
-            var DefaultValues = PNAX.GetConverterFrequencyDefaultValues();
+            var DefaultValues = PNAX.GetNoiseFigureConverterFrequencyDefaultValues();
             SweepType                   = DefaultValues.SweepType;
 
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
-            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth / 100;
+            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
             SweepSettingsStart          = DefaultValues.SweepSettingsStart;
             SweepSettingsStop           = DefaultValues.SweepSettingsStop;
             SweepSettingsCenter         = DefaultValues.SweepSettingsCenter;

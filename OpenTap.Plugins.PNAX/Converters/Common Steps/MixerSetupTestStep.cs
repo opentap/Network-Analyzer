@@ -154,6 +154,15 @@ namespace OpenTap.Plugins.PNAX
         {
             get
             {
+                // TODO
+                // Need to get the Number Of Points value from Parent step
+                // this value could come from the following child steps:
+                //      GainCompressionFrequency.cs
+                //      NoiseFigureFrequency.cs
+                //      ToneFrequency.cs    (Swept IMD)
+                //      ScalarMixerSweep.cs
+                // TODO
+
                 switch (TuningPointType)
                 {
                     case TuningPointTypeEnum.FirstPoint:
