@@ -304,7 +304,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{Channel.ToString()}:NOISe:PMAP {inp},{outp}");
         }
 
-        public bool GetNFCoupledTonePowers(int Channel)
+        public bool GetCoupledTonePowers(int Channel)
         {
             bool retVal = false;
             String retStr = ScpiQuery($"SOURce{Channel.ToString()}:POWer:COUPle?");
@@ -319,7 +319,7 @@ namespace OpenTap.Plugins.PNAX
             return retVal;
         }
 
-        public void SetNFCoupledTonePowers(int Channel, bool mode)
+        public void SetCoupledTonePowers(int Channel, bool mode)
         {
             if (mode == true)
             {
@@ -332,7 +332,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         // SOURce<cnum>:POWer<port>[:LEVel][:IMMediate][:AMPLitude]? [src]
-        public double GetNFPowerLevel(int Channel, PortsEnum port)
+        public double GetPowerLevel(int Channel, PortsEnum port)
         {
             double retVal = double.NaN;
             String p = Scpi.Format("{0}", port);
@@ -340,7 +340,7 @@ namespace OpenTap.Plugins.PNAX
             return retVal;
         }
 
-        public void SetNFPowerLevel(int Channel, PortsEnum port, double power)
+        public void SetPowerLevel(int Channel, PortsEnum port, double power)
         {
             String p = Scpi.Format("{0}", port);
             ScpiCommand($"SOURce{Channel.ToString()}:POWer{p} {power.ToString()}");

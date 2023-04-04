@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 
 
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Scaler Mixer Sweep", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display("Scalar Mixer Sweep", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerSweep : MixerSweepBaseStep
     {
         #region Settings
@@ -29,7 +29,25 @@ namespace OpenTap.Plugins.PNAX
             {
                 _sweepType = value;
                 if (value == ScalerMixerSweepType.SegmentSweep)
+                {
                     PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
+                }
+
+                // Update Sweep Type on Power Test Step
+                try
+                {
+                    var a = GetParent<ScalarMixerChannel>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.UpdateChannelSweepType(_sweepType);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
             }
         }
 
@@ -43,14 +61,16 @@ namespace OpenTap.Plugins.PNAX
         [Display("Enable Phase", Group: "Phase Reference Point", Order: 31)]
         public bool IsEnablePhase { get; set; }
 
-        [Display("Use Absolute Phase", Group: "Phase Reference Point", Order: 32)]
-        public bool UseAbsolutePhase { get; set; }
-
-        [EnabledIf("UseAbsolutePhase", false, HideIfDisabled = true)]
+        [EnabledIf("IsEnablePhase", true, HideIfDisabled = true)]
         [Display("Phase Reference Point", Group: "Phase Reference Point", Order: 33)]
         public ScalerMixerPhasePoint PhasePoint { get; set; }
 
+        // TODO
+        // validate internal source as LO from MixerSetupTestStep.cs
+        // if its NotControlled then disable option AbsolutePhase 
+        // TODO
         private int _phasePointValue = 1;
+        [EnabledIf("IsEnablePhase", true, HideIfDisabled = false)]
         [EnabledIf("PhasePoint", ScalerMixerPhasePoint.SpecifyPoint)]
         [Display("Phase Reference Point Value", Group: "Phase Reference Point", Order: 34)]
         public int PhasePointValue
@@ -70,6 +90,8 @@ namespace OpenTap.Plugins.PNAX
                             return NumberOfPoints;
                         case ScalerMixerPhasePoint.SpecifyPoint:
                             return _phasePointValue;
+                        case ScalerMixerPhasePoint.AbsolutePhase:
+                            return (int)Math.Ceiling(NumberOfPoints / 2.0);
                         default:
                             return _phasePointValue;
                     }
@@ -97,14 +119,39 @@ namespace OpenTap.Plugins.PNAX
             IsAvoidSpurs             = DefaultValues.IsAvoidSpurs;
             NumberOfPoints           = DefaultValues.NumberOfPoints;
             IFBandwidth              = DefaultValues.IFBandwidth;
+            IsEnablePhase = DefaultValues.IsEnablePhase;
+            PhasePoint = DefaultValues.PhasePoint;
         }
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetStandardSweepType(Channel, SweepType);
+
+            if (SweepType == ScalerMixerSweepType.SegmentSweep)
+            {
+                // X-Axis Point Spacing option is enabled
+                PNAX.SetXAxisPointSpacing(Channel, IsXAxisPointSpacing);
+                // Number of Points forced to 21
+                // Phase reference point forced to Normalize Middle Point
+            }
+
+            PNAX.SetAvoidSpurs(Channel, IsAvoidSpurs);
+            PNAX.SetReversedPort2Coupler(Channel, IsReversedPortTwoCoupler);
+            PNAX.SetPoints(Channel, NumberOfPoints);
+            PNAX.SetIFBandwidth(Channel, IFBandwidth);
+
+            PNAX.SetMixerPhase(Channel, IsEnablePhase);
+            PNAX.SetNormalizingDataPoint(Channel, PhasePointValue);
+            if (PhasePoint == ScalerMixerPhasePoint.AbsolutePhase)
+            {
+                PNAX.SetMixerUseAbsolutePhase(Channel, true);
+            }
+            else
+            {
+                PNAX.SetMixerUseAbsolutePhase(Channel, false);
+            }
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

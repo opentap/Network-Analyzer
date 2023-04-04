@@ -13,10 +13,22 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Scaler Mixer Channel", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display("Scalar Mixer Channel", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerChannel : ConverterChannelBase
     {
         #region Settings
+        private ScalerMixerSweepType _sweepType { get; set; }
+        public void UpdateChannelSweepType(ScalerMixerSweepType value)
+        {
+            _sweepType = value;
+            foreach (TestStep step in ChildTestSteps)
+            {
+                if (step is ScalarMixerPower)
+                {
+                    (step as ScalarMixerPower).SweepType = _sweepType;
+                }
+            }
+        }
         #endregion
 
         public ScalarMixerChannel()
@@ -31,7 +43,7 @@ namespace OpenTap.Plugins.PNAX
             // Compression
             ScalarMixerSweep scalerMixerSweep = new ScalarMixerSweep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Power
-            ScalarMixerPower power = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerPower scalerMixerPower = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
             // Traces
             ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
@@ -39,18 +51,23 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);
             this.ChildTestSteps.Add(mixerFrequencyTestStep);
+            this.ChildTestSteps.Add(scalerMixerPower);
             this.ChildTestSteps.Add(scalerMixerSweep);
-            this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(scalarMixerNewTrace);
         }
 
         public override void Run()
         {
+            int traceid = PNAX.GetNewTraceID();
+            // Define a dummy measurement so we can setup all channel parameters
+            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_SC21_1\',\'Scalar Mixer/Converter\',\'SC21\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

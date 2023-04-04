@@ -31,6 +31,14 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {scpi}");
         }
 
+        // ScalerMixerSweepType
+        public void SetStandardSweepType(int Channel, ScalerMixerSweepType standardSweepType)
+        {
+            string scpi = Scpi.Format("{0}", standardSweepType);
+            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {scpi}");
+        }
+
+
         public double GetStart(int Channel)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:FREQuency:STARt?");

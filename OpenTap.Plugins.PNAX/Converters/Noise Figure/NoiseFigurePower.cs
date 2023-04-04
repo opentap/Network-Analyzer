@@ -83,18 +83,18 @@ namespace OpenTap.Plugins.PNAX
             RunChildSteps(); //If the step supports child steps.
 
             PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
-            PNAX.SetNFCoupledTonePowers(Channel, PortPowersCoupled);
+            PNAX.SetCoupledTonePowers(Channel, PortPowersCoupled);
 
             PNAX.SetNFPortInputOutput(Channel, PortInput, PortOutput);
 
-            PNAX.SetNFPowerLevel(Channel, PortInput, InputPower);
+            PNAX.SetPowerLevel(Channel, PortInput, InputPower);
             PNAX.SetSourceAttenuator(Channel, (int)PortInput, InputPortSourceAttenuator);
             PNAX.SetReceiverAttenuator(Channel, (int)PortInput, InputPortReceiverAttenuator);
             PNAX.SetSourceLevelingMode(Channel, PortInput, InputSourceLevelingMode);
             PNAX.SetSourceAttenuatorAutoMode(Channel, PortInput, AutoInputPortSourceAttenuator);
 
 
-            PNAX.SetNFPowerLevel(Channel, PortOutput, OutputPower);
+            PNAX.SetPowerLevel(Channel, PortOutput, OutputPower);
             PNAX.SetSourceAttenuator(Channel, (int)PortOutput, OutputPortSourceAttenuator);
             PNAX.SetReceiverAttenuator(Channel, (int)PortOutput, OutputPortReceiverAttenuator);
             PNAX.SetSourceLevelingMode(Channel, PortOutput, OutputSourceLevelingMode);

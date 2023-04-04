@@ -14,10 +14,36 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Scaler Mixer Power", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display("Scalar Mixer Power", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerPower : PowerBaseStep
     {
         #region Settings
+        private ScalerMixerSweepType _SweepType;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("Sweep Type", Order: 0.5)]
+        public ScalerMixerSweepType SweepType
+        {
+            get
+            {
+                return _SweepType;
+            }
+            set
+            {
+                _SweepType = value;
+                if (_SweepType == ScalerMixerSweepType.SegmentSweep)
+                {
+                    PortPowersCoupled = false;
+                    // Port Powers coupling disabled in segment sweep mode
+                    HasPortPowersCoupled = false;
+                }
+                else
+                {
+                    HasPortPowersCoupled = true;
+                }
+            }
+        }
+
+
         [Browsable(false)]
         public bool EnablePowerSweepOutputEdit { get; set; } = false;
 
@@ -101,15 +127,57 @@ namespace OpenTap.Plugins.PNAX
 
             InputPortSourceAttenuatorAutoValue  = InputPortSourceAttenuator;
             OutputPortSourceAttenuatorAutoValue = OutputPortSourceAttenuator;
+
+            InputPowerSweepStartPower = DefaultValues.InputPowerSweepStartPower;
+            InputPowerSweepStopPower = DefaultValues.InputPowerSweepStopPower;
+            InputPowerSweepPowerPoints = DefaultValues.InputPowerSweepPowerPoints;
+            InputPowerSweepPowerStep = DefaultValues.InputPowerSweepPowerStep;
+            OutputPowerSweepStartPower = DefaultValues.OutputPowerSweepStartPower;
+            OutputPowerSweepStopPower = DefaultValues.OutputPowerSweepStopPower;
         }
 
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
+            PNAX.SetCoupledTonePowers(Channel, PortPowersCoupled);
+
+            PNAX.SetSMCPortInputOutput(Channel, PortInput, PortOutput);
+
+            PNAX.SetPowerLevel(Channel, PortInput, InputPower);
+            PNAX.SetSourceAttenuator(Channel, (int)PortInput, InputPortSourceAttenuator);
+            PNAX.SetReceiverAttenuator(Channel, (int)PortInput, InputPortReceiverAttenuator);
+            PNAX.SetSourceLevelingMode(Channel, PortInput, InputSourceLevelingMode);
+            PNAX.SetSourceAttenuatorAutoMode(Channel, PortInput, AutoInputPortSourceAttenuator);
+
+
+            PNAX.SetPowerLevel(Channel, PortOutput, OutputPower);
+            PNAX.SetSourceAttenuator(Channel, (int)PortOutput, OutputPortSourceAttenuator);
+            PNAX.SetReceiverAttenuator(Channel, (int)PortOutput, OutputPortReceiverAttenuator);
+            PNAX.SetSourceLevelingMode(Channel, PortOutput, OutputSourceLevelingMode);
+            PNAX.SetSourceAttenuatorAutoMode(Channel, PortOutput, AutoOutputPortSourceAttenuator);
+
+            if (EnablePowerSweepOutputEdit)
+            {
+                PNAX.SetSMCPowerSweepStartPower(Channel, PortInput, InputPowerSweepStartPower);
+                PNAX.SetSMCPowerSweepStopPower(Channel, PortInput, InputPowerSweepStopPower);
+            }
+
+            if (PortPowersCoupled)
+            {
+                // Use the same values for input port
+                PNAX.SetSMCPowerSweepStartPower(Channel, PortOutput, InputPowerSweepStartPower);
+                PNAX.SetSMCPowerSweepStopPower(Channel, PortOutput, InputPowerSweepStopPower);
+            }
+            else
+            {
+                // use the values for output port
+                PNAX.SetSMCPowerSweepStartPower(Channel, PortOutput, OutputPowerSweepStartPower);
+                PNAX.SetSMCPowerSweepStopPower(Channel, PortOutput, OutputPowerSweepStopPower);
+            }
+
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
