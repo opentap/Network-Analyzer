@@ -630,6 +630,8 @@ namespace OpenTap.Plugins.PNAX
         public bool IsAvoidSpurs;
         public int NumberOfPoints;
         public double IFBandwidth;
+        public bool IsEnablePhase;
+        public ScalerMixerPhasePoint PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
  
         public static MixerSweepValue GetPresetValues()
         {
@@ -640,6 +642,8 @@ namespace OpenTap.Plugins.PNAX
             mixerSweepValue.IsAvoidSpurs = false;
             mixerSweepValue.NumberOfPoints = 201;
             mixerSweepValue.IFBandwidth = 10;
+            mixerSweepValue.IsEnablePhase = false;
+            mixerSweepValue.PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
             return mixerSweepValue;
         }
     }
@@ -1057,6 +1061,8 @@ namespace OpenTap.Plugins.PNAX
             DefaultMixerSweepValue.IsAvoidSpurs = false;
             DefaultMixerSweepValue.NumberOfPoints = 201;
             DefaultMixerSweepValue.IFBandwidth = 10;
+            DefaultMixerSweepValue.IsEnablePhase = false;
+            DefaultMixerSweepValue.PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
         }
 
     }

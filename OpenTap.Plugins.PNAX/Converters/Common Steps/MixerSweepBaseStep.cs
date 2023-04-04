@@ -15,10 +15,17 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum ScalerMixerSweepType
     {
+        [Scpi("LINear")]
+        [Display("Linear Frequency", Order:1)]
         LinearFrequency = StandardSweepTypeEnum.LinearFrequency,
+        [Scpi("CW")]
+        [Display("CW Time", Order: 2)]
         CWTime = StandardSweepTypeEnum.CWTime,
+        [Scpi("SEGMent")]
+        [Display("Segment Sweep", Order: 3)]
         SegmentSweep = StandardSweepTypeEnum.SegmentSweep,
-        [Display("Power")]
+        [Scpi("POWer")]
+        [Display("Power", Order: 4)]
         Power = StandardSweepTypeEnum.PowerSweep
     }
 
@@ -31,7 +38,9 @@ namespace OpenTap.Plugins.PNAX
         [Display("Normalize Last Point")]
         LastPoint,
         [Display("Specify Normalization Point")]
-        SpecifyPoint
+        SpecifyPoint,
+        [Display("Use Absolute Phase (requires internal source as LO)")]
+        AbsolutePhase
     }
 
 

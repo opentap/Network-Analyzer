@@ -38,7 +38,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool HasPortPowersCoupled { get; set; } = false;
         private bool _portPowersCoupled;
-        [EnabledIf("HasPortPowersCoupled", true, HideIfDisabled = true)]
+        [EnabledIf("HasPortPowersCoupled", true, HideIfDisabled = false)]
         [Display("Port Powers Coupled", Order: 11)]
         public bool PortPowersCoupled
         {

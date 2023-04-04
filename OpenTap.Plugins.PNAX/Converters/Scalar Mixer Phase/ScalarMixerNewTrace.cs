@@ -14,10 +14,13 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Scaler Mixer New Trace", Groups: new[] { "PNA-X", "Converters", "Scaler Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display("Scalar Mixer New Trace", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerNewTrace : ConverterNewTraceBaseStep
     {
         #region Settings
+        [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
+        public SMCTraceEnum Meas { get; set; }
+
         #endregion
 
         public ScalarMixerNewTrace()
@@ -26,11 +29,28 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
+            // Delete dummy trace defined during channel setup
+            // DISPlay:MEASure<mnum>:DELete?
+            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
+
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
+
+        protected override void AddNewTrace()
+        {
+            this.ChildTestSteps.Add(new ScalarMixerSingleTrace() { Meas = this.Meas, Channel = this.Channel });
+
+            //CompressionTraceEnum compressionTrace;
+            //if (Enum.TryParse<CompressionTraceEnum>(Meas.ToString(), out compressionTrace))
+            //{
+            //    this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = compressionTrace, Channel = this.Channel });
+            //}
+        }
+
     }
 }
