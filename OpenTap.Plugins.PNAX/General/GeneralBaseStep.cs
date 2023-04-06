@@ -14,40 +14,27 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class GeneralChannelBaseStep : TestStep
+    public class GeneralBaseStep : TestStep
     {
         #region Settings
-
+        [Browsable(false)]
+        public bool IsControlledByParent { get; set; } = false;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        private int _channel;
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Order: 1)]
-        public int Channel
-        {
-            get { return _channel; }
-            set
-            {
-                _channel = value;
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is ConverterBaseStep)
-                    {
-                        (a as ConverterBaseStep).Channel = value;
-                    }
-                }
-            }
-        }
+        public virtual int Channel { get; set; }
         #endregion
 
-        public GeneralChannelBaseStep()
+
+        public GeneralBaseStep()
         {
-            Channel = 1;
         }
 
         public override void Run()
         {
-
         }
     }
 }

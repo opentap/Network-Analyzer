@@ -13,84 +13,28 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    public enum StandardTraceEnum
+    public enum GeneralGainCompressionTraceEnum
     {
+        S21,
         S11,
         S12,
-        S13,
-        S14,
-        S21,
         S22,
-        S23,
-        S24,
-        S31,
-        S32,
-        S33,
-        S34,
-        S41,
-        S42,
-        S43,
-        S44,
-        Sss11,
-        Ssd12,
-        Ssc12,
-        Sds21,
-        Sdd22,
-        Sdc22,
-        Scs21,
-        Scd22,
-        Scc22,
-        [Display("Sds21/Scs21")]
-        Sds21Scs21,
-        [Display("Ssd12/Ssc12")]
-        Ssd12Ssc12,
-        A1,
-        A2,
-        A3,
-        A4,
-        B1,
-        B2,
-        B3,
-        B4,
-        C1,
-        C2,
-        C3,
-        C4,
-        D1,
-        D2,
-        D3,
-        D4,
-        R11,
-        R22,
-        R33,
-        R44,
-        a11,
-        a22,
-        a33,
-        a44,
-        b11,
-        b12,
-        b13,
-        b14,
-        b21,
-        b22,
-        b23,
-        b24,
-        b31,
-        b32,
-        b33,
-        b34,
-        b41,
-        b42,
-        b43,
-        b44,
-        AuxLn11,
-        AuxLn21
+        AI1,
+        AI2,
+        CompIn21,
+        CompOut21,
+        DeltaGain21,
+        CompGain21,
+        CompS11,
+        RefS21,
+        CompAI1,
+        CompAI2,
     }
 
-    [AllowAsChildIn(typeof(StandardNewTrace))]
-    [Display("Standard Single Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardSingleTrace : GeneralBaseStep
+    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    [AllowAsChildIn(typeof(GeneralGainCompressionNewTrace))]
+    [Display("Compression Single Trace", Groups: new[] { "PNA-X", "General", "Compression" }, Description: "Insert a description here")]
+    public class GeneralGainCompressionSingleTrace : GeneralNewTraceBaseStep
     {
         #region Settings
         private String _Trace;
@@ -108,9 +52,9 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        private StandardTraceEnum _Meas;
+        private GeneralGainCompressionTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-        public StandardTraceEnum Meas
+        public GeneralGainCompressionTraceEnum Meas
         {
             get
             {
@@ -187,21 +131,21 @@ namespace OpenTap.Plugins.PNAX
         }
         #endregion
 
-        public StandardSingleTrace()
+        public GeneralGainCompressionSingleTrace()
         {
             Trace = "1";
-            Meas = StandardTraceEnum.S11;
-            Class = TraceManagerChannelClassEnum.STD;
+            Meas = GeneralGainCompressionTraceEnum.CompIn21;
+            Channel = 1;
             Window = 1;
             Sheet = 1;
-            Channel = 1;
         }
 
-        private void UpdateTestName()
+        protected void UpdateTestName()
         {
-            this.Trace = $"CH{Channel.ToString()}_{Meas}";
-            this.Name = $"CH{Channel.ToString()}_{Meas}";
+            this.Trace = $"CH{Channel}_{Meas}";
+            this.Name = $"CH{Channel}_{Meas}";
         }
+
 
         public override void Run()
         {
@@ -210,8 +154,10 @@ namespace OpenTap.Plugins.PNAX
             int traceid = PNAX.GetNewTraceID();
 
             // Define the measurement
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
+            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
+            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
+
+            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'Gain Compression\',\'{Meas.ToString()}\'");
 
             // Create a window if it doesn't exist already
             PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");

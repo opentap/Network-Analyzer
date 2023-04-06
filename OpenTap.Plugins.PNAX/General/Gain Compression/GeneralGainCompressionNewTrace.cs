@@ -13,28 +13,18 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(StandardChannel))]
-    [AllowChildrenOfType(typeof(StandardSingleTrace))]
-    [Display("Standard New Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardNewTrace : GeneralBaseStep
+    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    [AllowChildrenOfType(typeof(GeneralGainCompressionSingleTrace))]
+    [Display("Compression Traces", Groups: new[] { "PNA-X", "General", "Compression" }, Description: "Insert a description here")]
+    public class GeneralGainCompressionNewTrace : GeneralNewTraceBaseStep
     {
         #region Settings
-        private StandardTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-        public StandardTraceEnum Meas
-        {
-            get
-            {
-                return _Meas;
-            }
-            set
-            {
-                _Meas = value;
-            }
-        }
+        public GeneralGainCompressionTraceEnum Meas { get; set; }
+
         #endregion
 
-        public StandardNewTrace()
+        public GeneralGainCompressionNewTrace()
         {
         }
 
@@ -43,8 +33,7 @@ namespace OpenTap.Plugins.PNAX
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DELete \'CH{Channel.ToString()}_DUMMY_1\'");
-
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_S21_1\'");
 
             RunChildSteps(); //If the step supports child steps.
 
@@ -53,16 +42,15 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        [Browsable(true)]
-        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 10)]
-        [Layout(LayoutMode.FullRow)]
-        public void AddNewTrace()
+        protected override void AddNewTrace()
         {
-            StandardTraceEnum standardTrace;
-            if (Enum.TryParse<StandardTraceEnum>(Meas.ToString(), out standardTrace))
-            {
-                this.ChildTestSteps.Add(new StandardSingleTrace() { Meas = standardTrace, Channel = this.Channel });
-            }
+            this.ChildTestSteps.Add(new GeneralGainCompressionSingleTrace() { Meas = this.Meas, Channel = this.Channel });
+
+            //CompressionTraceEnum compressionTrace;
+            //if (Enum.TryParse<CompressionTraceEnum>(Meas.ToString(), out compressionTrace))
+            //{
+            //    this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = compressionTrace, Channel = this.Channel });
+            //}
         }
 
     }

@@ -36,6 +36,7 @@ namespace OpenTap.Plugins.PNAX
         public NoiseFigureConverterFrequencyValues DefaultNoiseFigureConverterFrequencyValues;
         public MixerSweepValue DefaultMixerSweepValue;
 
+        public GeneralGainCompressionPowerValues DefaultGeneralGainCompressionPowerValues;
 
         public PNAX()
         {
