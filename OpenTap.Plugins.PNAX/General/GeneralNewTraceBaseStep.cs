@@ -11,43 +11,38 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class GeneralChannelBaseStep : TestStep
+    public class GeneralNewTraceBaseStep : GeneralBaseStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool EnableButton { get; set; }
 
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
-
-        private int _channel;
-        [Display("Channel", Order: 1)]
-        public int Channel
+        [Browsable(true)]
+        [EnabledIf("EnableButton", true, HideIfDisabled = false)]
+        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 10)]
+        [Layout(LayoutMode.FullRow)]
+        public virtual void AddNewTraceButton()
         {
-            get { return _channel; }
-            set
-            {
-                _channel = value;
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is ConverterBaseStep)
-                    {
-                        (a as ConverterBaseStep).Channel = value;
-                    }
-                }
-            }
+            AddNewTrace();
         }
         #endregion
 
-        public GeneralChannelBaseStep()
+        public GeneralNewTraceBaseStep()
         {
-            Channel = 1;
+            EnableButton = true;
+            IsControlledByParent = true;
         }
 
-        public override void Run()
+        protected virtual void AddNewTrace()
         {
 
+        }
+        public override void Run()
+        {
         }
     }
 }

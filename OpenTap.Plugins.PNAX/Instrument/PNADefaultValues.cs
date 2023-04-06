@@ -430,8 +430,8 @@ namespace OpenTap.Plugins.PNAX
             converterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
             converterFrequencyValues.SweepSettingsStart = 10e6;
             converterFrequencyValues.SweepSettingsStop = 50e9;
-            converterFrequencyValues.SweepSettingsCenter = 1e9;
-            converterFrequencyValues.SweepSettingsSpan = 0;
+            converterFrequencyValues.SweepSettingsCenter = 25.005e9;
+            converterFrequencyValues.SweepSettingsSpan = 49.99e9;
             converterFrequencyValues.SweepSettingsFixed = 1e9;
 
             return converterFrequencyValues;
@@ -487,6 +487,34 @@ namespace OpenTap.Plugins.PNAX
             return converterPowerValues;
         }
 
+    }
+
+    public class GeneralGainCompressionPowerValues : MixerConverterPowerValue
+    {
+        public static new GeneralGainCompressionPowerValues GetPresetValues()
+        {
+            GeneralGainCompressionPowerValues generalGainCompressionPowerValues = new GeneralGainCompressionPowerValues();
+
+            generalGainCompressionPowerValues.PowerOnAllChannels = true;
+            generalGainCompressionPowerValues.PortPowersCoupled = true;
+            generalGainCompressionPowerValues.InputPortLinearInputPower = -25;
+            generalGainCompressionPowerValues.InputPortSourceAttenuator = 0;
+            generalGainCompressionPowerValues.InputPortReceiverAttenuator = 0;
+            generalGainCompressionPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+
+            generalGainCompressionPowerValues.OutputPortReversePower = -15;
+            generalGainCompressionPowerValues.AutoOutputPortSourceAttenuator = false;
+            generalGainCompressionPowerValues.OutputPortSourceAttenuator = 0;
+            generalGainCompressionPowerValues.OutputPortReceiverAttenuator = 0;
+            generalGainCompressionPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+
+            generalGainCompressionPowerValues.PowerSweepStartPower = -25;
+            generalGainCompressionPowerValues.PowerSweepStopPower = -5;
+            generalGainCompressionPowerValues.PowerSweepPowerPoints = 21;
+            generalGainCompressionPowerValues.PowerSweepPowerStep = 1;
+
+            return generalGainCompressionPowerValues;
+        }
     }
 
     public class ScalarMixerConverterPowerValue : ConverterPowerBaseValues
@@ -614,8 +642,8 @@ namespace OpenTap.Plugins.PNAX
             converterFrequencyValues.SweepSettingsIFBandwidth = 1e3;
             converterFrequencyValues.SweepSettingsStart = 10e6;
             converterFrequencyValues.SweepSettingsStop = 50e9;
-            converterFrequencyValues.SweepSettingsCenter = 1e9;
-            converterFrequencyValues.SweepSettingsSpan = 0;
+            converterFrequencyValues.SweepSettingsCenter = 25.005e9;
+            converterFrequencyValues.SweepSettingsSpan = 49.99e9;
             converterFrequencyValues.SweepSettingsFixed = 1e9;
 
             return converterFrequencyValues;
@@ -719,6 +747,7 @@ namespace OpenTap.Plugins.PNAX
                 return MixerSetupValues.GetPresetValues();
             return DefaultMixerSetupValues;
         }
+
         private void UpdateMixerSetupValues()
         {
             if (DefaultMixerSetupValues == null)
@@ -922,9 +951,9 @@ namespace OpenTap.Plugins.PNAX
             DefaultConverterFrequencyValues.SweepSettingsNumberOfPoints = 201;
             DefaultConverterFrequencyValues.SweepSettingsIFBandwidth = 100e3;
             DefaultConverterFrequencyValues.SweepSettingsStart = 10e6;
-            DefaultConverterFrequencyValues.SweepSettingsStop = 67e9;
-            DefaultConverterFrequencyValues.SweepSettingsCenter = 33.505e9;
-            DefaultConverterFrequencyValues.SweepSettingsSpan = 66.99e9;
+            DefaultConverterFrequencyValues.SweepSettingsStop = 50e9;
+            DefaultConverterFrequencyValues.SweepSettingsCenter = 25.005e9;
+            DefaultConverterFrequencyValues.SweepSettingsSpan = 49.99e9;
             DefaultConverterFrequencyValues.SweepSettingsFixed = 1e9;
         }
 
@@ -1063,6 +1092,13 @@ namespace OpenTap.Plugins.PNAX
             DefaultMixerSweepValue.IFBandwidth = 10;
             DefaultMixerSweepValue.IsEnablePhase = false;
             DefaultMixerSweepValue.PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
+        }
+
+        public GeneralGainCompressionPowerValues GetGeneralGainCompressionPowerDefaultValues()
+        {
+            if (DefaultGeneralGainCompressionPowerValues == null)
+                return GeneralGainCompressionPowerValues.GetPresetValues();
+            return DefaultGeneralGainCompressionPowerValues;
         }
 
     }

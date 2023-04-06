@@ -14,46 +14,9 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Standard Channel", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardChannel : TestStep
+    public class StandardChannel : GeneralChannelBaseStep
     {
         #region Settings
-        private PNAX _pNAX;
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX 
-        { 
-            get { return _pNAX; }
-            set
-            {
-                if (value != _pNAX)
-                {
-                    _pNAX = value;
-                    foreach (var step in this.ChildTestSteps)
-                    {
-                        var childType = ((GeneralChannelBaseStep)(step));
-                        childType.PNAX = value;
-                    }
-                }
-            } 
-        }
-
-        private int _Channel;
-        [Display("Channel", Order: 1)]
-        public int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-                foreach (var step in this.ChildTestSteps)
-                {
-                    var childType = ((GeneralChannelBaseStep)(step));
-                    childType.Channel = value;
-                }
-            }
-        }
 
         #endregion
 

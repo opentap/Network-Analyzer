@@ -262,6 +262,32 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:MLIMit {level.ToString()}");
         }
 
+        public String GetSMARTSweepSafeModeDCParameters(int Channel)
+        {
+            String retVal = "";
+            retVal = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:PARameter?");
+            return retVal;
+        }
+
+        public void SetSMARTSweepSafeModeDCParameters(int Channel, String device)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:PARameter \"{device}\"");
+        }
+
+        public double GetSMARTSweepSafeModeMaxDCPower(int Channel)
+        {
+            double retVal = double.NaN;
+            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:MLIMit?");
+            return retVal;
+        }
+
+        public void SetSMARTSweepSafeModeMaxDCPower(int Channel, double level)
+        {
+            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:MLIMit {level.ToString()}");
+        }
+
+
+
         public bool Get2DSweepCompressionPointInterpolation(int Channel)
         {
             bool retVal = false;
@@ -485,6 +511,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         public void SetSweepType(int Channel, SweepTypeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+        }
+
+        public void SetSweepType(int Channel, GeneralGainCompressionSweepTypeEnum sweeptype)
         {
             String sweep = Scpi.Format("{0}", sweeptype);
             ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
