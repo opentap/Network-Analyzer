@@ -26,6 +26,7 @@ namespace OpenTap.Plugins.PNAX
 
         public GainCompressionNewTrace()
         {
+            ChildTestSteps.Add(new CompressionSingleTrace() { Meas = CompressionTraceEnum.SC21 });
         }
 
         public override void Run()

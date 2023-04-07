@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(StandardChannel))]
     [AllowChildrenOfType(typeof(StandardSingleTrace))]
     [Display("Standard New Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardNewTrace : GeneralBaseStep
+    public class StandardNewTrace : GeneralNewTraceBaseStep
     {
         #region Settings
         private StandardTraceEnum _Meas;
@@ -36,6 +36,7 @@ namespace OpenTap.Plugins.PNAX
 
         public StandardNewTrace()
         {
+            ChildTestSteps.Add(new StandardSingleTrace() { Meas = StandardTraceEnum.S11});
         }
 
         public override void Run()
@@ -53,10 +54,7 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        [Browsable(true)]
-        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 10)]
-        [Layout(LayoutMode.FullRow)]
-        public void AddNewTrace()
+        protected override void AddNewTrace()
         {
             StandardTraceEnum standardTrace;
             if (Enum.TryParse<StandardTraceEnum>(Meas.ToString(), out standardTrace))

@@ -25,6 +25,7 @@ namespace OpenTap.Plugins.PNAX
         public NoiseFigureNewTrace()
         {
             Meas = NoiseFigureTraceEnum.NF;
+            ChildTestSteps.Add(new NoiseFigureSingleTrace() { Meas = NoiseFigureTraceEnum.NF});
         }
 
         public override void Run()

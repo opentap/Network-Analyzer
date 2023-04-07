@@ -25,6 +25,7 @@ namespace OpenTap.Plugins.PNAX
 
         public ScalarMixerNewTrace()
         {
+            ChildTestSteps.Add(new ScalarMixerSingleTrace() { Meas = SMCTraceEnum.SC21});
         }
 
         public override void Run()

@@ -270,6 +270,7 @@ namespace OpenTap.Plugins.PNAX
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
             UpdateTestName();
+            ChildTestSteps.Add(new SweptIMDSingleTrace() { Meas = SweptIMDTraceEnum.PwrMain});
         }
 
         protected override void AddNewTrace()

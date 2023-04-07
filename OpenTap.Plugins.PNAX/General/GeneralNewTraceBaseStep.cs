@@ -23,7 +23,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(true)]
         [EnabledIf("EnableButton", true, HideIfDisabled = false)]
-        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 10)]
+        [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 20)]
         [Layout(LayoutMode.FullRow)]
         public virtual void AddNewTraceButton()
         {
