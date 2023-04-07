@@ -669,7 +669,7 @@ namespace OpenTap.Plugins.PNAX
             mixerSweepValue.IsReversedPortTwoCoupler = false;
             mixerSweepValue.IsAvoidSpurs = false;
             mixerSweepValue.NumberOfPoints = 201;
-            mixerSweepValue.IFBandwidth = 10;
+            mixerSweepValue.IFBandwidth = 10e3;
             mixerSweepValue.IsEnablePhase = false;
             mixerSweepValue.PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
             return mixerSweepValue;
@@ -1089,7 +1089,7 @@ namespace OpenTap.Plugins.PNAX
             DefaultMixerSweepValue.IsReversedPortTwoCoupler = false;
             DefaultMixerSweepValue.IsAvoidSpurs = false;
             DefaultMixerSweepValue.NumberOfPoints = 201;
-            DefaultMixerSweepValue.IFBandwidth = 10;
+            DefaultMixerSweepValue.IFBandwidth = 10e3;
             DefaultMixerSweepValue.IsEnablePhase = false;
             DefaultMixerSweepValue.PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
         }

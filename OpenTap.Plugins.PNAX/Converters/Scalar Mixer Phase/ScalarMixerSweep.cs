@@ -55,7 +55,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsReversedPortTwoCoupler { get; set; }
 
         [Display("IF Bandwidth", Order: 26)]
-        [Unit("kHz", UseEngineeringPrefix: true, StringFormat: "0.000")]
+        [Unit("Hz", UseEngineeringPrefix: true)]
         public double IFBandwidth { get; set; }
 
         [Display("Enable Phase", Group: "Phase Reference Point", Order: 31)]

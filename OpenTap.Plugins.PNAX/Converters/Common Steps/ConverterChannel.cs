@@ -39,8 +39,12 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
+        [Browsable(false)]
+        public bool DisabledInChannelParentStep { get; set; } = false;
+
         private ConverterStagesEnum _ConverterStagesEnum;
-        [Display("Converter Stages", Order: 10)]
+        [Display("Converter Stages", Order: 10, Description:"Stage is defined in Mixer Setup Test Step")]
+        [EnabledIf("DisabledInChannelParentStep", HideIfDisabled =false)]
         public ConverterStagesEnum ConverterStages
         {
             get
