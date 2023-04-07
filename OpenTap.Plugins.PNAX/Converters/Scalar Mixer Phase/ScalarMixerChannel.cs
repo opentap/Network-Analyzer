@@ -63,6 +63,9 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(scalerMixerPower);
             this.ChildTestSteps.Add(scalerMixerSweep);
             this.ChildTestSteps.Add(scalarMixerNewTrace);
+
+            // Once we have all child steps, lets get the number of points
+            this.UpdateNumberOfPoints();
         }
 
         public override void Run()

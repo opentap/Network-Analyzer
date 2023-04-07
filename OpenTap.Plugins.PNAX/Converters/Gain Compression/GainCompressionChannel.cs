@@ -47,6 +47,9 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(gainCompressionNewTrace);
+
+            // Once we have all child steps, lets get the number of points
+            this.UpdateNumberOfPoints();
         }
 
         public override void Run()

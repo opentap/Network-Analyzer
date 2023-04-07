@@ -93,7 +93,54 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        private int _SweepPoints;
+        [EnabledIf("DisabledInChannelParentStep", HideIfDisabled = false)]
+        [Display("Sweep Points", Order: 20)]
+        public int SweepPoints
+        {
+            get { return _SweepPoints; }
+            set
+            {
+                _SweepPoints = value;
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is MixerSetupTestStep)
+                    {
+                        (a as MixerSetupTestStep).SweepPoints = value;
+                    }
+                }
+            }
+        }
+
+
         #endregion
+
+        protected void UpdateNumberOfPoints()
+        {
+            foreach (var a in this.ChildTestSteps)
+            {
+                if (a is ToneFrequency)
+                {
+                    SweepPoints = (a as ToneFrequency).SweepFcNumberOfPoints;
+                    return;
+                }
+                else if (a is GainCompressionFrequency)
+                {
+                    SweepPoints = (a as GainCompressionFrequency).SweepSettingsNumberOfPoints;
+                    return;
+                }
+                else if (a is NoiseFigureFrequency)
+                {
+                    SweepPoints = (a as NoiseFigureFrequency).SweepSettingsNumberOfPoints;
+                    return;
+                }
+                else if (a is ScalarMixerSweep)
+                {
+                    SweepPoints = (a as ScalarMixerSweep).NumberOfPoints;
+                    return;
+                }
+            }
+        }
 
         private void UpdateMixerPortLO1()
         {
