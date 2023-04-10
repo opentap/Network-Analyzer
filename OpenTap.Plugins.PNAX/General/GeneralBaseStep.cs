@@ -23,9 +23,30 @@ namespace OpenTap.Plugins.PNAX
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
+        private int _Channel;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Order: 1)]
-        public virtual int Channel { get; set; }
+        public virtual int Channel
+        {
+            get
+            {
+                return _Channel;
+            }
+            set
+            {
+                _Channel = value;
+
+                // Update traces
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is GeneralSingleTraceBaseStep)
+                    {
+                        (a as GeneralSingleTraceBaseStep).Channel = value;
+                    }
+                }
+            }
+        }
+
         #endregion
 
 

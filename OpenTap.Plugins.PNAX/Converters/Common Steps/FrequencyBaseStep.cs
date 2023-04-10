@@ -45,8 +45,34 @@ namespace OpenTap.Plugins.PNAX
         public SweepTypeEnum SweepType { get; set; }
 
 
+        private int _SweepSettingsNumberOfPoints;
         [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
-        public int SweepSettingsNumberOfPoints { get; set; }
+        public int SweepSettingsNumberOfPoints
+        {
+            get
+            {
+                return _SweepSettingsNumberOfPoints;
+            }
+            set
+            {
+                _SweepSettingsNumberOfPoints = value;
+                // Update Points on Parent step
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.SweepPoints = _SweepSettingsNumberOfPoints;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
+            }
+        }
 
         [Display("IF Bandwidth", Group: "Sweep Settings", Order: 11)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]

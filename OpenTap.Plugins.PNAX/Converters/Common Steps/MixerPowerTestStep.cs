@@ -29,6 +29,14 @@ namespace OpenTap.Plugins.PNAX
     public class MixerPowerTestStep : ConverterBaseStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool EnablePort3Settings { get; set; } = true;
+        [Browsable(false)]
+        public bool EnablePort4Settings { get; set; } = true;
+        [Browsable(false)]
+        public bool EnableSweptPowerSettings { get; set; } = true;
+
+
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
 
@@ -72,8 +80,8 @@ namespace OpenTap.Plugins.PNAX
         public bool EnableLO2 { get; set; }
 
         private LOEnum _PortLO2;
-        [EnabledIf("ConverterStages", ConverterStagesEnum._2, HideIfDisabled = true)]
-        [EnabledIf("EnableLO2", true, HideIfDisabled = true)]
+        [EnabledIf("ConverterStages", ConverterStagesEnum._2, HideIfDisabled = false)]
+        [EnabledIf("EnableLO2", true, HideIfDisabled = false)]
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("LO2", Group: "LO2", Order: 30)]
         public LOEnum PortLO2
@@ -100,47 +108,54 @@ namespace OpenTap.Plugins.PNAX
         [Display("Source Leveling Mode", Group: "LO2", Order: 32)]
         public SourceLevelingModeType SourceLevelingModeLO2 { get; set; }
 
-
+        [EnabledIf("EnablePort3Settings", true, HideIfDisabled = false)]
         [Display("Source Attenuator", Groups: new[] { "Port Settings" , "Port 3" }, Order: 40)]
         [Unit("dB", UseEngineeringPrefix: true)]
         public double SourceAttenuatorPowerPort3 { get; set; }
 
+        [EnabledIf("EnablePort3Settings", true, HideIfDisabled = false)]
         [Display("Receiver Attenuator", Groups: new[] { "Port Settings", "Port 3" }, Order: 41)]
         [Unit("dB", UseEngineeringPrefix: true)]
         public double ReceiverAttenuatorPowerPort3 { get; set; }
 
+        [EnabledIf("EnablePort4Settings", true, HideIfDisabled = false)]
         [Display("Source Attenuator", Groups: new[] { "Port Settings", "Port 4" }, Order: 50)]
         [Unit("dB", UseEngineeringPrefix: true)]
         public double SourceAttenuatorPowerPort4 { get; set; }
 
+        [EnabledIf("EnablePort4Settings", true, HideIfDisabled = false)]
         [Display("Receiver Attenuator", Groups: new[] { "Port Settings", "Port 4" }, Order: 51)]
         [Unit("dB", UseEngineeringPrefix: true)]
         public double ReceiverAttenuatorPowerPort4 { get; set; }
 
-        // TODO
         // Hide these group only for Converters Gain Compression
         // For all aother Converters, these are available
-        // TODO
+        [EnabledIf("EnableSweptPowerSettings", true, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Swept Power Settings", "LO1 Swept Power" }, Order: 60)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO1SweptPowerStart { get; set; }
 
+        [EnabledIf("EnableSweptPowerSettings", true, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Swept Power Settings", "LO1 Swept Power" }, Order: 61)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO1SweptPowerStop { get; set; }
 
+        [EnabledIf("EnableSweptPowerSettings", true, HideIfDisabled = true)]
         [Display("Step", Groups: new[] { "Swept Power Settings", "LO1 Swept Power" }, Order: 62)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO1SweptPowerStep { get; set; }
 
+        [EnabledIf("EnableSweptPowerSettings", true, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Swept Power Settings", "LO2 Swept Power" }, Order: 70)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO2SweptPowerStart { get; set; }
 
+        [EnabledIf("EnableSweptPowerSettings", true, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Swept Power Settings", "LO2 Swept Power" }, Order: 71)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO2SweptPowerStop { get; set; }
 
+        [EnabledIf("EnableSweptPowerSettings", true, HideIfDisabled = true)]
         [Display("Step", Groups: new[] { "Swept Power Settings", "LO2 Swept Power" }, Order: 72)]
         [Unit("dBm", UseEngineeringPrefix: true)]
         public double LO2SweptPowerStep { get; set; }
@@ -194,20 +209,30 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetSourceLevelingMode(Channel, 4, SourceLevelingModeLO2.ToString());
             }
 
-            PNAX.SetSourceAttenuator(Channel, 3, SourceAttenuatorPowerPort3);
-            PNAX.SetReceiverAttenuator(Channel, 3, ReceiverAttenuatorPowerPort3);
-
-            PNAX.SetSourceAttenuator(Channel, 4, SourceAttenuatorPowerPort4);
-            PNAX.SetReceiverAttenuator(Channel, 4, ReceiverAttenuatorPowerPort4);
-
-            PNAX.SetLOSweptPowerStart(Channel, 1, LO1SweptPowerStart);
-            PNAX.SetLOSweptPowerStop(Channel, 1, LO1SweptPowerStop);
-
-            if (ConverterStages == ConverterStagesEnum._2)
+            if (EnablePort3Settings)
             {
-                PNAX.SetLOSweptPowerStart(Channel, 2, LO2SweptPowerStart);
-                PNAX.SetLOSweptPowerStop(Channel, 2, LO2SweptPowerStop);
+                PNAX.SetSourceAttenuator(Channel, 3, SourceAttenuatorPowerPort3);
+                PNAX.SetReceiverAttenuator(Channel, 3, ReceiverAttenuatorPowerPort3);
             }
+
+            if (EnablePort4Settings)
+            {
+                PNAX.SetSourceAttenuator(Channel, 4, SourceAttenuatorPowerPort4);
+                PNAX.SetReceiverAttenuator(Channel, 4, ReceiverAttenuatorPowerPort4);
+            }
+
+            if (EnableSweptPowerSettings)
+            {
+                PNAX.SetLOSweptPowerStart(Channel, 1, LO1SweptPowerStart);
+                PNAX.SetLOSweptPowerStop(Channel, 1, LO1SweptPowerStop);
+
+                if (ConverterStages == ConverterStagesEnum._2)
+                {
+                    PNAX.SetLOSweptPowerStart(Channel, 2, LO2SweptPowerStart);
+                    PNAX.SetLOSweptPowerStop(Channel, 2, LO2SweptPowerStop);
+                }
+            }
+
             UpgradeVerdict(Verdict.Pass);
         }
     }

@@ -90,24 +90,8 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(StandardNewTrace))]
     [Display("Standard Single Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardSingleTrace : GeneralBaseStep
+    public class StandardSingleTrace : GeneralSingleTraceBaseStep
     {
-        #region Settings
-        private String _Trace;
-        [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
-        public String Trace
-        {
-            get
-            {
-                return _Trace;
-            }
-            set
-            {
-                _Trace = value;
-                //UpdateTestName();
-            }
-        }
-
         private StandardTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public StandardTraceEnum Meas
@@ -123,69 +107,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        private TraceManagerChannelClassEnum _Class;
-        [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        public TraceManagerChannelClassEnum Class
-        {
-            get
-            {
-                return _Class;
-            }
-            set
-            {
-                _Class = value;
-                UpdateTestName();
-            }
-        }
 
-
-        private int _Channel;
-        [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
-        public override int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Window;
-        [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public int Window
-        {
-            get
-            {
-                return _Window;
-            }
-            set
-            {
-                _Window = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Sheet;
-        [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-        public int Sheet
-        {
-            get
-            {
-                return _Sheet;
-            }
-            set
-            {
-                _Sheet = value;
-                UpdateTestName();
-            }
-        }
-        #endregion
 
         public StandardSingleTrace()
         {
@@ -197,7 +119,7 @@ namespace OpenTap.Plugins.PNAX
             Channel = 1;
         }
 
-        private void UpdateTestName()
+        protected override void UpdateTestName()
         {
             this.Trace = $"CH{Channel.ToString()}_{Meas}";
             this.Name = $"CH{Channel.ToString()}_{Meas}";

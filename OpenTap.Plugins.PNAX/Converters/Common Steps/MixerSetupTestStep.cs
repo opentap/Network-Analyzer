@@ -143,10 +143,13 @@ namespace OpenTap.Plugins.PNAX
         public TuningMethodEnum TuningMethod { get; set; }
 
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
-        [Display("Tuning Point Type", Group: "Embedded LO", Order: 72)]
+        [Display("Tuning Point Type", Group: "Embedded LO", Order: 72.1)]
         public TuningPointTypeEnum TuningPointType { get; set; }
 
-        // TODO: FIgure out those numbers
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = true)]
+        [Display("Sweep Points", Group: "Embedded LO", Order: 72)]
+        public int SweepPoints { get; set; }
+
         private int _tuningPoint;
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point", Group: "Embedded LO", Order: 73)]
@@ -154,23 +157,23 @@ namespace OpenTap.Plugins.PNAX
         {
             get
             {
-                // TODO
-                // Need to get the Number Of Points value from Parent step
-                // this value could come from the following child steps:
+                // this value is setup from the following child steps:
                 //      GainCompressionFrequency.cs
                 //      NoiseFigureFrequency.cs
                 //      ToneFrequency.cs    (Swept IMD)
                 //      ScalarMixerSweep.cs
-                // TODO
 
                 switch (TuningPointType)
                 {
                     case TuningPointTypeEnum.FirstPoint:
                         return 1;
                     case TuningPointTypeEnum.MiddlePoint:
-                        return 2;
+                        double retVal = SweepPoints / 2.0;
+                        double rounded = Math.Ceiling(retVal);
+                        int retInt = (int)rounded;
+                        return retInt;
                     case TuningPointTypeEnum.LastPoint:
-                        return 3;
+                        return SweepPoints;
                     case TuningPointTypeEnum.Custom:
                         return _tuningPoint;
                     default:

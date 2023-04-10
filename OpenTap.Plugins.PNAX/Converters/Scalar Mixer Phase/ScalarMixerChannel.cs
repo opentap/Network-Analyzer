@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
             // Mixer Setup
             MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
             // Mixer Frequency
             MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
@@ -48,12 +48,24 @@ namespace OpenTap.Plugins.PNAX
             // Traces
             ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
+
+            // Defaults for MixerPowerTestStep
+            mixerPowerTestStep.LO1SweptPowerStart = -10.0;
+            mixerPowerTestStep.LO1SweptPowerStop = 0.0;
+            mixerPowerTestStep.LO1SweptPowerStep = 0.050;
+            mixerPowerTestStep.LO2SweptPowerStart = -10.0;
+            mixerPowerTestStep.LO2SweptPowerStop = 0.0;
+            mixerPowerTestStep.LO2SweptPowerStep = 0.050;
+
             this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(mixerPowerTestStep);
             this.ChildTestSteps.Add(mixerFrequencyTestStep);
             this.ChildTestSteps.Add(scalerMixerPower);
             this.ChildTestSteps.Add(scalerMixerSweep);
             this.ChildTestSteps.Add(scalarMixerNewTrace);
+
+            // Once we have all child steps, lets get the number of points
+            this.UpdateNumberOfPoints();
         }
 
         public override void Run()

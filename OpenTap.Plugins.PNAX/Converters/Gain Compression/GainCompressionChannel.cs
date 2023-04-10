@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
             // Mixer Setup
             MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false };
             // Mixer Frequency
             MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
@@ -47,6 +47,9 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(gainCompressionNewTrace);
+
+            // Once we have all child steps, lets get the number of points
+            this.UpdateNumberOfPoints();
         }
 
         public override void Run()

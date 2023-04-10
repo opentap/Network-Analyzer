@@ -146,8 +146,34 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double PowerSweepCWDeltaF { get; set; }
 
+        private int _SweepFcNumberOfPoints;
         [Display("Number of Points", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 40)]
-        public int SweepFcNumberOfPoints { get; set; }
+        public int SweepFcNumberOfPoints
+        {
+            get
+            {
+                return _SweepFcNumberOfPoints;
+            }
+            set
+            {
+                _SweepFcNumberOfPoints = value;
+                // Update Points on Parent step
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.SweepPoints = _SweepFcNumberOfPoints;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
+            }
+        }
 
         [Display("Main Tone IFBW", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 41)]
         [Unit("Hz", UseEngineeringPrefix: true)]

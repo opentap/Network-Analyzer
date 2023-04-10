@@ -72,6 +72,22 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _numberOfPoints = value;
+
+                // Update Points on Parent step
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.SweepPoints = _numberOfPoints;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
             }
         }
         #endregion

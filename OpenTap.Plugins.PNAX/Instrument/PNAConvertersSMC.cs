@@ -102,8 +102,8 @@ namespace OpenTap.Plugins.PNAX
         public bool GetReversedPort2Coupler(int Channel)
         {
             bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:REVerse?");
-            if (retStr.Equals("0"))
+            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:PATH:CONF:ELEM:STAT? \"Port2Coupler\"");
+            if (retStr.Equals("Normal"))
             {
                 retVal = false;
             }
@@ -118,11 +118,11 @@ namespace OpenTap.Plugins.PNAX
         {
             if (mode == true)
             {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:REVerse ON");
+                ScpiCommand($"SENSe{Channel.ToString()}:PATH:CONF:ELEM:STAT \"Port2Coupler\",\"Reversed\"");
             }
             else
             {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:REVerse OFF");
+                ScpiCommand($"SENSe{Channel.ToString()}:PATH:CONF:ELEM:STAT \"Port2Coupler\",\"Normal\"");
             }
         }
 

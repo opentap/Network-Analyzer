@@ -31,9 +31,9 @@ namespace OpenTap.Plugins.PNAX
                 _channel = value;
                 foreach (var a in this.ChildTestSteps)
                 {
-                    if (a is ConverterBaseStep)
+                    if (a is GeneralBaseStep)
                     {
-                        (a as ConverterBaseStep).Channel = value;
+                        (a as GeneralBaseStep).Channel = value;
                     }
                 }
             }
