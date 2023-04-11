@@ -123,7 +123,7 @@ namespace OpenTap.Plugins.PNAX
                 // Provide list of segments to user
                 // option to specify segment csv file
                 // TODO
-                Log.Error("Not implemented!");
+                Log.Error("SegmentSweep Not implemented!");
             }
             else
             {

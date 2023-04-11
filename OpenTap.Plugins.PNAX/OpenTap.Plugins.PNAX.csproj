@@ -36,4 +36,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="General\Noise Figure Cold Source\" />
+    <Folder Include="General\Swept IMD\" />
+  </ItemGroup>
+
 </Project>
