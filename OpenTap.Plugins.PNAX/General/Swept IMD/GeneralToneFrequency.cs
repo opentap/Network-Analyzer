@@ -250,7 +250,11 @@ namespace OpenTap.Plugins.PNAX
                 //    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
                 //    break;
                 case GeneralToneFrequencySweepTypeEnum.SegmentSweepfc:
-                    // TODO implement
+                    // TODO
+                    // Provide list of segments to user
+                    // option to specify segment csv file
+                    // TODO
+                    Log.Error("SegmentSweep Not implemented!");
                     break;
             }
 

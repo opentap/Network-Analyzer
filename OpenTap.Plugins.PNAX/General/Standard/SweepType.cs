@@ -152,6 +152,11 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
                     break;
                 case StandardSweepTypeEnum.SegmentSweep:
+                    // TODO
+                    // Provide list of segments to user
+                    // option to specify segment csv file
+                    // TODO
+                    Log.Error("SegmentSweep Not implemented!");
                     break;
                 case StandardSweepTypeEnum.PhaseSweep:
                     PNAX.SetPhaseStart(Channel, SweepPropertiesStartPhase);
