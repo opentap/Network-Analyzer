@@ -282,6 +282,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel.ToString()}:IMD:SWEep:TYPE {sweep}");
         }
 
+        public void SetIMDSweepType(int Channel, GeneralToneFrequencySweepTypeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:IMD:SWEep:TYPE {sweep}");
+        }
+
         // TODO
         // this command is not responding properly
         // waiting for input from R&D on how to set/get this value
