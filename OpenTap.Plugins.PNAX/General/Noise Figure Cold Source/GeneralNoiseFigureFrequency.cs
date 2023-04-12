@@ -35,8 +35,25 @@ namespace OpenTap.Plugins.PNAX
     public class GeneralNoiseFigureFrequency : GeneralFrequencyBaseStep
     {
         #region Settings
+        private GeneralNFSweepTypeEnum _SweepType;
         [Display("Sweep Type", Order: 1)]
-        public GeneralNFSweepTypeEnum SweepType { get; set; }
+        public GeneralNFSweepTypeEnum SweepType
+        {
+            get
+            {
+                return _SweepType;
+            }
+            set
+            {
+                _SweepType = value;
+                EnableSegmentSweepSettings = false;
+                if (_SweepType == GeneralNFSweepTypeEnum.SegmentSweep)
+                {
+                    EnableSegmentSweepSettings = true;
+                }
+            }
+        }
+
 
 
 
@@ -86,11 +103,7 @@ namespace OpenTap.Plugins.PNAX
             }
             else if (SweepType == GeneralNFSweepTypeEnum.SegmentSweep)
             {
-                // TODO
-                // Provide list of segments to user
-                // option to specify segment csv file
-                // TODO
-                Log.Error("SegmentSweep Not implemented!");
+                SetSegmentValues();
             }
             else
             {

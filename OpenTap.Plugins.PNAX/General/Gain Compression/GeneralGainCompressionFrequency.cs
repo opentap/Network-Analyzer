@@ -34,8 +34,25 @@ namespace OpenTap.Plugins.PNAX
         [Display("Data Acquisition Mode", Order: 2)]
         public DataAcquisitionModeEnum DataAcquisitionMode { get; set; }
 
+        private GeneralGainCompressionSweepTypeEnum _SweepType;
         [Display("Sweep Type", Order: 1)]
-        public GeneralGainCompressionSweepTypeEnum SweepType { get; set; }
+        public GeneralGainCompressionSweepTypeEnum SweepType
+        {
+            get
+            {
+                return _SweepType;
+            }
+            set
+            {
+                _SweepType = value;
+                EnableSegmentSweepSettings = false;
+                if (_SweepType == GeneralGainCompressionSweepTypeEnum.SegmentSweep)
+                {
+                    EnableSegmentSweepSettings = true;
+                }
+            }
+        }
+
 
 
         [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
@@ -119,11 +136,7 @@ namespace OpenTap.Plugins.PNAX
             //}
             else if (SweepType == GeneralGainCompressionSweepTypeEnum.SegmentSweep)
             {
-                // TODO
-                // Provide list of segments to user
-                // option to specify segment csv file
-                // TODO
-                Log.Error("SegmentSweep Not implemented!");
+                SetSegmentValues();
             }
             else
             {

@@ -55,6 +55,13 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _ToneFrequencySweepType = value;
+                // Update Segment Settings Visibility
+                EnableSegmentSweepSettings = false;
+                if (_ToneFrequencySweepType == GeneralToneFrequencySweepTypeEnum.SegmentSweepfc)
+                {
+                    EnableSegmentSweepSettings = true;
+                }
+
                 // Update Channel value
                 try
                 {
@@ -250,11 +257,7 @@ namespace OpenTap.Plugins.PNAX
                 //    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
                 //    break;
                 case GeneralToneFrequencySweepTypeEnum.SegmentSweepfc:
-                    // TODO
-                    // Provide list of segments to user
-                    // option to specify segment csv file
-                    // TODO
-                    Log.Error("SegmentSweep Not implemented!");
+                    SetSegmentValues();
                     break;
             }
 
