@@ -55,6 +55,7 @@ namespace OpenTap.Plugins.PNAX
             // TODO:  Open the connection to the instrument here
 
             ScpiCommand("SYST:FPR");
+            ScpiCommand("DISP:WIND OFF");
             WaitForOperationComplete();
             TraceCount = 1;
 

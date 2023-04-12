@@ -13,6 +13,26 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public class SegmentDefinition
+    {
+        [Display("State", Order: 1)]
+        public bool state { get; set; }
+        [Display("Number of Points", Order: 2)]
+        public int NumberOfPoints { get; set; }
+        [Display("Start Frequency", Order: 3)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double StartFrequency { get; set; }
+        [Display("Stop Frequency", Order: 4)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double StopFrequency { get; set; }
+    }
+
+    public enum SegmentDefinitionTypeEnum
+    {
+        File,
+        List
+    }
+
     public enum StandardSweepTypeEnum
     {
         [Scpi("LINear")]
@@ -41,9 +61,24 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
 
+        private StandardSweepTypeEnum _StandardSweepType;
         [Display("Data Acquisition Mode", Order: 10)]
-        public StandardSweepTypeEnum StandardSweepType { get; set; }
-
+        public StandardSweepTypeEnum StandardSweepType
+        {
+            get
+            {
+                return _StandardSweepType;
+            }
+            set
+            {
+                _StandardSweepType = value;
+                EnableSegmentSweepSettings = false;
+                if (_StandardSweepType == StandardSweepTypeEnum.SegmentSweep)
+                {
+                    EnableSegmentSweepSettings = true;
+                }
+            }
+        }
 
         [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
         [Display("Start", Group: "Sweep Properties", Order: 20)]
@@ -76,7 +111,7 @@ namespace OpenTap.Plugins.PNAX
         public double SweepPropertiesStopPhase { get; set; }
 
         [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
-        [EnabledIf("EnableCWFreq", true, HideIfDisabled = true)]
+        //[EnabledIf("EnableCWFreq", true, HideIfDisabled = true)]
         [Display("CW Freq", Group: "Sweep Properties", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesCWFreq { get; set; }
@@ -94,11 +129,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("IF Bandwidth", Group: "Sweep Properties", Order: 24)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesIFBandwidth { get; set; }
-
-
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
-        [Display("Segment Table", Group: "Sweep Properties", Order: 25)]
-        public string SegmentTable { get; set; }
 
         #endregion
 
@@ -152,6 +182,7 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
                     break;
                 case StandardSweepTypeEnum.SegmentSweep:
+                    SetSegmentValues();
                     break;
                 case StandardSweepTypeEnum.PhaseSweep:
                     PNAX.SetPhaseStart(Channel, SweepPropertiesStartPhase);

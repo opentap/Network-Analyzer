@@ -15,10 +15,6 @@ namespace OpenTap.Plugins.PNAX
 {
     public partial class PNAX : ScpiInstrument
     {
-        #region Settings
-
-        #endregion
-
         #region General|Standard|Sweep Type
         public String GetStandardSweepType(int Channel)
         {
@@ -287,6 +283,98 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand($"SENSe{ Channel }:SWEep:GENeration:POINtsweep ON");
             }
         }
+        #endregion
+
+        #region Segment Sweep
+        public void SegmentDeleteAllSegments(int Channel)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent:DELete:ALL");
+        }
+
+        public int SegmentAdd(int Channel)
+        {
+            int NumberOfSegments = ScpiQuery<int>($"SENSe{ Channel }:SEGMent:COUNt?");
+            NumberOfSegments++;
+            ScpiCommand($"SENSe{ Channel }:SEGMent{NumberOfSegments}:ADD");
+            return NumberOfSegments;
+        }
+
+        public void SetSegmentState(int Channel, int segment, bool state)
+        {
+            if (state)
+            {
+                ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:STATE ON");
+            }
+            else
+            {
+                ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:STATE OFF");
+            }
+        }
+
+        public void SetSegmentNumberOfPoints(int Channel, int segment, int points)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SWEep:POINts {points.ToString()}");
+        }
+
+        public void SetSegmentStartFrequency(int Channel, int segment, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:FREQuency:STARt {freq.ToString()}");
+        }
+
+        public void SetSegmentStopFrequency(int Channel, int segment, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:FREQuency:STOP {freq.ToString()}");
+        }
+
+        public void SetSegmentTableShow(int Channel, bool state, int window)
+        {
+            // Lets review if the window exists
+            int windowState = ScpiQuery<int>($"DISPlay:WINDow{window}?");
+            if (windowState == 0)
+            {
+                // if does not exist lets enable it
+                ScpiCommand($"DISPlay:WINDow{window} ON");
+            }
+
+            // Set the window state
+            if (state)
+            {
+                ScpiCommand($"DISPlay:WINDow{window}:TABLe SEGM");
+            }
+            else
+            {
+                ScpiCommand($"DISPlay:WINDow{window}:TABLe OFF");
+            }
+        }
+        #endregion
+
+        #region Configuration
+        public ReceiverConfigurationEnumType GetReceiverConfiguration(int Channel)
+        {
+            ReceiverConfigurationEnumType retVal = ReceiverConfigurationEnumType.INT;
+            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:IMD:TPOWer:LEVel?");
+            if (retStr.Equals("INT"))
+            {
+                retVal = ReceiverConfigurationEnumType.INT;
+            }
+            else if (retStr.Equals("EXT"))
+            {
+                retVal = ReceiverConfigurationEnumType.EXT;
+            }
+            else
+            {
+                throw new Exception("Undefined Receiver Configuration mode");
+            }
+            return retVal;
+        }
+
+
+        public void SetReceiverConfiguration(int Channel, ReceiverConfigurationEnumType rec)
+        {
+            String path = Scpi.Format("{0}", rec);
+            ScpiCommand($"SENSe{ Channel }:IMD:RECeiver:CONFig:COMBiner:PATH {path}");
+        }
+
         #endregion
     }
 }

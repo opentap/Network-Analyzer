@@ -34,8 +34,25 @@ namespace OpenTap.Plugins.PNAX
         [Display("Data Acquisition Mode", Order: 2)]
         public DataAcquisitionModeEnum DataAcquisitionMode { get; set; }
 
+        private GeneralGainCompressionSweepTypeEnum _SweepType;
         [Display("Sweep Type", Order: 1)]
-        public GeneralGainCompressionSweepTypeEnum SweepType { get; set; }
+        public GeneralGainCompressionSweepTypeEnum SweepType
+        {
+            get
+            {
+                return _SweepType;
+            }
+            set
+            {
+                _SweepType = value;
+                EnableSegmentSweepSettings = false;
+                if (_SweepType == GeneralGainCompressionSweepTypeEnum.SegmentSweep)
+                {
+                    EnableSegmentSweepSettings = true;
+                }
+            }
+        }
+
 
 
         [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
@@ -45,27 +62,27 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepSettingsIFBandwidth { get; set; }
 
-        [EnabledIf("SweepType", SweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
         [Display("Start", Group: "Sweep Settings", Order: 12)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SweepSettingsStart { get; set; }
 
-        [EnabledIf("SweepType", SweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
         [Display("Stop", Group: "Sweep Settings", Order: 13)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepSettingsStop { get; set; }
 
-        [EnabledIf("SweepType", SweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
         [Display("Center", Group: "Sweep Settings", Order: 14)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepSettingsCenter { get; set; }
 
-        [EnabledIf("SweepType", SweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
         [Display("Span", Group: "Sweep Settings", Order: 15)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepSettingsSpan { get; set; }
 
-        //[EnabledIf("SweepType", SweepTypeEnum.CWFrequency, HideIfDisabled = true)]
+        //[EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.CWFrequency, HideIfDisabled = true)]
         //[Display("Fixed", Group: "Sweep Settings", Order: 16)]
         //[Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         //public double SweepSettingsFixed { get; set; }
@@ -113,17 +130,13 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetCenter(Channel, SweepSettingsCenter);
                 PNAX.SetSpan(Channel, SweepSettingsSpan);
             }
-            //else if (SweepType == SweepTypeEnum.CWFrequency)
+            //else if (SweepType == GeneralGainCompressionSweepTypeEnum.CWFrequency)
             //{
             //    PNAX.SetCWFreq(Channel, SweepSettingsFixed);
             //}
             else if (SweepType == GeneralGainCompressionSweepTypeEnum.SegmentSweep)
             {
-                // TODO
-                // Provide list of segments to user
-                // option to specify segment csv file
-                // TODO
-                Log.Error("Not implemented!");
+                SetSegmentValues();
             }
             else
             {

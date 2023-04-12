@@ -46,12 +46,81 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
+        #endregion
+
+        #region Segment Sweep
+        [Browsable(false)]
+        public bool EnableSegmentSweepSettings { get; set; } = false;
+
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [Display("Segment Definition Type", Group: "Sweep Properties", Order: 30)]
+        public SegmentDefinitionTypeEnum SegmentDefinitionType { get; set; }
+
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.File, HideIfDisabled = false)]
+        [Display("Segment Table File Name", Group: "Sweep Properties", Order: 31)]
+        [FilePath]
+        public string SegmentTable { get; set; }
+
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Segment Table", Group: "Sweep Properties", Order: 32)]
+        public List<SegmentDefinition> segmentDefinitions { get; set; }
+
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Show Table", Group: "Sweep Properties", Order: 33)]
+        public bool ShowTable { get; set; }
+
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [EnabledIf("ShowTable", true, HideIfDisabled = true)]
+        [Display("Window", Group: "Sweep Properties", Order: 34)]
+        public int Window { get; set; }
+
+
 
         #endregion
 
+        public void SetSegmentValues()
+        {
+            if (SegmentDefinitionType == SegmentDefinitionTypeEnum.File)
+            {
+                Log.Error("Load file Not implemented!");
+            }
+            else
+            {
+                PNAX.SegmentDeleteAllSegments(Channel);
+                int segment = 0;
+                foreach (SegmentDefinition a in segmentDefinitions)
+                {
+                    segment = PNAX.SegmentAdd(Channel);
+                    PNAX.SetSegmentState(Channel, segment, a.state);
+                    PNAX.SetSegmentNumberOfPoints(Channel, segment, a.NumberOfPoints);
+                    PNAX.SetSegmentStartFrequency(Channel, segment, a.StartFrequency);
+                    PNAX.SetSegmentStopFrequency(Channel, segment, a.StopFrequency);
+                }
+                PNAX.SetStandardSweepType(Channel, StandardSweepTypeEnum.SegmentSweep);
+                if (ShowTable)
+                {
+                    PNAX.SetSegmentTableShow(Channel, true, Window);
+                }
+            }
+
+        }
 
         public GeneralBaseStep()
         {
+            SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
+            segmentDefinitions = new List<SegmentDefinition>();
+            segmentDefinitions.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            ShowTable = false;
+            Window = 1;
         }
 
         public override void Run()

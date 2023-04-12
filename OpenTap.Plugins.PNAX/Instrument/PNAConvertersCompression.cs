@@ -522,6 +522,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
         }
 
+        public void SetSweepType(int Channel, GeneralNFSweepTypeEnum sweeptype)
+        {
+            String sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+        }
+
         public DataAcquisitionModeEnum GetDataAcquisitionMode(int Channel)
         {
             DataAcquisitionModeEnum retVal = DataAcquisitionModeEnum.SMARTSweep;

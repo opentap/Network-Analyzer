@@ -280,6 +280,7 @@ namespace OpenTap.Plugins.PNAX
     public class ToneFrequencyValues
     {
         public ToneFrequencySweepTypeEnum ToneFrequencySweepType;
+        public GeneralToneFrequencySweepTypeEnum GeneralToneFrequencySweepType;
         public double SweepFcStartFc;
         public double SweepFcStopFc;
         public double SweepFcCenterFc;
@@ -302,6 +303,7 @@ namespace OpenTap.Plugins.PNAX
         {
             ToneFrequencyValues toneFrequencyValues = new ToneFrequencyValues();
             toneFrequencyValues.ToneFrequencySweepType = ToneFrequencySweepTypeEnum.SweepFc;
+            toneFrequencyValues.GeneralToneFrequencySweepType = GeneralToneFrequencySweepTypeEnum.SweepFc;
             toneFrequencyValues.SweepFcStartFc = 10.5e6;
             toneFrequencyValues.SweepFcStopFc = 49.9995e9;
             toneFrequencyValues.SweepFcCenterFc = 25.005e9;
@@ -626,6 +628,8 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigureConverterFrequencyValues
     {
         public SweepTypeEnum SweepType;
+        public GeneralNFSweepTypeEnum GeneralNFSweepType { get; set; }
+
         public int SweepSettingsNumberOfPoints;
         public double SweepSettingsIFBandwidth;
         public double SweepSettingsStart;
@@ -638,6 +642,7 @@ namespace OpenTap.Plugins.PNAX
         {
             NoiseFigureConverterFrequencyValues converterFrequencyValues = new NoiseFigureConverterFrequencyValues();
             converterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
+            converterFrequencyValues.GeneralNFSweepType = GeneralNFSweepTypeEnum.LinearSweep;
             converterFrequencyValues.SweepSettingsNumberOfPoints = 201;
             converterFrequencyValues.SweepSettingsIFBandwidth = 1e3;
             converterFrequencyValues.SweepSettingsStart = 10e6;
