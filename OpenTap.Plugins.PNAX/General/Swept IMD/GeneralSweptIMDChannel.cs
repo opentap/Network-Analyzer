@@ -35,7 +35,7 @@ namespace OpenTap.Plugins.PNAX
         public GeneralSweptIMDChannel()
         {
             // Add child steps in the order that is required
-
+            GeneralSweptIMDConfigure configure = new GeneralSweptIMDConfigure { IsControlledByParent = true, Channel = this.Channel };
             // Tone Power
             GeneralTonePower power = new GeneralTonePower { IsControlledByParent = true, Channel = this.Channel, ToneFrequencySweepType = this.ChannelSweepType };
             // Tone Frequency
@@ -44,6 +44,7 @@ namespace OpenTap.Plugins.PNAX
             // Traces
             GeneralSweptIMDNewTrace sweptIMDNewTrace = new GeneralSweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel };
 
+            this.ChildTestSteps.Add(configure);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(sweptIMDNewTrace);

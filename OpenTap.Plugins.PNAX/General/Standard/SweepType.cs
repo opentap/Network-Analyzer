@@ -13,6 +13,26 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public class SegmentDefinition
+    {
+        [Display("State", Order: 1)]
+        public bool state { get; set; }
+        [Display("Number of Points", Order: 2)]
+        public int NumberOfPoints { get; set; }
+        [Display("Start Frequency", Order: 3)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double StartFrequency { get; set; }
+        [Display("Stop Frequency", Order: 4)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double StopFrequency { get; set; }
+    }
+
+    public enum SegmentDefinitionTypeEnum
+    {
+        File,
+        List
+    }
+
     public enum StandardSweepTypeEnum
     {
         [Scpi("LINear")]
@@ -76,7 +96,7 @@ namespace OpenTap.Plugins.PNAX
         public double SweepPropertiesStopPhase { get; set; }
 
         [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
-        [EnabledIf("EnableCWFreq", true, HideIfDisabled = true)]
+        //[EnabledIf("EnableCWFreq", true, HideIfDisabled = true)]
         [Display("CW Freq", Group: "Sweep Properties", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesCWFreq { get; set; }
@@ -95,16 +115,41 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesIFBandwidth { get; set; }
 
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [Display("Segment Definition Type", Group: "Sweep Properties", Order: 30)]
+        public SegmentDefinitionTypeEnum SegmentDefinitionType { get; set; }
 
         [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
-        [Display("Segment Table", Group: "Sweep Properties", Order: 25)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.File, HideIfDisabled = false)]
+        [Display("Segment Table File Name", Group: "Sweep Properties", Order: 31)]
+        [FilePath]
         public string SegmentTable { get; set; }
 
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Segment Table", Group: "Sweep Properties", Order: 32)]
+        public List<SegmentDefinition> segmentDefinitions { get; set; }
+
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Show Table", Group: "Sweep Properties", Order: 33)]
+        public bool ShowTable { get; set; }
+
+        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [EnabledIf("ShowTable", true, HideIfDisabled = true)]
+        [Display("Window", Group: "Sweep Properties", Order: 34)]
+        public int Window { get; set; }
         #endregion
 
         public SweepType()
         {
             UpdateDefaultValues();
+            SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
+            segmentDefinitions = new List<SegmentDefinition>();
+            segmentDefinitions.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            ShowTable = false;
+            Window = 1;
         }
 
         private void UpdateDefaultValues()
@@ -152,11 +197,28 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
                     break;
                 case StandardSweepTypeEnum.SegmentSweep:
-                    // TODO
-                    // Provide list of segments to user
-                    // option to specify segment csv file
-                    // TODO
-                    Log.Error("SegmentSweep Not implemented!");
+                    if (SegmentDefinitionType == SegmentDefinitionTypeEnum.File)
+                    {
+                        Log.Error("Load file Not implemented!");
+                    }
+                    else
+                    {
+                        PNAX.SegmentDeleteAllSegments(Channel);
+                        int segment = 0;
+                        foreach(SegmentDefinition a in segmentDefinitions)
+                        {
+                            segment = PNAX.SegmentAdd(Channel);
+                            PNAX.SetSegmentState(Channel, segment, a.state);
+                            PNAX.SetSegmentNumberOfPoints(Channel, segment, a.NumberOfPoints);
+                            PNAX.SetSegmentStartFrequency(Channel, segment, a.StartFrequency);
+                            PNAX.SetSegmentStopFrequency(Channel, segment, a.StopFrequency);
+                        }
+                        PNAX.SetStandardSweepType(Channel, StandardSweepType);
+                        if (ShowTable)
+                        {
+                            PNAX.SetSegmentTableShow(Channel, true, Window);
+                        }
+                    }
                     break;
                 case StandardSweepTypeEnum.PhaseSweep:
                     PNAX.SetPhaseStart(Channel, SweepPropertiesStartPhase);
