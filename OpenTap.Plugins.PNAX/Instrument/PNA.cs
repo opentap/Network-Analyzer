@@ -20,7 +20,6 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-        private int TraceCount = 0;
         public StandardChannelValues DefaultStandardChannelValues;
         public MixerPowerValues DefaultMixerPowerValues;
         public MixerFrequencyValues DefaultMixerFrequencyValues;
@@ -57,7 +56,6 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand("SYST:FPR");
             ScpiCommand("DISP:WIND OFF");
             WaitForOperationComplete();
-            TraceCount = 1;
 
             //if (!IdnString.Contains("Instrument ID"))
             //{
@@ -97,8 +95,26 @@ namespace OpenTap.Plugins.PNAX
             UpdateMixerSweepDefaultValues();
         }
 
-        public int GetNewTraceID()
+        public int GetNewTraceID(int Channel)
         {
+            int TraceCount = 0;
+            // Query Channel for list of measurements
+            var ListOfMeas = ScpiQuery($"CALC{Channel}:PAR:CAT:EXT?");
+            ListOfMeas = ListOfMeas.Replace("\n", "");
+            String[] list = ListOfMeas.Split(',');
+
+            if (list[0].Equals("\"NO CATALOG\""))
+            {
+                // channel does not have any traces
+                TraceCount = 1;
+            }
+            else
+            {
+                int listCount = list.Count();
+                TraceCount = (listCount / 2) + 1;
+            }
+
+            // if 
             return TraceCount++;
         }
     }

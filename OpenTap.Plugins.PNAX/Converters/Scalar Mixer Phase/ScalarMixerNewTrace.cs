@@ -44,6 +44,19 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
+            // Validate the meas has not been added before
+            foreach (TestStep child in ChildTestSteps)
+            {
+                if (child is ScalarMixerSingleTrace)
+                {
+                    if ((child as ScalarMixerSingleTrace).Meas == this.Meas)
+                    {
+                        Log.Info("Can't add duplicate measurement!");
+                        return;
+                    }
+                }
+            }
+
             this.ChildTestSteps.Add(new ScalarMixerSingleTrace() { Meas = this.Meas, Channel = this.Channel });
 
             //CompressionTraceEnum compressionTrace;
