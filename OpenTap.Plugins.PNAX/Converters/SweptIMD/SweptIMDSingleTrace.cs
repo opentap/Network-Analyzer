@@ -308,7 +308,7 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            int traceid = PNAX.GetNewTraceID(Channel);
+            int traceid = PNAX.GetNewWindowTraceID(Window);
 
             // Define the measurement
             //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");

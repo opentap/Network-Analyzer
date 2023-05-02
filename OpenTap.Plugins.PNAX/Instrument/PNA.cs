@@ -50,7 +50,7 @@ namespace OpenTap.Plugins.PNAX
 
             base.Open();
 
-            this.QueryErrorAfterCommand = true;
+            this.QueryErrorAfterCommand = false;
             // TODO:  Open the connection to the instrument here
 
             ScpiCommand("SYST:FPR");
@@ -114,8 +114,60 @@ namespace OpenTap.Plugins.PNAX
                 TraceCount = (listCount / 2) + 1;
             }
 
-            // if 
             return TraceCount++;
         }
+
+        public int GetNewWindowTraceID(int Window)
+        {
+            int TraceCount = 0;
+
+            // first lets see if the window exists
+            int IsWindowActive = ScpiQuery<int>($"DISPlay:WINDow{Window}:STATe?");
+            if (IsWindowActive == 0)
+            {
+                // does not exist
+                // thus, channel does not have any traces
+                TraceCount = 1;
+            }
+            else
+            {
+                // exists
+                // now lets find trace count in this window
+                var ListOfTracesInWindow = ScpiQuery($"DISPlay:WINDow{Window}:CAT?");
+                ListOfTracesInWindow = ListOfTracesInWindow.Replace("\n", "");
+                String[] listTraces = ListOfTracesInWindow.Split(',');
+
+                if (listTraces[0].Equals("\"NO CATALOG\""))
+                {
+                    // channel does not have any traces
+                    TraceCount = 1;
+                }
+                else
+                {
+                    int listCount = listTraces.Count();
+                    TraceCount = listCount + 1;
+                }
+            }
+
+
+
+
+            return TraceCount++;
+        }
+
+        public override void ScpiCommand(string command)
+        {
+            base.ScpiCommand(command);
+
+            WaitForOperationComplete();
+            List<ScpiError> errors = base.QueryErrors();
+
+            if (errors.Count > 0)
+            {
+                String errorString = String.Join(",", errors.ToArray());
+                throw new Exception($"Error: {errorString} while sending command: {command}");
+            }
+        }
+
     }
 }
