@@ -59,6 +59,19 @@ namespace OpenTap.Plugins.PNAX
             StandardTraceEnum standardTrace;
             if (Enum.TryParse<StandardTraceEnum>(Meas.ToString(), out standardTrace))
             {
+                // Validate the meas has not been added before
+                foreach (TestStep child in ChildTestSteps)
+                {
+                    if (child is StandardSingleTrace)
+                    {
+                        if ((child as StandardSingleTrace).Meas == standardTrace)
+                        {
+                            Log.Info("Can't add duplicate measurement!");
+                            return;
+                        }
+                    }
+                }
+
                 this.ChildTestSteps.Add(new StandardSingleTrace() { Meas = standardTrace, Channel = this.Channel });
             }
         }

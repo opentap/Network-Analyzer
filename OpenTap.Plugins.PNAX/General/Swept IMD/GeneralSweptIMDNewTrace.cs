@@ -241,8 +241,22 @@ namespace OpenTap.Plugins.PNAX
         protected override void AddNewTrace()
         {
             SweptIMDTraceEnum sweptIMD;
+
             if (Enum.TryParse<SweptIMDTraceEnum>(ParamName, out sweptIMD))
             {
+                // Validate the meas has not been added before
+                foreach (TestStep child in ChildTestSteps)
+                {
+                    if (child is GeneralSweptIMDSingleTrace)
+                    {
+                        if ((child as GeneralSweptIMDSingleTrace).Meas == sweptIMD)
+                        {
+                            Log.Info("Can't add duplicate measurement!");
+                            return;
+                        }
+                    }
+                }
+
                 this.ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { Meas = sweptIMD, Channel = this.Channel });
             }
         }

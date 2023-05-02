@@ -86,12 +86,12 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.SetSweepType(Channel, SweepType);
 
-            PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
             PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
 
             if ((SweepType == GeneralNFSweepTypeEnum.LinearSweep) ||
                 (SweepType == GeneralNFSweepTypeEnum.LogFrequency))
             {
+                PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
                 PNAX.SetStart(Channel, SweepSettingsStart);
                 PNAX.SetStop(Channel, SweepSettingsStop);
                 PNAX.SetCenter(Channel, SweepSettingsCenter);
@@ -99,6 +99,7 @@ namespace OpenTap.Plugins.PNAX
             }
             else if (SweepType == GeneralNFSweepTypeEnum.CWFrequency)
             {
+                PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
                 PNAX.SetCWFreq(Channel, SweepSettingsFixed);
             }
             else if (SweepType == GeneralNFSweepTypeEnum.SegmentSweep)
