@@ -68,7 +68,9 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.AddNewTrace(Channel, Window, Trace, "Scalar Mixer/Converter", Meas.ToString());
+            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Scalar Mixer/Converter", Meas.ToString());
+
+            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
             UpgradeVerdict(Verdict.Pass);
         }

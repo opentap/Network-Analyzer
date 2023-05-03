@@ -139,7 +139,9 @@ namespace OpenTap.Plugins.PNAX
             RunChildSteps(); //If the step supports child steps.
 
             String m = Scpi.Format("{0}", Meas);
-            PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Converters", m);
+            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Converters", m);
+
+            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
             UpgradeVerdict(Verdict.Pass);
         }

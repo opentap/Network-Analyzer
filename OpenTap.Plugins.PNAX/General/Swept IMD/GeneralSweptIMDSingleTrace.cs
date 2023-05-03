@@ -66,7 +66,9 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.AddNewTrace(Channel, Window, Trace, "Swept IMD", Meas.ToString());
+            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Swept IMD", Meas.ToString());
+
+            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
             UpgradeVerdict(Verdict.Pass);
         }

@@ -129,7 +129,9 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.AddNewTrace(Channel, Window, Trace, "Standard", Meas.ToString());
+            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Standard", Meas.ToString());
+
+            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
             UpgradeVerdict(Verdict.Pass);
         }

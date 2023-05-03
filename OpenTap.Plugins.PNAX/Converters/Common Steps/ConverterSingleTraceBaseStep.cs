@@ -17,6 +17,9 @@ namespace OpenTap.Plugins.PNAX
     public class ConverterSingleTraceBaseStep : ConverterBaseStep
     {
         #region Settings
+        [Display("Trace Title", Groups: new[] { "Trace" }, Order: 9)]
+        public String TraceTitle { get; set; }
+
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
         public string Trace { get; set; }
 
@@ -58,7 +61,11 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
+        [Browsable(false)]
+        public bool IsPropertyEnabled { get; set; } = false;
+        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
+        [Display("TNum", Groups: new[] { "Trace" }, Order: 20)]
+        public int tnum { get; set; }
         #endregion
 
         public ConverterSingleTraceBaseStep()
