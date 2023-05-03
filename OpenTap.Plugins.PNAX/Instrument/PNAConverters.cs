@@ -348,6 +348,11 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         #region Mixer Frequency
+        public void MixerCalc(int Channel)
+        {
+            ScpiCommand($"SENSe{ Channel }:MIXer:CALCulate BOTH");
+        }
+
         public void MixerApply(int Channel)
         {
             ScpiCommand($"SENSe{ Channel }:MIXer:APPLY");
@@ -363,6 +368,13 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:MIXer:INPut:FREQuency:MODE {mode}");
         }
 
+        public void ValidateMixerFrequencyInputMode(int Channel, string mode)
+        {
+            string retString = GetMixerFrequencyInputMode(Channel);
+
+            if (!retString.ToUpper().Equals(mode)) throw new Exception($"Mixer Frequency Input Mode Mismatch\nTest Step Setting: {mode}\nInstrument value: {retString}");
+        }
+
         public double GetFrequencyInputStart(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:INPut:FREQuency:STARt?");
@@ -371,6 +383,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetFrequencyInputStart(int Channel, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:INPut:FREQuency:STARt { value }");
+        }
+
+        public void ValidateFrequencyInputStart(int Channel, double value)
+        {
+            double d = GetFrequencyInputStart(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyInputStart Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
         }
 
         public double GetFrequencyInputStop(int Channel)
@@ -383,6 +401,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:INPut:FREQuency:STOP { value }");
         }
 
+        public void ValidateFrequencyInputStop(int Channel, double value)
+        {
+            double d = GetFrequencyInputStop(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyInputStop Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
+        }
+
         public double GetFrequencyInputFixed(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:INPut:FREQuency:FIXed?");
@@ -393,6 +417,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:INPut:FREQuency:FIXed { value }");
         }
 
+        public void ValidateFrequencyInputFixed(int Channel, double value)
+        {
+            double d = GetFrequencyInputFixed(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyInputFixed Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
+        }
 
         public string GetMixerFrequencyLOMode(int Channel, int stage)
         {
@@ -403,6 +432,13 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:MODE {mode}");
         }
+        public void ValidateMixerFrequencyLOMode(int Channel, int stage, String mode)
+        {
+            String retString = GetMixerFrequencyLOMode(Channel, stage);
+
+            if (!retString.ToUpper().Equals(mode)) throw new Exception($"ValidateMixerFrequencyLOMode Mismatch\nTest Step Setting: {mode}\nInstrument value: {retString}");
+        }
+
         public double GetFrequencyLOStart(int Channel, int stage)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STARt?");
@@ -411,6 +447,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetFrequencyLOStart(int Channel, int stage, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STARt { value }");
+        }
+
+        public void ValidateFrequencyLOStart(int Channel, int stage, double value)
+        {
+            double d = GetFrequencyLOStart(Channel, stage);
+            if (d != value) throw new Exception($"ValidateFrequencyLOStart Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
         }
 
         public double GetFrequencyLOStop(int Channel, int stage)
@@ -423,6 +465,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:STOP { value }");
         }
 
+        public void ValidateFrequencyLOStop(int Channel, int stage, double value)
+        {
+            double d = GetFrequencyLOStop(Channel, stage);
+            if (d != value) throw new Exception($"ValidateFrequencyLOStop Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
+        }
+
         public double GetFrequencyLOFixed(int Channel, int stage)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:FIXed?");
@@ -431,6 +479,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetFrequencyLOFixed(int Channel, int stage, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:FIXed { value }");
+        }
+
+        public void ValidateFrequencyLOFixed(int Channel, int stage, double value)
+        {
+            double d = GetFrequencyLOFixed(Channel, stage);
+            if (d != value) throw new Exception($"ValidateFrequencyLOFixed Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
         }
 
         public bool GetLOILTI(int Channel, int stage)
@@ -443,6 +497,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:LO{ stage }:FREQuency:ILTI {Convert.ToInt32(value)}");
         }
 
+        public void ValidateLOILTI(int Channel, int stage, bool value)
+        {
+            bool b = GetLOILTI(Channel, stage);
+            if (b != value) throw new Exception($"ValidateLOILTI Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {b.ToString()}");
+        }
+
         public double GetFrequencyIFStart(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:IF:FREQuency:STARt?");
@@ -453,6 +513,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:IF:FREQuency:STARt { value }");
         }
 
+        public void ValidateFrequencyIFStart(int Channel, double value)
+        {
+            double d = GetFrequencyIFStart(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyIFStart Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
+        }
+
         public double GetFrequencyIFStop(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:IF:FREQuency:STOP?");
@@ -461,6 +527,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetFrequencyIFStop(int Channel, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:IF:FREQuency:STOP { value }");
+        }
+
+        public void ValidateFrequencyIFStop(int Channel, double value)
+        {
+            double d = GetFrequencyIFStop(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyIFStop Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
         }
 
         // TODO
@@ -514,6 +586,12 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        public void ValidateFrequencyIFSideband(int Channel, SidebandTypeEnum sideband)
+        {
+            SidebandTypeEnum value = GetFrequencyIFSideband(Channel);
+            if (sideband != value) throw new Exception($"ValidateFrequencyIFSideband Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {sideband.ToString()}");
+        }
+
         public double GetFrequencyOutputStart(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:OUTPut:FREQuency:STARt?");
@@ -522,6 +600,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetFrequencyOutputStart(int Channel, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:OUTPut:FREQuency:STARt { value }");
+        }
+
+        public void ValidateFrequencyOutputStart(int Channel, double value)
+        {
+            double d = GetFrequencyOutputStart(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyOutputStart Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
         }
 
         public double GetFrequencyOutputStop(int Channel)
@@ -534,6 +618,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:OUTPut:FREQuency:STOP { value }");
         }
 
+        public void ValidateFrequencyOutputStop(int Channel, double value)
+        {
+            double d = GetFrequencyOutputStop(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyOutputStop Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
+        }
+
         public double GetFrequencyOutputFixed(int Channel)
         {
             return ScpiQuery<double>($"SENS{ Channel }:MIXer:OUTPut:FREQuency:FIXed?");
@@ -542,6 +632,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetFrequencyOutputFixed(int Channel, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:OUTPut:FREQuency:FIXed { value }");
+        }
+
+        public void ValidateFrequencyOutputFixed(int Channel, double value)
+        {
+            double d = GetFrequencyOutputFixed(Channel);
+            if (d != value) throw new Exception($"ValidateFrequencyOutputFixed Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {d.ToString()}");
         }
 
         public SidebandTypeEnum GetFrequencyOutputSideband(int Channel)
@@ -577,6 +673,12 @@ namespace OpenTap.Plugins.PNAX
             {
                 throw new Exception("unknown side band");
             }
+        }
+
+        public void ValidateFrequencyOutputSideband(int Channel, SidebandTypeEnum sideband)
+        {
+            SidebandTypeEnum value = GetFrequencyOutputSideband(Channel);
+            if (sideband != value) throw new Exception($"ValidateFrequencyOutputSideband Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {sideband.ToString()}");
         }
 
         #endregion
