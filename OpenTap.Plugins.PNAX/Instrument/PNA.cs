@@ -169,5 +169,11 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        public override string ScpiQuery(string query, bool isSilent = false)
+        {
+            String strRet = base.ScpiQuery(query, isSilent);
+            strRet = strRet.Replace("\n", "");
+            return strRet;
+        }
     }
 }
