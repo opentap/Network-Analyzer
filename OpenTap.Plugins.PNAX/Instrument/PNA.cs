@@ -169,5 +169,19 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        public void AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas)
+        {
+            int traceid = GetNewWindowTraceID(Window);
+
+            ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'{MeasClass}\',\'{Meas.ToString()}\'");
+
+            // Create a window if it doesn't exist already
+            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
+
+            // Display the measurement
+            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
+
+        }
+
     }
 }

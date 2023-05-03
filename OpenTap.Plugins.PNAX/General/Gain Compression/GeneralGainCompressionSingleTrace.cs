@@ -74,21 +74,7 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            int traceid = PNAX.GetNewWindowTraceID(Window);
-
-            // Define the measurement
-            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
-            //PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
-
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'Gain Compression\',\'{Meas.ToString()}\'");
-
-            // Create a window if it doesn't exist already
-            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
-
-            // Display the measurement
-            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
-
-            // Select the measurement
+            PNAX.AddNewTrace(Channel, Window, Trace, "Gain Compression", Meas.ToString());
 
             UpgradeVerdict(Verdict.Pass);
         }
