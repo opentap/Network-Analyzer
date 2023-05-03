@@ -17,6 +17,9 @@ namespace OpenTap.Plugins.PNAX
     public class GeneralSingleTraceBaseStep : GeneralBaseStep
     {
         #region Settings
+        [Display("Trace Title", Groups: new[] { "Trace" }, Order: 9)]
+        public String TraceTitle { get; set; }
+
         private String _Trace;
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
         public String Trace
@@ -94,12 +97,26 @@ namespace OpenTap.Plugins.PNAX
                 UpdateTestName();
             }
         }
+
+        [Browsable(false)]
+        public bool IsPropertyEnabled { get; set; } = false;
+        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
+        [Display("TNum", Groups: new[] { "Trace" }, Order: 20)]
+        public int tnum { get; set; }
         #endregion
 
         protected virtual void UpdateTestName()
         {
         }
 
+        public override void Run()
+        {
+            RunChildSteps(); //If the step supports child steps.
+
+            // If no verdict is used, the verdict will default to NotSet.
+            // You can change the verdict using UpgradeVerdict() as shown below.
+            // UpgradeVerdict(Verdict.Pass);
+        }
 
     }
 }

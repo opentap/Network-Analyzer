@@ -41,9 +41,9 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("S11")]
         S11,
         [Scpi("S21")]
-        SC21,
+        S21,
         [Scpi("S12")]
-        SC12,
+        S12,
         [Scpi("S22")]
         S22,
         [Scpi("A_1")]
@@ -110,19 +110,9 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            int traceid = PNAX.GetNewWindowTraceID(Window);
+            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Cold Source", Meas.ToString());
 
-            // Define the measurement
-            String m = Scpi.Format("{0}", Meas);
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'Noise Figure Cold Source\',\'{m}\'");
-
-            // Create a window if it doesn't exist already
-            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
-
-            // Display the measurement
-            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
-
-            // Select the measurement
+            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
             UpgradeVerdict(Verdict.Pass);
         }

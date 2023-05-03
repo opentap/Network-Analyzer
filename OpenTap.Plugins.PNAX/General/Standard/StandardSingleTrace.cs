@@ -129,19 +129,9 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            int traceid = PNAX.GetNewWindowTraceID(Window);
+            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Standard", Meas.ToString());
 
-            // Define the measurement
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DEFine:EXT \'{Trace}\',\'{Meas.ToString()}\'");
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
-
-            // Create a window if it doesn't exist already
-            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
-
-            // Display the measurement
-            PNAX.ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
-
-            // Select the measurement
+            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
             UpgradeVerdict(Verdict.Pass);
         }
