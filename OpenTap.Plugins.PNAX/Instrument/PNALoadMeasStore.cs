@@ -83,13 +83,13 @@ namespace OpenTap.Plugins.PNAX
         {
             List<int> activeChannels = GetActiveChannels();
             channelsList = ChannelListCheck(channelsList, activeChannels);
-
+            IoTimeout = 20000;
             // Trigger every channel
             foreach (var channel in channelsList)
             {
                 ScpiCommand($":SENS{channel}:SWE:MODE SING");
             }
-
+            IoTimeout = 2000;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace OpenTap.Plugins.PNAX
             foreach (var channel in channelsList)
             {
                 string[] tracesList = GetTraceNames(channel);
-
+                //Log.Debug("TraceList: " + tracesList.ToString());
                 // Create list of available traces
                 var traceNumList = new List<string>();
                 for (var i = 0; i < tracesList.Length; i++)
