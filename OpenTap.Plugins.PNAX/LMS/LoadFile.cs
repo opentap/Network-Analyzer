@@ -31,7 +31,8 @@ namespace OpenTap.Plugins.PNAX
 
             try 
             {
-                PNAX.LoadState(StateFile);
+                string absoluteStateFile = Path.GetFullPath(StateFile);
+                PNAX.LoadState(absoluteStateFile);
                 PNAX.WaitForOperationComplete();
             }
             catch(FileNotFoundException ex)
