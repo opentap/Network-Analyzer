@@ -106,6 +106,7 @@ namespace OpenTap.Plugins.PNAX
             var allTraceNumList = new List<string>();
 
             var traceTitles = new List<string>();
+            var FullTraceName = new List<string>();
             foreach (var channel in channelsList)
             {
                 string[] tracesList = GetTraceNames(channel);
@@ -119,6 +120,7 @@ namespace OpenTap.Plugins.PNAX
                         var traceNum = tracesList[i].Split('_').Last();
                         traceNumList.Add(traceNum);
                         allTraceNumList.Add(traceNum);
+                        FullTraceName.Add(tracesList[i]);
                     }
                     else
                     {
@@ -143,6 +145,7 @@ namespace OpenTap.Plugins.PNAX
 
             resultsList.Insert(0, allTraceNumList);
             resultsList.Insert(1, traceTitles);
+            resultsList.Insert(2, FullTraceName);
             return resultsList;
         }
 

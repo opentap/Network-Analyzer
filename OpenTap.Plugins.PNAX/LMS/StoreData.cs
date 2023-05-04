@@ -55,6 +55,10 @@ namespace OpenTap.Plugins.PNAX
                 var allTraceTitles = results[0];
                 results.RemoveAt(0);
 
+                // Full trace name
+                var FullTraceName = results[0];
+                results.RemoveAt(0);
+
                 var xResult = results.Where((item, index) => index % 2 == 0).ToList();
                 var yResult = results.Where((item, index) => index % 2 != 0).ToList();
 
@@ -136,8 +140,8 @@ namespace OpenTap.Plugins.PNAX
                     if (xResult[i].Count == yResult[i].Count)
                     {
                         // one data per frequency point
-                        Results.PublishTable($"Trace {traces[i]} - {allTraceTitles[i]}",
-                                             new List<string> { "Frequency (Hz)", $"{traceUnits}" },
+                        Results.PublishTable($"{FullTraceName[i]}",
+                                             new List<string> { "Frequency (Hz)", $"{FullTraceName[i]}" },
                                              xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray(),
                                              yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray()
                                             );
@@ -156,8 +160,8 @@ namespace OpenTap.Plugins.PNAX
                             point2[index] = twoPoints[j++];
                         }
 
-                        Results.PublishTable($"Trace {traces[i]} - {allTraceTitles[i]}",
-                                             new List<string> { "Frequency (Hz)", "i", "j" },
+                        Results.PublishTable($"{FullTraceName[i]}",
+                                             new List<string> { "Frequency (Hz)", $"{FullTraceName[i]}_i", $"{FullTraceName[i]}_j" },
                                              xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray(),
                                              point1,
                                              point2
