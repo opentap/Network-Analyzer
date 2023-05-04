@@ -18,17 +18,25 @@ namespace OpenTap.Plugins.PNAX
         public int AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas)
         {
             int traceid = GetNewWindowTraceID(Window);
+            int mnum = GetUniqueTraceId();
 
-            ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{Trace}\',\'{MeasClass}\',\'{Meas.ToString()}\'");
+            // MeasName = Trace + mnum
+            // i.e. for Trace = CH1_S11 
+            //          mnum = 1
+            //          then we get: CH1_S11_1
+            // This is the format that the PNA uses
+            String MeasName = Trace + "_" + mnum.ToString();
+
+            ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{MeasName}\',\'{MeasClass}\',\'{Meas.ToString()}\'");
 
             // Create a window if it doesn't exist already
             ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
 
             // Display the measurement
-            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{Trace}\'");
+            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{MeasName}\'");
 
             // 
-            ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{Trace}\'");
+            ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{MeasName}\'");
 
             // Get Trace number
             int tnum = ScpiQuery<int>($"CALCulate{Channel.ToString()}:PARameter:TNUMber?");

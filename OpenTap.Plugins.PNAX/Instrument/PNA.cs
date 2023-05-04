@@ -43,6 +43,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         /// <summary>
+        /// MNUM: The Tr# that appears on the VNA screen is the third and most visible way to refer to a trace. 
+        /// Since we already have a "Trace Number", we call this the Measurement Number in the VNA Help file. 
+        /// This number is issued sequentially by the VNA regardless of channel and window. 
+        /// It is therefore unique among all traces
+        /// </summary>
+        protected int mnum = 1;
+
+        /// <summary>
         /// Open procedure for the instrument.
         /// </summary>
         public override void Open()
@@ -63,6 +71,7 @@ namespace OpenTap.Plugins.PNAX
             //    throw new ArgumentException("Wrong instrument type.");
             // }
 
+            mnum = 1;
         }
 
         /// <summary>
@@ -93,6 +102,15 @@ namespace OpenTap.Plugins.PNAX
             UpdateConverterFrequencyValues();
             UpdateConverterPowerValues();
             UpdateMixerSweepDefaultValues();
+        }
+
+        /// <summary>
+        /// Generates a unique trace id aka MNUM or Measurement Number on the VNA help file
+        /// </summary>
+        /// <returns></returns>
+        public int GetUniqueTraceId()
+        {
+            return mnum++;
         }
 
         public int GetNewTraceID(int Channel)
