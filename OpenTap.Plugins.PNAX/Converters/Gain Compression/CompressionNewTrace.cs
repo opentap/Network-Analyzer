@@ -45,26 +45,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            // Validate the meas has not been added before
-            foreach (TestStep child in ChildTestSteps)
-            {
-                if (child is CompressionSingleTrace)
-                {
-                    if ((child as CompressionSingleTrace).Meas == this.Meas)
-                    {
-                        Log.Info("Can't add duplicate measurement!");
-                        return;
-                    }
-                }
-            }
-
             this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = this.Meas, Channel = this.Channel });
-
-            //CompressionTraceEnum compressionTrace;
-            //if (Enum.TryParse<CompressionTraceEnum>(Meas.ToString(), out compressionTrace))
-            //{
-            //    this.ChildTestSteps.Add(new CompressionSingleTrace() { Meas = compressionTrace, Channel = this.Channel });
-            //}
         }
 
     }

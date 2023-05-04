@@ -23,6 +23,9 @@ namespace OpenTap.Plugins.PNAX
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
         public string Trace { get; set; }
 
+        [Display("Format", Groups: new[] { "Trace" }, Order: 11.5)]
+        public PNAX.MeasurementFormatEnum Format { get; set; }
+
         private int _Channel;
         [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
         public override int Channel
@@ -66,6 +69,10 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
         [Display("TNum", Groups: new[] { "Trace" }, Order: 20)]
         public int tnum { get; set; }
+
+        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
+        [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
+        public int mnum { get; set; }
         #endregion
 
         public ConverterSingleTraceBaseStep()

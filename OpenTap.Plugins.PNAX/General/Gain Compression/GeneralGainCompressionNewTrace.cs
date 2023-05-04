@@ -45,19 +45,6 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            // Validate the meas has not been added before
-            foreach (TestStep child in ChildTestSteps)
-            {
-                if (child is GeneralGainCompressionSingleTrace)
-                {
-                    if ((child as GeneralGainCompressionSingleTrace).Meas == this.Meas)
-                    {
-                        Log.Info("Can't add duplicate measurement!");
-                        return;
-                    }
-                }
-            }
-
             this.ChildTestSteps.Add(new GeneralGainCompressionSingleTrace() { Meas = this.Meas, Channel = this.Channel });
         }
 

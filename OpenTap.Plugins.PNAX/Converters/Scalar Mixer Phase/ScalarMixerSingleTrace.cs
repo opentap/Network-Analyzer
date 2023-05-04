@@ -53,6 +53,7 @@ namespace OpenTap.Plugins.PNAX
         {
             Trace = "1";
             Meas = SMCTraceEnum.SC21;
+            Format = PNAX.MeasurementFormatEnum.MLOGarithmic;
             Channel = 1;
             Window = 1;
             Sheet = 1;
@@ -68,10 +69,16 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Scalar Mixer/Converter", Meas.ToString());
+            int _tnum = 0;
+            int _mnum = 0;
+            PNAX.AddNewTrace(Channel, Window, Trace, "Scalar Mixer/Converter", Meas.ToString(), ref _tnum, ref _mnum);
+            tnum = _tnum;
+            mnum = _mnum;
 
             PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
+            PNAX.SetTraceFormat(Window, mnum, Format);
+            
             UpgradeVerdict(Verdict.Pass);
         }
     }

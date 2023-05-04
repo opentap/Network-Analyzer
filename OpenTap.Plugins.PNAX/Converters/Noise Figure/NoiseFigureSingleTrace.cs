@@ -121,6 +121,7 @@ namespace OpenTap.Plugins.PNAX
         {
             Trace = "1";
             Meas = NoiseFigureTraceEnum.NF;
+            Format = PNAX.MeasurementFormatEnum.MLOGarithmic;
             Channel = 1;
             Window = 1;
             Sheet = 1;
@@ -138,11 +139,17 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
+            int _tnum = 0;
+            int _mnum = 0;
             String m = Scpi.Format("{0}", Meas);
-            tnum = PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Converters", m);
+            PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Converters", m, ref _tnum, ref _mnum);
+            tnum = _tnum;
+            mnum = _mnum;
 
             PNAX.SetTraceTitle(Window, tnum, TraceTitle);
 
+            PNAX.SetTraceFormat(Window, mnum, Format);
+            
             UpgradeVerdict(Verdict.Pass);
         }
     }
