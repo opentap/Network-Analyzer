@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(GainCompressionNewTrace))]
-    [Display("Compression Single Trace", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
+    [Display("Compression Single Trace", Groups: new[] { "PNA-X", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
     public class CompressionSingleTrace : ConverterSingleTraceBaseStep
     {
         #region Settings

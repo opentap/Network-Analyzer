@@ -40,7 +40,7 @@ namespace OpenTap.Plugins.PNAX
 
         private TraceManagerChannelClassEnum _Class;
         [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        public TraceManagerChannelClassEnum Class
+        public virtual TraceManagerChannelClassEnum Class
         {
             get
             {
@@ -72,7 +72,7 @@ namespace OpenTap.Plugins.PNAX
 
         private int _Window;
         [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public int Window
+        public override int Window
         {
             get
             {

@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [Display("Compression", Groups: new[] { "PNA-X", "General", "Compression" }, Description: "Insert a description here")]
+    [Display("Compression", Groups: new[] { "PNA-X", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompression : GeneralBaseStep
     {
 

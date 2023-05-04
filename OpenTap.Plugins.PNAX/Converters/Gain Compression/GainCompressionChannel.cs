@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Gain Compression Channel", Groups: new[] { "PNA-X", "Converters", "Compression" }, Description: "Insert a description here")]
+    [Display("Gain Compression Converters Channel", Groups: new[] { "PNA-X", "Converters", "Gain Compression Converters" }, Description: "Gain Compression for Amplifiers GCA (Opt S9x086A 086)")]
     public class GainCompressionChannel : ConverterChannelBase
     {
         #region Settings

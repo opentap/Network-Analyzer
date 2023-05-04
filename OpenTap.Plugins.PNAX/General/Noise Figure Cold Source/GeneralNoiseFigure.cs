@@ -60,7 +60,6 @@ namespace OpenTap.Plugins.PNAX
         private bool IsAverageOnNoise;
         private bool IsAverageOnNormal;
 
-        private int _AverageNumber;
         [Display("Average Number", Group: "Bandwidth/Average", Order: 22)]
         public int AverageNumber { get; set; }
 

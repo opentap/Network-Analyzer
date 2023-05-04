@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
     [AllowChildrenOfType(typeof(GeneralGainCompressionSingleTrace))]
-    [Display("Compression Traces", Groups: new[] { "PNA-X", "General", "Compression" }, Description: "Insert a description here")]
+    [Display("Compression Traces", Groups: new[] { "PNA-X", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompressionNewTrace : GeneralNewTraceBaseStep
     {
         #region Settings
