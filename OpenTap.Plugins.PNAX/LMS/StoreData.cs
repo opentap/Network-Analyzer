@@ -55,6 +55,10 @@ namespace OpenTap.Plugins.PNAX
                 var allTraceTitles = results[0];
                 results.RemoveAt(0);
 
+                // Full trace name
+                var FullTraceName = results[0];
+                results.RemoveAt(0);
+
                 var xResult = results.Where((item, index) => index % 2 == 0).ToList();
                 var yResult = results.Where((item, index) => index % 2 != 0).ToList();
 
@@ -133,11 +137,36 @@ namespace OpenTap.Plugins.PNAX
                 for (var i = 0; i < traces.Count; i++)
                 {
                     var traceUnits = PNAX.GetUnits(allTraceTitles[i]);
-                    Results.PublishTable($"Trace {traces[i]} - {allTraceTitles[i]}",
-                                         new List<string> { "Frequency (Hz)", $"{traceUnits}" }, 
-                                         xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray(), 
-                                         yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray()
-                                        );
+                    if (xResult[i].Count == yResult[i].Count)
+                    {
+                        // one data per frequency point
+                        Results.PublishTable($"{FullTraceName[i]}",
+                                             new List<string> { "Frequency (Hz)", $"{FullTraceName[i]}" },
+                                             xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray(),
+                                             yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray()
+                                            );
+                    }
+                    else
+                    {
+                        // most likely we have complex data, i.e. two numbers per data point
+                        int freqLength = xResult[i].Count;
+                        var twoPoints = yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();
+                        double[] point1 = new double[freqLength];
+                        double[] point2 = new double[freqLength];
+                        int j = 0;
+                        for (int index =0; index< freqLength; index++)
+                        {
+                            point1[index] = twoPoints[j++];
+                            point2[index] = twoPoints[j++];
+                        }
+
+                        Results.PublishTable($"{FullTraceName[i]}",
+                                             new List<string> { "Frequency (Hz)", $"{FullTraceName[i]}_i", $"{FullTraceName[i]}_j" },
+                                             xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray(),
+                                             point1,
+                                             point2
+                                            );
+                    }
                 }
 
             }

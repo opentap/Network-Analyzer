@@ -15,10 +15,46 @@ namespace OpenTap.Plugins.PNAX
 {
     public partial class PNAX : ScpiInstrument
     {
-        public int AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas)
+        public enum MeasurementFormatEnum
+        {
+            [Display("Lin Mag")]
+            MLINear,
+            [Display("Log Mag")]
+            MLOGarithmic,
+            [Display("Phase")]
+            PHASe,
+            [Display("Unwrapped Phase")]
+            UPHase,
+            [Display("Imaginary")]
+            IMAGinary,
+            [Display("Real")]
+            REAL,
+            [Display("Polar")]
+            POLar,
+            [Display("Smith")]
+            SMITh,
+            [Display("Inverted Smith")]
+            SADMittance,
+            [Display("SWR")]
+            SWR,
+            [Display("Group Delay")]
+            GDELay,
+            [Display("Kelvin")]
+            KELVin,
+            [Display("Fahrenheit")]
+            FAHRenheit,
+            [Display("Celsius")]
+            CELSius,
+            [Display("Positive Phase")]
+            PPHase,
+            [Display("Complex")]
+            COMPlex
+        }
+
+        public int AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas, ref int tnum, ref int mnum)
         {
             int traceid = GetNewWindowTraceID(Window);
-            int mnum = GetUniqueTraceId();
+            mnum = GetUniqueTraceId();
 
             // MeasName = Trace + mnum
             // i.e. for Trace = CH1_S11 
@@ -39,7 +75,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{MeasName}\'");
 
             // Get Trace number
-            int tnum = ScpiQuery<int>($"CALCulate{Channel.ToString()}:PARameter:TNUMber?");
+            tnum = ScpiQuery<int>($"CALCulate{Channel.ToString()}:PARameter:TNUMber?");
 
             return tnum;
         }
@@ -52,6 +88,11 @@ namespace OpenTap.Plugins.PNAX
 
                 ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{tnum.ToString()}:TITLe ON");
             }
+        }
+
+        public void SetTraceFormat(int Channel, int mnum, MeasurementFormatEnum meas)
+        {
+            ScpiCommand($"CALCulate{Channel.ToString()}:MEASure{mnum.ToString()}:FORMat {meas.ToString()}");
         }
     }
 }

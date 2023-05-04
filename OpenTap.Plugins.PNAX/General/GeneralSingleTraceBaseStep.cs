@@ -35,6 +35,9 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        [Display("Format", Groups: new[] { "Trace" }, Order: 11.5)]
+        public PNAX.MeasurementFormatEnum Format { get; set; }
+
         private TraceManagerChannelClassEnum _Class;
         [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
         public TraceManagerChannelClassEnum Class
@@ -103,6 +106,10 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
         [Display("TNum", Groups: new[] { "Trace" }, Order: 20)]
         public int tnum { get; set; }
+
+        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
+        [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
+        public int mnum { get; set; }
         #endregion
 
         protected virtual void UpdateTestName()

@@ -44,19 +44,6 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            // Validate the meas has not been added before
-            foreach (TestStep child in ChildTestSteps)
-            {
-                if (child is NoiseFigureSingleTrace)
-                {
-                    if ((child as NoiseFigureSingleTrace).Meas == this.Meas)
-                    {
-                        Log.Info("Can't add duplicate measurement!");
-                        return;
-                    }
-                }
-            }
-
             this.ChildTestSteps.Add(new NoiseFigureSingleTrace() { Meas = this.Meas, Channel = this.Channel });
         }
 
