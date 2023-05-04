@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Noise Figure Channel", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
+    [Display("Noise Figure Converters Channel", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
     public class NoiseFigureChannel : ConverterChannelBase
     {
         #region Settings

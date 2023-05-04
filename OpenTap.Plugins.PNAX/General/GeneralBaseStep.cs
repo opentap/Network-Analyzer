@@ -81,7 +81,7 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
         [EnabledIf("ShowTable", true, HideIfDisabled = true)]
         [Display("Window", Group: "Sweep Properties", Order: 34)]
-        public int Window { get; set; }
+        public virtual int Window { get; set; }
 
 
 

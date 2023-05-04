@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
 
         private TraceManagerChannelClassEnum _Class;
         [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        public TraceManagerChannelClassEnum Class
+        public override TraceManagerChannelClassEnum Class
         {
             get { return _Class; }
             set
