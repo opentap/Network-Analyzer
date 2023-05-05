@@ -73,7 +73,7 @@ namespace OpenTap.Plugins.PNAX
                     IMDOrderOptions = new List<int> { 2, 3, 5, 7, 9 };
                     IMDOrder = 2;
                 }
-                UpdateTestName();
+                UpdateSweptIMDConverterTestName();
             }
         }
 
@@ -89,7 +89,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _MDToneSelect = value;
-                UpdateTestName();
+                UpdateSweptIMDConverterTestName();
             }
         }
 
@@ -118,7 +118,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _IMDOrder = value;
-                UpdateTestName();
+                UpdateSweptIMDConverterTestName();
             }
         }
 
@@ -135,7 +135,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _IMDMeasureAt = value;
-                UpdateTestName();
+                UpdateSweptIMDConverterTestName();
             }
         }
 
@@ -143,7 +143,7 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-        private void UpdateTestName()
+        private void UpdateSweptIMDConverterTestName()
         {
             string TypeString = "";
             string OrderString = "";
@@ -269,7 +269,7 @@ namespace OpenTap.Plugins.PNAX
             IMDOrder = 1;
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
-            UpdateTestName();
+            UpdateSweptIMDConverterTestName();
             ChildTestSteps.Add(new SweptIMDSingleTrace() { Meas = SweptIMDTraceEnum.PwrMain});
         }
 

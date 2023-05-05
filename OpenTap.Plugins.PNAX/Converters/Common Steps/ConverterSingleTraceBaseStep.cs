@@ -16,21 +16,17 @@ namespace OpenTap.Plugins.PNAX
     [Browsable(false)]
     public class ConverterSingleTraceBaseStep : ConverterBaseStep
     {
-        #region Settings
-        [Display("Trace Title", Groups: new[] { "Trace" }, Order: 9)]
-        public String TraceTitle { get; set; }
-
-        [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
-        public string Trace { get; set; }
-
-        [Display("Format", Groups: new[] { "Trace" }, Order: 11.5)]
-        public PNAX.MeasurementFormatEnum Format { get; set; }
-
+        [Browsable(false)]
+        public bool IsControlledByParentTrace { get; set; } = true;
         private int _Channel;
-        [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
+        [EnabledIf("IsControlledByParentTrace", false, HideIfDisabled = false)]
+        [Display("Channel", Order: 1)]
         public override int Channel
         {
-            get { return _Channel; }
+            get
+            {
+                return _Channel;
+            }
             set
             {
                 _Channel = value;
@@ -38,49 +34,13 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
-        private int _Window;
-        [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public int Window
-        {
-            get { return _Window; }
-            set
-            {
-                _Window = value;
-                UpdateTestName();
-            }
-        }
-
-
-        private int _Sheet;
-        [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-        public int Sheet
-        {
-            get { return _Sheet; }
-            set
-            {
-                _Sheet = value;
-                UpdateTestName();
-            }
-        }
-
-        [Browsable(false)]
-        public bool IsPropertyEnabled { get; set; } = false;
-        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
-        [Display("TNum", Groups: new[] { "Trace" }, Order: 20)]
-        public int tnum { get; set; }
-
-        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
-        [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
-        public int mnum { get; set; }
-        #endregion
-
         public ConverterSingleTraceBaseStep()
         {
             IsControlledByParent = true;
+            EnableTraceSettings = true;
         }
 
-        protected virtual void UpdateTestName()
+        protected override void UpdateTestName()
         {
         }
 

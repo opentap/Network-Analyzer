@@ -16,46 +16,11 @@ namespace OpenTap.Plugins.PNAX
     [Browsable(false)]
     public class GeneralSingleTraceBaseStep : GeneralBaseStep
     {
-        #region Settings
-        [Display("Trace Title", Groups: new[] { "Trace" }, Order: 9)]
-        public String TraceTitle { get; set; }
-
-        private String _Trace;
-        [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
-        public String Trace
-        {
-            get
-            {
-                return _Trace;
-            }
-            set
-            {
-                _Trace = value;
-                //UpdateTestName();
-            }
-        }
-
-        [Display("Format", Groups: new[] { "Trace" }, Order: 11.5)]
-        public PNAX.MeasurementFormatEnum Format { get; set; }
-
-        private TraceManagerChannelClassEnum _Class;
-        [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        public virtual TraceManagerChannelClassEnum Class
-        {
-            get
-            {
-                return _Class;
-            }
-            set
-            {
-                _Class = value;
-                UpdateTestName();
-            }
-        }
-
-
+        [Browsable(false)]
+        public bool IsControlledByParentTrace { get; set; } = true;
         private int _Channel;
-        [Display("Channel", Groups: new[] { "Trace" }, Order: 13)]
+        [EnabledIf("IsControlledByParentTrace", false, HideIfDisabled = false)]
+        [Display("Channel", Order: 1)]
         public override int Channel
         {
             get
@@ -66,63 +31,28 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Channel = value;
                 UpdateTestName();
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is GeneralBaseStep)
+                    {
+                        (a as GeneralBaseStep).Channel = value;
+                    }
+                }
             }
         }
 
-
-        private int _Window;
-        [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public override int Window
+        public GeneralSingleTraceBaseStep()
         {
-            get
-            {
-                return _Window;
-            }
-            set
-            {
-                _Window = value;
-                UpdateTestName();
-            }
+            EnableTraceSettings = true;
         }
 
-
-        private int _Sheet;
-        [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-        public int Sheet
-        {
-            get
-            {
-                return _Sheet;
-            }
-            set
-            {
-                _Sheet = value;
-                UpdateTestName();
-            }
-        }
-
-        [Browsable(false)]
-        public bool IsPropertyEnabled { get; set; } = false;
-        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
-        [Display("TNum", Groups: new[] { "Trace" }, Order: 20)]
-        public int tnum { get; set; }
-
-        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
-        [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
-        public int mnum { get; set; }
-        #endregion
-
-        protected virtual void UpdateTestName()
+        protected override void UpdateTestName()
         {
         }
 
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.
-
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
         }
 
     }
