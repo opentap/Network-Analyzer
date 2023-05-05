@@ -20,17 +20,10 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool EnableTraceSettings { get; set; } = false;
 
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Trace Title", Groups: new[] { "Trace" }, Order: 9)]
-        public String TraceTitle { get; set; }
 
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
         public string Trace { get; set; }
-
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Format", Groups: new[] { "Trace" }, Order: 11.5)]
-        public PNAX.MeasurementFormatEnum Format { get; set; }
 
         //private int _TraceChannel;
         //[EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
@@ -89,6 +82,22 @@ namespace OpenTap.Plugins.PNAX
 
         public SingleTraceBaseStep()
         {
+        }
+
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
+        public virtual void AddTraceFormat()
+        {
+            //this.ChildTestSteps.Add(new TraceFormat() { Channel = this.Channel });
+        }
+
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
+        public virtual void AddTraceTitle()
+        {
+            //this.ChildTestSteps.Add(new TraceTitle() { Channel = this.Channel });
         }
 
         protected virtual void UpdateTestName()

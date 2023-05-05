@@ -113,7 +113,6 @@ namespace OpenTap.Plugins.PNAX
         {
             Trace = "1";
             Meas = StandardTraceEnum.S11;
-            Format = PNAX.MeasurementFormatEnum.MLOGarithmic;
             //Class = TraceManagerChannelClassEnum.STD;
             Window = 1;
             Sheet = 1;
@@ -126,19 +125,32 @@ namespace OpenTap.Plugins.PNAX
             this.Name = $"CH{Channel.ToString()}_{Meas}";
         }
 
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
+        public override void AddTraceFormat()
+        {
+            this.ChildTestSteps.Add(new TraceFormat() { Channel = this.Channel });
+        }
+
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
+        public override void AddTraceTitle()
+        {
+            this.ChildTestSteps.Add(new TraceTitle() { Channel = this.Channel });
+        }
+
         public override void Run()
         {
-            RunChildSteps(); //If the step supports child steps.
-
             int _tnum = 0;
             int _mnum = 0;
             PNAX.AddNewTrace(Channel, Window, Trace, "Standard", Meas.ToString(), ref _tnum, ref _mnum);
             tnum = _tnum;
             mnum = _mnum;
 
-            PNAX.SetTraceTitle(Window, tnum, TraceTitle);
+            RunChildSteps(); //If the step supports child steps.
 
-            PNAX.SetTraceFormat(Window, mnum, Format);
 
             UpgradeVerdict(Verdict.Pass);
         }

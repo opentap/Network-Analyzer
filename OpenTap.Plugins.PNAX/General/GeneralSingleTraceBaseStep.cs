@@ -31,6 +31,13 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Channel = value;
                 UpdateTestName();
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is GeneralBaseStep)
+                    {
+                        (a as GeneralBaseStep).Channel = value;
+                    }
+                }
             }
         }
 
