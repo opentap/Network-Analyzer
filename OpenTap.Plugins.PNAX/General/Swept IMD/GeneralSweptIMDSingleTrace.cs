@@ -31,17 +31,17 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        private TraceManagerChannelClassEnum _Class;
-        [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        public override TraceManagerChannelClassEnum Class
-        {
-            get { return _Class; }
-            set
-            {
-                _Class = value;
-                UpdateTestName();
-            }
-        }
+        //private TraceManagerChannelClassEnum _Class;
+        //[Display("Class", Groups: new[] { "Trace" }, Order: 12)]
+        //public override TraceManagerChannelClassEnum Class
+        //{
+        //    get { return _Class; }
+        //    set
+        //    {
+        //        _Class = value;
+        //        UpdateTestName();
+        //    }
+        //}
 
 
         #endregion
@@ -51,7 +51,7 @@ namespace OpenTap.Plugins.PNAX
             Trace = "1";
             Meas = SweptIMDTraceEnum.Pwr2Hi;
             Format = PNAX.MeasurementFormatEnum.MLOGarithmic;
-            Class = TraceManagerChannelClassEnum.IMDX;
+            //Class = TraceManagerChannelClassEnum.IMDX;
             Channel = 1;
             Window = 1;
             Sheet = 1;

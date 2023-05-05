@@ -114,7 +114,7 @@ namespace OpenTap.Plugins.PNAX
             Trace = "1";
             Meas = StandardTraceEnum.S11;
             Format = PNAX.MeasurementFormatEnum.MLOGarithmic;
-            Class = TraceManagerChannelClassEnum.STD;
+            //Class = TraceManagerChannelClassEnum.STD;
             Window = 1;
             Sheet = 1;
             Channel = 1;

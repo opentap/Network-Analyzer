@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class ConverterBaseStep : TestStep
+    public class ConverterBaseStep : SingleTraceBaseStep
     {
         #region Settings
         [Browsable(false)]

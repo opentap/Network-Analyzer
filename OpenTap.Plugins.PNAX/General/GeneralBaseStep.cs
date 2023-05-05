@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class GeneralBaseStep : TestStep
+    public class GeneralBaseStep : SingleTraceBaseStep
     {
         #region Settings
         [Browsable(false)]
@@ -77,11 +77,11 @@ namespace OpenTap.Plugins.PNAX
         public bool ShowTable { get; set; }
 
         //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
-        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
-        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
-        [EnabledIf("ShowTable", true, HideIfDisabled = true)]
-        [Display("Window", Group: "Sweep Properties", Order: 34)]
-        public virtual int Window { get; set; }
+        //[EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        //[EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        //[EnabledIf("ShowTable", true, HideIfDisabled = true)]
+        //[Display("Window", Group: "Sweep Properties", Order: 34)]
+        //public new int Window { get; set; }
 
 
 
