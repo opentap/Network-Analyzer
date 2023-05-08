@@ -107,6 +107,7 @@ namespace OpenTap.Plugins.PNAX
 
             var traceTitles = new List<string>();
             var FullTraceName = new List<string>();
+            var TraceTitleSet = new List<string>();
             foreach (var channel in channelsList)
             {
                 string[] tracesList = GetTraceNames(channel);
