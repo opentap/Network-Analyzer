@@ -34,9 +34,7 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -68,9 +66,7 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -97,9 +93,7 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -126,14 +120,12 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S11</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>1</tnum>
+              <mnum>1</mnum>
               <Name Metadata="Step Name">CH1_S11</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="6ffbf07d-9d66-4260-9231-69d9b5b81884">
@@ -155,14 +147,12 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S12</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>2</tnum>
+              <mnum>2</mnum>
               <Name Metadata="Step Name">CH1_S12</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="69d002d3-2e86-4c57-b29c-b68a3d8c8246">
@@ -184,14 +174,12 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S21</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>3</tnum>
+              <mnum>3</mnum>
               <Name Metadata="Step Name">CH1_S21</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="b376ba52-5806-409f-abc0-eb04cb8e113b">
@@ -213,14 +201,12 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S22</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>4</tnum>
+              <mnum>4</mnum>
               <Name Metadata="Step Name">CH1_S22</Name>
             </TestStep>
           </ChildTestSteps>
@@ -266,9 +252,7 @@
           <DoubleStage>false</DoubleStage>
           <IsChildEditable>true</IsChildEditable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -306,9 +290,7 @@
           <IsChildEditable>false</IsChildEditable>
           <ConverterStages>_1</ConverterStages>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -373,9 +355,7 @@
           <IsChildEditable>false</IsChildEditable>
           <ConverterStages>_1</ConverterStages>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -409,9 +389,7 @@
           <IsChildEditable>false</IsChildEditable>
           <ConverterStages>_1</ConverterStages>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -449,9 +427,7 @@
           <IsChildEditable>false</IsChildEditable>
           <ConverterStages>_1</ConverterStages>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -476,9 +452,7 @@
           <IsChildEditable>false</IsChildEditable>
           <ConverterStages>_1</ConverterStages>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -496,9 +470,7 @@
           <IsChildEditable>false</IsChildEditable>
           <ConverterStages>_1</ConverterStages>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>0</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
@@ -516,14 +488,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_SC21</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>1</tnum>
+              <mnum>5</mnum>
               <Name Metadata="Step Name">CH2_SC21</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="791913b1-b146-4ede-b0ce-d51cb0ccda0f">
@@ -536,14 +506,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_CompIn21</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>2</tnum>
+              <mnum>6</mnum>
               <Name Metadata="Step Name">CH2_CompIn21</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="a2fbe1be-533c-4da8-8663-135f32fd5daf">
@@ -556,14 +524,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_CompOut21</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>3</tnum>
+              <mnum>7</mnum>
               <Name Metadata="Step Name">CH2_CompOut21</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="b3b801d9-1f85-4e33-8584-1ca13f542985">
@@ -576,14 +542,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_IPwr</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>4</tnum>
+              <mnum>8</mnum>
               <Name Metadata="Step Name">CH2_IPwr</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="d7da3e88-723f-4666-b92d-cdd94a682771">
@@ -596,14 +560,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_OPwr</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>5</tnum>
+              <mnum>9</mnum>
               <Name Metadata="Step Name">CH2_OPwr</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="9cc924a2-1ae3-48f7-9e0f-a00f94f0ce40">
@@ -616,14 +578,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_CompAI1</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>6</tnum>
+              <mnum>10</mnum>
               <Name Metadata="Step Name">CH2_CompAI1</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="797a04d8-ef2b-4abb-a2a4-5d869f2d9558">
@@ -636,14 +596,12 @@
               <IsChildEditable>false</IsChildEditable>
               <ConverterStages>_1</ConverterStages>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_CompAI2</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
-              <tnum>0</tnum>
-              <mnum>0</mnum>
+              <tnum>7</tnum>
+              <mnum>11</mnum>
               <Name Metadata="Step Name">CH2_CompAI2</Name>
             </TestStep>
           </ChildTestSteps>
