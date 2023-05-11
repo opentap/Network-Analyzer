@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
         /// <summary>
         /// Checks test step paramater against list of active channels
         /// </summary>
-        private List<int> ChannelListCheck(List<int> channelsList, List<int> activeChannels)
+        public List<int> ChannelListCheck(List<int> channelsList, List<int> activeChannels)
         {
             if (channelsList.Count == 0)
                 channelsList = activeChannels;
@@ -53,7 +53,7 @@ namespace OpenTap.Plugins.PNAX
         /// <summary>
         /// Returns array of trace names
         /// </summary>
-        private string[] GetTraceNames(int channel)
+        public string[] GetTraceNames(int channel)
         {
             // Grab trace names
             char[] charsToTrim = { '"', '\n' };
@@ -132,11 +132,12 @@ namespace OpenTap.Plugins.PNAX
                 // Return trace information
                 foreach (var trace in traceNumList)
                 {
+                    // trace is MNUM in help file
                     ScpiCommand($"CALC{channel}:PAR:MNUM:SEL {trace}");
                     var xString = ScpiQuery($"CALC{channel}:X:VAL?");
                     var xList = xString.Split(',').ToList();
 
-                    var yString = ScpiQuery($"CALC{channel}:DATA? FDATA");
+                    var yString = ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
                     var yList = yString.Split(',').ToList();
 
                     resultsList.Add(xList);

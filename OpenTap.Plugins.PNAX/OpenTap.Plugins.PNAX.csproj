@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <Folder Include="General\Noise Figure Cold Source\" />
-    <Folder Include="LMS\" />
   </ItemGroup>
 
 </Project>

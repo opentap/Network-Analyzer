@@ -8,7 +8,7 @@ using System.IO;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Data", Groups: new[] { "PNA-X", "L / M / S" }, Description: "Stores trace data from all channels.")]
+    [Display("Store Trace Data", Groups: new[] { "PNA-X", "L / M / S" }, Description: "Stores trace data from all channels.")]
     public class StoreData : TestStep
     {
         #region Settings
@@ -70,25 +70,23 @@ namespace OpenTap.Plugins.PNAX
                         var xResult = results.Where((item, index) => index % 2 == 0).ToList();
                         var yResult = results.Where((item, index) => index % 2 != 0).ToList();
 
-                        List<string> ResultNames = new List<string>();
-                        List<double[]> ResultValues = new List<double[]>();
-                        List<IConvertible> ResultValuesFinal = new List<IConvertible>();
                         int freqLength = 0;
 
+                        List<ResultColumn> resultColumns = new List<ResultColumn>();
                         for (var i = 0; i < traces.Count; i++)
                         {
                             if (i == 0)
                             {
                                 freqLength = xResult[i].Count;
-                                ResultNames.Add("Frequency (Hz)");
-                                ResultValues.Add(xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                ResultColumn resultColumn = new ResultColumn("Frequency (Hz)", xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                resultColumns.Add(resultColumn);
                             }
 
                             if (xResult[i].Count == yResult[i].Count)
                             {
                                 // one data per frequency point
-                                ResultNames.Add($"{FullTraceName[i]}");
-                                ResultValues.Add(yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                ResultColumn resultColumn = new ResultColumn($"{FullTraceName[i]}", yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                resultColumns.Add(resultColumn);
                             }
                             else
                             {
@@ -103,24 +101,16 @@ namespace OpenTap.Plugins.PNAX
                                     point2[index] = twoPoints[j++];
                                 }
 
-                                ResultNames.Add($"{FullTraceName[i]}_i");
-                                ResultValues.Add(point1);
-                                ResultNames.Add($"{FullTraceName[i]}_j");
-                                ResultValues.Add(point2);
+                                ResultColumn resultColumni = new ResultColumn($"{FullTraceName[i]}_i", point1);
+                                resultColumns.Add(resultColumni);
+                                ResultColumn resultColumnj = new ResultColumn($"{FullTraceName[i]}_j", point2);
+                                resultColumns.Add(resultColumnj);
+
                             }
                         }
 
-                        // Now lets publish every row
-                        for (int row = 0; row < freqLength; row++)
-                        {
-                            ResultValuesFinal = new List<IConvertible>();
-                            for (int col = 0; col < ResultValues.Count(); col++)
-                            {
-                                ResultValuesFinal.Add(ResultValues[col][row]);
-
-                            }
-                            Results.Publish($"Channel_{channel.ToString()}", ResultNames, ResultValuesFinal.ToArray());
-                        }
+                        ResultTable resultTable = new ResultTable($"Channel_{channel.ToString()}", resultColumns.ToArray());
+                        Results.PublishTable(resultTable);
                     }
                 }
                 else
