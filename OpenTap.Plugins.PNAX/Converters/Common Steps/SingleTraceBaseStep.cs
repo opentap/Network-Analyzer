@@ -89,7 +89,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
         public virtual void AddTraceFormat()
         {
-            //this.ChildTestSteps.Add(new TraceFormat() { Channel = this.Channel });
         }
 
         [Browsable(true)]
@@ -97,7 +96,26 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
         public virtual void AddTraceTitle()
         {
-            //this.ChildTestSteps.Add(new TraceTitle() { Channel = this.Channel });
+        }
+
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
+        public virtual void AddMarker()
+        {
+        }
+
+        public int NextMarker()
+        {
+            int retMarkerCount = 1;
+            foreach(TestStep t in ChildTestSteps)
+            {
+                if (t is Marker)
+                {
+                    retMarkerCount++;
+                }
+            }
+            return retMarkerCount++;
         }
 
         protected virtual void UpdateTestName()

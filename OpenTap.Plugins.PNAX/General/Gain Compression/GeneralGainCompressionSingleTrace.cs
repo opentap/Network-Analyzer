@@ -85,6 +85,14 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(new TraceTitle() { Channel = this.Channel });
         }
 
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
+        public override void AddMarker()
+        {
+            this.ChildTestSteps.Add(new Marker() { Channel = this.Channel, mkr = NextMarker() });
+        }
+
         public override void Run()
         {
             int _tnum = 0;
