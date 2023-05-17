@@ -51,7 +51,7 @@ namespace OpenTap.Plugins.PNAX
             COMPlex
         }
 
-        public int AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas, ref int tnum, ref int mnum)
+        public int AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas, ref int tnum, ref int mnum, ref String MeasName)
         {
             int traceid = GetNewWindowTraceID(Window);
             mnum = GetUniqueTraceId();
@@ -61,7 +61,7 @@ namespace OpenTap.Plugins.PNAX
             //          mnum = 1
             //          then we get: CH1_S11_1
             // This is the format that the PNA uses
-            String MeasName = Trace + "_" + mnum.ToString();
+            MeasName = Trace + "_" + mnum.ToString();
 
             ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{MeasName}\',\'{MeasClass}\',\'{Meas.ToString()}\'");
 

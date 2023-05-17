@@ -77,7 +77,14 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
+        [Output]
         public int mnum { get; set; }
+
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = false)]
+        [Display("Meas Name", Groups: new[] { "Trace" }, Order: 22)]
+        [Output]
+        public String MeasName { get; set; }
         #endregion
 
         public SingleTraceBaseStep()

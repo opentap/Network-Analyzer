@@ -332,9 +332,11 @@ namespace OpenTap.Plugins.PNAX
         {
             int _tnum = 0;
             int _mnum = 0;
-            PNAX.AddNewTrace(Channel, Window, Trace, "Swept IMD Converters", Meas.ToString(), ref _tnum, ref _mnum);
+            String _MeasName = "";
+            PNAX.AddNewTrace(Channel, Window, Trace, "Swept IMD Converters", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;
             mnum = _mnum;
+            MeasName = _MeasName;
 
             RunChildSteps(); //If the step supports child steps.
 

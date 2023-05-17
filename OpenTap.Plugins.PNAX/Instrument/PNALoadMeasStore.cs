@@ -151,6 +151,27 @@ namespace OpenTap.Plugins.PNAX
             return resultsList;
         }
 
+        public List<List<string>> StoreTraceData(int Channel, int mnum)
+        {
+            ScpiCommand(":FORM:DATA ASCii, 0");
+
+            var resultsList = new List<List<string>>();
+
+            // Return trace information
+            // trace is MNUM in help file
+            ScpiCommand($"CALC{Channel}:PAR:MNUM:SEL {mnum}");
+            var xString = ScpiQuery($"CALC{Channel}:X:VAL?");
+            var xList = xString.Split(',').ToList();
+
+            var yString = ScpiQuery($"CALC{Channel}:MEAS{mnum}:DATA:FDATA?");
+            var yList = yString.Split(',').ToList();
+
+            resultsList.Add(xList);
+            resultsList.Add(yList);
+
+            return resultsList;
+        }
+
         /// <summary>
         /// Return min and max value from all traces in the state
         /// </summary>
