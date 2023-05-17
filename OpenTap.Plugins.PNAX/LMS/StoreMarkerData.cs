@@ -11,7 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace OpenTap.Plugins.PNAX.LMS
+namespace OpenTap.Plugins.PNAX
 {
     [Display("Store Marker Data", Groups: new[] { "PNA-X", "L / M / S" }, Description: "Stores trace data from all channels.")]
     public class StoreMarkerData : TestStep

@@ -24,6 +24,7 @@ namespace OpenTap.Plugins.PNAX
 
         private int _channel;
         [Display("Channel", Order: 1)]
+        [Output]
         public int Channel
         {
             get { return _channel; }
