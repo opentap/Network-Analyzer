@@ -6,7 +6,7 @@ Version: The version of the package. Must be in a semver 2.0 compatible format. 
 For Version the following macro is available (Only works if the project directory is under Git source control):
 $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.Build-PreRelease+CommitHash.BranchName.
 -->
-<Package Name="PNA-X" Version="0.5.11-alpha" OS="Windows,Linux" Architecture="AnyCPU" xmlns="http://opentap.io/schemas/package">
+<Package Name="PNA-X" Version="0.5.12-alpha" OS="Windows,Linux" Architecture="AnyCPU" xmlns="http://opentap.io/schemas/package">
   <Description>OpenTAP plugin for PNA-X Measurements.</Description>
   <Files>
     <File Path="Packages/OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.dll" SourcePath="OpenTap.Plugins.PNAX.dll">
