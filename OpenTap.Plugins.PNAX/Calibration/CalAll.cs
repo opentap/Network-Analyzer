@@ -13,71 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    public enum ChannelTypeEnum
-    {
-        Standard,
-        GainCompression,
-        SweptIMD,
-        NoiseFigureColdSource,
-        SMC,
-        GainCompressionConverters,
-        SweptIMDConverters,
-        NoiseFigureConverters
-    }
 
-    public class CalibrateAllSelectedChannels
-    {
-        public int Channel { get; set; }
-        public ChannelTypeEnum ChannelType { get; set; }
-        public List<int> Ports { get; set; }
-
-        public CalibrateAllSelectedChannels()
-        {
-            Ports = new List<int>();
-        }
-    }
-
-    [Flags]
-    public enum ExtraPowerCalsEnum
-    {
-        [Display("No Independent Source Cal")]
-        NoIndependentSourceCal = 0,
-        [Display("Port 1")]
-        Port1 = 1,
-        [Display("Port 2")]
-        Port2 = 2,
-        [Display("Port 3")]
-        Port3 = 4,
-        [Display("Port 4")]
-        Port4 = 8,
-        [Display("Port 1 Src2")]
-        Port1Src2 = 16,
-        [Display("Source3")]
-        Source3 = 32
-    }
-
-    public enum NoiseCalMethodEnum
-    {
-        Scalar,
-        Vector
-    }
-
-    public enum NoiseTunerEnum
-    {
-        [Display("internal")]
-        [Scpi("internal")]
-        _internal
-    }
-
-    public enum ReceiverCharacterizationMethodEnum
-    {
-        [Display("Use Power Meter")]
-        [Scpi("Use Power Meter")]
-        UsePowerMeter,
-        [Display("Use Noise Source")]
-        [Scpi("Use Noise Source")]
-        UseNoiseSource
-    }
 
     [Display("Cal All", Groups: new[] { "PNA-X", "Calibration" }, Description: "Insert a description here")]
     public class CalAll : TestStep
@@ -85,7 +21,6 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
-
 
         private List<CalibrateAllSelectedChannels> _CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
         [Display("Calibrate All Selected Channels", Group: "Cal All", Order: 1)]
@@ -192,6 +127,123 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
         [Display("Force Power Sensor Adapter De-embed", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 64)]
         public bool ForcePowerSensor { get; set; }
+
+
+        private DUTConnectorsEnum _Port1;
+        [Display("Port 1", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 100)]
+        public DUTConnectorsEnum Port1
+        {
+            get
+            {
+                return _Port1;
+            }
+            set
+            {
+                _Port1 = value;
+                if (_Port1 == DUTConnectorsEnum.Notused)
+                {
+                    IsPort1CalKitEnabled = false;
+                }
+                else
+                {
+                    IsPort1CalKitEnabled = true;
+                }
+            }
+        }
+
+        private DUTConnectorsEnum _Port2;
+        [Display("Port 2", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 101)]
+        public DUTConnectorsEnum Port2
+        {
+            get
+            {
+                return _Port2;
+            }
+            set
+            {
+                _Port2 = value;
+                if (_Port2 == DUTConnectorsEnum.Notused)
+                {
+                    IsPort2CalKitEnabled = false;
+                }
+                else
+                {
+                    IsPort2CalKitEnabled = true;
+                }
+            }
+        }
+
+
+        private DUTConnectorsEnum _Port3;
+        [Display("Port 3", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 102)]
+        public DUTConnectorsEnum Port3
+        {
+            get
+            {
+                return _Port3;
+            }
+            set
+            {
+                _Port3 = value;
+                if (_Port3 == DUTConnectorsEnum.Notused)
+                {
+                    IsPort3CalKitEnabled = false;
+                }
+                else
+                {
+                    IsPort3CalKitEnabled = true;
+                }
+            }
+        }
+
+        private DUTConnectorsEnum _Port4;
+        [Display("Port 4", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 103)]
+        public DUTConnectorsEnum Port4
+        {
+            get
+            {
+                return _Port4;
+            }
+            set
+            {
+                _Port4 = value;
+                if (_Port1 == DUTConnectorsEnum.Notused)
+                {
+                    IsPort4CalKitEnabled = false;
+                }
+                else
+                {
+                    IsPort4CalKitEnabled = true;
+                }
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsPort1CalKitEnabled { get; set; }
+        [Browsable(false)]
+        public bool IsPort2CalKitEnabled { get; set; }
+        [Browsable(false)]
+        public bool IsPort3CalKitEnabled { get; set; }
+        [Browsable(false)]
+        public bool IsPort4CalKitEnabled { get; set; }
+
+        [EnabledIf("IsPort1CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Port 1", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 110)]
+        public CalKitEnum Port1CalKit { get; set; }
+
+        [EnabledIf("IsPort2CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Port 2", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 111)]
+        public CalKitEnum Port2CalKit { get; set; }
+
+        [EnabledIf("IsPort3CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Port 3", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 112)]
+        public CalKitEnum Port3CalKit { get; set; }
+
+        [EnabledIf("IsPort4CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Port 4", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 113)]
+        public CalKitEnum Port4CalKit { get; set; }
+
+
         #endregion
 
         private void UpdateCalProperties() 
@@ -268,6 +320,16 @@ namespace OpenTap.Plugins.PNAX
             ForcePowerSensor = false;
 
             CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
+
+            Port1 = DUTConnectorsEnum.Notused;
+            Port2 = DUTConnectorsEnum.Notused;
+            Port3 = DUTConnectorsEnum.Notused;
+            Port4 = DUTConnectorsEnum.Notused;
+
+            Port1CalKit = CalKitEnum._85032F;
+            Port2CalKit = CalKitEnum._85032F;
+            Port3CalKit = CalKitEnum._85032F;
+            Port4CalKit = CalKitEnum._85032F;
         }
 
         private String ExtraPowerCalsToString(ExtraPowerCalsEnum value)
@@ -281,27 +343,27 @@ namespace OpenTap.Plugins.PNAX
                 return retString;
             }
 
-            if ((InValue | (int)ExtraPowerCalsEnum.Port1) > 0)
+            if ((InValue & (int)ExtraPowerCalsEnum.Port1) > 0)
             {
                 values.Add("Port 1");
             }
-            if ((InValue | (int)ExtraPowerCalsEnum.Port2) > 0)
+            if ((InValue & (int)ExtraPowerCalsEnum.Port2) > 0)
             {
                 values.Add("Port 2");
             }
-            if ((InValue | (int)ExtraPowerCalsEnum.Port3) > 0)
+            if ((InValue & (int)ExtraPowerCalsEnum.Port3) > 0)
             {
                 values.Add("Port 3");
             }
-            if ((InValue | (int)ExtraPowerCalsEnum.Port4) > 0)
+            if ((InValue & (int)ExtraPowerCalsEnum.Port4) > 0)
             {
                 values.Add("Port 4");
             }
-            if ((InValue | (int)ExtraPowerCalsEnum.Port1Src2) > 0)
+            if ((InValue & (int)ExtraPowerCalsEnum.Port1Src2) > 0)
             {
                 values.Add("Port 1 Src2");
             }
-            if ((InValue | (int)ExtraPowerCalsEnum.Source3) > 0)
+            if ((InValue & (int)ExtraPowerCalsEnum.Source3) > 0)
             {
                 values.Add("Source3");
             }
@@ -331,7 +393,10 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.CalAllSetProperty("Enable Extra Power Cals", ExtraPowerCalsString);
                 }
                 String IndependentCalibrationChannelsString = String.Join(",", IndependentCalibrationChannels);
-                PNAX.CalAllSetProperty("Independent Calibration Channels", IndependentCalibrationChannelsString);
+                if (IndependentCalibrationChannelsString != "")
+                {
+                    PNAX.CalAllSetProperty("Independent Calibration Channels", IndependentCalibrationChannelsString);
+                }
             }
             if (IsSplitCalEnabled)
             {
@@ -366,11 +431,23 @@ namespace OpenTap.Plugins.PNAX
 
             int CalChannel = PNAX.CalAllGuidedChannelNumber();
 
-            PNAX.CalAllSelectDutConnectorType(CalChannel, 1, "Type N (50) male");
-            PNAX.CalAllSelectDutConnectorType(CalChannel, 2, "Type N (50) male");
+            String strDutPort1 = Scpi.Format("{0}", Port1);
+            String strDutPort2 = Scpi.Format("{0}", Port2);
+            String strDutPort3 = Scpi.Format("{0}", Port3);
+            String strDutPort4 = Scpi.Format("{0}", Port4);
+            PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
+            PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
+            PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+            PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
 
-            PNAX.CalAllSelectCalKit(CalChannel, 1, "85032F");
-            PNAX.CalAllSelectCalKit(CalChannel, 2, "85032F");
+            String strPort1CalKit = Scpi.Format("{0}", Port1CalKit);
+            String strPort2CalKit = Scpi.Format("{0}", Port2CalKit);
+            String strPort3CalKit = Scpi.Format("{0}", Port3CalKit);
+            String strPort4CalKit = Scpi.Format("{0}", Port4CalKit);
+            if (strDutPort1 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 1, strPort1CalKit);
+            if (strDutPort2 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 2, strPort2CalKit);
+            if (strDutPort3 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 3, strPort3CalKit);
+            if (strDutPort4 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 4, strPort4CalKit);
 
             PNAX.CalAllInit(CalChannel);
 

@@ -20,6 +20,185 @@ namespace OpenTap.Plugins.PNAX
         ASYN
     }
 
+    public enum ChannelTypeEnum
+    {
+        Standard,
+        GainCompression,
+        SweptIMD,
+        NoiseFigureColdSource,
+        SMC,
+        GainCompressionConverters,
+        SweptIMDConverters,
+        NoiseFigureConverters
+    }
+
+    public class CalibrateAllSelectedChannels
+    {
+        public int Channel { get; set; }
+        public ChannelTypeEnum ChannelType { get; set; }
+        public List<int> Ports { get; set; }
+
+        public CalibrateAllSelectedChannels()
+        {
+            Ports = new List<int>();
+        }
+    }
+
+    [Flags]
+    public enum ExtraPowerCalsEnum
+    {
+        [Display("No Independent Source Cal")]
+        NoIndependentSourceCal = 0,
+        [Display("Port 1")]
+        Port1 = 1,
+        [Display("Port 2")]
+        Port2 = 2,
+        [Display("Port 3")]
+        Port3 = 4,
+        [Display("Port 4")]
+        Port4 = 8,
+        [Display("Port 1 Src2")]
+        Port1Src2 = 16,
+        [Display("Source3")]
+        Source3 = 32
+    }
+
+    public enum NoiseCalMethodEnum
+    {
+        Scalar,
+        Vector
+    }
+
+    public enum NoiseTunerEnum
+    {
+        [Display("internal")]
+        [Scpi("internal")]
+        _internal
+    }
+
+    public enum ReceiverCharacterizationMethodEnum
+    {
+        [Display("Use Power Meter")]
+        [Scpi("Use Power Meter")]
+        UsePowerMeter,
+        [Display("Use Noise Source")]
+        [Scpi("Use Noise Source")]
+        UseNoiseSource
+    }
+
+    public enum DUTConnectorsEnum
+    {
+        [Scpi("Type N (50) male")]
+        [Display("Type N (50) male")]
+        TypeN50male,
+        [Scpi("Type N (50) female")]
+        [Display("Type N (50) female")]
+        TypeN50female,
+        [Scpi("Type N (75) male")]
+        [Display("Type N (75) male")]
+        TypeN75male,
+        [Scpi("Type N (75) female")]
+        [Display("Type N (75) female")]
+        TypeN75female,
+        [Scpi("Type F (75) male")]
+        [Display("Type F (75) male")]
+        TypeF75male,
+        [Scpi("Type F (75) female")]
+        [Display("Type F (75) female")]
+        TypeF75female,
+        [Scpi("APC 3.5 male")]
+        [Display("APC 3.5 male")]
+        APC35male,
+        [Scpi("APC 3.5 female")]
+        [Display("APC 3.5 female")]
+        APC35female,
+        [Scpi("APC 2.4 male")]
+        [Display("APC 2.4 male")]
+        APC24male,
+        [Scpi("APC 2.4 female")]
+        [Display("APC 2.4 female")]
+        APC24female,
+        [Scpi("2.92 mm male")]
+        [Display("2.92 mm male")]
+        _292mmmale,
+        [Scpi("2.92 mm female")]
+        [Display("2.92 mm female")]
+        _292mmfemale,
+        [Scpi("1.85 mm female")]
+        [Display("1.85 mm female")]
+        _185mmfemale,
+        [Scpi("1.85 mm male")]
+        [Display("1.85 mm male")]
+        _185mmmale,
+        [Scpi("1.00 mm female")]
+        [Display("1.00 mm female")]
+        _100mmfemale,
+        [Scpi("1.00 mm male")]
+        [Display("1.00 mm male")]
+        _100mmmale,
+        [Scpi("7-16 male")]
+        [Display("7-16 male")]
+        _716male,
+        [Scpi("7-16 female")]
+        [Display("7-16 female")]
+        _716female,
+        [Scpi("APC 7")]
+        [Display("APC 7")]
+        APC7,
+        [Scpi("X-band waveguide")]
+        [Display("X-band waveguide")]
+        Xbandwaveguide,
+        [Scpi("P-band waveguide")]
+        [Display("P-band waveguide")]
+        Pbandwaveguide,
+        [Scpi("K-band waveguide")]
+        [Display("K-band waveguide")]
+        Kbandwaveguide,
+        [Scpi("Q-band waveguide")]
+        [Display("Q-band waveguide")]
+        Qbandwaveguide,
+        [Scpi("R-band waveguide")]
+        [Display("R-band waveguide")]
+        Rbandwaveguide,
+        [Scpi("U-band waveguide")]
+        [Display("U-band waveguide")]
+        Ubandwaveguide,
+        [Scpi("V-band waveguide")]
+        [Display("V-band waveguide")]
+        Vbandwaveguide,
+        [Scpi("W-band waveguide")]
+        [Display("W-band waveguide")]
+        Wbandwaveguide,
+        [Scpi("Type A (50) male")]
+        [Display("Type A (50) male")]
+        TypeA50male,
+        [Scpi("Type A (50) female")]
+        [Display("Type A (50) female")]
+        TypeA50female,
+        [Scpi("Type B")]
+        [Display("Type B")]
+        TypeB,
+        [Scpi("Not used")]
+        [Display("Not used")]
+        Notused
+    }
+
+    public enum CalKitEnum
+    {
+        [Scpi("85032F")]
+        [Display("85032F")]
+        _85032F,
+        [Scpi("85032B/E")]
+        [Display("85032B/E")]
+        _85032BE,
+        [Scpi("85054B")]
+        [Display("85054B")]
+        _85054B,
+        [Scpi("85054D")]
+        [Display("85054D")]
+        _85054D
+    }
+
     public partial class PNAX : ScpiInstrument
     {
         public List<String> GetAllMeasClasses()
