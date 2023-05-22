@@ -13,6 +13,30 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public enum ChannelTypeEnum
+    {
+        Standard,
+        GainCompression,
+        SweptIMD,
+        NoiseFigureColdSource,
+        SMC,
+        GainCompressionConverters,
+        SweptIMDConverters,
+        NoiseFigureConverters
+    }
+
+    public class CalibrateAllSelectedChannels
+    {
+        public int Channel { get; set; }
+        public ChannelTypeEnum ChannelType { get; set; }
+        public List<int> Ports { get; set; }
+
+        public CalibrateAllSelectedChannels()
+        {
+            Ports = new List<int>();
+        }
+    }
+
     [Flags]
     public enum ExtraPowerCalsEnum
     {
@@ -41,12 +65,17 @@ namespace OpenTap.Plugins.PNAX
     public enum NoiseTunerEnum
     {
         [Display("internal")]
+        [Scpi("internal")]
         _internal
     }
 
     public enum ReceiverCharacterizationMethodEnum
     {
+        [Display("Use Power Meter")]
+        [Scpi("Use Power Meter")]
         UsePowerMeter,
+        [Display("Use Noise Source")]
+        [Scpi("Use Noise Source")]
         UseNoiseSource
     }
 
@@ -58,134 +87,28 @@ namespace OpenTap.Plugins.PNAX
         public PNAX PNAX { get; set; }
 
 
-        // Cal Properties
-        private bool _CalibrateStandardChannel;
-        [Display("Cal Standard Channel", Group: "Measurement Class Calibration", Order: 10)]
-        public bool CalibrateStandardChannel
+        private List<CalibrateAllSelectedChannels> _CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
+        [Display("Calibrate All Selected Channels", Group: "Cal All", Order: 1)]
+        public List<CalibrateAllSelectedChannels> CalAllSelectedChannels
         {
             get
             {
-                return _CalibrateStandardChannel;
+                // TODO - why the Setter never gets called?
+                UpdateCalProperties();
+                // TODO
+                return _CalAllSelectedChannels;
             }
             set
             {
-                _CalibrateStandardChannel = value;
+                _CalAllSelectedChannels = value;
+                // TODO - why the Setter never gets called?
                 UpdateCalProperties();
+                // TODO
             }
         }
 
-        private bool _CalibrateSMCChannel;
-        [Display("Cal SMC + Phase Channel", Group: "Measurement Class Calibration", Order: 11)]
-        public bool CalibrateSMCChannel
-        {
-            get
-            {
-                return _CalibrateSMCChannel;
-            }
-            set
-            {
-                _CalibrateSMCChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-
-        private bool _CalibrateGainCompressionChannel;
-        [Display("Cal Gain Compression Channel", Group: "Measurement Class Calibration", Order: 12)]
-        public bool CalibrateGainCompressionChannel
-        {
-            get
-            {
-                return _CalibrateGainCompressionChannel;
-            }
-            set
-            {
-                _CalibrateGainCompressionChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-        private bool _CalibrateGainCompressionConvertersChannel;
-        [Display("Cal Gain Compression Converters Channel", Group: "Measurement Class Calibration", Order: 13)]
-        public bool CalibrateGainCompressionConvertersChannel
-        {
-            get
-            {
-                return _CalibrateGainCompressionConvertersChannel;
-            }
-            set
-            {
-                _CalibrateGainCompressionConvertersChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-
-        private bool _CalibrateSweptIMDChannel;
-        [Display("Cal Swept IMD Channel", Group: "Measurement Class Calibration", Order: 14)]
-        public bool CalibrateSweptIMDChannel
-        {
-            get
-            {
-                return _CalibrateSweptIMDChannel;
-            }
-            set
-            {
-                _CalibrateSweptIMDChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-
-        private bool _CalibrateSweptIMDConvertersChannel;
-        [Display("Cal Swept IMD Converters Channel", Group: "Measurement Class Calibration", Order: 15)]
-        public bool CalibrateSweptIMDConvertersChannel
-        {
-            get
-            {
-                return _CalibrateSweptIMDConvertersChannel;
-            }
-            set
-            {
-                _CalibrateSweptIMDConvertersChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-
-        private bool _CalibrateNoiseFigureColdSourceChannel;
-        [Display("Cal Noise Figure Cold Source Channel", Group: "Measurement Class Calibration", Order: 16)]
-        public bool CalibrateNoiseFigureColdSourceChannel
-        {
-            get
-            {
-                return _CalibrateNoiseFigureColdSourceChannel;
-            }
-            set
-            {
-                _CalibrateNoiseFigureColdSourceChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-
-        private bool _CalibrateNoiseFigureConvertersChannel;
-        [Display("Cal Noise Figure Converters Channel", Group: "Measurement Class Calibration", Order: 17)]
-        public bool CalibrateNoiseFigureConvertersChannel
-        {
-            get
-            {
-                return _CalibrateNoiseFigureConvertersChannel;
-            }
-            set
-            {
-                _CalibrateNoiseFigureConvertersChannel = value;
-                UpdateCalProperties();
-            }
-        }
-
-
-
+        [Browsable(false)]
+        public bool IsAnyCalEnabled { get; set; }
 
         // Only enabled if:
         // Scalar Mixer/Converters + Phase
@@ -216,18 +139,15 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsNoiseEnabled { get; set; }
 
-
-
-
-
-
-
+        [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
         [Display("Use Smart Cal Order", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 20)]
         public bool UserSmartCalOrder { get; set; }
 
+        [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
         [Display("Enable Extra Power Cals", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 21)]
         public ExtraPowerCalsEnum ExtraPowerCals { get; set; }
 
+        [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
         [Display("Independent Calibration Channels", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 22)]
         public List<int> IndependentCalibrationChannels { get; set; }
 
@@ -252,9 +172,10 @@ namespace OpenTap.Plugins.PNAX
         public bool Include2ndOrder { get; set; }
 
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
-        [Display("Include 2nd Order", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 60)]
+        [Display("Noise Cal Method", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 60)]
         public NoiseCalMethodEnum NoiseCalMethod { get; set; }
 
+        // AutoOrient Tuner
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
         [EnabledIf("NoiseCalMethod", NoiseCalMethodEnum.Vector, HideIfDisabled = true)]
         [Display("Noise Tuner", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 61)]
@@ -273,47 +194,59 @@ namespace OpenTap.Plugins.PNAX
         public bool ForcePowerSensor { get; set; }
         #endregion
 
-        private void UpdateCalProperties()
+        private void UpdateCalProperties() 
         {
+            bool DisablePowerCal = false;
+            IsAnyCalEnabled = false;
             IsSplitCalEnabled = false;
-            if (CalibrateSMCChannel || CalibrateGainCompressionConvertersChannel)
-            {
-                IsSplitCalEnabled = true;
-            }
-
             IsPhaseEnabled = false;
-            if (CalibrateSMCChannel)
-            {
-                IsPhaseEnabled = true;
-            }
-
             IsPowerCalEnabled = false;
-            if (CalibrateStandardChannel) 
+            IsIMDEnabled = false;
+            IsNoiseEnabled = false;
+
+            foreach (CalibrateAllSelectedChannels cal in _CalAllSelectedChannels)
             {
-                if (!CalibrateSMCChannel &&
-                    !CalibrateGainCompressionChannel &&
-                    !CalibrateGainCompressionConvertersChannel &&
-                    !CalibrateSweptIMDChannel &&
-                    !CalibrateSweptIMDConvertersChannel &&
-                    !CalibrateNoiseFigureColdSourceChannel &&
-                    !CalibrateNoiseFigureConvertersChannel)
+                IsAnyCalEnabled = true;
+
+                if ((cal.ChannelType == ChannelTypeEnum.SMC) ||
+                    (cal.ChannelType == ChannelTypeEnum.GainCompressionConverters))
+                {
+                    IsSplitCalEnabled = true;
+                }
+                else if (cal.ChannelType == ChannelTypeEnum.SMC)
+                {
+                    IsPhaseEnabled = true;
+                }
+                else if ((cal.ChannelType == ChannelTypeEnum.SweptIMD) ||
+                    (cal.ChannelType == ChannelTypeEnum.SweptIMDConverters))
+                {
+                    IsIMDEnabled = true;
+                }
+                else if ((cal.ChannelType == ChannelTypeEnum.NoiseFigureColdSource) ||
+                    (cal.ChannelType == ChannelTypeEnum.NoiseFigureConverters))
+                {
+                    IsNoiseEnabled = true;
+                }
+
+                // PowerCal is enabled if Standard Channel is the only Channel defined
+                if (cal.ChannelType == ChannelTypeEnum.Standard)
                 {
                     IsPowerCalEnabled = true;
                 }
+                else
+                {
+                    DisablePowerCal = true;
+                }
             }
 
-            IsIMDEnabled = false;
-            if (CalibrateSweptIMDChannel || CalibrateSweptIMDConvertersChannel)
+            // Found at least one channel that is not Standard
+            if (DisablePowerCal)
             {
-                IsIMDEnabled = true;
-            }
-
-            IsNoiseEnabled = false;
-            if (CalibrateNoiseFigureColdSourceChannel || CalibrateNoiseFigureConvertersChannel)
-            {
-                IsNoiseEnabled = true;
+                IsPowerCalEnabled = false;
             }
         }
+
+
 
         public CalAll()
         {
@@ -334,23 +267,102 @@ namespace OpenTap.Plugins.PNAX
             ForceThruAdapter = false;
             ForcePowerSensor = false;
 
+            CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
+        }
+
+        private String ExtraPowerCalsToString(ExtraPowerCalsEnum value)
+        {
+            String retString = "";
+            List<String> values = new List<string>();
+            int InValue = (int)value;
+            if (InValue == 0)
+            {
+                // no option is selected
+                return retString;
+            }
+
+            if ((InValue | (int)ExtraPowerCalsEnum.Port1) > 0)
+            {
+                values.Add("Port 1");
+            }
+            if ((InValue | (int)ExtraPowerCalsEnum.Port2) > 0)
+            {
+                values.Add("Port 2");
+            }
+            if ((InValue | (int)ExtraPowerCalsEnum.Port3) > 0)
+            {
+                values.Add("Port 3");
+            }
+            if ((InValue | (int)ExtraPowerCalsEnum.Port4) > 0)
+            {
+                values.Add("Port 4");
+            }
+            if ((InValue | (int)ExtraPowerCalsEnum.Port1Src2) > 0)
+            {
+                values.Add("Port 1 Src2");
+            }
+            if ((InValue | (int)ExtraPowerCalsEnum.Source3) > 0)
+            {
+                values.Add("Source3");
+            }
+
+            retString = String.Join(",", values.ToArray());
+            return retString;
         }
 
         public override void Run()
         {
             PNAX.CalAllReset();
 
-            // TODO
-            // Query all measurement classes
-            // validate that all the channels have the settings enabled
-            // i.e. for Standard the CalibrateStandardChannel should be true
-            // if not, let the user know and fail the test
+            // Set Channels and Ports for each channel
+            foreach (CalibrateAllSelectedChannels cal in _CalAllSelectedChannels)
+            {
+                PNAX.CalAllSelectPorts(cal.Channel, cal.Ports);
+            }
 
-            List<int> AllChannels = PNAX.CalAllSelectChannels();
-
-            PNAX.CalAllSelectPorts(AllChannels, new List<int> { 1, 2 });
-
-            PNAX.CalAllSetProperty("Include Power Calibration", IncludePowerCalibration.ToString());
+            // Set Properties according to the selected Channel types
+            if (IsAnyCalEnabled)
+            {
+                // Misc
+                PNAX.CalAllSetProperty("Use Smart Cal Order", UserSmartCalOrder.ToString());
+                String ExtraPowerCalsString = ExtraPowerCalsToString(ExtraPowerCals);
+                if (ExtraPowerCalsString != "")
+                {
+                    PNAX.CalAllSetProperty("Enable Extra Power Cals", ExtraPowerCalsString);
+                }
+                String IndependentCalibrationChannelsString = String.Join(",", IndependentCalibrationChannels);
+                PNAX.CalAllSetProperty("Independent Calibration Channels", IndependentCalibrationChannelsString);
+            }
+            if (IsSplitCalEnabled)
+            {
+                PNAX.CalAllSetProperty("Split Cal", SplitCal.ToString());
+            }
+            if (IsPhaseEnabled)
+            {
+                PNAX.CalAllSetProperty("Enable Phase Correction", EnablePhaseCorrection.ToString());
+            }
+            if (IsPowerCalEnabled)
+            {
+                PNAX.CalAllSetProperty("Include Power Calibration", IncludePowerCalibration.ToString());
+            }
+            if (IsIMDEnabled)
+            {
+                PNAX.CalAllSetProperty("Max Product Order", MaxProductOrder.ToString());
+                PNAX.CalAllSetProperty("Include 2nd Order", Include2ndOrder.ToString());
+            }
+            if (IsNoiseEnabled)
+            {
+                PNAX.CalAllSetProperty("Noise Cal Method", NoiseCalMethod.ToString());
+                if (NoiseCalMethod == NoiseCalMethodEnum.Vector)
+                {
+                    String noiseTunerString = Scpi.Format("{0}", NoiseTuner);
+                    PNAX.CalAllSetProperty("AutoOrient Tuner", noiseTunerString);
+                }
+                String charMethodScpi = Scpi.Format("{0}", EnablePhaseCorrection);
+                PNAX.CalAllSetProperty("Receiver Characterization Method", charMethodScpi);
+                PNAX.CalAllSetProperty("Force Thru Adapter De-embed", ForceThruAdapter.ToString());
+                PNAX.CalAllSetProperty("Force Power Sensor Adapter De-embed", ForcePowerSensor.ToString());
+            }
 
             int CalChannel = PNAX.CalAllGuidedChannelNumber();
 
@@ -364,6 +376,9 @@ namespace OpenTap.Plugins.PNAX
 
             int CalSteps = PNAX.CalAllNumberOfSteps(CalChannel);
 
+            int deftimeout = PNAX.IoTimeout;
+            PNAX.IoTimeout = 200000;
+
             for(int CalStep = 1; CalStep <= CalSteps; CalStep++)
             {
                 String StepDescription = PNAX.CalAllStepDescription(CalChannel, CalStep);
@@ -371,8 +386,9 @@ namespace OpenTap.Plugins.PNAX
                 Log.Info($"Step {CalStep}: {StepDescription}");
 
                 PNAX.CalAllStep(CalChannel, CalStep);
-                PNAX.WaitForOperationComplete(20000);
+                //PNAX.WaitForOperationComplete();
             }
+            PNAX.IoTimeout = deftimeout;
 
             PNAX.CalAllSave(CalChannel);
 
