@@ -229,19 +229,19 @@ namespace OpenTap.Plugins.PNAX
 
         [EnabledIf("IsPort1CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 1", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 110)]
-        public CalKitEnum Port1CalKit { get; set; }
+        public String Port1CalKit { get; set; }
 
         [EnabledIf("IsPort2CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 2", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 111)]
-        public CalKitEnum Port2CalKit { get; set; }
+        public String Port2CalKit { get; set; }
 
         [EnabledIf("IsPort3CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 3", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 112)]
-        public CalKitEnum Port3CalKit { get; set; }
+        public String Port3CalKit { get; set; }
 
         [EnabledIf("IsPort4CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 4", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 113)]
-        public CalKitEnum Port4CalKit { get; set; }
+        public String Port4CalKit { get; set; }
 
 
         #endregion
@@ -326,10 +326,10 @@ namespace OpenTap.Plugins.PNAX
             Port3 = DUTConnectorsEnum.Notused;
             Port4 = DUTConnectorsEnum.Notused;
 
-            Port1CalKit = CalKitEnum._85032F;
-            Port2CalKit = CalKitEnum._85032F;
-            Port3CalKit = CalKitEnum._85032F;
-            Port4CalKit = CalKitEnum._85032F;
+            Port1CalKit = "85032F";
+            Port2CalKit = "85032F";
+            Port3CalKit = "85032F";
+            Port4CalKit = "85032F";
         }
 
         private String ExtraPowerCalsToString(ExtraPowerCalsEnum value)
@@ -444,10 +444,10 @@ namespace OpenTap.Plugins.PNAX
             String strPort2CalKit = Scpi.Format("{0}", Port2CalKit);
             String strPort3CalKit = Scpi.Format("{0}", Port3CalKit);
             String strPort4CalKit = Scpi.Format("{0}", Port4CalKit);
-            if (strDutPort1 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 1, strPort1CalKit);
-            if (strDutPort2 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 2, strPort2CalKit);
-            if (strDutPort3 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 3, strPort3CalKit);
-            if (strDutPort4 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 4, strPort4CalKit);
+            if (strDutPort1 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 1, Port1CalKit);
+            if (strDutPort2 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 2, Port2CalKit);
+            if (strDutPort3 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 3, Port3CalKit);
+            if (strDutPort4 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 4, Port4CalKit);
 
             PNAX.CalAllInit(CalChannel);
 
