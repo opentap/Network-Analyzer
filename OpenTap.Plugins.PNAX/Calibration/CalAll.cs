@@ -462,6 +462,18 @@ namespace OpenTap.Plugins.PNAX
 
                 Log.Info($"Step {CalStep}: {StepDescription}");
 
+                var dialog = new CalStepDialog(CalStep, CalSteps, StepDescription);
+                UserInput.Request(dialog);
+
+                // Response from the user.
+                if (dialog.Response == WaitForInputResult.Cancel)
+                {
+                    Log.Info("Cal All aborted!");
+                    UpgradeVerdict(Verdict.Aborted);
+                    return;
+                }
+                Log.Info("User clicked OK. Now we prompt for DUT S/N.");
+
                 PNAX.CalAllStep(CalChannel, CalStep);
                 //PNAX.WaitForOperationComplete();
             }
@@ -478,5 +490,48 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+    }
+
+    public enum WaitForInputResult
+    {
+        // The number assigned, determines the order in which the buttons are shown in the dialog.
+        Cancel = 2, Ok = 1
+    }
+
+    // This describes a dialog that asks the user to perform some actions before every cal step.
+    class CalStepDialog : IDisplayAnnotation
+    {
+        public CalStepDialog(int stepNumber, int totalSteps, String stepDescription)
+        {
+            StepNumber = stepNumber;
+            TotalSteps = totalSteps;
+            StepDescription = stepDescription;
+        }
+
+        [Browsable(false)]
+        public int StepNumber { get; set; }
+        [Browsable(false)]
+        public int TotalSteps { get; set; }
+        [Browsable(false)]
+        public String StepDescription { get; set; }
+
+        // Name is handled specially to create the title of the dialog window.
+        public string Name { get { return "Step " + StepNumber + " of " + TotalSteps; } }
+
+        [Layout(LayoutMode.FullRow)] // Set the layout of the property to fill the entire row.
+        [Browsable(true)] // Show it event though it is read-only.
+        public string Message { get { return StepDescription; } }
+
+        [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
+        [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
+        public WaitForInputResult Response { get; set; }
+
+        string IDisplayAnnotation.Description => string.Empty;
+
+        string[] IDisplayAnnotation.Group => Array.Empty<string>();
+
+        double IDisplayAnnotation.Order => -10000;
+
+        bool IDisplayAnnotation.Collapsed => false;
     }
 }
