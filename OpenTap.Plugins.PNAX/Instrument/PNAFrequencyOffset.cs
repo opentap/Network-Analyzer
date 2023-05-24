@@ -97,12 +97,12 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetFOMCW(int Channel, int Range)
         {
-            return ScpiQuery<double>($"SENSe{ Channel }:FOM:RANGe{Range}:FREQuency:CENTer?");
+            return ScpiQuery<double>($"SENSe{ Channel }:FOM:RANGe{Range}:FREQuency:CW?");
         }
 
         public void SetFOMCW(int Channel, int Range, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:FREQuency:CENTer { freq }");
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:FREQuency:CW { freq }");
         }
 
         public double GetFOMOffset(int Channel, int Range)
@@ -144,6 +144,49 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{ Channel }:FOM:DISPlay:SELect { value }");
         }
+
+        #region Segment Sweep
+        public void FOMSegmentDeleteAllSegments(int Channel, int Range)
+        {
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent:DELete:ALL");
+        }
+
+        public int FOMSegmentAdd(int Channel, int Range)
+        {
+            int NumberOfSegments = ScpiQuery<int>($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent:COUNt?");
+            NumberOfSegments++;
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{NumberOfSegments}:ADD");
+            return NumberOfSegments;
+        }
+
+        public void FOMSetSegmentState(int Channel, int Range, int segment, bool state)
+        {
+            if (state)
+            {
+                ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:STATE ON");
+            }
+            else
+            {
+                ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:STATE OFF");
+            }
+        }
+
+        public void FOMSetSegmentNumberOfPoints(int Channel, int Range, int segment, int points)
+        {
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:SWEep:POINts {points.ToString()}");
+        }
+
+        public void FOMSetSegmentStartFrequency(int Channel, int Range, int segment, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:FREQuency:STARt {freq.ToString()}");
+        }
+
+        public void FOMSetSegmentStopFrequency(int Channel, int Range, int segment, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:FREQuency:STOP {freq.ToString()}");
+        }
+        #endregion
+
 
     }
 }
