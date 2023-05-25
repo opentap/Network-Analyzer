@@ -297,6 +297,29 @@ namespace OpenTap.Plugins.PNAX
             {
                 MatchCalSettingsInt = 1;
             }
+
+            if (CalSetName != "")
+            {
+                // Make sure it exists
+                var csetCatalogStr = ScpiQuery("CSET:CATalog?");
+                List<String> csetCat = csetCatalogStr.Split(',').ToList();
+                bool found = false;
+                foreach(String cset in csetCat)
+                {
+                    if (cset.Equals(CalSetName))
+                    {
+                        // found it
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    ScpiCommand($"SENS:CORR:CSET:CRE '{CalSetName}'");
+                }
+            }
+
             ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:INITiate:IMMediate \"{CalSetName}\", {MatchCalSettingsInt}, {calMode}");
             //ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:INITiate:IMMediate");
         }
