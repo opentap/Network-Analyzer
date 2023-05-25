@@ -22,6 +22,9 @@ namespace OpenTap.Plugins.PNAX
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
+        [Display("Cal Set Name", Order: 0.2)]
+        public String CalSetName { get; set; }
+
         private List<CalibrateAllSelectedChannels> _CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
         [Display("Calibrate All Selected Channels", Group: "Cal All", Order: 1)]
         public List<CalibrateAllSelectedChannels> CalAllSelectedChannels
@@ -330,6 +333,8 @@ namespace OpenTap.Plugins.PNAX
             Port2CalKit = "85032F";
             Port3CalKit = "85032F";
             Port4CalKit = "85032F";
+
+            CalSetName = "MyCalSet";
         }
 
         private String ExtraPowerCalsToString(ExtraPowerCalsEnum value)
@@ -449,7 +454,7 @@ namespace OpenTap.Plugins.PNAX
             if (strDutPort3 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 3, Port3CalKit);
             if (strDutPort4 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 4, Port4CalKit);
 
-            PNAX.CalAllInit(CalChannel);
+            PNAX.CalAllInit(CalChannel, CalSetName);
 
             int CalSteps = PNAX.CalAllNumberOfSteps(CalChannel);
 
@@ -481,12 +486,14 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.CalAllSave(CalChannel);
 
-            //if (PNAX.SimulatorMode())
-            //{
-            // Creates a unity Cal Set
-            // SENSe<cnum>:CORRection:CSET:CREate:DEFault [<csetname>], [<correctiontype>]
-            // SENS:CORR:CSET:CRE:DEF 'My2P','Full 2P(1,2)'
-            //}
+            if (PNAX.SimulatorMode() > 0)
+            {
+                //Creates a unity Cal Set
+                //PNAX.ScpiCommand("SENSe<cnum>:CORRection:CSET:CREate:DEFault \"CH1_CALREG\", [<correctiontype>]");
+                PNAX.ScpiCommand("sense:correction:cset:deactivate");
+                PNAX.ScpiCommand($"SENS:CORR:CSET:DEL '{CalSetName}'");
+                PNAX.ScpiCommand($"SENS:CORR:CSET:CRE:DEF '{CalSetName}','Full 2P(1,2)'");
+            }
 
             UpgradeVerdict(Verdict.Pass);
         }

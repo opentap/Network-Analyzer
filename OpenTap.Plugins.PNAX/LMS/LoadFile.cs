@@ -14,15 +14,19 @@ namespace OpenTap.Plugins.PNAX
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        [Display("State Filename", "Specfiy path and filename for csa data to be loaded", "Load File")]
+        [Display("State Filename", "Specfiy path and filename for csa data to be loaded", "Load File", Order: 10)]
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csa")]
         public string StateFile { get; set; }
+
+        [Display("Force Copy", "Overwrite state file even if it already exists on instrument", "Load File", Order: 20)]
+        public bool overwrite { get; set; }
         #endregion
 
         public LoadFile()
         {
             StateFile = "";
             Rules.Add(IsFileValid, "Must be a valid file", "StateFile");
+            overwrite = false;
         }
 
         public override void Run()
@@ -32,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
             try 
             {
                 string absoluteStateFile = Path.GetFullPath(StateFile);
-                PNAX.LoadState(absoluteStateFile);
+                PNAX.LoadState(absoluteStateFile, overwrite);
                 PNAX.WaitForOperationComplete();
             }
             catch(FileNotFoundException ex)

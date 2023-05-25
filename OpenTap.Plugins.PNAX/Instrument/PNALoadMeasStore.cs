@@ -65,15 +65,72 @@ namespace OpenTap.Plugins.PNAX
         /// <summary>
                  /// Load state file into Network Analyzer
                  /// </summary>
-        public void LoadState(string filename)
+        public void LoadState(string filename, bool overwrite)
         {
+            String FileName = filename;
+
             ScpiCommand(":SYST:PRES");
-            ScpiCommand($":MMEM:LOAD:FILE \"{filename}\"");
+
+            // If running VNA on same computer as TAP
+            if (VisaAddress.Contains("localhost"))
+            {
+                // use the file name since TAP and VNA are running on same computer
+                FileName = filename;
+            }
+            else
+            {
+                // VNA is being accessed remotely
+                FileName = Path.GetFileName(filename);
+                String FilePath = Path.GetDirectoryName(filename);
+
+                // first find if the file is already in the VNA
+                var mmemCatalogStr = ScpiQuery("MMEM:CATalog?");
+                List<String> mmemCat = mmemCatalogStr.Split(',').ToList();
+                bool found = false;
+                foreach (String mmem in mmemCat)
+                {
+                    if (mmem.Contains(FileName))
+                    {
+                        // found it
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found || overwrite)
+                {
+                    byte[] filedata = File.ReadAllBytes(filename);
+                    // copy it
+                    ScpiIEEEBlockCommand($"MMEM:TRAN \"{FileName}\", ", filedata);
+
+                    // validate it was copied
+                    var mmemCatalogStr2 = ScpiQuery("MMEM:CATalog?");
+                    List<String> mmemCat2 = mmemCatalogStr2.Split(',').ToList();
+                    bool found2 = false;
+                    foreach (String mmem2 in mmemCat2)
+                    {
+                        if (mmem2.Contains(FileName))
+                        {
+                            // found it
+                            found2 = true;
+                            break;
+                        }
+                    }
+                    if (!found2)
+                    {
+                        throw new Exception("Error while copying file to instrument!");
+                    }
+                }
+
+            }
+
+            ScpiCommand($":MMEM:LOAD:FILE \"{FileName}\"");
             TapThread.Sleep(750);
             var errorList = QueryErrors();
 
             if (errorList.Count > 0)
                 throw new FileNotFoundException();
+
         }
 
         /// <summary>
@@ -282,6 +339,136 @@ namespace OpenTap.Plugins.PNAX
                 default:
                     return null;
             }
+        }
+
+        public void SaveScreen(String FullFileName)
+        {
+            String FileName = Path.GetFileName(FullFileName);
+            String FilePath = Path.GetDirectoryName(FullFileName);
+            String InstrumentFileName = "";
+            String InstrumentFolderName = "";
+
+            InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
+            InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
+
+            ChangeFolder(InstrumentFolderName);
+
+            // Save screenshot to local folder on instrument: <documents>\<mode>\screen
+            ScpiCommand(":MMEM:STOR:SSCR '" + InstrumentFileName + "'");
+
+            // Make sure folder exists on local PC
+            bool exists = System.IO.Directory.Exists(FilePath);
+            if (!exists)
+                System.IO.Directory.CreateDirectory(FilePath);
+
+            // Copy from instrument to local PC
+            byte[] filedata = ScpiQueryBlock(String.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+
+            // Write file at local PC
+            File.WriteAllBytes(FullFileName, filedata);
+
+            // Delete File from instrument
+            ScpiCommand(String.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+
+            QueryErrors();
+        }
+
+        public void SaveSnP(int Channel, int mnum, List<int> ports, String FullFileName)
+        {
+            String strPorts = String.Join(",", ports);
+            String FileName = Path.GetFileName(FullFileName);
+            String FilePath = Path.GetDirectoryName(FullFileName);
+            String InstrumentFileName = "";
+            String InstrumentFolderName = "";
+
+            InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
+            InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
+
+            ChangeFolder(InstrumentFolderName);
+
+            // Save screenshot to local folder on instrument: <documents>\<mode>\screen
+            //String opc = MyVNA.ScpiQuery("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','C:\\Program Files\\Keysight\\Test Automation\\Results\\Traces\\MyData1.s2p';*OPC?");
+            // TODO PNA-L vs ENA
+            //ScpiCommand("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','" + InstrumentFileName + "'");
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+
+            // Make sure folder exists on local PC
+            bool exists = System.IO.Directory.Exists(FilePath);
+            if (!exists)
+                System.IO.Directory.CreateDirectory(FilePath);
+
+            // Copy from instrument to local PC
+            byte[] filedata = ScpiQueryBlock(String.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName));
+
+            // Write file at local PC
+            File.WriteAllBytes(FullFileName, filedata);
+
+            // Delete File from instrument
+            ScpiCommand(String.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+
+            QueryErrors();
+        }
+
+
+        private void ChangeFolder(String folder)
+        {
+            // Clear System Errors
+            ScpiCommand("*CLS");
+
+            try
+            {
+                // Lets Make sure folder exists
+                // Change directory to D:\NVARB
+                ScpiCommand(":MMEM:CDIR \"" + folder + "\"");
+
+                // Lets see if current directory is D:\NVARB
+                string strCDIR = ScpiQuery(":MMEM:CDIR?");
+
+                // Lets see if there is an error
+                List<ScpiInstrument.ScpiError> ListErrors = QueryErrors();
+
+                // If we get errors, most likely the directory does not exist
+                if (ListErrors.Count > 0)
+                {
+                    // Clear System Errors
+                    ScpiCommand("*CLS");
+
+                    // Make folder
+                    ScpiCommand(":MMEM:MDIR \"" + folder + "\"");
+                    WaitForOperationComplete();
+                }
+
+                // Change directory to D:\NVARB
+                ScpiCommand(":MMEM:CDIR \"" + folder + "\"");
+
+                // Verify we can change to the directory
+                strCDIR = ScpiQuery(":MMEM:CDIR?");
+
+                // Validate the current directory is now D:\NVARB
+                if (!strCDIR.Contains(folder))
+                {
+                    // Lets see if there is an error
+                    ListErrors.Clear();
+                    ListErrors = QueryErrors();
+
+                    // Throw excpetion if can't change to folder
+                    if (ListErrors.Count > 0)
+                    {
+                        throw new Exception("Error while creating folder " + folder + " " + ListErrors[0].Message);
+                    }
+                    else
+                    {
+                        throw new Exception("Error while creating folder " + folder);
+                    }
+                }
+
+                // We now have switched to the folder
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }
