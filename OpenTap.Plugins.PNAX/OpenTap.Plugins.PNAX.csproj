@@ -33,7 +33,13 @@
     <None Update="Examples\GCX 20 MHz - 45 GHz 2 stage.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Examples\LMS.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Standard - CalAll - Trigger - Meas.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Standard-AllFormats.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\Std-GC.csa">
