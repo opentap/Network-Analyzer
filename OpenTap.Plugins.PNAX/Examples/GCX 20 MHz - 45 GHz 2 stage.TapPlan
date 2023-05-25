@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="OpenTap.Plugins.PNAX.GainCompressionChannel" Id="03e3197a-d7ea-45c9-afb0-da500297a8ba" OpenTap.Visibility="Visible">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <DisabledInChannelParentStep>false</DisabledInChannelParentStep>
+      <ConverterStages>_2</ConverterStages>
+      <PortLO1>NotControlled</PortLO1>
+      <PortLO2>NotControlled</PortLO2>
+      <SweepPoints>201</SweepPoints>
+      <Name Metadata="Step Name">Gain Compression Channel</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.MixerSetupTestStep" Id="5765dd72-e9ea-4b22-a581-44ff903e446c">
+          <ConverterStages>_2</ConverterStages>
+          <PortInput>Port1</PortInput>
+          <PortOutput>Port2</PortOutput>
+          <PortLO1>NotControlled</PortLO1>
+          <PortLO2>NotControlled</PortLO2>
+          <InputFractionalMultiplierNumerator>1</InputFractionalMultiplierNumerator>
+          <InputFractionalMultiplierDenominator>1</InputFractionalMultiplierDenominator>
+          <LO1FractionalMultiplierNumerator>1</LO1FractionalMultiplierNumerator>
+          <LO1FractionalMultiplierDenominator>1</LO1FractionalMultiplierDenominator>
+          <LO2FractionalMultiplierNumerator>1</LO2FractionalMultiplierNumerator>
+          <LO2FractionalMultiplierDenominator>1</LO2FractionalMultiplierDenominator>
+          <EnableEmbeddedLO>false</EnableEmbeddedLO>
+          <TuningMethod>BroadbandAndPrecise</TuningMethod>
+          <TuningPointType>MiddlePoint</TuningPointType>
+          <SweepPoints>201</SweepPoints>
+          <TuningPoint>101</TuningPoint>
+          <TuneEvery>1</TuneEvery>
+          <BroadBandSearch>3000000</BroadBandSearch>
+          <IFBW>30000</IFBW>
+          <MaxIterations>5</MaxIterations>
+          <Tolerance>1</Tolerance>
+          <LOFrequencyDelta>0</LOFrequencyDelta>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>true</IsChildEditable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Mixer Setup</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.MixerPowerTestStep" Id="faa04aa4-b6a9-426f-aa8d-2eb6f941fe1c">
+          <EnablePort3Settings>false</EnablePort3Settings>
+          <EnablePort4Settings>false</EnablePort4Settings>
+          <EnableSweptPowerSettings>false</EnableSweptPowerSettings>
+          <PowerOnAllChannels>true</PowerOnAllChannels>
+          <EnableLO1>false</EnableLO1>
+          <PortLO1>NotControlled</PortLO1>
+          <LO1Power>-15</LO1Power>
+          <SourceLevelingModeLO1>INTernal</SourceLevelingModeLO1>
+          <EnableLO2>false</EnableLO2>
+          <PortLO2>NotControlled</PortLO2>
+          <LO2Power>-15</LO2Power>
+          <SourceLevelingModeLO2>INTernal</SourceLevelingModeLO2>
+          <SourceAttenuatorPowerPort3>0</SourceAttenuatorPowerPort3>
+          <ReceiverAttenuatorPowerPort3>0</ReceiverAttenuatorPowerPort3>
+          <SourceAttenuatorPowerPort4>0</SourceAttenuatorPowerPort4>
+          <ReceiverAttenuatorPowerPort4>0</ReceiverAttenuatorPowerPort4>
+          <LO1SweptPowerStart>-20</LO1SweptPowerStart>
+          <LO1SweptPowerStop>-10</LO1SweptPowerStop>
+          <LO1SweptPowerStep>0.05</LO1SweptPowerStep>
+          <LO2SweptPowerStart>-10</LO2SweptPowerStart>
+          <LO2SweptPowerStop>-10</LO2SweptPowerStop>
+          <LO2SweptPowerStep>0</LO2SweptPowerStep>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>false</IsChildEditable>
+          <ConverterStages>_2</ConverterStages>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Mixer Power</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.MixerFrequencyTestStep" Id="bd26e1b5-10cf-47a5-9a0a-18917762643a">
+          <IsInputMixerFrequencyTypeStartStop>true</IsInputMixerFrequencyTypeStartStop>
+          <IsInputMixerFrequencyTypeCenterSpan>false</IsInputMixerFrequencyTypeCenterSpan>
+          <IsInputMixerFrequencyTypeFixed>false</IsInputMixerFrequencyTypeFixed>
+          <InputMixerFrequencyType>StartStop</InputMixerFrequencyType>
+          <InputMixerFrequencyStart>20000000</InputMixerFrequencyStart>
+          <InputMixerFrequencyStop>45000000000</InputMixerFrequencyStop>
+          <InputMixerFrequencyCenter>25005000000</InputMixerFrequencyCenter>
+          <InputMixerFrequencySpan>49990000000</InputMixerFrequencySpan>
+          <InputMixerFrequencyFixed>1000000000</InputMixerFrequencyFixed>
+          <IsLO1MixerFrequencyTypeStartStop>false</IsLO1MixerFrequencyTypeStartStop>
+          <IsLO1MixerFrequencyTypeCenterSpan>false</IsLO1MixerFrequencyTypeCenterSpan>
+          <IsLO1MixerFrequencyTypeFixed>true</IsLO1MixerFrequencyTypeFixed>
+          <LO1MixerFrequencyType>Fixed</LO1MixerFrequencyType>
+          <LO1MixerFrequencyStart>0</LO1MixerFrequencyStart>
+          <LO1MixerFrequencyStop>0</LO1MixerFrequencyStop>
+          <LO1MixerFrequencyCenter>0</LO1MixerFrequencyCenter>
+          <LO1MixerFrequencySpan>0</LO1MixerFrequencySpan>
+          <LO1MixerFrequencyFixed>0</LO1MixerFrequencyFixed>
+          <InputGTLO1>true</InputGTLO1>
+          <IsIFMixerFrequencyTypeStartStop>true</IsIFMixerFrequencyTypeStartStop>
+          <IsIFMixerFrequencyTypeCenterSpan>false</IsIFMixerFrequencyTypeCenterSpan>
+          <IsIFMixerFrequencyTypeFixed>false</IsIFMixerFrequencyTypeFixed>
+          <IFMixerFrequencyType>StartStop</IFMixerFrequencyType>
+          <IFSidebandType>Low</IFSidebandType>
+          <IFMixerFrequencyStart>20000000</IFMixerFrequencyStart>
+          <IFMixerFrequencyStop>45000000000</IFMixerFrequencyStop>
+          <IFMixerFrequencyCenter>25005000000</IFMixerFrequencyCenter>
+          <IFMixerFrequencySpan>49990000000</IFMixerFrequencySpan>
+          <IFMixerFrequencyFixed>1000000000</IFMixerFrequencyFixed>
+          <IsLO2MixerFrequencyTypeStartStop>false</IsLO2MixerFrequencyTypeStartStop>
+          <IsLO2MixerFrequencyTypeCenterSpan>false</IsLO2MixerFrequencyTypeCenterSpan>
+          <IsLO2MixerFrequencyTypeFixed>true</IsLO2MixerFrequencyTypeFixed>
+          <LO2MixerFrequencyType>Fixed</LO2MixerFrequencyType>
+          <LO2MixerFrequencyStart>0</LO2MixerFrequencyStart>
+          <LO2MixerFrequencyStop>0</LO2MixerFrequencyStop>
+          <LO2MixerFrequencyCenter>0</LO2MixerFrequencyCenter>
+          <LO2MixerFrequencySpan>0</LO2MixerFrequencySpan>
+          <LO2MixerFrequencyFixed>0</LO2MixerFrequencyFixed>
+          <IF1GTLO2>true</IF1GTLO2>
+          <IsOutputMixerFrequencyTypeStartStop>true</IsOutputMixerFrequencyTypeStartStop>
+          <IsOutputMixerFrequencyTypeCenterSpan>false</IsOutputMixerFrequencyTypeCenterSpan>
+          <IsOutputMixerFrequencyTypeFixed>false</IsOutputMixerFrequencyTypeFixed>
+          <OutputMixerFrequencyType>StartStop</OutputMixerFrequencyType>
+          <OutputSidebandType>Low</OutputSidebandType>
+          <OutputMixerFrequencyStart>20000000</OutputMixerFrequencyStart>
+          <OutputMixerFrequencyStop>45000000000</OutputMixerFrequencyStop>
+          <OutputMixerFrequencyCenter>25005000000</OutputMixerFrequencyCenter>
+          <OutputMixerFrequencySpan>49990000000</OutputMixerFrequencySpan>
+          <OutputMixerFrequencyFixed>1000000000</OutputMixerFrequencyFixed>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>false</IsChildEditable>
+          <ConverterStages>_2</ConverterStages>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Mixer Frequency</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.Compression" Id="5e2492f4-d85e-4b93-a84d-94286766d6d3">
+          <CompressionMethod>CompressionFromLinearGain</CompressionMethod>
+          <CompressionLevel>1</CompressionLevel>
+          <CompressionBackOff>10</CompressionBackOff>
+          <CompressionDeltaX>10</CompressionDeltaX>
+          <CompressionDeltaY>9</CompressionDeltaY>
+          <CompressionFromMaxPout>0.1</CompressionFromMaxPout>
+          <SMARTSweepTolerance>0.05</SMARTSweepTolerance>
+          <SMARTSweepIterations>20</SMARTSweepIterations>
+          <SMARTSweepShowIterations>false</SMARTSweepShowIterations>
+          <SMARTSweepReadDC>false</SMARTSweepReadDC>
+          <SMARTSweepSafeMode>false</SMARTSweepSafeMode>
+          <SMARTSweepCoarseIncrement>3</SMARTSweepCoarseIncrement>
+          <SMARTSweepFineIncrement>1</SMARTSweepFineIncrement>
+          <SMARTSweepFineThreshold>0.5</SMARTSweepFineThreshold>
+          <SMARTSweepMaxOutputPower>30</SMARTSweepMaxOutputPower>
+          <CompressionPointInterpolation>false</CompressionPointInterpolation>
+          <EndOfSweepCondition>Default</EndOfSweepCondition>
+          <SettlingTime>0</SettlingTime>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>false</IsChildEditable>
+          <ConverterStages>_2</ConverterStages>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Compression</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.MixerConverterPowerStep" Id="3419ee5e-2d4e-4a5a-a5ff-03b14afe2568">
+          <InputPower>-25</InputPower>
+          <OutputPower>-5</OutputPower>
+          <PowerSweepStartPower>-25</PowerSweepStartPower>
+          <PowerSweepStopPower>-5</PowerSweepStopPower>
+          <PowerSweepPowerPoints>21</PowerSweepPowerPoints>
+          <PowerSweepPowerStep>1</PowerSweepPowerStep>
+          <PowerOnAllChannels>true</PowerOnAllChannels>
+          <HasPortPowersCoupled>false</HasPortPowersCoupled>
+          <PortPowersCoupled>false</PortPowersCoupled>
+          <PortInput>Port1</PortInput>
+          <HasAutoInputPort>false</HasAutoInputPort>
+          <AutoInputPortSourceAttenuator>false</AutoInputPortSourceAttenuator>
+          <InputPortSourceAttenuatorAutoValue>0</InputPortSourceAttenuatorAutoValue>
+          <InputPortSourceAttenuator>0</InputPortSourceAttenuator>
+          <InputPortReceiverAttenuator>0</InputPortReceiverAttenuator>
+          <InputSourceLevelingMode>Internal</InputSourceLevelingMode>
+          <PortOutput>Port2</PortOutput>
+          <AutoOutputPortSourceAttenuator>false</AutoOutputPortSourceAttenuator>
+          <OutputPortSourceAttenuatorAutoValue>0</OutputPortSourceAttenuatorAutoValue>
+          <OutputPortSourceAttenuator>0</OutputPortSourceAttenuator>
+          <OutputPortReceiverAttenuator>0</OutputPortReceiverAttenuator>
+          <OutputSourceLevelingMode>Internal</OutputSourceLevelingMode>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>false</IsChildEditable>
+          <ConverterStages>_2</ConverterStages>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Power</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.GainCompressionFrequency" Id="d84a3d34-a506-4afe-bec3-7c91d338d901">
+          <DataAcquisitionMode>SMARTSweep</DataAcquisitionMode>
+          <SweepType>LinearSweep</SweepType>
+          <SweepSettingsNumberOfPoints>201</SweepSettingsNumberOfPoints>
+          <SweepSettingsIFBandwidth>100000</SweepSettingsIFBandwidth>
+          <SweepSettingsStart>10000000</SweepSettingsStart>
+          <SweepSettingsStop>50000000000</SweepSettingsStop>
+          <SweepSettingsCenter>25005000000</SweepSettingsCenter>
+          <SweepSettingsSpan>49990000000</SweepSettingsSpan>
+          <SweepSettingsFixed>1000000000</SweepSettingsFixed>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>false</IsChildEditable>
+          <ConverterStages>_2</ConverterStages>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Gain Compression Frequency</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.GainCompressionNewTrace" Id="cf6e657a-5565-44cd-bfbb-80f579fe09a5" OpenTap.Visibility="Visible">
+          <Meas>SC21</Meas>
+          <EnableButton>true</EnableButton>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <DoubleStage>true</DoubleStage>
+          <IsChildEditable>false</IsChildEditable>
+          <ConverterStages>_2</ConverterStages>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>0</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Compression Traces</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.CompressionSingleTrace" Id="68cd1803-b283-49ad-af46-55edb3c08200">
+              <Meas>SC21</Meas>
+              <IsControlledByParentTrace>true</IsControlledByParentTrace>
+              <Channel>1</Channel>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <DoubleStage>false</DoubleStage>
+              <IsChildEditable>false</IsChildEditable>
+              <ConverterStages>_1</ConverterStages>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_SC21</Trace>
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>1</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">CH1_SC21</Name>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.19.4+7959a308" />
+  </Package.Dependencies>
+</TestPlan>

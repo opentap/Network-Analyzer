@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TestPlan type="OpenTap.TestPlan">
   <Steps>
-    <TestStep type="OpenTap.Plugins.PNAX.StandardChannel" Id="2a630467-a0dc-4fc7-999b-db162951ca83">
+    <TestStep type="OpenTap.Plugins.PNAX.StandardChannel" Id="2a630467-a0dc-4fc7-999b-db162951ca83" OpenTap.Visibility="Visible">
       <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
       <Channel>1</Channel>
       <Name Metadata="Step Name">Standard Channel</Name>
@@ -104,7 +104,7 @@
           <MeasName />
           <Name Metadata="Step Name">Standard New Trace</Name>
           <ChildTestSteps>
-            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="b8078f08-32e0-4215-bdcd-3386dbf87877">
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="b8078f08-32e0-4215-bdcd-3386dbf87877" OpenTap.Visibility="Visible">
               <Meas>S11</Meas>
               <IsControlledByParentTrace>true</IsControlledByParentTrace>
               <Channel>1</Channel>
@@ -131,6 +131,92 @@
               <mnum>0</mnum>
               <MeasName />
               <Name Metadata="Step Name">CH1_S11</Name>
+              <ChildTestSteps>
+                <TestStep type="OpenTap.Plugins.PNAX.Marker" Id="cd152535-369e-4aaa-8a0f-e31f6a3c5016">
+                  <mkr>1</mkr>
+                  <XAxisPosition>1000000000</XAxisPosition>
+                  <IsControlledByParent>false</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>0</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Marker</Name>
+                </TestStep>
+                <TestStep type="OpenTap.Plugins.PNAX.Marker" Id="b166c17b-79a6-40c6-9184-4394d1ab14a4">
+                  <mkr>2</mkr>
+                  <XAxisPosition>2000000000</XAxisPosition>
+                  <IsControlledByParent>false</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>0</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Marker</Name>
+                </TestStep>
+                <TestStep type="OpenTap.Plugins.PNAX.Marker" Id="240f8728-0875-41dd-a935-df67beaf6758">
+                  <mkr>3</mkr>
+                  <XAxisPosition>3000000000</XAxisPosition>
+                  <IsControlledByParent>false</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>0</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Marker</Name>
+                </TestStep>
+              </ChildTestSteps>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="12ae96b9-b981-48a0-83ad-e32a3641689c">
               <Meas>S12</Meas>
@@ -222,6 +308,7 @@
     </TestStep>
     <TestStep type="OpenTap.Plugins.PNAX.CalAll" Id="ac5a5a25-3644-4755-85ee-5b28917aed39">
       <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <CalSetName>MyCalSet</CalSetName>
       <CalAllSelectedChannels>
         <CalibrateAllSelectedChannels>
           <Channel>1</Channel>
@@ -260,7 +347,6 @@
       <Port2CalKit>85032F</Port2CalKit>
       <Port3CalKit>85032F</Port3CalKit>
       <Port4CalKit>85032F</Port4CalKit>
-      <Enabled>false</Enabled>
       <Name Metadata="Step Name">Cal All</Name>
     </TestStep>
     <TestStep type="OpenTap.Plugins.PNAX.Measure" Id="67c79a83-49e9-4286-a40c-a20f5510d404">
@@ -275,6 +361,42 @@
       <EnableLimits>false</EnableLimits>
       <LimitsFile />
       <Name Metadata="Step Name">Store Trace Data</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.StoreSingleTrace" Id="e3a41788-ce4f-46f0-8144-eee275b6fd7a">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>
+        <PropertyName>OpenTap.Plugins.PNAX.GeneralChannelBaseStep|Channel</PropertyName>
+        <Step>2a630467-a0dc-4fc7-999b-db162951ca83</Step>
+      </Channel>
+      <mnum>
+        <PropertyName>OpenTap.Plugins.PNAX.SingleTraceBaseStep|mnum</PropertyName>
+        <Step>b8078f08-32e0-4215-bdcd-3386dbf87877</Step>
+      </mnum>
+      <Name Metadata="Step Name">Store Single Trace</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.StoreMarkerData" Id="9ca2e75c-4120-4485-a2d9-36b30723c8a1">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <channels>1</channels>
+      <Name Metadata="Step Name">Store Marker Data</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreSnp" Id="8b94188a-b4c3-486f-ad55-2ec1f4362e2d">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>
+        <PropertyName>OpenTap.Plugins.PNAX.GeneralChannelBaseStep|Channel</PropertyName>
+        <Step>2a630467-a0dc-4fc7-999b-db162951ca83</Step>
+      </Channel>
+      <mnum>
+        <PropertyName>OpenTap.Plugins.PNAX.SingleTraceBaseStep|mnum</PropertyName>
+        <Step>b8078f08-32e0-4215-bdcd-3386dbf87877</Step>
+      </mnum>
+      <Ports>1, 2</Ports>
+      <filename>CH1</filename>
+      <Name Metadata="Step Name">Store SNP</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreScreenShot" Id="1676dd5c-570c-406b-909e-8983320e35d0">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <filename>Screen_1</filename>
+      <Name Metadata="Step Name">Store Screen Shot</Name>
     </TestStep>
   </Steps>
   <Package.Dependencies>
