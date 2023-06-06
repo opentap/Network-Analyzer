@@ -17,7 +17,8 @@ namespace OpenTap.Plugins.PNAX
     public partial class PNAX : ScpiInstrument
     {
         #region Settings
-
+        [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 2)]
+        public bool isAlwaysPreset { get; set; }
         #endregion
 
         public StandardChannelValues DefaultStandardChannelValues;
@@ -40,6 +41,7 @@ namespace OpenTap.Plugins.PNAX
         public PNAX()
         {
             Name = "PNA-X";
+            isAlwaysPreset = true;
         }
 
         /// <summary>
@@ -61,9 +63,12 @@ namespace OpenTap.Plugins.PNAX
             this.QueryErrorAfterCommand = false;
             // TODO:  Open the connection to the instrument here
 
-            ScpiCommand("SYST:FPR");
-            ScpiCommand("DISP:WIND OFF");
-            WaitForOperationComplete();
+            if(this.isAlwaysPreset)
+            {
+                ScpiCommand("SYST:FPR");
+                ScpiCommand("DISP:WIND OFF");
+                WaitForOperationComplete();
+            }
 
             //if (!IdnString.Contains("Instrument ID"))
             //{
