@@ -229,6 +229,32 @@ namespace OpenTap.Plugins.PNAX
             return resultsList;
         }
 
+        public String GetTraceName(int Channel, int mnum)
+        {
+            String retVal = "undefined trace";
+
+            string[] tracesList = GetTraceNames(Channel);
+            for (var i = 0; i < tracesList.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    var traceinfo = tracesList[i].Split('_');
+                    if (int.Parse(traceinfo[2]) == mnum)
+                    {
+                        retVal = traceinfo[1];
+                        return retVal;
+                    }
+                }
+                //else
+                //{
+                //    traceTitles.Add(tracesList[i]);
+                //}
+            }
+
+
+            return retVal;
+        }
+
         /// <summary>
         /// Return min and max value from all traces in the state
         /// </summary>
