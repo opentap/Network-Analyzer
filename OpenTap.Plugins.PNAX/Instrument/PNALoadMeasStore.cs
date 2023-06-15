@@ -123,7 +123,6 @@ namespace OpenTap.Plugins.PNAX
                 }
 
             }
-
             ScpiCommand($":MMEM:LOAD:FILE \"{FileName}\"");
             TapThread.Sleep(750);
             var errorList = QueryErrors();
@@ -194,7 +193,7 @@ namespace OpenTap.Plugins.PNAX
                     var xString = ScpiQuery($"CALC{channel}:X:VAL?");
                     var xList = xString.Split(',').ToList();
 
-                    var yString = ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
+                    var yString = isA_Version ? ScpiQuery($"CALC{channel}:DATA? FDATA") : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
                     var yList = yString.Split(',').ToList();
 
                     resultsList.Add(xList);
@@ -308,6 +307,7 @@ namespace OpenTap.Plugins.PNAX
         public void SaveState(string filename)
         {
             ScpiCommand($":MMEM:STOR:CSAR \"{filename}\"");
+
             TapThread.Sleep(1000);
             var errorList = QueryErrors();
 
