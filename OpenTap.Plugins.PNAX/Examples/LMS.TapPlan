@@ -20,6 +20,21 @@
       <LimitsFile />
       <Name Metadata="Step Name">Store Data</Name>
     </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreSnp" Id="922251f7-7769-403c-ace8-6a1274c70e80">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <mnum>1</mnum>
+      <Ports>1, 2</Ports>
+      <filename>CH1</filename>
+      <Name Metadata="Step Name">Store SNP</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.StoreSingleTrace" Id="06419e9f-746d-4c0b-9229-315f8dfd1be4">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <mnum>4</mnum>
+      <filename>MyTrace</filename>
+      <Name Metadata="Step Name">Store Single Trace</Name>
+    </TestStep>
   </Steps>
   <Package.Dependencies>
     <Package Name="OpenTAP" Version="^9.19.4+7959a308" />

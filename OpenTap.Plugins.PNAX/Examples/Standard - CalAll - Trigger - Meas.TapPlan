@@ -362,7 +362,7 @@
       <LimitsFile />
       <Name Metadata="Step Name">Store Trace Data</Name>
     </TestStep>
-    <TestStep type="OpenTap.Plugins.PNAX.StoreSingleTrace" Id="e3a41788-ce4f-46f0-8144-eee275b6fd7a">
+    <TestStep type="OpenTap.Plugins.PNAX.StoreSingleTraceAdvanced" Id="2ef5dd3f-98fa-4ec9-91cc-4cae60df06e0">
       <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
       <Channel>
         <PropertyName>OpenTap.Plugins.PNAX.GeneralChannelBaseStep|Channel</PropertyName>
@@ -379,7 +379,7 @@
       <channels>1</channels>
       <Name Metadata="Step Name">Store Marker Data</Name>
     </TestStep>
-    <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreSnp" Id="8b94188a-b4c3-486f-ad55-2ec1f4362e2d">
+    <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreSnpAdvanced" Id="8b821854-0016-48b9-a55c-975d95b8c391">
       <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
       <Channel>
         <PropertyName>OpenTap.Plugins.PNAX.GeneralChannelBaseStep|Channel</PropertyName>

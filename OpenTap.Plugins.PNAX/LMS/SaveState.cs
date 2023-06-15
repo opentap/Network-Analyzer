@@ -14,7 +14,7 @@ using System.IO;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Save State", Groups: new[] { "PNA-X", "L / M / S" }, Description: "Save state as a .csa file")]
+    [Display("Save State", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Save state as a .csa file")]
     public class SaveState : TestStep
     {
         #region Settings

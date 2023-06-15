@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Single Trace", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data for a single given trace")]
-    public class StoreSingleTrace : TestStep
+    [Display("Store Single Trace", Groups: new[] { "PNA-X", "Acquisition" }, Description: "Stores trace data for a single given trace")]
+    public class StoreSingleTraceAdvanced : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
@@ -22,20 +22,16 @@ namespace OpenTap.Plugins.PNAX
 
 
         [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
-        public int Channel { get; set; }
+        public Input<int> Channel { get; set; }
 
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
-        public int mnum { get; set; }
-
-        [Display("File Name", Groups: new[] { "Trace" }, Order: 22)]
-        public string filename { get; set; }
+        public Input<int> mnum { get; set; }
         #endregion
 
-        public StoreSingleTrace()
+        public StoreSingleTraceAdvanced()
         {
-            Channel = 1;
-            mnum = 1;
-            filename = "MyTrace";
+            Channel = new Input<int>();
+            mnum = new Input<int>();
         }
 
         public override void Run()
@@ -43,13 +39,21 @@ namespace OpenTap.Plugins.PNAX
             Log.Info("Channel from trace: " + Channel);
             Log.Info("MNUM from trace: " + mnum);
 
+            SingleTraceBaseStep x = (mnum.Step as SingleTraceBaseStep);
+
+            Log.Info("trace Window: " );
+            Log.Info("trace Window: " + x.Window);
+            Log.Info("trace Sheet: " + x.Sheet);
+            Log.Info("trace tnum: " + x.tnum);
+            Log.Info("trace mnum: " + x.mnum);
+            Log.Info("trace MeasName: " + x.MeasName);
+
             UpgradeVerdict(Verdict.NotSet);
 
             RunChildSteps(); //If the step supports child steps.
 
-            List<List<string>> results = PNAX.StoreTraceData(Channel, mnum);
+            List<List<string>> results = PNAX.StoreTraceData(Channel.Value, mnum.Value);
             PNAX.WaitForOperationComplete();
-            String MeasName = PNAX.GetTraceName(Channel, mnum);
 
             var xResult = results.Where((item, index) => index % 2 == 0).ToList();
             var yResult = results.Where((item, index) => index % 2 != 0).ToList();
@@ -65,7 +69,7 @@ namespace OpenTap.Plugins.PNAX
             if (xResult[0].Count == yResult[0].Count)
             {
                 // one data per frequency point
-                ResultColumn resultColumn2 = new ResultColumn($"{MeasName}", yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
+                ResultColumn resultColumn2 = new ResultColumn($"{x.MeasName}", yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
                 resultColumns.Add(resultColumn2);
             }
             else
@@ -81,14 +85,14 @@ namespace OpenTap.Plugins.PNAX
                     point2[index] = twoPoints[j++];
                 }
 
-                ResultColumn resultColumni = new ResultColumn($"{MeasName}_i", point1);
+                ResultColumn resultColumni = new ResultColumn($"{x.MeasName}_i", point1);
                 resultColumns.Add(resultColumni);
-                ResultColumn resultColumnj = new ResultColumn($"{MeasName}_j", point2);
+                ResultColumn resultColumnj = new ResultColumn($"{x.MeasName}_j", point2);
                 resultColumns.Add(resultColumnj);
 
             }
 
-            ResultTable resultTable = new ResultTable($"{filename}", resultColumns.ToArray());
+            ResultTable resultTable = new ResultTable($"Channel_{Channel.ToString()}", resultColumns.ToArray());
             Results.PublishTable(resultTable);
 
             UpgradeVerdict(Verdict.Pass);

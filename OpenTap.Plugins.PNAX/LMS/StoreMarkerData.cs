@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Marker Data", Groups: new[] { "PNA-X", "L / M / S" }, Description: "Stores trace data from all channels.")]
+    [Display("Store Marker Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
     public class StoreMarkerData : TestStep
     {
         #region Settings
@@ -125,6 +125,7 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
 
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

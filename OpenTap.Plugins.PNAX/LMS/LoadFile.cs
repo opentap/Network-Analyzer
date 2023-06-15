@@ -7,7 +7,7 @@ using System.IO;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Load File", Groups: new[] { "PNA-X", "L / M / S" }, Description: "Load State File")]
+    [Display("Load File", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Load State File")]
     public class LoadFile : TestStep
     {
         #region Settings
