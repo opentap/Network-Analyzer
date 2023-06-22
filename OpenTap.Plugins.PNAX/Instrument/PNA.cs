@@ -38,6 +38,8 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralGainCompressionPowerValues DefaultGeneralGainCompressionPowerValues;
 
+        private bool IsModelA = false;
+
         public PNAX()
         {
             Name = "PNA-X";
@@ -70,11 +72,12 @@ namespace OpenTap.Plugins.PNAX
                 WaitForOperationComplete();
             }
 
-            //if (!IdnString.Contains("Instrument ID"))
-            //{
-            //    Log.Error("This instrument driver does not support the connected instrument.");
-            //    throw new ArgumentException("Wrong instrument type.");
-            // }
+            String[] IDNValues = IdnString.Split(',');
+            if (IDNValues[1].StartsWith("N") && IDNValues[1].EndsWith("A"))
+            {
+                // We have a PNA instrument from the A family i.e. N5235A
+                IsModelA = true;
+            }
 
             mnum = 1;
         }
