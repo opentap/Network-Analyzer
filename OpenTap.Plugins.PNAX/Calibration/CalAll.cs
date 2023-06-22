@@ -7,6 +7,7 @@
 using OpenTap;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -234,20 +235,122 @@ namespace OpenTap.Plugins.PNAX
         [Display("Port 1", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 110)]
         public String Port1CalKit { get; set; }
 
+        [Browsable(true)]
+        [EnabledIf("IsPort1CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Query Port 1 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 110.1)]
+        public void QueryCalKitsPort1()
+        {
+            if (PNAX.IsConnected)
+            {
+                Log.Info("Disconnect before querying cal kits!");
+                return;
+            }
+            String retString = QueryCalKits(Port1);
+            if (retString != "")
+            {
+                Port1CalKit = retString;
+            }
+        }
+
+
         [EnabledIf("IsPort2CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 2", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 111)]
         public String Port2CalKit { get; set; }
+
+        [Browsable(true)]
+        [EnabledIf("IsPort2CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Query Port 2 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 111.1)]
+        public void QueryCalKitsPort2()
+        {
+            if (PNAX.IsConnected)
+            {
+                Log.Info("Disconnect before querying cal kits!");
+                return;
+            }
+            String retString = QueryCalKits(Port2);
+            if (retString != "")
+            {
+                Port2CalKit = retString;
+            }
+        }
 
         [EnabledIf("IsPort3CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 3", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 112)]
         public String Port3CalKit { get; set; }
 
+        [Browsable(true)]
+        [EnabledIf("IsPort3CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Query Port 3 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 112.1)]
+        public void QueryCalKitsPort3()
+        {
+            if (PNAX.IsConnected)
+            {
+                Log.Info("Disconnect before querying cal kits!");
+                return;
+            }
+            String retString = QueryCalKits(Port3);
+            if (retString != "")
+            {
+                Port3CalKit = retString;
+            }
+        }
+
         [EnabledIf("IsPort4CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 4", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 113)]
         public String Port4CalKit { get; set; }
 
+        [Browsable(true)]
+        [EnabledIf("IsPort4CalKitEnabled", true, HideIfDisabled = true)]
+        [Display("Query Port 4 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 113.1)]
+        public void QueryCalKitsPort4()
+        {
+            if (PNAX.IsConnected)
+            {
+                Log.Info("Disconnect before querying cal kits!");
+                return;
+            }
+            String retString = QueryCalKits(Port4);
+            if (retString != "")
+            {
+                Port4CalKit = retString;
+            }
+        }
+
 
         #endregion
+
+        private String QueryCalKits(DUTConnectorsEnum PortConn)
+        {
+            try
+            {
+                PNAX.Open();
+                Log.Info("Calculating Input values");
+
+                int CalChannel = PNAX.CalAllGuidedChannelNumber();
+
+                String kits = PNAX.CalAllGetCalKits(CalChannel, PortConn);
+
+                var dialog = new SelectCalKitDialog(kits);
+                UserInput.Request(dialog);
+
+                // Response from the user.
+                if (dialog.Response == WaitForInputResult.Cancel)
+                {
+                    Log.Info("Select cal kit aborted!");
+                    PNAX.Close();
+                    return "";
+                }
+                Log.Info("Selected cal kit: " + dialog.SelectedValue);
+
+                PNAX.Close();
+                return dialog.SelectedValue;
+            }
+            catch (Exception)
+            {
+                Log.Error("Cannot calcluate Input values!");
+                return "";
+            }
+        }
 
         private void UpdateCalProperties() 
         {
@@ -477,10 +580,8 @@ namespace OpenTap.Plugins.PNAX
                     UpgradeVerdict(Verdict.Aborted);
                     return;
                 }
-                Log.Info("User clicked OK. Now we prompt for DUT S/N.");
 
                 PNAX.CalAllStep(CalChannel, CalStep);
-                //PNAX.WaitForOperationComplete();
             }
             PNAX.IoTimeout = deftimeout;
 
@@ -505,7 +606,6 @@ namespace OpenTap.Plugins.PNAX
         Cancel = 2, Ok = 1
     }
 
-    // This describes a dialog that asks the user to perform some actions before every cal step.
     class CalStepDialog : IDisplayAnnotation
     {
         public CalStepDialog(int stepNumber, int totalSteps, String stepDescription)
@@ -528,6 +628,59 @@ namespace OpenTap.Plugins.PNAX
         [Layout(LayoutMode.FullRow)] // Set the layout of the property to fill the entire row.
         [Browsable(true)] // Show it event though it is read-only.
         public string Message { get { return StepDescription; } }
+
+        [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
+        [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
+        public WaitForInputResult Response { get; set; }
+
+        string IDisplayAnnotation.Description => string.Empty;
+
+        string[] IDisplayAnnotation.Group => Array.Empty<string>();
+
+        double IDisplayAnnotation.Order => -10000;
+
+        bool IDisplayAnnotation.Collapsed => false;
+    }
+
+    class SelectCalKitDialog : IDisplayAnnotation
+    {
+        public SelectCalKitDialog(String AvailableKits)
+        {
+            _AvailableKits = AvailableKits;
+            _AvailableKits = _AvailableKits.Replace("\"", "");
+            //_AvailableKits = _AvailableKits.Replace(" ", "");
+            List<String> avail = _AvailableKits.Split(',').ToList();
+            List<String> TempString = avail;
+            CalKits = TempString.AsReadOnly();
+        }
+
+        [Browsable(false)]
+        public String _AvailableKits { get; set; }
+
+        public string Name { get { return "Select Cal Kit"; } }
+
+
+        //Collection of ports
+        private ReadOnlyCollection<String> _CalKits;
+        [Layout(LayoutMode.FullRow)] // Set the layout of the property to fill the entire row.
+        [Browsable(false)] // Show it event though it is read-only.
+        public ReadOnlyCollection<String> CalKits
+        {
+            get
+            {
+                return _CalKits;
+            }
+            set
+            {
+                _CalKits = value;
+                //OnPropertyChanged("CalKits");
+            }
+        }
+
+        [Display("Selected Value", "Select the cal kit from the list of available values")]
+        [AvailableValues(nameof(CalKits))]
+        public string SelectedValue { get; set; }
+
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
         [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.

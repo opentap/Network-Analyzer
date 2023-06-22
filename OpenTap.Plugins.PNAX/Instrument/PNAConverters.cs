@@ -353,9 +353,19 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:MIXer:CALCulate BOTH");
         }
 
+        public void MixerCalc(int Channel, string Calc)
+        {
+            ScpiCommand($"SENSe{ Channel }:MIXer:CALCulate {Calc}");
+        }
+
         public void MixerApply(int Channel)
         {
             ScpiCommand($"SENSe{ Channel }:MIXer:APPLY");
+        }
+
+        public void MixerDiscard(int Channel)
+        {
+            ScpiCommand($"SENSe{ Channel }:MIXer:DISCard");
         }
 
         public string GetMixerFrequencyInputMode(int Channel)
@@ -363,9 +373,10 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery($"SENSe{ Channel }:MIXer:INPut:FREQuency:MODE?");
         }
 
-        public void SetMixerFrequencyInputMode(int Channel, string mode)
+        public void SetMixerFrequencyInputMode(int Channel, MixerFrequencyTypeEnum mode)
         {
-            ScpiCommand($"SENSe{ Channel }:MIXer:INPut:FREQuency:MODE {mode}");
+            String modeScpi = Scpi.Format("{0}", mode);
+            ScpiCommand($"SENSe{ Channel }:MIXer:INPut:FREQuency:MODE {modeScpi}");
         }
 
         public void ValidateMixerFrequencyInputMode(int Channel, string mode)
@@ -428,9 +439,10 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery($"SENSe{ Channel }:MIXer:LO{ stage }:FREQuency:MODE?");
         }
 
-        public void SetMixerFrequencyLOMode(int Channel, int stage, String mode)
+        public void SetMixerFrequencyLOMode(int Channel, int stage, MixerFrequencyTypeEnum mode)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:MODE {mode}");
+            String modeScpi = Scpi.Format("{0}", mode);
+            ScpiCommand($"SENSe{Channel.ToString()}:MIXer:LO{stage.ToString()}:FREQuency:MODE {modeScpi}");
         }
         public void ValidateMixerFrequencyLOMode(int Channel, int stage, String mode)
         {
@@ -590,6 +602,17 @@ namespace OpenTap.Plugins.PNAX
         {
             SidebandTypeEnum value = GetFrequencyIFSideband(Channel);
             if (sideband != value) throw new Exception($"ValidateFrequencyIFSideband Mismatch\nTest Step Setting: {value.ToString()}\nInstrument value: {sideband.ToString()}");
+        }
+
+        public string GetMixerFrequencyOutputMode(int Channel)
+        {
+            return ScpiQuery($"SENSe{ Channel }:MIXer:OUTPut:FREQuency:MODE?");
+        }
+
+        public void SetMixerFrequencyOutputMode(int Channel, MixerFrequencyTypeEnum mode)
+        {
+            String modeScpi = Scpi.Format("{0}", mode);
+            ScpiCommand($"SENSe{ Channel }:MIXer:OUTPut:FREQuency:MODE {modeScpi}");
         }
 
         public double GetFrequencyOutputStart(int Channel)

@@ -272,6 +272,11 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllSetProperty(String prop, String value)
         {
+            if (prop.Equals("Use Smart Cal Order") && IsModelA)
+            {
+                // A model does not support this property
+                return;
+            }
             ScpiCommand($"SYSTem:CALibrate:ALL:MCLass:PROPerty:VALue \"{prop}\",\"{value}\"");
         }
 
@@ -282,12 +287,30 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllSelectCalKit(int Channel, int Port, String CalKit)
         {
-            ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port}:SELect \"{CalKit}\"");
+            if (IsModelA)
+            {
+                ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port} \"{CalKit}\"");
+            }
+            else
+            {
+                ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port}:SELect \"{CalKit}\"");
+            }
+        }
+
+        public String CalAllGetCalKits(int Channel, DUTConnectorsEnum connector)
+        {
+            string conn = Scpi.Format("{0}", connector);
+            return ScpiQuery($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:CATalog? \"{conn}\"");
         }
 
         public int CalAllGuidedChannelNumber()
         {
+            if (IsModelA)
+            {
+                return ScpiQuery<int>($"SYSTem:CALibrate:ALL:GUIDed:CHANnel?");
+            }
             return ScpiQuery<int>($"SYSTem:CALibrate:ALL:GUIDed:CHANnel:VALue?");
+
         }
 
         public void CalAllInit(int CalChannel, String CalSetName = "", bool MatchCalSettings = false, CalModeEnum calMode = CalModeEnum.ASYN)
