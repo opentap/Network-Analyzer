@@ -22,13 +22,21 @@ namespace OpenTap.Plugins.PNAX
 
     public enum ChannelTypeEnum
     {
+        [Display("Standard")]
         Standard,
+        [Display("Gain Compression")]
         GainCompression,
+        [Display("Swept IMD")]
         SweptIMD,
+        [Display("Noise Figure Cold Source")]
         NoiseFigureColdSource,
-        SMC,
+        [Display("Scalar Mixer/Converter")]
+        ScalarMixerConverter,
+        [Display("Gain Compression Converters")]
         GainCompressionConverters,
+        [Display("Swept IMD Converters")]
         SweptIMDConverters,
+        [Display("Noise Figure Converters")]
         NoiseFigureConverters
     }
 
@@ -201,6 +209,12 @@ namespace OpenTap.Plugins.PNAX
 
     public partial class PNAX : ScpiInstrument
     {
+        public static T ConvertStringToEnum<T>(string value)
+        {
+            String valueWOSpaces = value.Replace(" ", "");
+            return (T)Enum.Parse(typeof(T), valueWOSpaces, ignoreCase: true);
+        }
+
         public List<String> GetAllMeasClasses()
         {
             List<String> AllMeasClasses = new List<string>();
@@ -214,6 +228,22 @@ namespace OpenTap.Plugins.PNAX
                 AllMeasClasses.Add(mclass);
             }
             return AllMeasClasses;
+        }
+
+        public String GetChannelType(int Channel)
+        {
+            String retString = "";
+
+            retString = ScpiQuery<String>($"SENSe{Channel}:CLASs:NAME?");
+            retString = retString.Replace("\"", "");
+            retString = retString.Replace("/", "");
+
+            return retString;
+        }
+
+        public void CalAllStartRemotely()
+        {
+            ScpiCommand("SYST:CORR:WIZ CALL");
         }
 
         public void CalAllReset()
