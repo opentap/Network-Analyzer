@@ -19,7 +19,7 @@ namespace OpenTap.Plugins.PNAX
         /// <summary>
         /// Finds all active channels
         /// </summary>
-        private List<int> GetActiveChannels()
+        public List<int> GetActiveChannels()
         {
             var channels = ScpiQuery(":SYST:CHAN:CAT?");
 

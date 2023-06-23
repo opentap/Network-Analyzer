@@ -45,6 +45,17 @@ namespace OpenTap.Plugins.PNAX
                 // TODO
             }
         }
+        [Browsable(true)]
+        [Display("Query Channels", Group: "Cal All", Order: 1.1)]
+        public void QueryChannelsButton()
+        {
+            if (PNAX.IsConnected)
+            {
+                Log.Info("Disconnect before using this feature!");
+                return;
+            }
+            QueryChannels();
+        }
 
         [Browsable(false)]
         public bool IsAnyCalEnabled { get; set; }
@@ -99,7 +110,7 @@ namespace OpenTap.Plugins.PNAX
         public bool EnablePhaseCorrection { get; set; }
 
         [EnabledIf("IsPowerCalEnabled", true, HideIfDisabled = true)]
-        [Display("Include Power Calibration", Groups: new[] {"Measurement Class Calibration", "Power Cal" }, Order: 40)]
+        [Display("Include Power Calibration", Groups: new[] { "Measurement Class Calibration", "Power Cal" }, Order: 40)]
         public bool IncludePowerCalibration { get; set; }
 
         [EnabledIf("IsIMDEnabled", true, HideIfDisabled = true)]
@@ -352,7 +363,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        private void UpdateCalProperties() 
+        private void UpdateCalProperties()
         {
             bool DisablePowerCal = false;
             IsAnyCalEnabled = false;
@@ -366,12 +377,12 @@ namespace OpenTap.Plugins.PNAX
             {
                 IsAnyCalEnabled = true;
 
-                if ((cal.ChannelType == ChannelTypeEnum.SMC) ||
+                if ((cal.ChannelType == ChannelTypeEnum.ScalarMixerConverter) ||
                     (cal.ChannelType == ChannelTypeEnum.GainCompressionConverters))
                 {
                     IsSplitCalEnabled = true;
                 }
-                else if (cal.ChannelType == ChannelTypeEnum.SMC)
+                else if (cal.ChannelType == ChannelTypeEnum.ScalarMixerConverter)
                 {
                     IsPhaseEnabled = true;
                 }
@@ -404,7 +415,45 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        private void QueryChannels()
+        {
+            try
+            {
+                PNAX.Open();
+                Log.Info("Querying Channels from Instrument");
+                List<CalibrateAllSelectedChannels> channelsFromInstrument = new List<CalibrateAllSelectedChannels>();
 
+                // Query channels
+                List<int> Channels = PNAX.GetActiveChannels();
+
+                // for each channel query its type
+                foreach (int ch in Channels)
+                {
+                    String measName = PNAX.GetChannelType(ch);
+
+                    // now build the list
+                    CalibrateAllSelectedChannels selectedChannel = new CalibrateAllSelectedChannels();
+                    selectedChannel.Channel = ch;
+                    selectedChannel.ChannelType = PNAX.ConvertStringToEnum<ChannelTypeEnum>(measName);
+                    selectedChannel.Ports = new List<int>() { 1, 2 };
+                    channelsFromInstrument.Add(selectedChannel);
+                }
+
+                CalAllSelectedChannels = channelsFromInstrument;
+
+                PNAX.Close();
+            }
+            catch (Exception ex)
+            {
+                if (PNAX.IsConnected)
+                {
+                    PNAX.Close();
+                }
+                Log.Error("Cannot query channels!");
+                return;
+            }
+
+        }
 
         public CalAll()
         {
