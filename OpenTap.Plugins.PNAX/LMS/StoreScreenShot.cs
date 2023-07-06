@@ -22,21 +22,40 @@ namespace OpenTap.Plugins.PNAX.LMS
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
+        [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
         public string filename { get; set; }
+
+        [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
+        public bool IsCustomPath { get; set; }
+
+        [EnabledIf("IsCustomPath", true, HideIfDisabled = true)]
+        [Display("Custom Path", Groups: new[] { "File Name Details" }, Order: 32)]
+        public String CustomPath { get; set; }
         #endregion
 
         public StoreScreenShot()
         {
             filename = "Screen_1";
+            IsCustomPath = false;
+            CustomPath = @"C:\";
         }
 
         public override void Run()
         {
             UpgradeVerdict(Verdict.NotSet);
 
-            string dir = AssemblyDirectory();
+            string dir = "";
+            if (IsCustomPath)
+            {
+                dir = Path.Combine(CustomPath, filename + ".bmp"); ;
+            }
+            else
+            {
+                String assemblyDir = AssemblyDirectory();
+                dir = Path.Combine(assemblyDir, "Results", filename + ".bmp");
+            }
 
-            PNAX.SaveScreen(dir + "\\Results\\" + filename +  ".bmp");// "yyyyMMdd_HHmmssfff_") + SpecName + ".bmp");
+            PNAX.SaveScreen(dir);
 
             UpgradeVerdict(Verdict.Pass);
         }
