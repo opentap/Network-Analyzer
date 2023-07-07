@@ -435,6 +435,38 @@ namespace OpenTap.Plugins.PNAX
             QueryErrors();
         }
 
+        public void SaveDispState(string FullFileName)
+        {
+            String FileName = Path.GetFileName(FullFileName);
+            String FilePath = Path.GetDirectoryName(FullFileName);
+            String InstrumentFileName = "";
+            String InstrumentFolderName = "";
+
+            InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
+            InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
+
+            ChangeFolder(InstrumentFolderName);
+
+            // Save csv data to local folder on instrument: <documents>\<mode>\screen
+            ScpiCommand($":MMEM:STOR:DATA '{InstrumentFileName}','CSV Formatted Data','Displayed','Displayed',-1");
+
+            // Make sure folder exists on local PC
+            bool exists = System.IO.Directory.Exists(FilePath);
+            if (!exists)
+                System.IO.Directory.CreateDirectory(FilePath);
+
+            // Copy from instrument to local PC
+            byte[] filedata = ScpiQueryBlock(String.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+
+            // Write file at local PC
+            File.WriteAllBytes(FullFileName, filedata);
+
+            // Delete File from instrument
+            ScpiCommand(String.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+
+            QueryErrors();
+        }
+
 
         private void ChangeFolder(String folder)
         {
