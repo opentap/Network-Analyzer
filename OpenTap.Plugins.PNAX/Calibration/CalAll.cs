@@ -14,7 +14,24 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public class PictureDefinition
+    {
+        public Picture Picture { get; } = new Picture();
 
+        [FilePath(FilePathAttribute.BehaviorChoice.Open)]
+        public string PictureSource
+        {
+            get => Picture.Source;
+            set => Picture.Source = value;
+        }
+
+        public string PictureDescription
+        {
+            get => Picture.Description;
+            set => Picture.Description = value;
+        }
+
+    }
 
     [Display("Cal All", Groups: new[] { "PNA-X", "Calibration" }, Description: "Insert a description here")]
     public class CalAll : TestStep
@@ -328,6 +345,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
+        [Display("Show Pictures", Groups: new[] { "Picture" }, Description: "The dialog will include a picture if the environment supports it.", Order: 120, Collapsed: true)]
+        public bool ShowPicture { get; set; }
+
+
+        [Display("Pictures", Groups: new[] { "Picture" }, Description: "List of Picture Source and Description", Order: 121, Collapsed: false)]
+        [EnabledIf(nameof(ShowPicture), HideIfDisabled = true)]
+        public List<PictureDefinition> PictureList { get; set; }
+
         #endregion
 
         private String QueryCalKits(DUTConnectorsEnum PortConn)
@@ -487,6 +512,9 @@ namespace OpenTap.Plugins.PNAX
             Port4CalKit = "85032F";
 
             CalSetName = "MyCalSet";
+
+            ShowPicture = false;
+            PictureList = new List<PictureDefinition>();
         }
 
         private String ExtraPowerCalsToString(ExtraPowerCalsEnum value)
@@ -613,13 +641,31 @@ namespace OpenTap.Plugins.PNAX
             int deftimeout = PNAX.IoTimeout;
             PNAX.IoTimeout = 200000;
 
+            // Make sure the number of steps matches the number of images defined
+            if (ShowPicture)
+            {
+                if (PictureList.Count != CalSteps)
+                {
+                    Log.Error("The number of defined images do not match the number of steps in calibration, make sure the images match the requested calibration");
+                    UpgradeVerdict(Verdict.Error);
+                    return;
+                }
+            }
+
             for(int CalStep = 1; CalStep <= CalSteps; CalStep++)
             {
                 String StepDescription = PNAX.CalAllStepDescription(CalChannel, CalStep);
 
                 Log.Info($"Step {CalStep}: {StepDescription}");
 
-                var dialog = new CalStepDialog(CalStep, CalSteps, StepDescription);
+                CalStepDialog dialog = new CalStepDialog(CalStep, CalSteps, StepDescription) { Picture = null };
+
+                if (ShowPicture)
+                {
+                    PictureDefinition pic = PictureList.ElementAt(CalStep - 1);
+                    dialog.Picture = pic.Picture;
+                }
+
                 UserInput.Request(dialog);
 
                 // Response from the user.
@@ -671,11 +717,20 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public String StepDescription { get; set; }
 
+        [Browsable(false)]
+        public bool PictureEnabled => Picture != null;
+
+        [Layout(LayoutMode.FullRow, rowHeight: 2)]
+        [Display("Picture", Order: 2)]
+        [EnabledIf(nameof(PictureEnabled), HideIfDisabled = true)]
+        public Picture Picture { get; set; }
+
         // Name is handled specially to create the title of the dialog window.
         public string Name { get { return "Step " + StepNumber + " of " + TotalSteps; } }
 
-        [Layout(LayoutMode.FullRow)] // Set the layout of the property to fill the entire row.
+        [Layout(LayoutMode.FullRow, rowHeight: 2)]
         [Browsable(true)] // Show it event though it is read-only.
+        [Display("Message", Order: 1)]
         public string Message { get { return StepDescription; } }
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
