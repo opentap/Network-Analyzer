@@ -264,31 +264,31 @@
       <ShowPicture>true</ShowPicture>
       <PictureList>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 1.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 1.png</PictureSource>
           <PictureDescription>step 1</PictureDescription>
         </PictureDefinition>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 2.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 2.png</PictureSource>
           <PictureDescription>step 2</PictureDescription>
         </PictureDefinition>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 3.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 3.png</PictureSource>
           <PictureDescription>step 3</PictureDescription>
         </PictureDefinition>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 4.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 4.png</PictureSource>
           <PictureDescription>step 4</PictureDescription>
         </PictureDefinition>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 5.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 5.png</PictureSource>
           <PictureDescription>step 5</PictureDescription>
         </PictureDefinition>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 6.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 6.png</PictureSource>
           <PictureDescription>step 6</PictureDescription>
         </PictureDefinition>
         <PictureDefinition>
-          <PictureSource>Examples\Images\Sample Image 7.png</PictureSource>
+          <PictureSource>Packages\OpenTap.Plugins.PNAX\Examples\Images\Sample Image 7.png</PictureSource>
           <PictureDescription>step 7</PictureDescription>
         </PictureDefinition>
       </PictureList>
