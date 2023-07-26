@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\Cal-Image.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\FOM.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
