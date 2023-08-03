@@ -39,6 +39,18 @@ namespace OpenTap.Plugins.PNAX
             ChildTestSteps.Add(new StandardSingleTrace() { Meas = StandardTraceEnum.S11});
         }
 
+        [Browsable(false)]
+        public override List<(string, string)> GetMetaData()
+        {
+            List<(String, String)> retVal = new List<(string, string)>();
+
+            // foreach child
+            // 
+
+            return retVal;
+        }
+
+
         public override void Run()
         {
             // Delete dummy trace defined during channel setup

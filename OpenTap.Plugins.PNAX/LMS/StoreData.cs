@@ -28,7 +28,12 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("EnableLimits", true, HideIfDisabled = true)]
         [Display("Limits File", "Insert .csv file containing limits to check against (*.csv)", "Measurements", Order: 40)]
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
-        public string LimitsFile { get; set; } 
+        public string LimitsFile { get; set; }
+
+        [Browsable(false)]
+        [Display("Meta Data", Groups: new[] { "Meta Data" }, Order: 50)]
+        public Input<List<(string, string)>> MetaData { get; set; }
+
         #endregion
 
         public StoreData()
@@ -38,6 +43,9 @@ namespace OpenTap.Plugins.PNAX
             Rules.Add(IsFileValid, "Must be a valid file", "LimitsFile");
             EnableLimits = false;
             GroupByChannel = true;
+
+            MetaData = new Input<List<(string, string)>>();
+
         }
 
         public override void Run()
@@ -106,6 +114,27 @@ namespace OpenTap.Plugins.PNAX
                                 ResultColumn resultColumnj = new ResultColumn($"{FullTraceName[i]}_j", point2);
                                 resultColumns.Add(resultColumnj);
 
+                            }
+                        }
+
+                        // if MetaData available
+                        if ((MetaData.Property != null) && (MetaData.Value.Count > 0))
+                        {
+                            // for every item in metadata
+                            foreach(var i in MetaData.Value)
+                            {
+                                string[] strMetaData = new string[freqLength];
+                                for (int data = 0; data < freqLength; data++)
+                                {
+                                    strMetaData[data] = i.Item2;
+                                }
+                                ResultColumn resultColumnMeta = new ResultColumn(i.Item1, strMetaData);
+
+                                // create a new column with Rows = lastColumn.length
+                                // column name = metadata description
+                                // every element should have the same metadata value
+                                // append column to resultColumns
+                                resultColumns.Add(resultColumnMeta);
                             }
                         }
 

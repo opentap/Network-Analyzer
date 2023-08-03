@@ -769,6 +769,8 @@ namespace OpenTap.Plugins.PNAX
             // Start from scratch
             PNAX.MixerDiscard(Channel);
 
+            PNAX.SetConverterStages(Channel, ConverterStages);
+
             SetInput(Channel);
             SetLO1(Channel);
             SetIF(Channel);
