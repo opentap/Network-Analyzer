@@ -179,5 +179,49 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, string)> GetMetaData()
+        {
+            List<(String, String)> retVal = new List<(string, string)>();
+
+            retVal.Add(("PowerOnAllChannels", PowerOnAllChannels.ToString()));
+            retVal.Add(("PortPowersCoupled", PortPowersCoupled.ToString()));
+
+            retVal.Add(("SMC PortInput", PortInput.ToString()));
+            retVal.Add(("SMC PortOutput", PortOutput.ToString()));
+
+            retVal.Add(("SMC_InputPower", InputPower.ToString()));
+            retVal.Add(("SMC_InputPortSourceAttenuator", InputPortSourceAttenuator.ToString()));
+            retVal.Add(("SMC_InputPortReceiverAttenuator", InputPortReceiverAttenuator.ToString()));
+            retVal.Add(("SMC_InputSourceLevelingMode", InputSourceLevelingMode.ToString()));
+            retVal.Add(("SMC_AutoInputPortSourceAttenuator", AutoInputPortSourceAttenuator.ToString()));
+
+            retVal.Add(("SMC_OutputPower", OutputPower.ToString()));
+            retVal.Add(("SMC_OutputPortSourceAttenuator", OutputPortSourceAttenuator.ToString()));
+            retVal.Add(("SMC_OutputPortReceiverAttenuator", OutputPortReceiverAttenuator.ToString()));
+            retVal.Add(("SMC_OutputSourceLevelingMode", OutputSourceLevelingMode.ToString()));
+            retVal.Add(("SMC_AutoOutputPortSourceAttenuator", AutoOutputPortSourceAttenuator.ToString()));
+
+            if (EnablePowerSweepOutputEdit)
+            {
+                retVal.Add(("SMC_InputPowerSweepStartPower", InputPowerSweepStartPower.ToString()));
+                retVal.Add(("SMC_InputPowerSweepStopPower", InputPowerSweepStopPower.ToString()));
+            }
+
+            if (PortPowersCoupled)
+            {
+                retVal.Add(("SMC_OutputPowerSweepStartPower", InputPowerSweepStartPower.ToString()));
+                retVal.Add(("SMC_OutputPowerSweepStopPower", InputPowerSweepStopPower.ToString()));
+            }
+            else
+            {
+                retVal.Add(("SMC_OutputPowerSweepStartPower", OutputPowerSweepStartPower.ToString()));
+                retVal.Add(("SMC_OutputPowerSweepStopPower", OutputPowerSweepStopPower.ToString()));
+            }
+
+            return retVal;
+        }
+
     }
 }

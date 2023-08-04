@@ -39,15 +39,47 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
+
+        // TODO
+        // Set to Browsable False for release
+        // TODO
+        [Output]
+        [Browsable(true)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
+        public List<(string, string)> MetaData { get; private set; }
+
+        // TODO
+        // Set to Browsable False for release
+        // TODO
+        [Browsable(true)]
+        [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
+        public void UpdateMetaData()
+        {
+            MetaData = new List<(string, string)>();
+
+            MetaData.Add(("Channel", this.Channel.ToString()));
+
+            foreach (var ch in this.ChildTestSteps)
+            {
+                List<(string, string)> ret = (ch as GeneralBaseStep).GetMetaData();
+                foreach (var it in ret)
+                {
+                    MetaData.Add(it);
+                }
+            }
+        }
+
         #endregion
 
         public GeneralChannelBaseStep()
         {
+            MetaData = new List<(string, string)>();
             Channel = 1;
         }
 
         public override void Run()
         {
+            UpdateMetaData();
 
         }
     }

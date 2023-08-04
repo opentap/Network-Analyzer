@@ -129,6 +129,14 @@ namespace OpenTap.Plugins.PNAX
         {
         }
 
+        [Browsable(false)]
+        public virtual List<(string, string)> GetMetaData()
+        {
+            throw new NotImplementedException();
+        }
+
+
+
         public override void Run()
         {
         }

@@ -284,5 +284,39 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, string)> GetMetaData()
+        {
+            List<(String, String)> retVal = new List<(string, string)>();
+
+            retVal.Add(("Converter Stages", ConverterStages.ToString()));
+            retVal.Add(("Input Port", PortInput.ToString()));
+            retVal.Add(("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator.ToString()));
+            retVal.Add(("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator.ToString()));
+            retVal.Add(("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator.ToString()));
+            retVal.Add(("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator.ToString()));
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator.ToString()));
+                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator.ToString()));
+                retVal.Add(("LO2 Port", PortLO2.ToString()));
+            }
+            retVal.Add(("Enable Embedded LO", EnableEmbeddedLO.ToString()));
+            if (EnableEmbeddedLO)
+            {
+                retVal.Add(("Tuning Method", TuningMethod.ToString()));
+                retVal.Add(("Tuning Point", TuningPoint.ToString()));
+                retVal.Add(("Tune Every", TuneEvery.ToString()));
+                retVal.Add(("BroadBand Search", BroadBandSearch.ToString()));
+                retVal.Add(("EmbeddedLO IFBW", IFBW.ToString()));
+                retVal.Add(("Max Iterations", MaxIterations.ToString()));
+                retVal.Add(("Tolerance", Tolerance.ToString()));
+                retVal.Add(("LO Frequency Delta", LOFrequencyDelta.ToString()));
+            }
+            retVal.Add(("Output Port", PortOutput.ToString()));
+
+            return retVal;
+        }
     }
 }

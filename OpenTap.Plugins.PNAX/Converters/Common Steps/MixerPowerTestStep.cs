@@ -235,5 +235,48 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, string)> GetMetaData()
+        {
+            List<(String, String)> retVal = new List<(string, string)>();
+
+            retVal.Add(("Power On All Channels", PowerOnAllChannels.ToString()));
+            retVal.Add(("LO1 Power", LO1Power.ToString()));
+            retVal.Add(("LO1 Source Leveling Mode", SourceLevelingModeLO1.ToString()));
+
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                retVal.Add(("LO2 Power", LO2Power.ToString()));
+                retVal.Add(("LO2 Source Leveling Mode", SourceLevelingModeLO2.ToString()));
+            }
+
+            if (EnablePort3Settings)
+            {
+                retVal.Add(("SourceAttenuatorPowerPort3", SourceAttenuatorPowerPort3.ToString()));
+                retVal.Add(("ReceiverAttenuatorPowerPort3", ReceiverAttenuatorPowerPort3.ToString()));
+            }
+
+            if (EnablePort4Settings)
+            {
+                retVal.Add(("SourceAttenuatorPowerPort4", SourceAttenuatorPowerPort4.ToString()));
+                retVal.Add(("ReceiverAttenuatorPowerPort4", ReceiverAttenuatorPowerPort4.ToString()));
+            }
+
+            if (EnablePort3Settings)
+            {
+                retVal.Add(("LO1SweptPowerStart", LO1SweptPowerStart.ToString()));
+                retVal.Add(("LO1SweptPowerStop", LO1SweptPowerStop.ToString()));
+
+                if (ConverterStages == ConverterStagesEnum._2)
+                {
+                    retVal.Add(("LO2SweptPowerStart", LO2SweptPowerStart.ToString()));
+                    retVal.Add(("LO2SweptPowerStop", LO2SweptPowerStop.ToString()));
+                }
+            }
+
+            return retVal;
+        }
+
     }
 }

@@ -30,8 +30,8 @@ namespace OpenTap.Plugins.PNAX
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
         public string LimitsFile { get; set; }
 
-        [Browsable(false)]
-        [Display("Meta Data", Groups: new[] { "Meta Data" }, Order: 50)]
+        [Browsable(true)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
         public Input<List<(string, string)>> MetaData { get; set; }
 
         #endregion
@@ -45,7 +45,6 @@ namespace OpenTap.Plugins.PNAX
             GroupByChannel = true;
 
             MetaData = new Input<List<(string, string)>>();
-
         }
 
         public override void Run()

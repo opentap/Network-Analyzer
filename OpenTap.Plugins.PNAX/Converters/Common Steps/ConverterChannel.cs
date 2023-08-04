@@ -113,7 +113,34 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        // TODO
+        // Set to Browsable False for release
+        // TODO
+        [Output]
+        [Browsable(true)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
+        public List<(string, string)> MetaData { get; private set; }
 
+        // TODO
+        // Set to Browsable False for release
+        // TODO
+        [Browsable(true)]
+        [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
+        public void UpdateMetaData()
+        {
+            MetaData = new List<(string, string)>();
+
+            MetaData.Add(("Channel", this.Channel.ToString()));
+
+            foreach (var ch in this.ChildTestSteps)
+            {
+                List<(string, string)> ret = (ch as ConverterBaseStep).GetMetaData();
+                foreach (var it in ret)
+                {
+                    MetaData.Add(it);
+                }
+            }
+        }
         #endregion
 
         protected void UpdateNumberOfPoints()
@@ -167,6 +194,7 @@ namespace OpenTap.Plugins.PNAX
 
         public ConverterChannelBase()
         {
+            MetaData = new List<(string, string)>();
             Channel = 1;
             var defaultValues = PNAX.GetMixerSetupDefaultValues();
             ConverterStages = defaultValues.ConverterStages;
@@ -174,7 +202,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-
+            UpdateMetaData();
         }
     }
 }

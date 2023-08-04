@@ -44,9 +44,6 @@ namespace OpenTap.Plugins.PNAX
         {
             List<(String, String)> retVal = new List<(string, string)>();
 
-            // foreach child
-            // 
-
             return retVal;
         }
 

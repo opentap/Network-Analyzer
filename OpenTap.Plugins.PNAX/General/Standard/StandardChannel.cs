@@ -17,33 +17,10 @@ namespace OpenTap.Plugins.PNAX
     public class StandardChannel : GeneralChannelBaseStep
     {
         #region Settings
-        [Output]
-        [Browsable(false)]
-        public List<(string, string)> MetaData { get; private set; }
-
-        [Browsable(false)]
-        public void UpdateMetaData()
-        {
-            MetaData = new List<(string, string)>();
-
-            MetaData.Add(("Channel", this.Channel.ToString()));
-
-            foreach(var ch in this.ChildTestSteps)
-            {
-                List<(string, string)> ret = (ch as GeneralBaseStep).GetMetaData();
-                foreach(var it in ret)
-                {
-                    MetaData.Add(it);
-                }
-            }
-            //MetaData.Add(("", ));
-        }
-
         #endregion
 
         public StandardChannel()
         {
-            MetaData = new List<(string, string)>();
             Channel = 1;
 
             // Sweep Type
@@ -60,8 +37,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            UpdateMetaData();
-
             int traceid = PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
@@ -72,6 +47,7 @@ namespace OpenTap.Plugins.PNAX
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
+            UpdateMetaData();
         }
     }
 }

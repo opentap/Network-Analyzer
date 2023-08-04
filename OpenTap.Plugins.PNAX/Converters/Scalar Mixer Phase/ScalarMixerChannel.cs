@@ -29,10 +29,14 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
+
+        
+
         #endregion
 
         public ScalarMixerChannel()
         {
+
             // Mixer Setup
             MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Mixer Power
@@ -80,6 +84,7 @@ namespace OpenTap.Plugins.PNAX
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
+            UpdateMetaData();
         }
     }
 }
