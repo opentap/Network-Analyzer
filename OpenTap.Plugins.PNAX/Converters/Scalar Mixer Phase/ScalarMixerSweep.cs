@@ -155,26 +155,26 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [Browsable(false)]
-        public override List<(string, string)> GetMetaData()
+        public override List<(string, object)> GetMetaData()
         {
-            List<(String, String)> retVal = new List<(string, string)>();
+            List<(String, object)> retVal = new List<(string, object)>();
 
-            retVal.Add(("SMC_SweepType", SweepType.ToString()));
+            retVal.Add(("SMC_SweepType", SweepType));
 
             if (SweepType == ScalerMixerSweepType.SegmentSweep)
             {
-                retVal.Add(("IsXAxisPointSpacing", IsXAxisPointSpacing.ToString()));
+                retVal.Add(("IsXAxisPointSpacing", IsXAxisPointSpacing));
             }
 
-            retVal.Add(("SMC_AvoidSpurs", IsAvoidSpurs.ToString()));
-            retVal.Add(("SMC_ReversedPortTwoCoupler", IsReversedPortTwoCoupler.ToString()));
-            retVal.Add(("SMC_NumberOfPoints", NumberOfPoints.ToString()));
-            retVal.Add(("SMC_IFBandwidth", IFBandwidth.ToString()));
+            retVal.Add(("SMC_AvoidSpurs", IsAvoidSpurs));
+            retVal.Add(("SMC_ReversedPortTwoCoupler", IsReversedPortTwoCoupler));
+            retVal.Add(("SMC_NumberOfPoints", NumberOfPoints));
+            retVal.Add(("SMC_IFBandwidth", IFBandwidth));
 
-            retVal.Add(("SMC_EnablePhase", IsEnablePhase.ToString()));
-            retVal.Add(("SMC_PhasePointValue", PhasePointValue.ToString()));
+            retVal.Add(("SMC_EnablePhase", IsEnablePhase));
+            retVal.Add(("SMC_PhasePointValue", PhasePointValue));
 
-            retVal.Add(("PhaseReferencePoint", PhasePoint.ToString()));
+            retVal.Add(("PhaseReferencePoint", PhasePoint));
 
             return retVal;
         }

@@ -286,35 +286,35 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [Browsable(false)]
-        public override List<(string, string)> GetMetaData()
+        public override List<(string, object)> GetMetaData()
         {
-            List<(String, String)> retVal = new List<(string, string)>();
+            List<(String, object)> retVal = new List<(string, object)>();
 
-            retVal.Add(("Converter Stages", ConverterStages.ToString()));
-            retVal.Add(("Input Port", PortInput.ToString()));
-            retVal.Add(("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator.ToString()));
-            retVal.Add(("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator.ToString()));
-            retVal.Add(("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator.ToString()));
-            retVal.Add(("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator.ToString()));
+            retVal.Add(("Converter Stages", ConverterStages));
+            retVal.Add(("Input Port", PortInput));
+            retVal.Add(("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator));
+            retVal.Add(("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator));
+            retVal.Add(("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator));
+            retVal.Add(("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator));
             if (ConverterStages == ConverterStagesEnum._2)
             {
-                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator.ToString()));
-                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator.ToString()));
-                retVal.Add(("LO2 Port", PortLO2.ToString()));
+                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator));
+                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator));
+                retVal.Add(("LO2 Port", PortLO2));
             }
-            retVal.Add(("Enable Embedded LO", EnableEmbeddedLO.ToString()));
+            retVal.Add(("Enable Embedded LO", EnableEmbeddedLO));
             if (EnableEmbeddedLO)
             {
-                retVal.Add(("Tuning Method", TuningMethod.ToString()));
-                retVal.Add(("Tuning Point", TuningPoint.ToString()));
-                retVal.Add(("Tune Every", TuneEvery.ToString()));
-                retVal.Add(("BroadBand Search", BroadBandSearch.ToString()));
-                retVal.Add(("EmbeddedLO IFBW", IFBW.ToString()));
-                retVal.Add(("Max Iterations", MaxIterations.ToString()));
-                retVal.Add(("Tolerance", Tolerance.ToString()));
-                retVal.Add(("LO Frequency Delta", LOFrequencyDelta.ToString()));
+                retVal.Add(("Tuning Method", TuningMethod));
+                retVal.Add(("Tuning Point", TuningPoint));
+                retVal.Add(("Tune Every", TuneEvery));
+                retVal.Add(("BroadBand Search", BroadBandSearch));
+                retVal.Add(("EmbeddedLO IFBW", IFBW));
+                retVal.Add(("Max Iterations", MaxIterations));
+                retVal.Add(("Tolerance", Tolerance));
+                retVal.Add(("LO Frequency Delta", LOFrequencyDelta));
             }
-            retVal.Add(("Output Port", PortOutput.ToString()));
+            retVal.Add(("Output Port", PortOutput));
 
             return retVal;
         }

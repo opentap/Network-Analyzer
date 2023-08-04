@@ -767,7 +767,7 @@ namespace OpenTap.Plugins.PNAX
             RunChildSteps(); //If the step supports child steps.
 
             // Initialize MetaData list
-            retVal = new List<(string, string)>();
+            retVal = new List<(string, object)>();
 
             // Start from scratch
             PNAX.MixerDiscard(Channel);
@@ -923,9 +923,9 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetFrequencyInputStart(Channel, InputMixerFrequencyStart);
                 PNAX.SetFrequencyInputStop(Channel, InputMixerFrequencyStop);
 
-                retVal.Add(("Mixer Frequency Input Mode", MixerFrequencyTypeEnum.StartStop.ToString()));
-                retVal.Add(("Mixer Frequency Input Start", InputMixerFrequencyStart.ToString()));
-                retVal.Add(("Mixer Frequency Input Stop", InputMixerFrequencyStop.ToString()));
+                retVal.Add(("Mixer Frequency Input Mode", MixerFrequencyTypeEnum.StartStop));
+                retVal.Add(("Mixer Frequency Input Start", InputMixerFrequencyStart));
+                retVal.Add(("Mixer Frequency Input Stop", InputMixerFrequencyStop));
             }
             else if (InputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
             {
@@ -936,9 +936,9 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetFrequencyInputStart(Channel, start);
                 PNAX.SetFrequencyInputStop(Channel, stop);
 
-                retVal.Add(("Mixer Frequency Input Mode", MixerFrequencyTypeEnum.CenterSpan.ToString()));
-                retVal.Add(("Mixer Frequency Input Center", InputMixerFrequencyCenter.ToString()));
-                retVal.Add(("Mixer Frequency Input Span", InputMixerFrequencySpan.ToString()));
+                retVal.Add(("Mixer Frequency Input Mode", MixerFrequencyTypeEnum.CenterSpan));
+                retVal.Add(("Mixer Frequency Input Center", InputMixerFrequencyCenter));
+                retVal.Add(("Mixer Frequency Input Span", InputMixerFrequencySpan));
             }
             else
             {
@@ -946,8 +946,8 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetMixerFrequencyInputMode(Channel, MixerFrequencyTypeEnum.Fixed);
                 PNAX.SetFrequencyInputFixed(Channel, InputMixerFrequencyFixed);
 
-                retVal.Add(("Mixer Frequency Input Mode", MixerFrequencyTypeEnum.Fixed.ToString()));
-                retVal.Add(("Mixer Frequency Input Fixed", InputMixerFrequencyFixed.ToString()));
+                retVal.Add(("Mixer Frequency Input Mode", MixerFrequencyTypeEnum.Fixed));
+                retVal.Add(("Mixer Frequency Input Fixed", InputMixerFrequencyFixed));
             }
             #endregion
         }
@@ -961,9 +961,9 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetFrequencyLOStart(Channel, 1, LO1MixerFrequencyStart);
                 PNAX.SetFrequencyLOStop(Channel, 1, LO1MixerFrequencyStop);
 
-                retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.StartStop.ToString()));
-                retVal.Add(("Mixer Frequency LO1 Start", LO1MixerFrequencyStart.ToString()));
-                retVal.Add(("Mixer Frequency LO1 Stop", LO1MixerFrequencyStop.ToString()));
+                retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.StartStop));
+                retVal.Add(("Mixer Frequency LO1 Start", LO1MixerFrequencyStart));
+                retVal.Add(("Mixer Frequency LO1 Stop", LO1MixerFrequencyStop));
             }
             else if (LO1MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
             {
@@ -974,9 +974,9 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetFrequencyLOStart(Channel, 1, start);
                 PNAX.SetFrequencyLOStop(Channel, 1, stop);
 
-                retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.CenterSpan.ToString()));
-                retVal.Add(("Mixer Frequency LO1 Center", LO1MixerFrequencyCenter.ToString()));
-                retVal.Add(("Mixer Frequency LO1 Span", LO1MixerFrequencySpan.ToString()));
+                retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.CenterSpan));
+                retVal.Add(("Mixer Frequency LO1 Center", LO1MixerFrequencyCenter));
+                retVal.Add(("Mixer Frequency LO1 Span", LO1MixerFrequencySpan));
             }
             else
             {
@@ -984,11 +984,11 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetMixerFrequencyLOMode(Channel, 1, MixerFrequencyTypeEnum.Fixed);
                 PNAX.SetFrequencyLOFixed(Channel, 1, LO1MixerFrequencyFixed);
 
-                retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.Fixed.ToString()));
-                retVal.Add(("Mixer Frequency LO1 Fixed", LO1MixerFrequencyFixed.ToString()));
+                retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.Fixed));
+                retVal.Add(("Mixer Frequency LO1 Fixed", LO1MixerFrequencyFixed));
             }
             PNAX.SetLOILTI(Channel, 1, InputGTLO1);
-            retVal.Add(("Input Greater Than LO", InputGTLO1.ToString()));
+            retVal.Add(("Input Greater Than LO", InputGTLO1));
             #endregion
         }
 
@@ -1002,8 +1002,8 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetFrequencyIFStart(Channel, IFMixerFrequencyStart);
                     PNAX.SetFrequencyIFStop(Channel, IFMixerFrequencyStop);
 
-                    retVal.Add(("Mixer Frequency IF Start", IFMixerFrequencyStart.ToString()));
-                    retVal.Add(("Mixer Frequency IF Stop", IFMixerFrequencyStop.ToString()));
+                    retVal.Add(("Mixer Frequency IF Start", IFMixerFrequencyStart));
+                    retVal.Add(("Mixer Frequency IF Stop", IFMixerFrequencyStop));
                 }
                 else if (IFMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
                 {
@@ -1013,8 +1013,8 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetFrequencyIFStart(Channel, start);
                     PNAX.SetFrequencyIFStop(Channel, stop);
 
-                    retVal.Add(("Mixer Frequency IF Center", IFMixerFrequencyCenter.ToString()));
-                    retVal.Add(("Mixer Frequency IF Span", IFMixerFrequencySpan.ToString()));
+                    retVal.Add(("Mixer Frequency IF Center", IFMixerFrequencyCenter));
+                    retVal.Add(("Mixer Frequency IF Span", IFMixerFrequencySpan));
                 }
                 else
                 {
@@ -1023,7 +1023,7 @@ namespace OpenTap.Plugins.PNAX
                     // PNAX.SetFrequencyIFFixed(Channel, IFMixerFrequencyFixed);
                 }
                 PNAX.SetFrequencyIFSideband(Channel, IFSidebandType);
-                retVal.Add(("Mixer Frequency IF Sideband", IFSidebandType.ToString()));
+                retVal.Add(("Mixer Frequency IF Sideband", IFSidebandType));
             }
             #endregion
         }
@@ -1039,9 +1039,9 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetFrequencyLOStart(Channel, 2, LO2MixerFrequencyStart);
                     PNAX.SetFrequencyLOStop(Channel, 2, LO2MixerFrequencyStop);
 
-                    retVal.Add(("Mixer Frequency LO2 Mode", MixerFrequencyTypeEnum.StartStop.ToString()));
-                    retVal.Add(("Mixer Frequency LO2 Start", LO2MixerFrequencyStart.ToString()));
-                    retVal.Add(("Mixer Frequency LO2 Stop", LO2MixerFrequencyStop.ToString()));
+                    retVal.Add(("Mixer Frequency LO2 Mode", MixerFrequencyTypeEnum.StartStop));
+                    retVal.Add(("Mixer Frequency LO2 Start", LO2MixerFrequencyStart));
+                    retVal.Add(("Mixer Frequency LO2 Stop", LO2MixerFrequencyStop));
                 }
                 else if (LO2MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
                 {
@@ -1052,9 +1052,9 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetFrequencyLOStart(Channel, 2, start);
                     PNAX.SetFrequencyLOStop(Channel, 2, stop);
 
-                    retVal.Add(("Mixer Frequency LO2 Mode", MixerFrequencyTypeEnum.CenterSpan.ToString()));
-                    retVal.Add(("Mixer Frequency LO2 Center", LO2MixerFrequencyCenter.ToString()));
-                    retVal.Add(("Mixer Frequency LO2 Span", LO2MixerFrequencySpan.ToString()));
+                    retVal.Add(("Mixer Frequency LO2 Mode", MixerFrequencyTypeEnum.CenterSpan));
+                    retVal.Add(("Mixer Frequency LO2 Center", LO2MixerFrequencyCenter));
+                    retVal.Add(("Mixer Frequency LO2 Span", LO2MixerFrequencySpan));
                 }
                 else
                 {
@@ -1062,11 +1062,11 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetMixerFrequencyLOMode(Channel, 1, MixerFrequencyTypeEnum.Fixed);
                     PNAX.SetFrequencyLOFixed(Channel, 2, LO2MixerFrequencyFixed);
 
-                    retVal.Add(("Mixer Frequency LO2 Mode", MixerFrequencyTypeEnum.Fixed.ToString()));
-                    retVal.Add(("Mixer Frequency LO2 Fixed", LO2MixerFrequencyFixed.ToString()));
+                    retVal.Add(("Mixer Frequency LO2 Mode", MixerFrequencyTypeEnum.Fixed));
+                    retVal.Add(("Mixer Frequency LO2 Fixed", LO2MixerFrequencyFixed));
                 }
                 PNAX.SetLOILTI(Channel, 2, IF1GTLO2);
-                retVal.Add(("IF1 Greater Than LO2", IF1GTLO2.ToString()));
+                retVal.Add(("IF1 Greater Than LO2", IF1GTLO2));
             }
             #endregion
         }
@@ -1075,14 +1075,14 @@ namespace OpenTap.Plugins.PNAX
         {
             #region Output
             PNAX.SetMixerFrequencyOutputMode(Channel, OutputMixerFrequencyType);
-            retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.Fixed.ToString()));
+            retVal.Add(("Mixer Frequency LO1 Mode", MixerFrequencyTypeEnum.Fixed));
             if (OutputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
             {
                 PNAX.SetFrequencyOutputStart(Channel, OutputMixerFrequencyStart);
                 PNAX.SetFrequencyOutputStop(Channel, OutputMixerFrequencyStop);
 
-                retVal.Add(("Mixer Frequency Output Start", OutputMixerFrequencyStart.ToString()));
-                retVal.Add(("Mixer Frequency Output Stop", OutputMixerFrequencyStop.ToString()));
+                retVal.Add(("Mixer Frequency Output Start", OutputMixerFrequencyStart));
+                retVal.Add(("Mixer Frequency Output Stop", OutputMixerFrequencyStop));
             }
             else if (OutputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
             {
@@ -1092,25 +1092,25 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetFrequencyOutputStart(Channel, start);
                 PNAX.SetFrequencyOutputStop(Channel, stop);
 
-                retVal.Add(("Mixer Frequency Output Center", OutputMixerFrequencyCenter.ToString()));
-                retVal.Add(("Mixer Frequency Output Span", OutputMixerFrequencySpan.ToString()));
+                retVal.Add(("Mixer Frequency Output Center", OutputMixerFrequencyCenter));
+                retVal.Add(("Mixer Frequency Output Span", OutputMixerFrequencySpan));
             }
             else
             {
                 // Fixed
                 PNAX.SetFrequencyOutputFixed(Channel, OutputMixerFrequencyFixed);
 
-                retVal.Add(("Mixer Frequency Output Fixed", OutputMixerFrequencyFixed.ToString()));
+                retVal.Add(("Mixer Frequency Output Fixed", OutputMixerFrequencyFixed));
             }
             PNAX.SetFrequencyOutputSideband(Channel, OutputSidebandType);
-            retVal.Add(("Mixer Frequency Output Sideband", OutputSidebandType.ToString()));
+            retVal.Add(("Mixer Frequency Output Sideband", OutputSidebandType));
             #endregion
         }
 
-        private List<(String, String)> retVal = new List<(string, string)>();
+        private List<(String, object)> retVal = new List<(string, object)>();
 
         [Browsable(false)]
-        public override List<(string, string)> GetMetaData()
+        public override List<(string, object)> GetMetaData()
         {
             return retVal;
         }

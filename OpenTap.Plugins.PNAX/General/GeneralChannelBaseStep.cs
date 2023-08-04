@@ -46,7 +46,7 @@ namespace OpenTap.Plugins.PNAX
         [Output]
         [Browsable(true)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
-        public List<(string, string)> MetaData { get; private set; }
+        public List<(string, object)> MetaData { get; private set; }
 
         // TODO
         // Set to Browsable False for release
@@ -55,13 +55,13 @@ namespace OpenTap.Plugins.PNAX
         [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
         public void UpdateMetaData()
         {
-            MetaData = new List<(string, string)>();
+            MetaData = new List<(string, object)>();
 
-            MetaData.Add(("Channel", this.Channel.ToString()));
+            MetaData.Add(("Channel", this.Channel));
 
             foreach (var ch in this.ChildTestSteps)
             {
-                List<(string, string)> ret = (ch as GeneralBaseStep).GetMetaData();
+                List<(string, object)> ret = (ch as GeneralBaseStep).GetMetaData();
                 foreach (var it in ret)
                 {
                     MetaData.Add(it);
@@ -73,7 +73,7 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralChannelBaseStep()
         {
-            MetaData = new List<(string, string)>();
+            MetaData = new List<(string, object)>();
             Channel = 1;
         }
 

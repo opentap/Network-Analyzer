@@ -97,21 +97,21 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [Browsable(false)]
-        public override List<(string, string)> GetMetaData()
+        public override List<(string, object)> GetMetaData()
         {
-            List<(String, String)> retVal = new List<(string, string)>();
+            List<(String, object)> retVal = new List<(string, object)>();
 
-            retVal.Add(("Auto Sweep Time", AutoSweepTime.ToString()));
+            retVal.Add(("Auto Sweep Time", AutoSweepTime));
             if (AutoSweepTime == false)
             {
-                retVal.Add(("Sweep Time", SweepTime.ToString()));
-                retVal.Add(("Dwell Time", DwellTime.ToString()));
+                retVal.Add(("Sweep Time", SweepTime));
+                retVal.Add(("Dwell Time", DwellTime));
             }
 
-            retVal.Add(("Sweep Delay", SweepDelay.ToString()));
-            retVal.Add(("Fast Sweep Reduce Settling Time", FastSweep.ToString()));
-            retVal.Add(("Sweep Mode", StandardChannelSweepMode.ToString()));
-            retVal.Add(("Sweep Sequence", StandardChannelSweepSequence.ToString()));
+            retVal.Add(("Sweep Delay", SweepDelay));
+            retVal.Add(("Fast Sweep Reduce Settling Time", FastSweep));
+            retVal.Add(("Sweep Mode", StandardChannelSweepMode));
+            retVal.Add(("Sweep Sequence", StandardChannelSweepSequence));
 
             return retVal;
         }

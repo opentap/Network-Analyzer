@@ -40,9 +40,9 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [Browsable(false)]
-        public override List<(string, string)> GetMetaData()
+        public override List<(string, object)> GetMetaData()
         {
-            List<(String, String)> retVal = new List<(string, string)>();
+            List<(String, object)> retVal = new List<(string, object)>();
 
             return retVal;
         }

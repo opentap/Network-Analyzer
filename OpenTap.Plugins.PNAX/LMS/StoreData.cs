@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(true)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
-        public Input<List<(string, string)>> MetaData { get; set; }
+        public Input<List<(string, object)>> MetaData { get; set; }
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace OpenTap.Plugins.PNAX
             EnableLimits = false;
             GroupByChannel = true;
 
-            MetaData = new Input<List<(string, string)>>();
+            MetaData = new Input<List<(string, object)>>();
         }
 
         public override void Run()
@@ -122,12 +122,12 @@ namespace OpenTap.Plugins.PNAX
                             // for every item in metadata
                             foreach(var i in MetaData.Value)
                             {
-                                string[] strMetaData = new string[freqLength];
+                                object[] objMetaData = new object[freqLength];
                                 for (int data = 0; data < freqLength; data++)
                                 {
-                                    strMetaData[data] = i.Item2;
+                                    objMetaData[data] = i.Item2;
                                 }
-                                ResultColumn resultColumnMeta = new ResultColumn(i.Item1, strMetaData);
+                                ResultColumn resultColumnMeta = new ResultColumn(i.Item1, objMetaData);
 
                                 // create a new column with Rows = lastColumn.length
                                 // column name = metadata description
