@@ -30,9 +30,9 @@ namespace OpenTap.Plugins.PNAX
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
         public string LimitsFile { get; set; }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
-        public Input<List<(string, object)>> MetaData { get; set; }
+        public List<(string, object)> MetaData { get; set; }
 
         #endregion
 
@@ -44,15 +44,17 @@ namespace OpenTap.Plugins.PNAX
             EnableLimits = false;
             GroupByChannel = true;
 
-            MetaData = new Input<List<(string, object)>>();
+            MetaData = new List<(string, object)>();
         }
 
         public override void Run()
         {
             UpgradeVerdict(Verdict.NotSet);
 
-            // ToDo: Add test case code.
-            RunChildSteps(); //If the step supports child steps.
+            // Supported child steps will provide MetaData to be added to the publish table
+            RunChildSteps(); 
+
+
             try
             {
                 if (GroupByChannel)
@@ -117,10 +119,10 @@ namespace OpenTap.Plugins.PNAX
                         }
 
                         // if MetaData available
-                        if ((MetaData.Property != null) && (MetaData.Value.Count > 0))
+                        if ((MetaData != null) && (MetaData.Count > 0))
                         {
                             // for every item in metadata
-                            foreach(var i in MetaData.Value)
+                            foreach(var i in MetaData)
                             {
                                 object[] objMetaData = new object[freqLength];
                                 for (int data = 0; data < freqLength; data++)
