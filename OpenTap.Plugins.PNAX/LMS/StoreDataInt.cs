@@ -13,26 +13,26 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Trace Data - Double", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Appends a double data to trace.")]
+    [Display("Store Trace Data - Integer", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Appends an integer data to trace.")]
     [AllowAsChildIn(typeof(StoreData))]
-    public class StoreDataDouble : TestStep
+    public class StoreDataInt : TestStep
     {
         #region Settings
         public String Desc { get; set; }
-        public double Value { get; set; }
+        public int? Value { get; set; }
         #endregion
 
-        public StoreDataDouble()
+        public StoreDataInt()
         {
             Desc = "";
-            Value = double.NaN;
+            Value = null;
         }
 
         public override void Run()
         {
             List<(string, object)> _parentsMetaData = GetParent<StoreData>().MetaData;
 
-            if (!Desc.Equals("") && (Value != double.NaN))
+            if (!Desc.Equals("") && (Value != null))
             {
                 _parentsMetaData.Add((Desc, Value));
             }
@@ -41,23 +41,24 @@ namespace OpenTap.Plugins.PNAX.LMS
         }
     }
 
-    [Display("Set Double", Groups: new[] { "Basic Steps" }, Description: "Sets a value of type double.")]
-    public class SetDouble: TestStep
+    [Display("Set Integer", Groups: new[] { "Basic Steps" }, Description: "Sets a value of type int.")]
+    public class SetInt : TestStep
     {
         #region Settings
         [Output]
-        public double DoubleValue { get; set; }
+        public int?  IntegerValue { get; set; }
         #endregion
 
-        public SetDouble()
+        public SetInt()
         {
-            DoubleValue = 14.0;
+            IntegerValue = 14;
         }
 
         public override void Run()
         {
-            Log.Info($"Value set to {DoubleValue}");
+            Log.Info($"Value set to {IntegerValue}");
             UpgradeVerdict(Verdict.Pass);
         }
     }
+
 }
