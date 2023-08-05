@@ -19,20 +19,20 @@ namespace OpenTap.Plugins.PNAX.LMS
     {
         #region Settings
         public String Desc { get; set; }
-        public int? Value { get; set; }
+        public int Value { get; set; }
         #endregion
 
         public StoreDataInt()
         {
             Desc = "";
-            Value = null;
+            Value = 0;
         }
 
         public override void Run()
         {
             List<(string, object)> _parentsMetaData = GetParent<StoreData>().MetaData;
 
-            if (!Desc.Equals("") && (Value != null))
+            if (!Desc.Equals(""))
             {
                 _parentsMetaData.Add((Desc, Value));
             }
@@ -46,7 +46,7 @@ namespace OpenTap.Plugins.PNAX.LMS
     {
         #region Settings
         [Output]
-        public int?  IntegerValue { get; set; }
+        public int  IntegerValue { get; set; }
         #endregion
 
         public SetInt()
