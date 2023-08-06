@@ -28,7 +28,12 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("EnableLimits", true, HideIfDisabled = true)]
         [Display("Limits File", "Insert .csv file containing limits to check against (*.csv)", "Measurements", Order: 40)]
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
-        public string LimitsFile { get; set; } 
+        public string LimitsFile { get; set; }
+
+        [Browsable(false)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
+        public List<(string, object)> MetaData { get; set; }
+
         #endregion
 
         public StoreData()
@@ -38,14 +43,18 @@ namespace OpenTap.Plugins.PNAX
             Rules.Add(IsFileValid, "Must be a valid file", "LimitsFile");
             EnableLimits = false;
             GroupByChannel = true;
+
+            MetaData = new List<(string, object)>();
         }
 
         public override void Run()
         {
             UpgradeVerdict(Verdict.NotSet);
 
-            // ToDo: Add test case code.
-            RunChildSteps(); //If the step supports child steps.
+            // Supported child steps will provide MetaData to be added to the publish table
+            RunChildSteps(); 
+
+
             try
             {
                 if (GroupByChannel)
@@ -106,6 +115,27 @@ namespace OpenTap.Plugins.PNAX
                                 ResultColumn resultColumnj = new ResultColumn($"{FullTraceName[i]}_j", point2);
                                 resultColumns.Add(resultColumnj);
 
+                            }
+                        }
+
+                        // if MetaData available
+                        if ((MetaData != null) && (MetaData.Count > 0))
+                        {
+                            // for every item in metadata
+                            foreach(var i in MetaData)
+                            {
+                                object[] objMetaData = new object[freqLength];
+                                for (int data = 0; data < freqLength; data++)
+                                {
+                                    objMetaData[data] = i.Item2;
+                                }
+                                ResultColumn resultColumnMeta = new ResultColumn(i.Item1, objMetaData);
+
+                                // create a new column with Rows = lastColumn.length
+                                // column name = metadata description
+                                // every element should have the same metadata value
+                                // append column to resultColumns
+                                resultColumns.Add(resultColumnMeta);
                             }
                         }
 

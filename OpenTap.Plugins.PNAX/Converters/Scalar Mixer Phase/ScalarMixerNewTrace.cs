@@ -28,6 +28,14 @@ namespace OpenTap.Plugins.PNAX
             ChildTestSteps.Add(new ScalarMixerSingleTrace() { Meas = SMCTraceEnum.SC21});
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            return retVal;
+        }
+
         public override void Run()
         {
             // Delete dummy trace defined during channel setup

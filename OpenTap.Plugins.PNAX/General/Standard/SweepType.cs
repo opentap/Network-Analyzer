@@ -153,6 +153,52 @@ namespace OpenTap.Plugins.PNAX
             SweepPropertiesIFBandwidth = defaultValues.IFBandWidth;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("Data Acquisition Mode", StandardSweepType));
+
+            switch (StandardSweepType)
+            {
+                case StandardSweepTypeEnum.LinearFrequency:
+                case StandardSweepTypeEnum.LogFrequency:
+                    retVal.Add(("Start", SweepPropertiesStart));
+                    retVal.Add(("Stop", SweepPropertiesStop));
+                    retVal.Add(("Power", SweepPropertiesPower));
+                    retVal.Add(("Points", SweepPropertiesPoints));
+                    retVal.Add(("IF Bandwidth", SweepPropertiesIFBandwidth));
+                    break;
+                case StandardSweepTypeEnum.PowerSweep:
+                    retVal.Add(("Start Power", SweepPropertiesStartPower));
+                    retVal.Add(("Stop Power", SweepPropertiesStopPower));
+                    retVal.Add(("CW Freq", SweepPropertiesCWFreq));
+                    retVal.Add(("Points", SweepPropertiesPoints));
+                    retVal.Add(("IF Bandwidth", SweepPropertiesIFBandwidth));
+                    break;
+                case StandardSweepTypeEnum.CWTime:
+                    retVal.Add(("Power", SweepPropertiesPower));
+                    retVal.Add(("CW Freq", SweepPropertiesCWFreq));
+                    retVal.Add(("Points", SweepPropertiesPoints));
+                    retVal.Add(("IF Bandwidth", SweepPropertiesIFBandwidth));
+                    break;
+                case StandardSweepTypeEnum.SegmentSweep:
+                    //SetSegmentValues();
+                    break;
+                case StandardSweepTypeEnum.PhaseSweep:
+                    retVal.Add(("Start Phase", SweepPropertiesStartPhase));
+                    retVal.Add(("Stop Phase", SweepPropertiesStopPhase));
+                    retVal.Add(("CW Freq", SweepPropertiesCWFreq));
+                    retVal.Add(("Points", SweepPropertiesPoints));
+                    retVal.Add(("IF Bandwidth", SweepPropertiesIFBandwidth));
+                    break;
+            }
+
+            return retVal;
+        }
+
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

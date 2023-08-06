@@ -83,8 +83,6 @@ namespace OpenTap.Plugins.PNAX
         //[Display("Window", Group: "Sweep Properties", Order: 34)]
         //public new int Window { get; set; }
 
-
-
         #endregion
 
         public void SetSegmentValues()

@@ -96,6 +96,26 @@ namespace OpenTap.Plugins.PNAX
             StandardChannelSweepSequence = defaultValues.StandardChannelSweepSequence;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("Auto Sweep Time", AutoSweepTime));
+            if (AutoSweepTime == false)
+            {
+                retVal.Add(("Sweep Time", SweepTime));
+                retVal.Add(("Dwell Time", DwellTime));
+            }
+
+            retVal.Add(("Sweep Delay", SweepDelay));
+            retVal.Add(("Fast Sweep Reduce Settling Time", FastSweep));
+            retVal.Add(("Sweep Mode", StandardChannelSweepMode));
+            retVal.Add(("Sweep Sequence", StandardChannelSweepSequence));
+
+            return retVal;
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

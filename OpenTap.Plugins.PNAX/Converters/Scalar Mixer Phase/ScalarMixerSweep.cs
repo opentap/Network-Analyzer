@@ -153,5 +153,31 @@ namespace OpenTap.Plugins.PNAX
             }
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("SMC_SweepType", SweepType));
+
+            if (SweepType == ScalerMixerSweepType.SegmentSweep)
+            {
+                retVal.Add(("IsXAxisPointSpacing", IsXAxisPointSpacing));
+            }
+
+            retVal.Add(("SMC_AvoidSpurs", IsAvoidSpurs));
+            retVal.Add(("SMC_ReversedPortTwoCoupler", IsReversedPortTwoCoupler));
+            retVal.Add(("SMC_NumberOfPoints", NumberOfPoints));
+            retVal.Add(("SMC_IFBandwidth", IFBandwidth));
+
+            retVal.Add(("SMC_EnablePhase", IsEnablePhase));
+            retVal.Add(("SMC_PhasePointValue", PhasePointValue));
+
+            retVal.Add(("PhaseReferencePoint", PhasePoint));
+
+            return retVal;
+        }
+
     }
 }
