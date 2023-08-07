@@ -622,10 +622,8 @@ namespace OpenTap.Plugins.PNAX
             String strDutPort4 = Scpi.Format("{0}", Port4);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
-            // TODO - Temporal to be able to use 2 port VNA
-            //PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
-            //PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
-            // TODO - Implement dynamic querying of instrument to determine number of ports available
+            if (strDutPort1 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+            if (strDutPort1 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
 
             String strPort1CalKit = Scpi.Format("{0}", Port1CalKit);
             String strPort2CalKit = Scpi.Format("{0}", Port2CalKit);
