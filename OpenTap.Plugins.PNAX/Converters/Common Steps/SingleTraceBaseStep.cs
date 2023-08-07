@@ -125,6 +125,13 @@ namespace OpenTap.Plugins.PNAX
             return retMarkerCount++;
         }
 
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
+        public virtual void AddTraceLimits()
+        {
+        }
+
         protected virtual void UpdateTestName()
         {
         }
