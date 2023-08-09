@@ -66,6 +66,9 @@
     <None Update="Examples\Standard and SMC - StoreTrace with MetaData.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Examples\Standard with limits.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Standard-AllFormats.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
