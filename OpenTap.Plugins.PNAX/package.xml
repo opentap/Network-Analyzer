@@ -22,8 +22,9 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/LMS.TapPlan" SourcePath="Examples/LMS.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Std-GC.csa" SourcePath="Examples/Std-GC.csa" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard and SMC - StoreTrace with MetaData.TapPlan" SourcePath="Examples/Standard and SMC - StoreTrace with MetaData.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard with limits.TapPlan.TapPlan" SourcePath="Examples/Standard with limits.TapPlan.TapPlan" ></File>
 
-	  <File Path="Packages/OpenTap.Plugins.PNAX/Examples/Cal-Image.TapPlan" SourcePath="Examples/Cal-Image.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Cal-Image.TapPlan" SourcePath="Examples/Cal-Image.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 1.png" SourcePath="Examples/Images/Sample Image 1.png" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 2.png" SourcePath="Examples/Images/Sample Image 2.png" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 3.png" SourcePath="Examples/Images/Sample Image 3.png" ></File>
