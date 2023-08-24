@@ -622,8 +622,8 @@ namespace OpenTap.Plugins.PNAX
             String strDutPort4 = Scpi.Format("{0}", Port4);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
-            PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
-            PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
+            if (strDutPort1 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+            if (strDutPort1 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
 
             String strPort1CalKit = Scpi.Format("{0}", Port1CalKit);
             String strPort2CalKit = Scpi.Format("{0}", Port2CalKit);
@@ -639,7 +639,7 @@ namespace OpenTap.Plugins.PNAX
             int CalSteps = PNAX.CalAllNumberOfSteps(CalChannel);
 
             int deftimeout = PNAX.IoTimeout;
-            PNAX.IoTimeout = 200000;
+            PNAX.IoTimeout = 1200000;
 
             // Make sure the number of steps matches the number of images defined
             if (ShowPicture)

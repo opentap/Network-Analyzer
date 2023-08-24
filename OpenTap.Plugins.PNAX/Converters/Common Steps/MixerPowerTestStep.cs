@@ -235,5 +235,48 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("Power On All Channels", PowerOnAllChannels));
+            retVal.Add(("LO1 Power", LO1Power));
+            retVal.Add(("LO1 Source Leveling Mode", SourceLevelingModeLO1));
+
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                retVal.Add(("LO2 Power", LO2Power));
+                retVal.Add(("LO2 Source Leveling Mode", SourceLevelingModeLO2));
+            }
+
+            if (EnablePort3Settings)
+            {
+                retVal.Add(("SourceAttenuatorPowerPort3", SourceAttenuatorPowerPort3));
+                retVal.Add(("ReceiverAttenuatorPowerPort3", ReceiverAttenuatorPowerPort3));
+            }
+
+            if (EnablePort4Settings)
+            {
+                retVal.Add(("SourceAttenuatorPowerPort4", SourceAttenuatorPowerPort4));
+                retVal.Add(("ReceiverAttenuatorPowerPort4", ReceiverAttenuatorPowerPort4));
+            }
+
+            if (EnablePort3Settings)
+            {
+                retVal.Add(("LO1SweptPowerStart", LO1SweptPowerStart));
+                retVal.Add(("LO1SweptPowerStop", LO1SweptPowerStop));
+
+                if (ConverterStages == ConverterStagesEnum._2)
+                {
+                    retVal.Add(("LO2SweptPowerStart", LO2SweptPowerStart));
+                    retVal.Add(("LO2SweptPowerStop", LO2SweptPowerStop));
+                }
+            }
+
+            return retVal;
+        }
+
     }
 }

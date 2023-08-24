@@ -284,5 +284,39 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("Converter Stages", ConverterStages));
+            retVal.Add(("Input Port", PortInput));
+            retVal.Add(("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator));
+            retVal.Add(("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator));
+            retVal.Add(("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator));
+            retVal.Add(("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator));
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator));
+                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator));
+                retVal.Add(("LO2 Port", PortLO2));
+            }
+            retVal.Add(("Enable Embedded LO", EnableEmbeddedLO));
+            if (EnableEmbeddedLO)
+            {
+                retVal.Add(("Tuning Method", TuningMethod));
+                retVal.Add(("Tuning Point", TuningPoint));
+                retVal.Add(("Tune Every", TuneEvery));
+                retVal.Add(("BroadBand Search", BroadBandSearch));
+                retVal.Add(("EmbeddedLO IFBW", IFBW));
+                retVal.Add(("Max Iterations", MaxIterations));
+                retVal.Add(("Tolerance", Tolerance));
+                retVal.Add(("LO Frequency Delta", LOFrequencyDelta));
+            }
+            retVal.Add(("Output Port", PortOutput));
+
+            return retVal;
+        }
     }
 }

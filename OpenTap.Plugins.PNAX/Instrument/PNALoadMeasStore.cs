@@ -151,7 +151,7 @@ namespace OpenTap.Plugins.PNAX
         /// <summary>
         /// Store trace info from each channel in the state
         /// </summary>
-        public List<List<string>> StoreTraceData(List<int> channelsList)
+        public List<List<string>> StoreTraceData(List<int> channelsList, bool includePassFail = false)
         {
             ScpiCommand(":FORM:DATA ASCii, 0");
 
@@ -192,12 +192,56 @@ namespace OpenTap.Plugins.PNAX
                     ScpiCommand($"CALC{channel}:PAR:MNUM:SEL {trace}");
                     var xString = ScpiQuery($"CALC{channel}:X:VAL?");
                     var xList = xString.Split(',').ToList();
+                    int XCount = xList.Count;
 
                     var yString = isA_Version ? ScpiQuery($"CALC{channel}:DATA? FDATA") : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
                     var yList = yString.Split(',').ToList();
 
                     resultsList.Add(xList);
                     resultsList.Add(yList);
+
+                    if (includePassFail)
+                    {
+                        // now query PF
+                        String strPF = ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
+                        List<String> GlobalPF = new List<String>();
+                        // Create a list of n values all equal to strPF
+                        String verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
+                        for (int pfIndex = 0; pfIndex < XCount; pfIndex++)
+                        {
+                            GlobalPF.Add(verdict);
+                        }
+
+                        // query results
+                        var limitReportAllStr = ScpiQuery($"CALC{channel}:Meas{trace}:LIMit:REPort:ALL?");
+                        var limitReportAll = limitReportAllStr.Split(',').ToList();
+                        //List<double> XAxisValues = new List<double>();
+                        //List<Verdict> PassFail = new List<Verdict>();
+                        //List<double> UpperLimit = new List<double>();
+                        //List<double> LowerLimit = new List<double>();
+
+
+                        var x1 = limitReportAll.Where((item, index) => ((index == 0) || ((index >= 4) && (index % 4 == 0)))).ToList();
+                        var x2 = limitReportAll.Where((item, index) => ((index == 1) || ((index >= 5) && (index % 4 == 1)))).ToList();
+                        var x3 = limitReportAll.Where((item, index) => ((index == 2) || ((index >= 6) && (index % 4 == 2)))).ToList();
+                        var x4 = limitReportAll.Where((item, index) => ((index == 3) || ((index >= 7) && (index % 4 == 3)))).ToList();
+
+                        //for (int limitIndex = 0; limitIndex < ((limitReportAll.Count())/4); limitIndex++)
+                        //{
+                        //    XAxisValues.Add(limitReportAll[(4*limitIndex)]);
+                        //    Verdict PF = nPF == limitReportAll[(4 * limitIndex) + 1] ? Verdict.Fail : Verdict.Pass;
+                        //    PassFail.Add(PF);
+                        //    UpperLimit.Add(limitReportAll[(4 * limitIndex) + 2]);
+                        //    LowerLimit.Add(limitReportAll[(4 * limitIndex) + 3]);
+                        //}
+
+                        // Append columns
+                        resultsList.Add(GlobalPF);
+                        resultsList.Add(x1);
+                        resultsList.Add(x2);
+                        resultsList.Add(x3);
+                        resultsList.Add(x4);
+                    }
                 }
             }
 

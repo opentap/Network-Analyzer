@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="OpenTap.Plugins.PNAX.StandardChannel" Id="c4570aa8-03b0-4f6e-8657-9db906a06f5d" OpenTap.Visibility="Visible">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <Name Metadata="Step Name">Standard Channel</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.SweepType" Id="7d41af22-207c-4f24-a646-5e766a37ec53">
+          <StandardSweepType>LinearFrequency</StandardSweepType>
+          <SweepPropertiesStart>10000000</SweepPropertiesStart>
+          <SweepPropertiesStop>5000000000</SweepPropertiesStop>
+          <SweepPropertiesStartPower>-10</SweepPropertiesStartPower>
+          <SweepPropertiesStopPower>0</SweepPropertiesStopPower>
+          <SweepPropertiesStartPhase>0</SweepPropertiesStartPhase>
+          <SweepPropertiesStopPhase>0</SweepPropertiesStopPhase>
+          <SweepPropertiesCWFreq>1000000000</SweepPropertiesCWFreq>
+          <SweepPropertiesPower>-15</SweepPropertiesPower>
+          <SweepPropertiesPoints>1601</SweepPropertiesPoints>
+          <SweepPropertiesIFBandwidth>100000</SweepPropertiesIFBandwidth>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <segmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </segmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>1</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Sweep Type</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.Timing" Id="f9057d6f-1098-4e86-bfa9-fdd820bc7fbf">
+          <SweepTime>0.016884</SweepTime>
+          <DwellTime>0</DwellTime>
+          <SweepDelay>0</SweepDelay>
+          <AutoSweepTime>true</AutoSweepTime>
+          <FastSweep>false</FastSweep>
+          <StandardChannelSweepMode>Auto</StandardChannelSweepMode>
+          <StandardChannelSweepSequence>Standard</StandardChannelSweepSequence>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <segmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </segmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>1</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Timing</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.StandardNewTrace" Id="48259ac8-8984-4ace-bc49-a295073a5bfd" OpenTap.Visibility="Visible">
+          <Meas>S22</Meas>
+          <EnableButton>true</EnableButton>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <segmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </segmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>1</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">Standard New Trace</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="507abf3e-1ee2-496b-9637-2c05c8c1777b" OpenTap.Visibility="Visible">
+              <Meas>S11</Meas>
+              <IsControlledByParentTrace>true</IsControlledByParentTrace>
+              <Channel>1</Channel>
+              <IsControlledByParent>false</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_S11</Trace>
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>1</tnum>
+              <mnum>1</mnum>
+              <MeasName>CH1_S11_1</MeasName>
+              <Name Metadata="Step Name">CH1_S11</Name>
+              <ChildTestSteps>
+                <TestStep type="OpenTap.Plugins.PNAX.TraceLimits" Id="153e4984-2da0-4712-a9fe-4da09dbb3228">
+                  <LimitTest>true</LimitTest>
+                  <LimitLine>true</LimitLine>
+                  <SoundOn>false</SoundOn>
+                  <PositionX>7</PositionX>
+                  <PositionY>0</PositionY>
+                  <limitSegments>
+                    <LimitSegmentDefinition>
+                      <LimitType>Max</LimitType>
+                      <BeginStim>0</BeginStim>
+                      <EndStim>5000000000</EndStim>
+                      <BeginResp>-5</BeginResp>
+                      <EndResp>-5</EndResp>
+                    </LimitSegmentDefinition>
+                  </limitSegments>
+                  <GlobalPassFail>false</GlobalPassFail>
+                  <IsControlledByParent>true</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>1</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Trace Limits</Name>
+                </TestStep>
+              </ChildTestSteps>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="7f4219b9-95ec-4988-9bdf-c9beca97a4c6" OpenTap.Visibility="Visible">
+              <Meas>S12</Meas>
+              <IsControlledByParentTrace>true</IsControlledByParentTrace>
+              <Channel>1</Channel>
+              <IsControlledByParent>false</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_S12</Trace>
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>2</tnum>
+              <mnum>2</mnum>
+              <MeasName>CH1_S12_2</MeasName>
+              <Name Metadata="Step Name">CH1_S12</Name>
+              <ChildTestSteps>
+                <TestStep type="OpenTap.Plugins.PNAX.TraceLimits" Id="208aa1d7-c623-4579-b33b-aeaa81f5b298">
+                  <LimitTest>true</LimitTest>
+                  <LimitLine>true</LimitLine>
+                  <SoundOn>false</SoundOn>
+                  <PositionX>7</PositionX>
+                  <PositionY>0</PositionY>
+                  <limitSegments>
+                    <LimitSegmentDefinition>
+                      <LimitType>Max</LimitType>
+                      <BeginStim>0</BeginStim>
+                      <EndStim>5000000000</EndStim>
+                      <BeginResp>-10</BeginResp>
+                      <EndResp>-10</EndResp>
+                    </LimitSegmentDefinition>
+                  </limitSegments>
+                  <GlobalPassFail>false</GlobalPassFail>
+                  <IsControlledByParent>true</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>2</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Trace Limits</Name>
+                </TestStep>
+              </ChildTestSteps>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="58193d74-8f62-448b-8cfb-b85748525f49" OpenTap.Visibility="Visible">
+              <Meas>S21</Meas>
+              <IsControlledByParentTrace>true</IsControlledByParentTrace>
+              <Channel>1</Channel>
+              <IsControlledByParent>false</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_S21</Trace>
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>3</tnum>
+              <mnum>3</mnum>
+              <MeasName>CH1_S21_3</MeasName>
+              <Name Metadata="Step Name">CH1_S21</Name>
+              <ChildTestSteps>
+                <TestStep type="OpenTap.Plugins.PNAX.TraceLimits" Id="ef32a3e1-89e7-4b30-a910-4d0b78dc269a">
+                  <LimitTest>true</LimitTest>
+                  <LimitLine>true</LimitLine>
+                  <SoundOn>false</SoundOn>
+                  <PositionX>7</PositionX>
+                  <PositionY>0</PositionY>
+                  <limitSegments>
+                    <LimitSegmentDefinition>
+                      <LimitType>Max</LimitType>
+                      <BeginStim>0</BeginStim>
+                      <EndStim>5000000000</EndStim>
+                      <BeginResp>-25</BeginResp>
+                      <EndResp>-25</EndResp>
+                    </LimitSegmentDefinition>
+                  </limitSegments>
+                  <GlobalPassFail>false</GlobalPassFail>
+                  <IsControlledByParent>true</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>3</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Trace Limits</Name>
+                </TestStep>
+              </ChildTestSteps>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="aec76e6e-3916-4302-b014-6c8bbf65ba3c" OpenTap.Visibility="Visible">
+              <Meas>S22</Meas>
+              <IsControlledByParentTrace>true</IsControlledByParentTrace>
+              <Channel>1</Channel>
+              <IsControlledByParent>false</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_S22</Trace>
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>4</tnum>
+              <mnum>4</mnum>
+              <MeasName>CH1_S22_4</MeasName>
+              <Name Metadata="Step Name">CH1_S22</Name>
+              <ChildTestSteps>
+                <TestStep type="OpenTap.Plugins.PNAX.TraceLimits" Id="17616a3e-2d38-4e21-b990-32de81f7bc9c">
+                  <LimitTest>true</LimitTest>
+                  <LimitLine>true</LimitLine>
+                  <SoundOn>false</SoundOn>
+                  <PositionX>7</PositionX>
+                  <PositionY>0</PositionY>
+                  <limitSegments>
+                    <LimitSegmentDefinition>
+                      <LimitType>Min</LimitType>
+                      <BeginStim>0</BeginStim>
+                      <EndStim>5000000000</EndStim>
+                      <BeginResp>-25</BeginResp>
+                      <EndResp>-25</EndResp>
+                    </LimitSegmentDefinition>
+                  </limitSegments>
+                  <GlobalPassFail>false</GlobalPassFail>
+                  <IsControlledByParent>true</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>4</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Trace Limits</Name>
+                </TestStep>
+              </ChildTestSteps>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.Measure" Id="3fcfe702-164e-46b3-9a48-c579f769a3f5">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <channels>1</channels>
+      <Name Metadata="Step Name">Trigger Channels</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.StoreData" Id="9c1851f7-09f0-4fca-a1aa-f2edf6a14031" OpenTap.Visibility="Visible">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <channels>1</channels>
+      <GroupByChannel>true</GroupByChannel>
+      <EnableLimits>false</EnableLimits>
+      <LimitsFile />
+      <MetaData>
+        <ValueTupleOfString>(Channel, 1)</ValueTupleOfString>
+        <ValueTupleOfString>(Data Acquisition Mode, LinearFrequency)</ValueTupleOfString>
+        <ValueTupleOfString>(Start, 10000000)</ValueTupleOfString>
+        <ValueTupleOfString>(Stop, 5000000000)</ValueTupleOfString>
+        <ValueTupleOfString>(Power, -15)</ValueTupleOfString>
+        <ValueTupleOfString>(Points, 1601)</ValueTupleOfString>
+        <ValueTupleOfString>(IF Bandwidth, 100000)</ValueTupleOfString>
+        <ValueTupleOfString>(Auto Sweep Time, True)</ValueTupleOfString>
+        <ValueTupleOfString>(Sweep Delay, 0)</ValueTupleOfString>
+        <ValueTupleOfString>(Fast Sweep Reduce Settling Time, False)</ValueTupleOfString>
+        <ValueTupleOfString>(Sweep Mode, Auto)</ValueTupleOfString>
+        <ValueTupleOfString>(Sweep Sequence, Standard)</ValueTupleOfString>
+      </MetaData>
+      <Name Metadata="Step Name">Store Trace Data</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreDataMetaData" Id="37caf07e-321c-44ca-851f-e495b79b3f99">
+          <MetaData>
+            <PropertyName>OpenTap.Plugins.PNAX.GeneralChannelBaseStep|MetaData</PropertyName>
+            <Step>c4570aa8-03b0-4f6e-8657-9db906a06f5d</Step>
+          </MetaData>
+          <Name Metadata="Step Name">Store Trace Data - Meta Data</Name>
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.19.4+7959a308" />
+  </Package.Dependencies>
+</TestPlan>

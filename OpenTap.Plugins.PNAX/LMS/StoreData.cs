@@ -28,7 +28,12 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("EnableLimits", true, HideIfDisabled = true)]
         [Display("Limits File", "Insert .csv file containing limits to check against (*.csv)", "Measurements", Order: 40)]
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
-        public string LimitsFile { get; set; } 
+        public string LimitsFile { get; set; }
+
+        [Browsable(false)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
+        public List<(string, object)> MetaData { get; set; }
+
         #endregion
 
         public StoreData()
@@ -38,21 +43,26 @@ namespace OpenTap.Plugins.PNAX
             Rules.Add(IsFileValid, "Must be a valid file", "LimitsFile");
             EnableLimits = false;
             GroupByChannel = true;
+
+            MetaData = new List<(string, object)>();
         }
 
         public override void Run()
         {
+            MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
 
-            // ToDo: Add test case code.
-            RunChildSteps(); //If the step supports child steps.
+            // Supported child steps will provide MetaData to be added to the publish table
+            RunChildSteps(); 
+            bool includePassFail = true;
+
             try
             {
                 if (GroupByChannel)
                 {
                     foreach (int channel in channels)
                     {
-                        List<List<string>> results = PNAX.StoreTraceData(new List<int>() { channel });
+                        List<List<string>> results = PNAX.StoreTraceData(new List<int>() { channel }, includePassFail);
                         PNAX.WaitForOperationComplete();
 
                         // Grab trace number list and remove from list
@@ -67,9 +77,31 @@ namespace OpenTap.Plugins.PNAX
                         var FullTraceName = results[0];
                         results.RemoveAt(0);
 
-                        var xResult = results.Where((item, index) => index % 2 == 0).ToList();
-                        var yResult = results.Where((item, index) => index % 2 != 0).ToList();
+                        List<List<String>> xResult = new List<List<string>>();
+                        List<List<String>> yResult = new List<List<String>>();
+                        List<List<String>> pf = new List<List<String>>();
+                        List<List<String>> x1 = new List<List<String>>();
+                        List<List<String>> x2 = new List<List<String>>();
+                        List<List<String>> x3 = new List<List<String>>();
+                        List<List<String>> x4 = new List<List<String>>();
 
+                        if (includePassFail)
+                        {
+                            xResult = results.Where((item, index) => ((index == 0) || ((index >= 7) && (index % 7 == 0)))).ToList();
+                            yResult = results.Where((item, index) => ((index == 1) || ((index >= 8) && (index % 7 == 1)))).ToList();
+
+                            pf = results.Where((item, index) => ((index == 2) || ((index >= 9) && (index % 7 == 2)))).ToList();
+
+                            x1 = results.Where((item, index) => ((index == 3) || ((index >= 10) && (index % 7 == 3)))).ToList();
+                            x2 = results.Where((item, index) => ((index == 4) || ((index >= 11) && (index % 7 == 4)))).ToList();
+                            x3 = results.Where((item, index) => ((index == 5) || ((index >= 12) && (index % 7 == 5)))).ToList();
+                            x4 = results.Where((item, index) => ((index == 6) || ((index >= 13) && (index % 7 == 6)))).ToList();
+                        }
+                        else
+                        {
+                            xResult = results.Where((item, index) => index % 2 == 0).ToList();
+                            yResult = results.Where((item, index) => index % 2 != 0).ToList();
+                        }
                         int freqLength = 0;
 
                         List<ResultColumn> resultColumns = new List<ResultColumn>();
@@ -106,6 +138,78 @@ namespace OpenTap.Plugins.PNAX
                                 ResultColumn resultColumnj = new ResultColumn($"{FullTraceName[i]}_j", point2);
                                 resultColumns.Add(resultColumnj);
 
+                            }
+
+                            if (includePassFail)
+                            {
+                                // Find if limit is turned on for this trace
+                                int mnum = int.Parse(FullTraceName[i].Split('_').Last());
+                                bool limitON = PNAX.GetLimitTestOn(channel, mnum);
+
+                                if (limitON)
+                                {
+                                    // append global pf
+                                    ResultColumn resultColumn = new ResultColumn($"{FullTraceName[i]}_GlobalPF", pf[i].ToArray());
+                                    resultColumns.Add(resultColumn);
+                                    if (resultColumn.Data.GetValue(0).Equals("Fail"))
+                                    {
+                                        Log.Warning($"Trace: {FullTraceName[i]} failed limits!");
+                                        UpgradeVerdict(Verdict.Fail);
+                                    }
+
+                                    // append xaxisvalues
+                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                    if (false)
+                                    {
+                                        resultColumns.Add(resultColumn);
+                                    }
+
+                                    // append pf
+                                    List<String> pfByRow = new List<string>();
+                                    var arraypf = x2[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();
+                                    foreach (var item in arraypf)
+                                    {
+                                        Verdict a = item == 1 ? Verdict.Pass : Verdict.Fail;
+                                        pfByRow.Add(a.ToString());
+                                    }
+                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_PF", pfByRow.ToArray());
+                                    resultColumns.Add(resultColumn);
+
+                                    // append upperlimit
+                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_UL", x3[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                    if ((double)resultColumn.Data.GetValue(0) != 3.40282346639E+38)
+                                    {
+                                        resultColumns.Add(resultColumn);
+                                    }
+
+                                    // append lowerlimit
+                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_LL", x4[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                    if ((double)resultColumn.Data.GetValue(0) != -3.40282346639E+38)
+                                    {
+                                        resultColumns.Add(resultColumn);
+                                    }
+                                }
+                            }
+                        }
+
+                        // if MetaData available
+                        if ((MetaData != null) && (MetaData.Count > 0))
+                        {
+                            // for every item in metadata
+                            foreach(var i in MetaData)
+                            {
+                                object[] objMetaData = new object[freqLength];
+                                for (int data = 0; data < freqLength; data++)
+                                {
+                                    objMetaData[data] = i.Item2;
+                                }
+                                ResultColumn resultColumnMeta = new ResultColumn(i.Item1, objMetaData);
+
+                                // create a new column with Rows = lastColumn.length
+                                // column name = metadata description
+                                // every element should have the same metadata value
+                                // append column to resultColumns
+                                resultColumns.Add(resultColumnMeta);
                             }
                         }
 

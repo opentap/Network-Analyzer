@@ -179,5 +179,49 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("PowerOnAllChannels", PowerOnAllChannels));
+            retVal.Add(("PortPowersCoupled", PortPowersCoupled));
+
+            retVal.Add(("SMC PortInput", PortInput));
+            retVal.Add(("SMC PortOutput", PortOutput));
+
+            retVal.Add(("SMC_InputPower", InputPower));
+            retVal.Add(("SMC_InputPortSourceAttenuator", InputPortSourceAttenuator));
+            retVal.Add(("SMC_InputPortReceiverAttenuator", InputPortReceiverAttenuator));
+            retVal.Add(("SMC_InputSourceLevelingMode", InputSourceLevelingMode));
+            retVal.Add(("SMC_AutoInputPortSourceAttenuator", AutoInputPortSourceAttenuator));
+
+            retVal.Add(("SMC_OutputPower", OutputPower));
+            retVal.Add(("SMC_OutputPortSourceAttenuator", OutputPortSourceAttenuator));
+            retVal.Add(("SMC_OutputPortReceiverAttenuator", OutputPortReceiverAttenuator));
+            retVal.Add(("SMC_OutputSourceLevelingMode", OutputSourceLevelingMode));
+            retVal.Add(("SMC_AutoOutputPortSourceAttenuator", AutoOutputPortSourceAttenuator));
+
+            if (EnablePowerSweepOutputEdit)
+            {
+                retVal.Add(("SMC_InputPowerSweepStartPower", InputPowerSweepStartPower));
+                retVal.Add(("SMC_InputPowerSweepStopPower", InputPowerSweepStopPower));
+            }
+
+            if (PortPowersCoupled)
+            {
+                retVal.Add(("SMC_OutputPowerSweepStartPower", InputPowerSweepStartPower));
+                retVal.Add(("SMC_OutputPowerSweepStopPower", InputPowerSweepStopPower));
+            }
+            else
+            {
+                retVal.Add(("SMC_OutputPowerSweepStartPower", OutputPowerSweepStartPower));
+                retVal.Add(("SMC_OutputPowerSweepStopPower", OutputPowerSweepStopPower));
+            }
+
+            return retVal;
+        }
+
     }
 }

@@ -34,14 +34,13 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
           <tnum>0</tnum>
           <mnum>0</mnum>
+          <MeasName />
           <Name Metadata="Step Name">Sweep Type</Name>
         </TestStep>
         <TestStep type="OpenTap.Plugins.PNAX.Timing" Id="c767f2c9-2660-44fd-9718-3b96a37e77c6">
@@ -68,14 +67,13 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
           <tnum>0</tnum>
           <mnum>0</mnum>
+          <MeasName />
           <Name Metadata="Step Name">Timing</Name>
         </TestStep>
         <TestStep type="OpenTap.Plugins.PNAX.StandardNewTrace" Id="f459f5fa-af2f-4561-bba0-2ef702131bc6" OpenTap.Visibility="Visible">
@@ -97,14 +95,13 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
           <tnum>0</tnum>
           <mnum>0</mnum>
+          <MeasName />
           <Name Metadata="Step Name">Standard New Trace</Name>
           <ChildTestSteps>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="c9638bef-bb1e-49ae-a421-5315d7a5af8e">
@@ -126,14 +123,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S11</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>1</tnum>
               <mnum>1</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH1_S11</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="c53fb08a-adce-41e7-bfc7-ebf0b2b833ab">
@@ -155,14 +151,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S12</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>2</tnum>
               <mnum>2</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH1_S12</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="91d9059a-a7a6-42ef-9aed-d6ba4d9ce8d0">
@@ -184,14 +179,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S21</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>3</tnum>
               <mnum>3</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH1_S21</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="cb3bfa44-3307-4646-81d3-53216c3fbcef">
@@ -213,14 +207,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH1_S22</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>1</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>4</tnum>
               <mnum>4</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH1_S22</Name>
             </TestStep>
           </ChildTestSteps>
@@ -260,14 +253,13 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
           <tnum>0</tnum>
           <mnum>0</mnum>
+          <MeasName />
           <Name Metadata="Step Name">Sweep Type</Name>
         </TestStep>
         <TestStep type="OpenTap.Plugins.PNAX.Timing" Id="d29333a2-7bd8-4227-9fc2-bf31c4657da0">
@@ -294,14 +286,13 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
           <tnum>0</tnum>
           <mnum>0</mnum>
+          <MeasName />
           <Name Metadata="Step Name">Timing</Name>
         </TestStep>
         <TestStep type="OpenTap.Plugins.PNAX.StandardNewTrace" Id="45c9a886-a4f2-4d50-b296-3e6bf0ac523a" OpenTap.Visibility="Visible">
@@ -323,14 +314,13 @@
           </segmentDefinitions>
           <ShowTable>false</ShowTable>
           <EnableTraceSettings>false</EnableTraceSettings>
-          <TraceTitle />
           <Trace />
-          <Format>MLINear</Format>
           <Window>1</Window>
           <Sheet>0</Sheet>
           <IsPropertyEnabled>false</IsPropertyEnabled>
           <tnum>0</tnum>
           <mnum>0</mnum>
+          <MeasName />
           <Name Metadata="Step Name">Standard New Trace</Name>
           <ChildTestSteps>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="bd496ee0-c561-44a3-b95b-25794afda486">
@@ -352,14 +342,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_S11</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>1</tnum>
               <mnum>5</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH2_S11</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="d0002dfe-1a3e-4ff9-bc15-0aae9ab55782">
@@ -381,14 +370,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_S12</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>2</tnum>
               <mnum>6</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH2_S12</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="a28d1226-35bc-4b40-8f1e-5dbd08dec2d5">
@@ -410,14 +398,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_S21</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>3</tnum>
               <mnum>7</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH2_S21</Name>
             </TestStep>
             <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="6e76e88d-045e-4af5-b309-ce680ebc4573">
@@ -439,14 +426,13 @@
               </segmentDefinitions>
               <ShowTable>false</ShowTable>
               <EnableTraceSettings>true</EnableTraceSettings>
-              <TraceTitle />
               <Trace>CH2_S22</Trace>
-              <Format>MLOGarithmic</Format>
               <Window>2</Window>
               <Sheet>1</Sheet>
               <IsPropertyEnabled>false</IsPropertyEnabled>
               <tnum>4</tnum>
               <mnum>8</mnum>
+              <MeasName />
               <Name Metadata="Step Name">CH2_S22</Name>
             </TestStep>
           </ChildTestSteps>
