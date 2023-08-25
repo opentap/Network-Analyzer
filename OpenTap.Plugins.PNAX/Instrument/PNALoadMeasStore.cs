@@ -194,13 +194,15 @@ namespace OpenTap.Plugins.PNAX
                     var xList = xString.Split(',').ToList();
                     int XCount = xList.Count;
 
-                    var yString = isA_Version ? ScpiQuery($"CALC{channel}:DATA? FDATA") : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
+                    var yString = IsModelA ? ScpiQuery($"CALC{channel}:DATA? FDATA") : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
                     var yList = yString.Split(',').ToList();
 
                     resultsList.Add(xList);
                     resultsList.Add(yList);
 
-                    if (includePassFail)
+                    // TODO: Fix includePassFail check to avoid needing to also check for Model A
+                    //       Model A's don't support LIMIT:REPORT:ALL
+                    if (includePassFail && !IsModelA)
                     {
                         // now query PF
                         String strPF = ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
@@ -460,7 +462,14 @@ namespace OpenTap.Plugins.PNAX
             //String opc = MyVNA.ScpiQuery("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','C:\\Program Files\\Keysight\\Test Automation\\Results\\Traces\\MyData1.s2p';*OPC?");
             // TODO PNA-L vs ENA
             //ScpiCommand("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','" + InstrumentFileName + "'");
-            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+            if (IsModelA)
+            {
+                ScpiCommand($"CALCulate{Channel}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+            }
+            else
+            {
+                ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+            }
 
             // Make sure folder exists on local PC
             bool exists = System.IO.Directory.Exists(FilePath);

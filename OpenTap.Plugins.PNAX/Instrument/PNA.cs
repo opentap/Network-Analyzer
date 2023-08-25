@@ -17,11 +17,7 @@ namespace OpenTap.Plugins.PNAX
     public partial class PNAX : ScpiInstrument
     {
         #region Settings
-        [Display("A-Version (WIP)", "When enabled, the instrument driver will provide certain functions A-version compatibility", Group: "Instrument Settings", Order: 2)]
-        
-        public bool isA_Version { get; set; }
         [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 3)]
-        [EnabledIf("isA_Version", true, Invert = true, HideIfDisabled = true)]
         public bool isAlwaysPreset { get; set; }
         #endregion
 
@@ -69,20 +65,19 @@ namespace OpenTap.Plugins.PNAX
             this.QueryErrorAfterCommand = false;
             // TODO:  Open the connection to the instrument here
 
-            if (isA_Version) isAlwaysPreset = false;
+            String[] IDNValues = IdnString.Split(',');
+            if (IDNValues[1].StartsWith("N") && IDNValues[1].EndsWith("A"))
+            {
+                // We have a PNA instrument from the A family i.e. N5235A
+                IsModelA = true;
+                isAlwaysPreset = false;
+            }
 
             if (isAlwaysPreset)
             {
                 ScpiCommand("SYST:FPR");
                 ScpiCommand("DISP:WIND OFF");
                 WaitForOperationComplete();
-            }
-
-            String[] IDNValues = IdnString.Split(',');
-            if (IDNValues[1].StartsWith("N") && IDNValues[1].EndsWith("A"))
-            {
-                // We have a PNA instrument from the A family i.e. N5235A
-                IsModelA = true;
             }
 
             mnum = 1;
