@@ -23,6 +23,22 @@ namespace OpenTap.Plugins.PNAX
         SegmentSweep
     }
 
+    public enum SASourceSweepTypeEnum
+    {
+        [Scpi("CW")]
+        [Display("CW Time")]
+        CWTime,
+        [Scpi("LIN")]
+        [Display("Linear Frequency")]
+        LinearFrequency,
+        [Scpi("POW")]
+        [Display("Power Sweep")]
+        PowerSweep,
+        [Scpi("LFP")]
+        [Display("LinF+Power")]
+        LinFPower,
+    }
+
     public enum SADetectorTypeEnum
     {
         [Scpi("PEAK")]
@@ -86,9 +102,25 @@ namespace OpenTap.Plugins.PNAX
         DREC
     }
 
+    public enum SASourceStateTypeEnum
+    {
+        [Scpi("OFF")]
+        [Display("OFF")]
+        Off,
+        [Scpi("ON")]
+        [Display("ON")]
+        On
+    }
+
+    public enum SASourceSweepOrderTypeEnum
+    {
+        FrequencyPower,
+        PowerFrequency
+    }
 
     public partial class PNAX : ScpiInstrument
     {
+        #region SA Setup
         public double GetSAResolutionBandwidth(int Channel)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:BANDwidth:RESolution?"); ;
@@ -282,5 +314,165 @@ namespace OpenTap.Plugins.PNAX
             string scpi = Scpi.Format("{0}", recvr);
             ScpiCommand($"SENSe{ Channel }:POWer:ATTenuator {scpi},{att}");
         }
+        #endregion
+
+        #region SA Source
+
+        public void SetSASourcePowerMode(int Channel, String port, SASourceStateTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            SetSourcePowerMode(Channel, port, scpi);
+        }
+
+        public void SetSASweepType(int Channel, String src, SASourceSweepTypeEnum saSourceSweepType)
+        {
+            string scpi = Scpi.Format("{0}", saSourceSweepType);
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:SWEep:TYPE {scpi},\"{src}\"");
+        }
+
+        public double GetSAFrequencyStart(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STARt? \"{src}\"");
+        }
+
+        public void SetSAFrequencyStart(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STARt { freq },\"{src}\"");
+        }
+
+        public double GetSAFrequencyStop(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STOP? \"{src}\""); ;
+        }
+
+        public void SetSAFrequencyStop(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STOP { freq },\"{src}\"");
+        }
+
+        public double GetSAFrequencyCW(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:CW? \"{src}\"");
+        }
+
+        public void SetSAFrequencyCW(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:CW { freq },\"{src}\"");
+        }
+
+        public int GetSAFrequencySteps(int Channel)
+        {
+            return ScpiQuery<int>($"SENSe{ Channel }:SA:SOURce:SWEep:POINt:COUNt?");
+        }
+
+        public void SetSAFrequencySteps(int Channel, int steps)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:SWEep:POINt:COUNt { steps }");
+        }
+
+        public int GetSAFrequencyRepeat(int Channel)
+        {
+            return ScpiQuery<int>($"SENSe{ Channel }:SA:SOURce:SWEep:REPeat:COUNt?");
+        }
+
+        public void SetSAFrequencyRepeat(int Channel, int repeats)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:SWEep:REPeat:COUNt { repeats }");
+        }
+
+
+
+
+        public double GetSAPowerStart(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STARt? \"{src}\"");
+        }
+
+        public void SetSAPowerStart(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STARt { freq },\"{src}\"");
+        }
+
+        public double GetSAPowerStop(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STOP? \"{src}\""); ;
+        }
+
+        public void SetSAPowerStop(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STOP { freq },\"{src}\"");
+        }
+
+        public double GetSAPowerLevel(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:VALue? \"{src}\"");
+        }
+
+        public void SetSAPowerLevel(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:VALue { freq },\"{src}\"");
+        }
+
+        public int GetSAPowerSteps(int Channel)
+        {
+            return ScpiQuery<int>($"SENSe{ Channel }:SA:SOURce:POW:SWEep:POINt:COUNt?");
+        }
+
+        public void SetSAPowerSteps(int Channel, int steps)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POW:SWEep:POINt:COUNt { steps }");
+        }
+
+        public int GetSAPowerRepeat(int Channel)
+        {
+            return ScpiQuery<int>($"SENSe{ Channel }:SA:SOURce:POW:SWEep:REPeat:COUNt?");
+        }
+
+        public void SetSAPowerRepeat(int Channel, int repeats)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POW:SWEep:REPeat:COUNt { repeats }");
+        }
+
+
+
+
+        public double GetSAPhaseStart(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STARt? \"{src}\"");
+        }
+
+        public void SetSAPhaseStart(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SOURce{ Channel }:PHASe:STARt { freq },\"{src}\"");
+        }
+
+        public double GetSAPhaseStop(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STOP? \"{src}\""); ;
+        }
+
+        public void SetSAPhaseStop(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SOURce{ Channel }:PHASe:STOP { freq },\"{src}\"");
+        }
+
+        public double GetSAPhaseLevel(int Channel, String src)
+        {
+            return ScpiQuery<double>($"SOURce{ Channel }:PHASe:FIXed? \"{src}\"");
+        }
+
+        public void SetSAPhaseLevel(int Channel, String src, double freq)
+        {
+            ScpiCommand($"SOURce{ Channel }:PHASe:FIXed { freq },\"{src}\"");
+        }
+
+
+        // TODO
+        // Phase Number of Steps
+        // Phase Sweeps per source step
+        // TODO
+
+
+        #endregion
     }
 }

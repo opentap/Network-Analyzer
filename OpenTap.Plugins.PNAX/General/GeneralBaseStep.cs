@@ -43,6 +43,10 @@ namespace OpenTap.Plugins.PNAX
                     {
                         (a as GeneralSingleTraceBaseStep).Channel = value;
                     }
+                    if (a is GeneralBaseStep)
+                    {
+                        (a as GeneralBaseStep).Channel = value;
+                    }
                 }
             }
         }

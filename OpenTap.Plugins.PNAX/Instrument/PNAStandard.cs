@@ -115,6 +115,16 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:BANDwidth { bw }");
         }
 
+        public string GetSourcePowerMode(int Channel, String port)
+        {
+            return ScpiQuery($"SOURce{Channel}:POWer:MODE? \"{port}\"");
+        }
+
+        public void SetSourcePowerMode(int Channel, String port, String mode)
+        {
+            ScpiCommand($"SOURce{Channel}:POWer:MODE {mode}, \"{port}\"");
+        }
+
         public double GetStartPower(int Channel)
         {
             return ScpiQuery<double>($"SOURce{ Channel }:POWer:STARt?"); ;

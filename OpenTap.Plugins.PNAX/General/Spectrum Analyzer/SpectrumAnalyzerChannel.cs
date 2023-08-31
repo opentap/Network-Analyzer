@@ -25,9 +25,11 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             // SA Setup
             SASetup saSetup = new SASetup { IsControlledByParent = true, Channel = this.Channel };
+            SASource saSource = new SASource { IsControlledByParent = true, Channel = this.Channel };
             SANewTrace saNewTrace = new SANewTrace { IsControlledByParent = true, Channel = this.Channel };
 
             this.ChildTestSteps.Add(saSetup);
+            this.ChildTestSteps.Add(saSource);
             this.ChildTestSteps.Add(saNewTrace);
 
         }
