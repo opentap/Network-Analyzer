@@ -59,7 +59,7 @@ namespace OpenTap.Plugins.PNAX
         public bool GetLimitTestOn(int Channel, int mnum)
         {
             bool retVal = false;
-            int state = ScpiQuery<int>($"CALCulate{ Channel }:MEASure{mnum}:LIMit:STATe?");
+            int state = IsModelA ? ScpiQuery<int>($"CALCulate{Channel}:LIMit:STATe?") : ScpiQuery<int>($"CALCulate{ Channel }:MEASure{mnum}:LIMit:STATe?");
             if (state == 1)
             {
                 retVal = true;

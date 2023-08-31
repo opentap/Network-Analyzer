@@ -53,8 +53,7 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.NotSet);
 
             // Supported child steps will provide MetaData to be added to the publish table
-            RunChildSteps(); 
-            bool includePassFail = true;
+            RunChildSteps();
 
             try
             {
@@ -62,7 +61,7 @@ namespace OpenTap.Plugins.PNAX
                 {
                     foreach (int channel in channels)
                     {
-                        List<List<string>> results = PNAX.StoreTraceData(new List<int>() { channel }, includePassFail);
+                        List<List<string>> results = PNAX.StoreTraceData(new List<int>() { channel });
                         PNAX.WaitForOperationComplete();
 
                         // Grab trace number list and remove from list
@@ -85,23 +84,16 @@ namespace OpenTap.Plugins.PNAX
                         List<List<String>> x3 = new List<List<String>>();
                         List<List<String>> x4 = new List<List<String>>();
 
-                        if (includePassFail)
-                        {
-                            xResult = results.Where((item, index) => ((index == 0) || ((index >= 7) && (index % 7 == 0)))).ToList();
-                            yResult = results.Where((item, index) => ((index == 1) || ((index >= 8) && (index % 7 == 1)))).ToList();
+                        xResult = results.Where((item, index) => ((index == 0) || ((index >= 7) && (index % 7 == 0)))).ToList();
+                        yResult = results.Where((item, index) => ((index == 1) || ((index >= 8) && (index % 7 == 1)))).ToList();
 
-                            pf = results.Where((item, index) => ((index == 2) || ((index >= 9) && (index % 7 == 2)))).ToList();
+                        pf = results.Where((item, index) => ((index == 2) || ((index >= 9) && (index % 7 == 2)))).ToList();
 
-                            x1 = results.Where((item, index) => ((index == 3) || ((index >= 10) && (index % 7 == 3)))).ToList();
-                            x2 = results.Where((item, index) => ((index == 4) || ((index >= 11) && (index % 7 == 4)))).ToList();
-                            x3 = results.Where((item, index) => ((index == 5) || ((index >= 12) && (index % 7 == 5)))).ToList();
-                            x4 = results.Where((item, index) => ((index == 6) || ((index >= 13) && (index % 7 == 6)))).ToList();
-                        }
-                        else
-                        {
-                            xResult = results.Where((item, index) => index % 2 == 0).ToList();
-                            yResult = results.Where((item, index) => index % 2 != 0).ToList();
-                        }
+                        x1 = results.Where((item, index) => ((index == 3) || ((index >= 10) && (index % 7 == 3)))).ToList();
+                        x2 = results.Where((item, index) => ((index == 4) || ((index >= 11) && (index % 7 == 4)))).ToList();
+                        x3 = results.Where((item, index) => ((index == 5) || ((index >= 12) && (index % 7 == 5)))).ToList();
+                        x4 = results.Where((item, index) => ((index == 6) || ((index >= 13) && (index % 7 == 6)))).ToList();
+
                         int freqLength = 0;
 
                         List<ResultColumn> resultColumns = new List<ResultColumn>();
@@ -140,54 +132,51 @@ namespace OpenTap.Plugins.PNAX
 
                             }
 
-                            if (includePassFail)
+                            // Find if limit is turned on for this trace
+                            int mnum = int.Parse(FullTraceName[i].Split('_').Last());
+                            bool limitON = PNAX.GetLimitTestOn(channel, mnum);
+
+                            if (limitON)
                             {
-                                // Find if limit is turned on for this trace
-                                int mnum = int.Parse(FullTraceName[i].Split('_').Last());
-                                bool limitON = PNAX.GetLimitTestOn(channel, mnum);
-
-                                if (limitON)
+                                // append global pf
+                                ResultColumn resultColumn = new ResultColumn($"{FullTraceName[i]}_GlobalPF", pf[i].ToArray());
+                                resultColumns.Add(resultColumn);
+                                if (resultColumn.Data.GetValue(0).Equals("Fail"))
                                 {
-                                    // append global pf
-                                    ResultColumn resultColumn = new ResultColumn($"{FullTraceName[i]}_GlobalPF", pf[i].ToArray());
+                                    Log.Warning($"Trace: {FullTraceName[i]} failed limits!");
+                                    UpgradeVerdict(Verdict.Fail);
+                                }
+
+                                // append xaxisvalues
+                                resultColumn = new ResultColumn($"{FullTraceName[i]}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                if (false)
+                                {
                                     resultColumns.Add(resultColumn);
-                                    if (resultColumn.Data.GetValue(0).Equals("Fail"))
-                                    {
-                                        Log.Warning($"Trace: {FullTraceName[i]} failed limits!");
-                                        UpgradeVerdict(Verdict.Fail);
-                                    }
+                                }
 
-                                    // append xaxisvalues
-                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
-                                    if (false)
-                                    {
-                                        resultColumns.Add(resultColumn);
-                                    }
+                                // append pf
+                                List<String> pfByRow = new List<string>();
+                                var arraypf = x2[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();
+                                foreach (var item in arraypf)
+                                {
+                                    Verdict a = item == 1 ? Verdict.Pass : Verdict.Fail;
+                                    pfByRow.Add(a.ToString());
+                                }
+                                resultColumn = new ResultColumn($"{FullTraceName[i]}_PF", pfByRow.ToArray());
+                                resultColumns.Add(resultColumn);
 
-                                    // append pf
-                                    List<String> pfByRow = new List<string>();
-                                    var arraypf = x2[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();
-                                    foreach (var item in arraypf)
-                                    {
-                                        Verdict a = item == 1 ? Verdict.Pass : Verdict.Fail;
-                                        pfByRow.Add(a.ToString());
-                                    }
-                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_PF", pfByRow.ToArray());
+                                // append upperlimit
+                                resultColumn = new ResultColumn($"{FullTraceName[i]}_UL", x3[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                if ((double)resultColumn.Data.GetValue(0) != 3.40282346639E+38)
+                                {
                                     resultColumns.Add(resultColumn);
+                                }
 
-                                    // append upperlimit
-                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_UL", x3[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
-                                    if ((double)resultColumn.Data.GetValue(0) != 3.40282346639E+38)
-                                    {
-                                        resultColumns.Add(resultColumn);
-                                    }
-
-                                    // append lowerlimit
-                                    resultColumn = new ResultColumn($"{FullTraceName[i]}_LL", x4[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
-                                    if ((double)resultColumn.Data.GetValue(0) != -3.40282346639E+38)
-                                    {
-                                        resultColumns.Add(resultColumn);
-                                    }
+                                // append lowerlimit
+                                resultColumn = new ResultColumn($"{FullTraceName[i]}_LL", x4[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                if ((double)resultColumn.Data.GetValue(0) != -3.40282346639E+38)
+                                {
+                                    resultColumns.Add(resultColumn);
                                 }
                             }
                         }
