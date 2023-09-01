@@ -104,7 +104,48 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             RunChildSteps(); //If the step supports child steps.
             PNAX.SetSASourcePowerMode(Channel, CellName, State);
             PNAX.SetSASweepType(Channel, CellName, SASourceSweepType);
+            
+            switch (SASourceSweepType)
+            {
+                case SASourceSweepTypeEnum.CWTime:
+                    PNAX.SetSAFrequencyCW(Channel, CellName, SweepPropertiesCWFreq);
+                    PNAX.SetSAPowerLevel(Channel, CellName, SweepPropertiesPowerLevel);
+                    PNAX.SetSAPhaseLevel(Channel, CellName, SweepPropertiesPhaseLevel);
+                    break;
+                case SASourceSweepTypeEnum.LinearFrequency:
+                    PNAX.SetSAFrequencyStart(Channel, CellName, SweepPropertiesFreqStart);
+                    PNAX.SetSAFrequencyStop(Channel, CellName, SweepPropertiesFreqStop);
+                    PNAX.SetSAFrequencySteps(Channel, SweepPropertiesFreqNumberOfSteps);
+                    PNAX.SetSAFrequencyRepeat(Channel, SweepPropertiesFreqSweepsPerSourceSteps);
 
+                    PNAX.SetSAPowerLevel(Channel, CellName, SweepPropertiesPowerLevel);
+                    PNAX.SetSAPhaseLevel(Channel, CellName, SweepPropertiesPhaseLevel);
+                    break;
+                case SASourceSweepTypeEnum.PowerSweep:
+                    PNAX.SetSAFrequencyCW(Channel, CellName, SweepPropertiesCWFreq);
+
+                    PNAX.SetSAPowerStart(Channel, CellName, SweepPropertiesPowerStart);
+                    PNAX.SetSAPowerStop(Channel, CellName, SweepPropertiesPowerStop);
+                    PNAX.SetSAPowerSteps(Channel, SweepPropertiesPowerNumberOfSteps);
+                    PNAX.SetSAPowerRepeat(Channel, SweepPropertiesPowerSweepsPerSourceSteps);
+
+                    PNAX.SetSAPhaseLevel(Channel, CellName, SweepPropertiesPhaseLevel);
+                    break;
+
+                case SASourceSweepTypeEnum.LinFPower:
+                    PNAX.SetSAFrequencyStart(Channel, CellName, SweepPropertiesFreqStart);
+                    PNAX.SetSAFrequencyStop(Channel, CellName, SweepPropertiesFreqStop);
+                    PNAX.SetSAFrequencySteps(Channel, SweepPropertiesFreqNumberOfSteps);
+                    PNAX.SetSAFrequencyRepeat(Channel, SweepPropertiesFreqSweepsPerSourceSteps);
+
+                    PNAX.SetSAPowerStart(Channel, CellName, SweepPropertiesPowerStart);
+                    PNAX.SetSAPowerStop(Channel, CellName, SweepPropertiesPowerStop);
+                    PNAX.SetSAPowerSteps(Channel, SweepPropertiesPowerNumberOfSteps);
+                    PNAX.SetSAPowerRepeat(Channel, SweepPropertiesPowerSweepsPerSourceSteps);
+
+                    PNAX.SetSAPhaseLevel(Channel, CellName, SweepPropertiesPhaseLevel);
+                    break;
+            }
 
             UpgradeVerdict(Verdict.Pass);
         }
