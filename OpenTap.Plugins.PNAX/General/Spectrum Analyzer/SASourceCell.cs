@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         }
 
         [Display("State", Group: "Sweep Properties", Order: 21)]
-        public SASourceStateTypeEnum State { get; set; }
+        public SAOnOffTypeEnum State { get; set; }
 
         [Display("Type", Group: "Sweep Properties", Order: 22)]
         public SASourceSweepTypeEnum SASourceSweepType { get; set; }
@@ -96,7 +96,22 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         public SASourceCell()
         {
-            State = SASourceStateTypeEnum.Off;
+            State = SAOnOffTypeEnum.Off;
+            SASourceSweepType = SASourceSweepTypeEnum.CWTime;
+
+            SweepPropertiesCWFreq = 1e9;
+            SweepPropertiesPowerLevel = -15;
+            SweepPropertiesPhaseLevel = 0.0;
+
+            SweepPropertiesFreqStart = 1e9;
+            SweepPropertiesFreqStop = 1e9;
+            SweepPropertiesFreqNumberOfSteps = 11;
+            SweepPropertiesFreqSweepsPerSourceSteps = 1;
+
+            SweepPropertiesPowerStart = -15;
+            SweepPropertiesPowerStop = -15;
+            SweepPropertiesPowerNumberOfSteps = 11;
+            SweepPropertiesPowerSweepsPerSourceSteps = 1;
         }
 
         public override void Run()

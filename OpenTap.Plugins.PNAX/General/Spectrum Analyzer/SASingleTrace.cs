@@ -103,6 +103,15 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             this.ChildTestSteps.Add(new TraceLimits() { Channel = this.Channel });
         }
 
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Multi Peak Search", Groups: new[] { "Trace" }, Order: 70)]
+        public override void AddMultiPeakSearch()
+        {
+            this.ChildTestSteps.Add(new MultiPeakSearch() { Channel = this.Channel });
+        }
+
+
         public override void Run()
         {
             int _tnum = 0;

@@ -132,6 +132,14 @@ namespace OpenTap.Plugins.PNAX
         {
         }
 
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Multi Peak Search", Groups: new[] { "Trace" }, Order: 70)]
+        public virtual void AddMultiPeakSearch()
+        {
+        }
+
+
         protected virtual void UpdateTestName()
         {
         }

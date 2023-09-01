@@ -102,7 +102,7 @@ namespace OpenTap.Plugins.PNAX
         DREC
     }
 
-    public enum SASourceStateTypeEnum
+    public enum SAOnOffTypeEnum
     {
         [Scpi("OFF")]
         [Display("OFF")]
@@ -114,7 +114,9 @@ namespace OpenTap.Plugins.PNAX
 
     public enum SASourceSweepOrderTypeEnum
     {
+        [Scpi("FREQ")]
         FrequencyPower,
+        [Scpi("POW")]
         PowerFrequency
     }
 
@@ -314,11 +316,17 @@ namespace OpenTap.Plugins.PNAX
             string scpi = Scpi.Format("{0}", recvr);
             ScpiCommand($"SENSe{ Channel }:POWer:ATTenuator {scpi},{att}");
         }
+
+        public void SetSASweepOrder(int Channel, SASourceSweepOrderTypeEnum sweepOrder)
+        {
+            string scpi = Scpi.Format("{0}", sweepOrder);
+            ScpiCommand($"SENSe{Channel}:SA:SOURce:SWEep:FIRst:DIMension {scpi}");
+        }
         #endregion
 
         #region SA Source
 
-        public void SetSASourcePowerMode(int Channel, String port, SASourceStateTypeEnum state)
+        public void SetSASourcePowerMode(int Channel, String port, SAOnOffTypeEnum state)
         {
             string scpi = Scpi.Format("{0}", state);
             SetSourcePowerMode(Channel, port, scpi);
@@ -332,32 +340,32 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetSAFrequencyStart(int Channel, String src)
         {
-            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STARt? \"{src}\"");
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:FREQuency:STARt? \"{src}\"");
         }
 
         public void SetSAFrequencyStart(int Channel, String src, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STARt { freq },\"{src}\"");
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:FREQuency:STARt { freq },\"{src}\"");
         }
 
         public double GetSAFrequencyStop(int Channel, String src)
         {
-            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STOP? \"{src}\""); ;
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:FREQuency:STOP? \"{src}\""); ;
         }
 
         public void SetSAFrequencyStop(int Channel, String src, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STOP { freq },\"{src}\"");
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:FREQuency:STOP { freq },\"{src}\"");
         }
 
         public double GetSAFrequencyCW(int Channel, String src)
         {
-            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:CW? \"{src}\"");
+            return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:FREQuency:CW? \"{src}\"");
         }
 
         public void SetSAFrequencyCW(int Channel, String src, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:CW { freq },\"{src}\"");
+            ScpiCommand($"SENSe{ Channel }:SA:SOURce:FREQuency:CW { freq },\"{src}\"");
         }
 
         public int GetSAFrequencySteps(int Channel)

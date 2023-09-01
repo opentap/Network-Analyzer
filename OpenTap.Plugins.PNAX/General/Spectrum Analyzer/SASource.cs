@@ -75,6 +75,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
             PNAX.SetCoupledTonePowers(Channel, PortPowersCoupled);
 
+            PNAX.SetSASweepOrder(Channel, SourceSweepOrder);
 
             UpgradeVerdict(Verdict.Pass);
         }
