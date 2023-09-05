@@ -155,5 +155,38 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("SA Data Acquisition Mode", SASweepType));
+
+            switch (SASweepType)
+            {
+                case SASweepTypeEnum.LinearFrequency:
+                    retVal.Add(("SA Start", SweepPropertiesStart));
+                    retVal.Add(("SA Stop", SweepPropertiesStop));
+                    retVal.Add(("SA Points", SweepPropertiesPoints));
+                    break;
+                case SASweepTypeEnum.SegmentSweep:
+                    //SetSegmentValues();
+                    break;
+            }
+            retVal.Add(("SA Resolution Bandwidth", ResolutionBandwidth));
+            retVal.Add(("SA Resolution Bandwith Auto", ResolutionBandwithAuto));
+            retVal.Add(("SA Video Bandwidth", VideoBandwidth));
+            retVal.Add(("SA Video Bandwith Auto", VideoBandwithAuto));
+            retVal.Add(("SA Detector Type", DetectorType));
+            retVal.Add(("SA Detector Type Bypass", DetectorTypeBypass));
+            retVal.Add(("SA Video Average Type", VideoAverageType));
+            retVal.Add(("SA Rcvr A Attenuator", RcvrAAttenuator));
+            retVal.Add(("SA Rcvr B Attenuator", RcvrBAttenuator));
+            retVal.Add(("SA Rcvr C Attenuator", RcvrCAttenuator));
+            retVal.Add(("SA Rcvr D Attenuator", RcvrDAttenuator));
+
+            return retVal;
+        }
     }
 }

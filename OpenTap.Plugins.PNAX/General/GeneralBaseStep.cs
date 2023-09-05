@@ -19,9 +19,33 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
         [Browsable(false)]
         public bool IsControlledByParent { get; set; } = false;
+        private PNAX _PNAX;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
+        public virtual PNAX PNAX
+        {
+            get
+            {
+                return _PNAX;
+            }
+            set
+            {
+                _PNAX = value;
+
+                // Update traces
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is GeneralSingleTraceBaseStep)
+                    {
+                        (a as GeneralSingleTraceBaseStep).PNAX = value;
+                    }
+                    if (a is GeneralBaseStep)
+                    {
+                        (a as GeneralBaseStep).PNAX = value;
+                    }
+                }
+            }
+        }
 
         private int _Channel;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]

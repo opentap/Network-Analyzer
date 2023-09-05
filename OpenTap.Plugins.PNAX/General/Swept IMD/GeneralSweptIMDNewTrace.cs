@@ -235,7 +235,7 @@ namespace OpenTap.Plugins.PNAX
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
             UpdateSweptIMDTestName();
-            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { Meas = SweptIMDTraceEnum.PwrMain});
+            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = SweptIMDTraceEnum.PwrMain});
         }
 
         protected override void AddNewTrace()
@@ -244,7 +244,7 @@ namespace OpenTap.Plugins.PNAX
 
             if (Enum.TryParse<SweptIMDTraceEnum>(ParamName, out sweptIMD))
             {
-                this.ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { Meas = sweptIMD, Channel = this.Channel });
+                this.ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = sweptIMD, Channel = this.Channel });
             }
         }
 

@@ -19,6 +19,9 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
         [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 2)]
         public bool isAlwaysPreset { get; set; }
+
+        [Display("External Devices Policy", "Set and return whether External Devices remain activated or are de-activated when the VNA is Preset or when a Instrument State is recalled.\nOFF (0)  External devices remain active when the VNA is Preset or when a Instrument State is recalled.\nON (1)  External devices are de-activated (SYST:CONF:EDEV:STAT to OFF) when the VNA is Preset or when a Instrument State is recalled.", Group: "Instrument Settings", Order: 2)]
+        public bool ExternalDevices { get; set; }
         #endregion
 
         public StandardChannelValues DefaultStandardChannelValues;
@@ -44,6 +47,7 @@ namespace OpenTap.Plugins.PNAX
         {
             Name = "PNA-X";
             isAlwaysPreset = true;
+            ExternalDevices = true;
         }
 
         /// <summary>
@@ -65,7 +69,19 @@ namespace OpenTap.Plugins.PNAX
             this.QueryErrorAfterCommand = false;
             // TODO:  Open the connection to the instrument here
 
-            if(this.isAlwaysPreset)
+            //if (this.ExternalDevices)
+            //{
+            //    ScpiCommand("SYSTem:PREFerences:ITEM:EDEV:DPOLicy ON");
+            //    WaitForOperationComplete();
+            //}
+            //else
+            //{
+            //    ScpiCommand("SYSTem:PREFerences:ITEM:EDEV:DPOLicy OFF");
+            //    WaitForOperationComplete();
+            //}
+
+
+            if (this.isAlwaysPreset)
             {
                 ScpiCommand("SYST:FPR");
                 ScpiCommand("DISP:WIND OFF");
@@ -79,6 +95,14 @@ namespace OpenTap.Plugins.PNAX
                 IsModelA = true;
             }
 
+            mnum = 1;
+        }
+
+        public void Preset()
+        {
+            ScpiCommand("SYST:FPR");
+            ScpiCommand("DISP:WIND OFF");
+            WaitForOperationComplete();
             mnum = 1;
         }
 

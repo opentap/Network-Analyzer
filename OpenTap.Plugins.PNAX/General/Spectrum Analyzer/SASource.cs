@@ -43,10 +43,15 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Display("RF source sweep order", Group: "Sweep", Order: 30)]
         public SASourceSweepOrderTypeEnum SourceSweepOrder { get; set; }
 
+        [Output]
+        [Browsable(true)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
+        public List<(string, object)> MetaData { get; private set; }
         #endregion
 
         public SASource()
         {
+            MetaData = new List<(string, object)>();
             PowerOnAllChannels = true;
             PortPowersCoupled = false;
 
@@ -79,5 +84,40 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            UpdateMetaData();
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(("SA Power On All Channels", PowerOnAllChannels));
+            retVal.Add(("SA Port Powers Coupled", PortPowersCoupled));
+            retVal.Add(("SA Source Sweep Order", SourceSweepOrder));
+
+            foreach(var a in MetaData)
+            {
+                retVal.Add(a);
+            }
+
+            return retVal;
+        }
+
+        [Browsable(true)]
+        [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
+        public void UpdateMetaData()
+        {
+            MetaData = new List<(string, object)>();
+
+            foreach (var ch in this.ChildTestSteps)
+            {
+                List<(string, object)> ret = (ch as SASourceCell).GetMetaData();
+                foreach (var it in ret)
+                {
+                    MetaData.Add(it);
+                }
+            }
+        }
+
     }
 }

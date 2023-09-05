@@ -9,30 +9,31 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+//using Newtonsoft.Json;
 
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Store Marker Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
-    public class StoreMarkerData : TestStep
+    public class StoreMarkerData : StoreDataBase
     {
         #region Settings
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
-
-
-        [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10)]
-        public List<int> channels { get; set; }
         #endregion
 
         public StoreMarkerData()
         {
             channels = new List<int> { };
+            MetaData = new List<(string, object)>();
         }
 
         public override void Run()
         {
+            MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
+
+            // Supported child steps will provide MetaData to be added to the publish table
+            RunChildSteps();
 
             foreach (var channel in channels)
             {
@@ -116,6 +117,28 @@ namespace OpenTap.Plugins.PNAX
                             ResultNames.Add(tracename);
                             ResultValues.Add(mrkrY);
 
+                            //if MetaData available
+                            if ((MetaData != null) && (MetaData.Count > 0))
+                            {
+                                // for every item in metadata
+                                for (int i = 0; i < MetaData.Count; i++)
+                                {
+
+                                    object o = MetaData[i].Item2;
+                                    Type t = MetaData[i].Item2.GetType();
+                                    //MetaData[i].Item2.GetType().TypeHandle castedObject = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(o), MetaData[i].Item2.GetType());
+
+                                    ResultNames.Add(MetaData[i].Item1);
+
+                                    //var r = Tool.DynamicCast(MetaData[i].Item2, t);
+                                    //var a = ConvertObject<t>(MetaData[i].Item2);
+
+                                    //object x = Activator.CreateInstance(t, MetaData[i].Item2);
+
+                                    ResultValues.Add((IConvertible)MetaData[i].Item2);
+                                }
+                            }
+
                             Results.Publish($"Channel_Markers_{channel.ToString()}", ResultNames, ResultValues.ToArray());
 
                         }
@@ -127,5 +150,27 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        public T ConvertObject<T>(object input)
+        {
+            return (T)Convert.ChangeType(input, typeof(T));
+        }
+
     }
+
+    public static class Tool
+    {
+        public static object CastTo<T>(object value) where T : class
+        {
+            return value as T;
+        }
+
+        private static readonly MethodInfo CastToInfo = typeof(Tool).GetMethod("CastTo");
+
+        public static object DynamicCast(object source, Type targetType)
+        {
+            return CastToInfo.MakeGenericMethod(new[] { targetType }).Invoke(null, new[] { source });
+        }
+    }
+
 }

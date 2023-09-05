@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
 
         public StandardNewTrace()
         {
-            ChildTestSteps.Add(new StandardSingleTrace() { Meas = StandardTraceEnum.S11});
+            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = StandardTraceEnum.S11});
         }
 
         [Browsable(false)]
@@ -68,7 +68,7 @@ namespace OpenTap.Plugins.PNAX
             StandardTraceEnum standardTrace;
             if (Enum.TryParse<StandardTraceEnum>(Meas.ToString(), out standardTrace))
             {
-                this.ChildTestSteps.Add(new StandardSingleTrace() { Meas = standardTrace, Channel = this.Channel });
+                this.ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = standardTrace, Channel = this.Channel });
             }
         }
 

@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         public SANewTrace()
         {
-            ChildTestSteps.Add(new SASingleTrace() { Meas = SATraceEnum.B });
+            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = SATraceEnum.B });
         }
 
         public override void Run()
@@ -59,9 +59,18 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             SATraceEnum saTrace;
             if (Enum.TryParse<SATraceEnum>(Meas.ToString(), out saTrace))
             {
-                this.ChildTestSteps.Add(new SASingleTrace() { Meas = saTrace, Channel = this.Channel });
+                this.ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = saTrace, Channel = this.Channel });
             }
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            return retVal;
+        }
+
 
     }
 }

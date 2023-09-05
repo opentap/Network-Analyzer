@@ -164,5 +164,53 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(String, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(($"SA {CellName} Source Power Mode", SASourceSweepType));
+
+            switch (SASourceSweepType)
+            {
+                case SASourceSweepTypeEnum.CWTime:
+                    retVal.Add(($"SA {CellName} CW Freq", SweepPropertiesCWFreq));
+                    retVal.Add(($"SA {CellName} Power Level", SweepPropertiesPowerLevel));
+                    retVal.Add(($"SA {CellName} Phase Level", SweepPropertiesPhaseLevel));
+                    break;
+                case SASourceSweepTypeEnum.LinearFrequency:
+                    retVal.Add(($"SA {CellName} Freq Start", SweepPropertiesFreqStart));
+                    retVal.Add(($"SA {CellName} Freq Stop", SweepPropertiesFreqStop));
+                    retVal.Add(($"SA {CellName} Freq Number Of Steps", SweepPropertiesFreqNumberOfSteps));
+                    retVal.Add(($"SA {CellName} Freq Sweeps Per Source Steps", SweepPropertiesFreqSweepsPerSourceSteps));
+                    retVal.Add(($"SA {CellName} Power Level", SweepPropertiesPowerLevel));
+                    retVal.Add(($"SA {CellName} Phase Level", SweepPropertiesPhaseLevel));
+                    break;
+                case SASourceSweepTypeEnum.PowerSweep:
+                    retVal.Add(($"SA {CellName} CW Freq", SweepPropertiesCWFreq));
+                    retVal.Add(($"SA {CellName} Power Start", SweepPropertiesPowerStart));
+                    retVal.Add(($"SA {CellName} Power Stop", SweepPropertiesPowerStop));
+                    retVal.Add(($"SA {CellName} Power Number Of Steps", SweepPropertiesPowerNumberOfSteps));
+                    retVal.Add(($"SA {CellName} Power Sweeps Per Source Steps", SweepPropertiesPowerSweepsPerSourceSteps));
+                    retVal.Add(($"SA {CellName} Phase Level", SweepPropertiesPhaseLevel));
+                    break;
+
+                case SASourceSweepTypeEnum.LinFPower:
+                    retVal.Add(($"SA {CellName} Freq Start", SweepPropertiesFreqStart));
+                    retVal.Add(($"SA {CellName} Freq Stop", SweepPropertiesFreqStop));
+                    retVal.Add(($"SA {CellName} Freq Number Of Steps", SweepPropertiesFreqNumberOfSteps));
+                    retVal.Add(($"SA {CellName} Freq Sweeps Per Source Steps", SweepPropertiesFreqSweepsPerSourceSteps));
+                    retVal.Add(($"SA {CellName} Power Start", SweepPropertiesPowerStart));
+                    retVal.Add(($"SA {CellName} Power Stop", SweepPropertiesPowerStop));
+                    retVal.Add(($"SA {CellName} Power Number Of Steps", SweepPropertiesPowerNumberOfSteps));
+                    retVal.Add(($"SA {CellName} Power Sweeps Per Source Steps", SweepPropertiesPowerSweepsPerSourceSteps));
+                    retVal.Add(($"SA {CellName} Phase Level", SweepPropertiesPhaseLevel));
+                    break;
+            }
+
+
+            return retVal;
+        }
     }
 }
