@@ -27,7 +27,7 @@ namespace OpenTap.Plugins.PNAX
 
         public Marker()
         {
-
+            IsControlledByParent = true;
         }
 
         public override void Run()

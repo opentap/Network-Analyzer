@@ -309,7 +309,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
         public override void AddTraceFormat()
         {
-            this.ChildTestSteps.Add(new TraceFormat() { Channel = this.Channel });
+            this.ChildTestSteps.Add(new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
         [Browsable(true)]
@@ -317,7 +317,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
         public override void AddTraceTitle()
         {
-            this.ChildTestSteps.Add(new TraceTitle() { Channel = this.Channel });
+            this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
         [Browsable(true)]
@@ -325,7 +325,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
         public override void AddMarker()
         {
-            this.ChildTestSteps.Add(new Marker() { Channel = this.Channel, mkr = NextMarker() });
+            this.ChildTestSteps.Add(new Marker() { PNAX = this.PNAX, Channel = this.Channel, mkr = NextMarker() });
         }
 
         [Browsable(true)]
@@ -333,7 +333,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
         public override void AddTraceLimits()
         {
-            this.ChildTestSteps.Add(new TraceLimits() { Channel = this.Channel });
+            this.ChildTestSteps.Add(new TraceLimits() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
         public override void Run()
