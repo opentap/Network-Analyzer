@@ -33,6 +33,7 @@ namespace OpenTap.Plugins.PNAX
 
         public MultiPeakSearch()
         {
+            IsControlledByParent = true;
             PeakThreshold = 0.003;
             PeakExcursion = 0.001;
             PeakPolarity = SAMultiPeakSearchPolarityEnumType.POS;

@@ -43,6 +43,10 @@ namespace OpenTap.Plugins.PNAX
                     {
                         (a as ConverterBaseStep).PNAX = value;
                     }
+                    if (a is GeneralBaseStep)
+                    {
+                        (a as GeneralBaseStep).PNAX = value;
+                    }
                 }
             }
         }
