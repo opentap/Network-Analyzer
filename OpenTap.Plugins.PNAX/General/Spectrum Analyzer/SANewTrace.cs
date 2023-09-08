@@ -39,14 +39,18 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = SATraceEnum.B });
         }
 
-        public override void Run()
+        public override void PrePlanRun()
         {
+            base.PrePlanRun();
+
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
             PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DELete \'CH{Channel.ToString()}_DUMMY_1\'");
+        }
 
-
+        public override void Run()
+        {
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.

@@ -34,13 +34,18 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         }
 
-        public override void Run()
+        public override void PrePlanRun()
         {
+            base.PrePlanRun();
+
             int traceid = PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
             PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_1\',\'Spectrum Analyzer\',\'B\'");
+        }
 
+        public override void Run()
+        {
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.

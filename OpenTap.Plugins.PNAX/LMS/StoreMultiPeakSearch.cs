@@ -11,9 +11,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace OpenTap.Plugins.PNAX.LMS
+namespace OpenTap.Plugins.PNAX
 {
-    [Display("StoreMultiPeakSearch", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Insert a description here")]
+    [Display("Multi Peak Search", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Insert a description here")]
     public class StoreMultiPeakSearch : TestStep
     {
         #region Settings
@@ -35,10 +35,39 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            // Execute Multi peak search
-            PNAX.MultiPeakSearchExecute(Channel, mnum);
+            // if Sweep Mode is LinFreq
+            SASourceSweepTypeEnum sweepType = PNAX.GetSASweepType(Channel, "Port 1");
+            if (sweepType == SASourceSweepTypeEnum.LinearFrequency)
+            {
+                //  setup manual trigger
+                PNAX.SetTriggerSource(TriggerSourceEnumType.MAN);
+                // set sweep trigger mode
+                PNAX.SetTriggerMode(Channel, TriggerModeEnumType.SWE);
+                // set single trigger
+                PNAX.SetSweepMode(Channel, SweepModeEnumType.SING);
 
-            // Grab all markers and publish
+                // for each sweep rep
+                int reps = PNAX.GetSAFrequencySteps(Channel);
+                for (int rep = 0; rep < reps; rep++)
+                {
+                    Log.Info($"Rep {rep} of {reps}");
+                    PNAX.SendTrigger(1);
+                    PNAX.WaitForOperationComplete();
+                    // Execute Multi peak search
+                    PNAX.MultiPeakSearchExecute(Channel, mnum);
+
+                    // Store Markers
+                    RunChildSteps();
+
+                }
+            }
+            else
+            {
+                // Execute Multi peak search
+                PNAX.MultiPeakSearchExecute(Channel, mnum);
+
+                // Grab all markers and publish
+            }
 
             UpgradeVerdict(Verdict.Pass);
         }

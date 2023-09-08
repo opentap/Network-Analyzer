@@ -111,9 +111,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             this.ChildTestSteps.Add(new MultiPeakSearch() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
-
-        public override void Run()
+        public override void PrePlanRun()
         {
+            base.PrePlanRun();
+
             int _tnum = 0;
             int _mnum = 0;
             String _MeasName = "";
@@ -122,7 +123,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             tnum = _tnum;
             mnum = _mnum;
             MeasName = _MeasName;
+        }
 
+        public override void Run()
+        {
             RunChildSteps(); //If the step supports child steps.
 
 

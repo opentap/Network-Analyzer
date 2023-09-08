@@ -13,6 +13,51 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public enum TriggerSourceEnumType
+    {
+        [Scpi("EXT")]
+        [Display("External")]
+        EXT,
+        [Scpi("IMM")]
+        [Display("Internal")]
+        IMM,
+        [Scpi("MAN")]
+        [Display("Manual")]
+        MAN
+    }
+
+    public enum TriggerModeEnumType
+    {
+        [Scpi("CHAN")]
+        [Display("Channel")]
+        CHAN,
+        [Scpi("SWE")]
+        [Display("Sweep")]
+        SWE,
+        [Scpi("POIN")]
+        [Display("Point")]
+        POIN,
+        [Scpi("TRAC")]
+        [Display("Trace")]
+        TRAC
+    }
+
+    public enum SweepModeEnumType
+    {
+        [Scpi("HOLD")]
+        [Display("Hold")]
+        HOLD,
+        [Scpi("CONT")]
+        [Display("Continuous")]
+        CONT,
+        [Scpi("GRO")]
+        [Display("Groups")]
+        GRO,
+        [Scpi("SING")]
+        [Display("Single")]
+        SING
+    }
+
     [Display("PNA-X", Group: "PNA-X", Description: "Insert a description here")]
     public partial class PNAX : ScpiInstrument
     {
@@ -224,6 +269,29 @@ namespace OpenTap.Plugins.PNAX
             String strRet = base.ScpiQuery(query, isSilent);
             strRet = strRet.Replace("\n", "");
             return strRet;
+        }
+
+        public void SetTriggerSource(TriggerSourceEnumType trigerSource)
+        {
+            string scpi = Scpi.Format("{0}", trigerSource);
+            ScpiCommand($"TRIGger:SOURce {scpi}");
+        }
+
+        public void SetTriggerMode(int Channel, TriggerModeEnumType triggerMode)
+        {
+            string scpi = Scpi.Format("{0}", triggerMode);
+            ScpiCommand($"SENSe{Channel}:SWEep:TRIGger:MODE {scpi}");
+        }
+
+        public void SetSweepMode(int Channel, SweepModeEnumType sweepMode)
+        {
+            string scpi = Scpi.Format("{0}", sweepMode);
+            ScpiCommand($"SENSe{Channel}:SWEep:MODE {scpi}");
+        }
+
+        public void SendTrigger(int Channel)
+        {
+            ScpiCommand($"INITiate{Channel}:IMMediate");
         }
     }
 }

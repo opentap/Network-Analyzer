@@ -332,6 +332,12 @@ namespace OpenTap.Plugins.PNAX
             SetSourcePowerMode(Channel, port, scpi);
         }
 
+        public SASourceSweepTypeEnum GetSASweepType(int Channel, String src)
+        {
+            SASourceSweepTypeEnum retVal = ScpiQuery<SASourceSweepTypeEnum>($"SENSe{ Channel }:SA:SOURce:SWEep:TYPE? \"{src}\"");
+            return retVal;
+        }
+
         public void SetSASweepType(int Channel, String src, SASourceSweepTypeEnum saSourceSweepType)
         {
             string scpi = Scpi.Format("{0}", saSourceSweepType);
