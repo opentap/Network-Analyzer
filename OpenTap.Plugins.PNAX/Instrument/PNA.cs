@@ -293,5 +293,13 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"INITiate{Channel}:IMMediate");
         }
+
+        public List<String> SourceCatalog(int Channel)
+        {
+            String retString = ScpiQuery($"SOURce{Channel}:CATalog?");
+            retString = retString.Replace("\"", "");
+            List<String> retVal = retString.Split(',').ToList<String>();
+            return retVal;
+        }
     }
 }

@@ -26,19 +26,48 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
         public int mnum { get; set; }
+
+        [Browsable(false)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
+        public List<(string, object)> MetaData { get; private set; }
         #endregion
 
         public StoreMultiPeakSearch()
         {
+            MetaData = new List<(string, object)>();
 
         }
 
         public override void Run()
         {
             // if Sweep Mode is LinFreq
-            SASourceSweepTypeEnum sweepType = PNAX.GetSASweepType(Channel, "Port 1");
-            if (sweepType == SASourceSweepTypeEnum.LinearFrequency)
+            bool IsLinearFrequencySweep = false;
+            List<String> sources = PNAX.SourceCatalog(Channel);
+            List<String> LinFreSources = new List<string>();
+            Dictionary<String, double> SourceCellSweepValues = new Dictionary<string, double>();
+
+            // Find all enabled sources that are LinearFrequency Sweep type
+            foreach (String source in sources)
             {
+                SASourceSweepTypeEnum sweepType = PNAX.GetSASweepType(Channel, source);
+                SAOnOffTypeEnum state = PNAX.GetSASourcePowerMode(Channel, source);
+                if ((sweepType == SASourceSweepTypeEnum.LinearFrequency) && (state == SAOnOffTypeEnum.On))
+                {
+                    IsLinearFrequencySweep = true;
+                    LinFreSources.Add(source);
+
+                    double start = PNAX.GetSAFrequencyStart(Channel, source);
+                    double stop = PNAX.GetSAFrequencyStop(Channel, source);
+                    SourceCellSweepValues.Add($"{source}_start", start);
+                    SourceCellSweepValues.Add($"{source}_stop", stop);
+                }
+            }
+
+            if (IsLinearFrequencySweep)
+            {
+                // get values
+                int steps = PNAX.GetSAFrequencySteps(Channel);
+
                 //  setup manual trigger
                 PNAX.SetTriggerSource(TriggerSourceEnumType.MAN);
                 // set sweep trigger mode
@@ -57,8 +86,13 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.MultiPeakSearchExecute(Channel, mnum);
 
                     // Store Markers
+                    MetaData = new List<(string, object)>();
+                    MetaData.Add(("Sweep Step", rep+1));
+                    foreach (String source in LinFreSources)
+                    {
+                        MetaData.Add(($"{source} Freq", GetCurrentSweepFreq(SourceCellSweepValues[$"{source}_start"], SourceCellSweepValues[$"{source}_stop"], steps, rep)));
+                    }
                     RunChildSteps();
-
                 }
             }
             else
@@ -70,6 +104,14 @@ namespace OpenTap.Plugins.PNAX
             }
 
             UpgradeVerdict(Verdict.Pass);
+        }
+
+        private double GetCurrentSweepFreq(double start, double stop, int steps, int currentStep)
+        {
+            double retVal = double.NaN;
+            double stepsize = (stop - start) / (steps - 1);
+            retVal = start + (currentStep * stepsize);
+            return retVal;
         }
     }
 }

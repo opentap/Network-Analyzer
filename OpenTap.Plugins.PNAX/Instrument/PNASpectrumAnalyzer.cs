@@ -326,6 +326,12 @@ namespace OpenTap.Plugins.PNAX
 
         #region SA Source
 
+        public SAOnOffTypeEnum GetSASourcePowerMode(int Channel, String port)
+        {
+            SAOnOffTypeEnum retVal = ScpiQuery<SAOnOffTypeEnum>($"SOURce{Channel}:POWer:MODE? \"{port}\"");
+            return retVal;
+        }
+
         public void SetSASourcePowerMode(int Channel, String port, SAOnOffTypeEnum state)
         {
             string scpi = Scpi.Format("{0}", state);

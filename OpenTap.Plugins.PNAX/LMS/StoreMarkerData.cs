@@ -124,19 +124,20 @@ namespace OpenTap.Plugins.PNAX
                                 // for every item in metadata
                                 for (int i = 0; i < MetaData.Count; i++)
                                 {
-
-                                    object o = MetaData[i].Item2;
-                                    Type t = MetaData[i].Item2.GetType();
-                                    //MetaData[i].Item2.GetType().TypeHandle castedObject = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(o), MetaData[i].Item2.GetType());
-
                                     ResultNames.Add(MetaData[i].Item1);
-
-                                    //var r = Tool.DynamicCast(MetaData[i].Item2, t);
-                                    //var a = ConvertObject<t>(MetaData[i].Item2);
-
-                                    //object x = Activator.CreateInstance(t, MetaData[i].Item2);
-
                                     ResultValues.Add((IConvertible)MetaData[i].Item2);
+                                }
+                            }
+
+                            // if parent metadata
+                            List<(string, object)> ParentMetaData = GetParent<StoreMultiPeakSearch>().MetaData;
+                            if ((ParentMetaData != null) && (ParentMetaData.Count > 0))
+                            {
+                                // for every item in metadata
+                                for (int i = 0; i < ParentMetaData.Count; i++)
+                                {
+                                    ResultNames.Add(ParentMetaData[i].Item1);
+                                    ResultValues.Add((IConvertible)ParentMetaData[i].Item2);
                                 }
                             }
 
@@ -152,26 +153,6 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        public T ConvertObject<T>(object input)
-        {
-            return (T)Convert.ChangeType(input, typeof(T));
-        }
-
-    }
-
-    public static class Tool
-    {
-        public static object CastTo<T>(object value) where T : class
-        {
-            return value as T;
-        }
-
-        private static readonly MethodInfo CastToInfo = typeof(Tool).GetMethod("CastTo");
-
-        public static object DynamicCast(object source, Type targetType)
-        {
-            return CastToInfo.MakeGenericMethod(new[] { targetType }).Invoke(null, new[] { source });
-        }
     }
 
 }
