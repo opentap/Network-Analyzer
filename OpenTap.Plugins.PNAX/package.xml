@@ -23,6 +23,9 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Std-GC.csa" SourcePath="Examples/Std-GC.csa" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard and SMC - StoreTrace with MetaData.TapPlan" SourcePath="Examples/Standard and SMC - StoreTrace with MetaData.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard with limits.TapPlan" SourcePath="Examples/Standard with limits.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA-StoreMarker.TapPlan" SourcePath="Examples/SA-StoreMarker.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA LinFreq-StoreMarker.TapPlan" SourcePath="Examples/SA LinFreq-StoreMarker.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA LinFreq Sweep implemented with Sweep.TapPlan" SourcePath="Examples/SA LinFreq Sweep implemented with Sweep.TapPlan" ></File>
 
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Cal-Image.TapPlan" SourcePath="Examples/Cal-Image.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 1.png" SourcePath="Examples/Images/Sample Image 1.png" ></File>

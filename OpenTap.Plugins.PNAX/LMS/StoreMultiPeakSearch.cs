@@ -101,6 +101,7 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.MultiPeakSearchExecute(Channel, mnum);
 
                 // Grab all markers and publish
+                RunChildSteps();
             }
 
             UpgradeVerdict(Verdict.Pass);

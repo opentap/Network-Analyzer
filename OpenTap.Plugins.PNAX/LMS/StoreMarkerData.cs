@@ -130,17 +130,19 @@ namespace OpenTap.Plugins.PNAX
                             }
 
                             // if parent metadata
-                            List<(string, object)> ParentMetaData = GetParent<StoreMultiPeakSearch>().MetaData;
-                            if ((ParentMetaData != null) && (ParentMetaData.Count > 0))
+                            if (this.Parent is StoreMultiPeakSearch)
                             {
-                                // for every item in metadata
-                                for (int i = 0; i < ParentMetaData.Count; i++)
+                                List<(string, object)> ParentMetaData = GetParent<StoreMultiPeakSearch>().MetaData;
+                                if ((ParentMetaData != null) && (ParentMetaData.Count > 0))
                                 {
-                                    ResultNames.Add(ParentMetaData[i].Item1);
-                                    ResultValues.Add((IConvertible)ParentMetaData[i].Item2);
+                                    // for every item in metadata
+                                    for (int i = 0; i < ParentMetaData.Count; i++)
+                                    {
+                                        ResultNames.Add(ParentMetaData[i].Item1);
+                                        ResultValues.Add((IConvertible)ParentMetaData[i].Item2);
+                                    }
                                 }
                             }
-
                             Results.Publish($"Channel_Markers_{channel.ToString()}", ResultNames, ResultValues.ToArray());
 
                         }

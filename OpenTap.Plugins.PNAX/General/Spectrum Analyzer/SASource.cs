@@ -73,6 +73,14 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         }
 
+        [Browsable(true)]
+        [Display("Add Source Cell", Group: "Source Cells", Order: 40)]
+        public void AddSourceCell()
+        {
+            SASourceCell newSource = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Device0" };
+            this.ChildTestSteps.Add(newSource);
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.
