@@ -67,6 +67,13 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("External Devices Policy", "Set and return whether External Devices remain activated or are de-activated when the VNA is Preset or when a Instrument State is recalled.\nOFF (0)  External devices remain active when the VNA is Preset or when a Instrument State is recalled.\nON (1)  External devices are de-activated (SYST:CONF:EDEV:STAT to OFF) when the VNA is Preset or when a Instrument State is recalled.", Group: "Instrument Settings", Order: 2)]
         public bool ExternalDevices { get; set; }
+
+        [Display("Query for Errors", "Send SYST:ERR after every command. Useful for debugging", Group: "Instrument Settings", Order: 3)]
+        public bool IsQueryForErrors { get; set; }
+
+        [Display("Query for OPC", "Send OPC? after every command. Useful for debugging", Group: "Instrument Settings", Order: 4)]
+        public bool IsWaitForOpc { get; set; }
+        
         #endregion
 
         public StandardChannelValues DefaultStandardChannelValues;
@@ -93,6 +100,8 @@ namespace OpenTap.Plugins.PNAX
             Name = "PNA-X";
             isAlwaysPreset = true;
             ExternalDevices = true;
+            IsQueryForErrors = true;
+            IsWaitForOpc = true;
         }
 
         /// <summary>
@@ -160,7 +169,7 @@ namespace OpenTap.Plugins.PNAX
             base.Close();
         }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Display("Update Default Values", Group: "Instrument Settings", Order: 3)]
         public void UpdateDefaultValues()
         {
@@ -254,13 +263,20 @@ namespace OpenTap.Plugins.PNAX
         {
             base.ScpiCommand(command);
 
-            WaitForOperationComplete();
-            List<ScpiError> errors = base.QueryErrors();
-
-            if (errors.Count > 0)
+            if (IsWaitForOpc)
             {
-                String errorString = String.Join(",", errors.ToArray());
-                throw new Exception($"Error: {errorString} while sending command: {command}");
+                WaitForOperationComplete();
+            }
+
+            if (IsQueryForErrors)
+            {
+                List<ScpiError> errors = base.QueryErrors();
+
+                if (errors.Count > 0)
+                {
+                    String errorString = String.Join(",", errors.ToArray());
+                    throw new Exception($"Error: {errorString} while sending command: {command}");
+                }
             }
         }
 

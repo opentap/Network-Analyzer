@@ -34,6 +34,14 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         }
 
+        [Browsable(true)]
+        [Display("Add Advanced Data", Groups: new[] { "Advanced" }, Order: 30)]
+        public void AddAdvancedData()
+        {
+            SAData sAData = new SAData() { IsControlledByParent = true, Channel = this.Channel, PNAX = this.PNAX };
+            this.ChildTestSteps.Add(sAData);
+        }
+
         public override void PrePlanRun()
         {
             base.PrePlanRun();

@@ -106,10 +106,10 @@ namespace OpenTap.Plugins.PNAX
     {
         [Scpi("OFF")]
         [Display("OFF")]
-        Off,
+        Off = 0,
         [Scpi("ON")]
         [Display("ON")]
-        On
+        On = 1
     }
 
     public enum SASourceSweepOrderTypeEnum
@@ -118,6 +118,19 @@ namespace OpenTap.Plugins.PNAX
         FrequencyPower,
         [Scpi("POW")]
         PowerFrequency
+    }
+
+    public enum SADataTypeEnum
+    {
+        [Display("Float LogMag (dBm)")]
+        [Scpi("MAGD")]
+        FloatLogMagdBm,
+        [Display("Float LinMag")]
+        [Scpi("AMPV")]
+        FloatLinMagVolts,
+        [Display("Integers")]
+        [Scpi("PINT")]
+        Integers
     }
 
     public partial class PNAX : ScpiInstrument
@@ -493,6 +506,100 @@ namespace OpenTap.Plugins.PNAX
         // TODO
 
 
+        #endregion
+
+        #region SA Data
+        public void SADataType(int Channel, SADataTypeEnum sadataType)
+        {
+            string scpi = Scpi.Format("{0}", sadataType);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:TYPE { scpi }");
+        }
+
+        public void SADataReceiversList(int Channel, String recList)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:RECeivers:LIST \"{ recList }\"");
+        }
+
+        public void SADataThresholdState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:THReshold:STATe { scpi }");
+        }
+
+        public void SADataThresholdValue(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:THReshold:VALue { value }");
+        }
+
+        public void SADataFileBinaryState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:BINary:STATe { scpi }");
+        }
+
+        public void SADataFileTextMarkersState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:TEXT:MARKers:STATe { scpi }");
+        }
+
+        public void SADataFileTextMarkersAllState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:TEXT:MARKers:ALL:STATe { scpi }");
+        }
+
+        public void SADataFileTextState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:TEXT:STATe { scpi }");
+        }
+
+        public void SADataFileTextVerboseState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:TEXT:VERBose:STATe { scpi }");
+        }
+
+        public void SADataFileEraseState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:ERASe:STATe { scpi }");
+        }
+
+        public void SADataFilePrefix(int Channel, String prefix)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:PREFix \"{ prefix }\"");
+        }
+
+        public void SADataFifoState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:FIFO:STATe { scpi }");
+        }
+
+        public void SADataSharedState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:SHARed:STATe { scpi }");
+        }
+
+        public void SADataSharedName(int Channel, String name)
+        {
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:SHARed:NAME \"{ name }\"");
+        }
+
+        public void SADataIQFileBinaryState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:IQ:FILE:BINary:STATe { scpi }");
+        }
+
+        public void SADataIQFileTextState(int Channel, SAOnOffTypeEnum state)
+        {
+            string scpi = Scpi.Format("{0}", state);
+            ScpiCommand($"SENSe{ Channel }:SA:DATA:IQ:FILE:TEXT:STATe { scpi }");
+        }
         #endregion
     }
 }
