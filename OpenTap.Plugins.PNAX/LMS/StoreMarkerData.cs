@@ -9,30 +9,32 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+//using Newtonsoft.Json;
 
 namespace OpenTap.Plugins.PNAX
 {
+    [AllowAsChildIn(typeof(StoreMultiPeakSearch))]
     [Display("Store Marker Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
-    public class StoreMarkerData : TestStep
+    public class StoreMarkerData : StoreDataBase
     {
         #region Settings
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
-
-
-        [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10)]
-        public List<int> channels { get; set; }
         #endregion
 
         public StoreMarkerData()
         {
             channels = new List<int> { };
+            MetaData = new List<(string, object)>();
         }
 
         public override void Run()
         {
+            MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
+
+            // Supported child steps will provide MetaData to be added to the publish table
+            RunChildSteps();
 
             foreach (var channel in channels)
             {
@@ -116,6 +118,31 @@ namespace OpenTap.Plugins.PNAX
                             ResultNames.Add(tracename);
                             ResultValues.Add(mrkrY);
 
+                            //if MetaData available
+                            if ((MetaData != null) && (MetaData.Count > 0))
+                            {
+                                // for every item in metadata
+                                for (int i = 0; i < MetaData.Count; i++)
+                                {
+                                    ResultNames.Add(MetaData[i].Item1);
+                                    ResultValues.Add((IConvertible)MetaData[i].Item2);
+                                }
+                            }
+
+                            // if parent metadata
+                            if (this.Parent is StoreMultiPeakSearch)
+                            {
+                                List<(string, object)> ParentMetaData = GetParent<StoreMultiPeakSearch>().MetaData;
+                                if ((ParentMetaData != null) && (ParentMetaData.Count > 0))
+                                {
+                                    // for every item in metadata
+                                    for (int i = 0; i < ParentMetaData.Count; i++)
+                                    {
+                                        ResultNames.Add(ParentMetaData[i].Item1);
+                                        ResultValues.Add((IConvertible)ParentMetaData[i].Item2);
+                                    }
+                                }
+                            }
                             Results.Publish($"Channel_Markers_{channel.ToString()}", ResultNames, ResultValues.ToArray());
 
                         }
@@ -127,5 +154,7 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
     }
+
 }

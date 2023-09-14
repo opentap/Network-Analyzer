@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - Double", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Appends a double data to trace.")]
-    [AllowAsChildIn(typeof(StoreData))]
+    [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDataDouble : TestStep
     {
         #region Settings
@@ -30,7 +30,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            List<(string, object)> _parentsMetaData = GetParent<StoreData>().MetaData;
+            List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
 
             if (!Desc.Equals("") && (Value != double.NaN))
             {

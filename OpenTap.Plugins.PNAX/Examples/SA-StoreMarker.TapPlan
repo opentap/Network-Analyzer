@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SpectrumAnalyzerChannel" Id="8b74e32c-07ca-4421-8f42-9987f73699d6" OpenTap.Visibility="Visible">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <Name Metadata="Step Name">Sectrum Analyzer Channel</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASetup" Id="2d1d7a61-0486-4ed2-9b8c-f9fbfab56c1d">
+          <SASweepType>LinearFrequency</SASweepType>
+          <SweepPropertiesStart>10000000</SweepPropertiesStart>
+          <SweepPropertiesStop>1200000000</SweepPropertiesStop>
+          <SweepPropertiesCenter>25050000000</SweepPropertiesCenter>
+          <SweepPropertiesSpan>49990000000</SweepPropertiesSpan>
+          <SweepPropertiesPoints>1001</SweepPropertiesPoints>
+          <ResolutionBandwidth>100000</ResolutionBandwidth>
+          <ResolutionBandwithAuto>true</ResolutionBandwithAuto>
+          <VideoBandwidth>100000</VideoBandwidth>
+          <VideoBandwithAuto>true</VideoBandwithAuto>
+          <DetectorType>Peak</DetectorType>
+          <DetectorTypeBypass>false</DetectorTypeBypass>
+          <VideoAverageType>Power</VideoAverageType>
+          <RcvrAAttenuator>0</RcvrAAttenuator>
+          <RcvrBAttenuator>0</RcvrBAttenuator>
+          <RcvrCAttenuator>0</RcvrCAttenuator>
+          <RcvrDAttenuator>0</RcvrDAttenuator>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <segmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </segmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>1</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">SA Setup</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASource" Id="bc75b436-e262-49ce-9e05-4e1bf082ddbd" OpenTap.Visibility="Visible">
+          <PowerOnAllChannels>true</PowerOnAllChannels>
+          <PortPowersCoupled>false</PortPowersCoupled>
+          <SourceSweepOrder>FrequencyPower</SourceSweepOrder>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <segmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </segmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>1</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">SA Source</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASourceCell" Id="5f87a965-fc3d-4f53-b52a-5159fa4f2b59">
+              <CellName>Port 1</CellName>
+              <State>On</State>
+              <SASourceSweepType>CWTime</SASourceSweepType>
+              <SweepPropertiesCWFreq>5000000000</SweepPropertiesCWFreq>
+              <SweepPropertiesPowerLevel>5</SweepPropertiesPowerLevel>
+              <SweepPropertiesPhaseLevel>0</SweepPropertiesPhaseLevel>
+              <SweepPropertiesFreqStart>1000000000</SweepPropertiesFreqStart>
+              <SweepPropertiesFreqStop>1000000000</SweepPropertiesFreqStop>
+              <SweepPropertiesFreqNumberOfSteps>11</SweepPropertiesFreqNumberOfSteps>
+              <SweepPropertiesFreqSweepsPerSourceSteps>1</SweepPropertiesFreqSweepsPerSourceSteps>
+              <SweepPropertiesPowerStart>-15</SweepPropertiesPowerStart>
+              <SweepPropertiesPowerStop>-15</SweepPropertiesPowerStop>
+              <SweepPropertiesPowerNumberOfSteps>11</SweepPropertiesPowerNumberOfSteps>
+              <SweepPropertiesPowerSweepsPerSourceSteps>1</SweepPropertiesPowerSweepsPerSourceSteps>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>false</EnableTraceSettings>
+              <Trace />
+              <Window>1</Window>
+              <Sheet>0</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>0</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">Port 1</Name>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASourceCell" Id="2b80e2a0-b1ba-454c-8ff7-8c581c4eabd7">
+              <CellName>Port 2</CellName>
+              <State>Off</State>
+              <SASourceSweepType>CWTime</SASourceSweepType>
+              <SweepPropertiesCWFreq>5000000000</SweepPropertiesCWFreq>
+              <SweepPropertiesPowerLevel>-15</SweepPropertiesPowerLevel>
+              <SweepPropertiesPhaseLevel>0</SweepPropertiesPhaseLevel>
+              <SweepPropertiesFreqStart>1000000000</SweepPropertiesFreqStart>
+              <SweepPropertiesFreqStop>1000000000</SweepPropertiesFreqStop>
+              <SweepPropertiesFreqNumberOfSteps>11</SweepPropertiesFreqNumberOfSteps>
+              <SweepPropertiesFreqSweepsPerSourceSteps>1</SweepPropertiesFreqSweepsPerSourceSteps>
+              <SweepPropertiesPowerStart>-15</SweepPropertiesPowerStart>
+              <SweepPropertiesPowerStop>-15</SweepPropertiesPowerStop>
+              <SweepPropertiesPowerNumberOfSteps>11</SweepPropertiesPowerNumberOfSteps>
+              <SweepPropertiesPowerSweepsPerSourceSteps>1</SweepPropertiesPowerSweepsPerSourceSteps>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>false</EnableTraceSettings>
+              <Trace />
+              <Window>1</Window>
+              <Sheet>0</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>0</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">Port 2</Name>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASourceCell" Id="bddbfbfe-3fe5-4e41-9286-099929d5d4bd">
+              <CellName>Port 3</CellName>
+              <State>Off</State>
+              <SASourceSweepType>CWTime</SASourceSweepType>
+              <SweepPropertiesCWFreq>1000000000</SweepPropertiesCWFreq>
+              <SweepPropertiesPowerLevel>-15</SweepPropertiesPowerLevel>
+              <SweepPropertiesPhaseLevel>0</SweepPropertiesPhaseLevel>
+              <SweepPropertiesFreqStart>1000000000</SweepPropertiesFreqStart>
+              <SweepPropertiesFreqStop>1000000000</SweepPropertiesFreqStop>
+              <SweepPropertiesFreqNumberOfSteps>11</SweepPropertiesFreqNumberOfSteps>
+              <SweepPropertiesFreqSweepsPerSourceSteps>1</SweepPropertiesFreqSweepsPerSourceSteps>
+              <SweepPropertiesPowerStart>-15</SweepPropertiesPowerStart>
+              <SweepPropertiesPowerStop>-15</SweepPropertiesPowerStop>
+              <SweepPropertiesPowerNumberOfSteps>11</SweepPropertiesPowerNumberOfSteps>
+              <SweepPropertiesPowerSweepsPerSourceSteps>1</SweepPropertiesPowerSweepsPerSourceSteps>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>false</EnableTraceSettings>
+              <Trace />
+              <Window>1</Window>
+              <Sheet>0</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>0</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">Port 3</Name>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASourceCell" Id="989517e6-74f7-4ce0-a61a-c6d6d87b5f6e">
+              <CellName>Port 4</CellName>
+              <State>Off</State>
+              <SASourceSweepType>CWTime</SASourceSweepType>
+              <SweepPropertiesCWFreq>1000000000</SweepPropertiesCWFreq>
+              <SweepPropertiesPowerLevel>-15</SweepPropertiesPowerLevel>
+              <SweepPropertiesPhaseLevel>0</SweepPropertiesPhaseLevel>
+              <SweepPropertiesFreqStart>1000000000</SweepPropertiesFreqStart>
+              <SweepPropertiesFreqStop>1000000000</SweepPropertiesFreqStop>
+              <SweepPropertiesFreqNumberOfSteps>11</SweepPropertiesFreqNumberOfSteps>
+              <SweepPropertiesFreqSweepsPerSourceSteps>1</SweepPropertiesFreqSweepsPerSourceSteps>
+              <SweepPropertiesPowerStart>-15</SweepPropertiesPowerStart>
+              <SweepPropertiesPowerStop>-15</SweepPropertiesPowerStop>
+              <SweepPropertiesPowerNumberOfSteps>11</SweepPropertiesPowerNumberOfSteps>
+              <SweepPropertiesPowerSweepsPerSourceSteps>1</SweepPropertiesPowerSweepsPerSourceSteps>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>false</EnableTraceSettings>
+              <Trace />
+              <Window>1</Window>
+              <Sheet>0</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>0</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">Port 4</Name>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASourceCell" Id="22c7367f-4da7-477f-b3d8-dc5285256839">
+              <CellName>Port 1 Src2</CellName>
+              <State>Off</State>
+              <SASourceSweepType>CWTime</SASourceSweepType>
+              <SweepPropertiesCWFreq>1000000000</SweepPropertiesCWFreq>
+              <SweepPropertiesPowerLevel>-15</SweepPropertiesPowerLevel>
+              <SweepPropertiesPhaseLevel>0</SweepPropertiesPhaseLevel>
+              <SweepPropertiesFreqStart>1000000000</SweepPropertiesFreqStart>
+              <SweepPropertiesFreqStop>1000000000</SweepPropertiesFreqStop>
+              <SweepPropertiesFreqNumberOfSteps>11</SweepPropertiesFreqNumberOfSteps>
+              <SweepPropertiesFreqSweepsPerSourceSteps>1</SweepPropertiesFreqSweepsPerSourceSteps>
+              <SweepPropertiesPowerStart>-15</SweepPropertiesPowerStart>
+              <SweepPropertiesPowerStop>-15</SweepPropertiesPowerStop>
+              <SweepPropertiesPowerNumberOfSteps>11</SweepPropertiesPowerNumberOfSteps>
+              <SweepPropertiesPowerSweepsPerSourceSteps>1</SweepPropertiesPowerSweepsPerSourceSteps>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>false</EnableTraceSettings>
+              <Trace />
+              <Window>1</Window>
+              <Sheet>0</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>0</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">Port 1 Src2</Name>
+            </TestStep>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASourceCell" Id="f2204a40-31ea-4ce6-bc71-b48398707083">
+              <CellName>Source3</CellName>
+              <State>On</State>
+              <SASourceSweepType>CWTime</SASourceSweepType>
+              <SweepPropertiesCWFreq>5200000000</SweepPropertiesCWFreq>
+              <SweepPropertiesPowerLevel>10</SweepPropertiesPowerLevel>
+              <SweepPropertiesPhaseLevel>0</SweepPropertiesPhaseLevel>
+              <SweepPropertiesFreqStart>1000000000</SweepPropertiesFreqStart>
+              <SweepPropertiesFreqStop>1000000000</SweepPropertiesFreqStop>
+              <SweepPropertiesFreqNumberOfSteps>11</SweepPropertiesFreqNumberOfSteps>
+              <SweepPropertiesFreqSweepsPerSourceSteps>1</SweepPropertiesFreqSweepsPerSourceSteps>
+              <SweepPropertiesPowerStart>-15</SweepPropertiesPowerStart>
+              <SweepPropertiesPowerStop>-15</SweepPropertiesPowerStop>
+              <SweepPropertiesPowerNumberOfSteps>11</SweepPropertiesPowerNumberOfSteps>
+              <SweepPropertiesPowerSweepsPerSourceSteps>1</SweepPropertiesPowerSweepsPerSourceSteps>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>false</EnableTraceSettings>
+              <Trace />
+              <Window>1</Window>
+              <Sheet>0</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>0</tnum>
+              <mnum>0</mnum>
+              <MeasName />
+              <Name Metadata="Step Name">Source3</Name>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SANewTrace" Id="b8d80c19-523c-432f-b451-e0fb1e6f1248" OpenTap.Visibility="Visible">
+          <Meas>B</Meas>
+          <EnableButton>true</EnableButton>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <segmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </segmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace />
+          <Window>1</Window>
+          <Sheet>0</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <Name Metadata="Step Name">SA New Trace</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.General.Spectrum_Analyzer.SASingleTrace" Id="3fdd2527-566d-4a08-abda-1db891916654" OpenTap.Visibility="Visible">
+              <Meas>B</Meas>
+              <IsControlledByParentTrace>true</IsControlledByParentTrace>
+              <Channel>1</Channel>
+              <IsControlledByParent>false</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+              <SegmentDefinitionType>List</SegmentDefinitionType>
+              <SegmentTable />
+              <segmentDefinitions>
+                <SegmentDefinition>
+                  <state>true</state>
+                  <NumberOfPoints>21</NumberOfPoints>
+                  <StartFrequency>10500000</StartFrequency>
+                  <StopFrequency>1000000000</StopFrequency>
+                </SegmentDefinition>
+              </segmentDefinitions>
+              <ShowTable>false</ShowTable>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_B</Trace>
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>1</tnum>
+              <mnum Parameter="Parameters \ Trace \ MNum" Scope="8b74e32c-07ca-4421-8f42-9987f73699d6">1</mnum>
+              <MeasName>CH1_B_1</MeasName>
+              <Name Metadata="Step Name">CH1_B</Name>
+              <ChildTestSteps>
+                <TestStep type="OpenTap.Plugins.PNAX.MultiPeakSearch" Id="2663552e-21ed-48c1-b79f-89d0c2a15b7b">
+                  <mkr>0</mkr>
+                  <PeakThreshold>0.003</PeakThreshold>
+                  <PeakExcursion>0.001</PeakExcursion>
+                  <PeakPolarity>POS</PeakPolarity>
+                  <IsControlledByParent>false</IsControlledByParent>
+                  <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+                  <Channel>1</Channel>
+                  <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+                  <SegmentDefinitionType>List</SegmentDefinitionType>
+                  <SegmentTable />
+                  <segmentDefinitions>
+                    <SegmentDefinition>
+                      <state>true</state>
+                      <NumberOfPoints>21</NumberOfPoints>
+                      <StartFrequency>10500000</StartFrequency>
+                      <StopFrequency>1000000000</StopFrequency>
+                    </SegmentDefinition>
+                  </segmentDefinitions>
+                  <ShowTable>false</ShowTable>
+                  <EnableTraceSettings>false</EnableTraceSettings>
+                  <Trace />
+                  <Window>1</Window>
+                  <Sheet>0</Sheet>
+                  <IsPropertyEnabled>false</IsPropertyEnabled>
+                  <tnum>0</tnum>
+                  <mnum>1</mnum>
+                  <MeasName />
+                  <Name Metadata="Step Name">Multi Peak Search</Name>
+                </TestStep>
+              </ChildTestSteps>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+      </ChildTestSteps>
+      <Parameters_x0020__x005C__x0020_Trace_x0020__x005C__x0020_MNum>1</Parameters_x0020__x005C__x0020_Trace_x0020__x005C__x0020_MNum>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.Measure" Id="d3bb4031-a772-4eb5-8b77-f07e16fc0adb">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <channels>1</channels>
+      <Name Metadata="Step Name">Trigger Channels</Name>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.StoreMultiPeakSearch" Id="59c557a3-56ab-497f-b681-24e55fc09677" OpenTap.Visibility="Visible">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <mnum>1</mnum>
+      <Name Metadata="Step Name">StoreMultiPeakSearch</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.StoreMarkerData" Id="22efb4b0-e3d8-4d5c-97ee-2963756e6d30" OpenTap.Visibility="Visible">
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <channels>1</channels>
+          <MetaData>
+            <ValueTupleOfString>(Channel, 1)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Data Acquisition Mode, LinearFrequency)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Start, 10000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Stop, 1200000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Points, 1001)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Resolution Bandwidth, 100000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Resolution Bandwith Auto, True)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Video Bandwidth, 100000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Video Bandwith Auto, True)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Detector Type, Peak)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Detector Type Bypass, False)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Video Average Type, Power)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Rcvr A Attenuator, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Rcvr B Attenuator, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Rcvr C Attenuator, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Rcvr D Attenuator, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Power On All Channels, True)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port Powers Coupled, False)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Source Sweep Order, FrequencyPower)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Source Power Mode, CWTime)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 CW Freq, 5000000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Power Level, 5)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Phase Level, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 2 Source Power Mode, CWTime)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 2 CW Freq, 5000000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 2 Power Level, -15)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 2 Phase Level, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 3 Source Power Mode, CWTime)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 3 CW Freq, 1000000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 3 Power Level, -15)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 3 Phase Level, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 4 Source Power Mode, CWTime)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 4 CW Freq, 1000000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 4 Power Level, -15)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 4 Phase Level, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Src2 Source Power Mode, CWTime)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Src2 CW Freq, 1000000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Src2 Power Level, -15)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Port 1 Src2 Phase Level, 0)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Source3 Source Power Mode, CWTime)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Source3 CW Freq, 5200000000)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Source3 Power Level, 10)</ValueTupleOfString>
+            <ValueTupleOfString>(SA Source3 Phase Level, 0)</ValueTupleOfString>
+          </MetaData>
+          <Name Metadata="Step Name">Store Marker Data</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.LMS.StoreDataMetaData" Id="c7d48c30-96c1-4e1e-9120-bb83652a388e">
+              <MetaData>
+                <PropertyName>OpenTap.Plugins.PNAX.GeneralChannelBaseStep|MetaData</PropertyName>
+                <Step>8b74e32c-07ca-4421-8f42-9987f73699d6</Step>
+              </MetaData>
+              <Name Metadata="Step Name">Store Trace Data - Meta Data</Name>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+      </ChildTestSteps>
+      <TestStep.Inputs>
+        <InputOutputMember id="8b74e32c-07ca-4421-8f42-9987f73699d6" member="Parameters \ Trace \ MNum" target-member="mnum"></InputOutputMember>
+      </TestStep.Inputs>
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.19.4+7959a308" />
+  </Package.Dependencies>
+</TestPlan>

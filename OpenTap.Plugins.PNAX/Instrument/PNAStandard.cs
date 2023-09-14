@@ -21,19 +21,29 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery($"SENSe{ Channel }:SWEep:TYPE?"); ;
         }
 
+        private void SetSweepType(int Channel, String sweepType)
+        {
+            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {sweepType}");
+        }
+
         public void SetStandardSweepType(int Channel, StandardSweepTypeEnum standardSweepType)
         {
             string scpi = Scpi.Format("{0}", standardSweepType);
-            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {scpi}");
+            SetSweepType(Channel, scpi);
         }
 
         // ScalerMixerSweepType
-        public void SetStandardSweepType(int Channel, ScalerMixerSweepType standardSweepType)
+        public void SetStandardSweepType(int Channel, ScalerMixerSweepType SMCSweepType)
         {
-            string scpi = Scpi.Format("{0}", standardSweepType);
-            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {scpi}");
+            string scpi = Scpi.Format("{0}", SMCSweepType);
+            SetSweepType(Channel, scpi);
         }
 
+        public void SetSASweepType(int Channel, SASweepTypeEnum SASweepType)
+        {
+            string scpi = Scpi.Format("{0}", SASweepType);
+            SetSweepType(Channel, scpi);
+        }
 
         public double GetStart(int Channel)
         {
@@ -103,6 +113,16 @@ namespace OpenTap.Plugins.PNAX
         public void SetIFBandwidth(int Channel, double bw)
         {
             ScpiCommand($"SENSe{ Channel }:BANDwidth { bw }");
+        }
+
+        public string GetSourcePowerMode(int Channel, String port)
+        {
+            return ScpiQuery($"SOURce{Channel}:POWer:MODE? \"{port}\"");
+        }
+
+        public void SetSourcePowerMode(int Channel, String port, String mode)
+        {
+            ScpiCommand($"SOURce{Channel}:POWer:MODE {mode}, \"{port}\"");
         }
 
         public double GetStartPower(int Channel)

@@ -11,55 +11,64 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace OpenTap.Plugins.PNAX
+namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
-    [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
-    [AllowAsChildIn(typeof(GeneralSweptIMDNewTrace))]
-    [Display("Swept IMD Single Trace", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here")]
-    public class GeneralSweptIMDSingleTrace : GeneralSingleTraceBaseStep
+    public enum SATraceEnum
+    {
+        B,
+        A,
+        C,
+        D,
+        R1,
+        R2,
+        R3,
+        R4,
+        b1,
+        b2,
+        b3,
+        b4,
+        a1,
+        a2,
+        a3,
+        a4
+    }
+
+
+    [AllowAsChildIn(typeof(SANewTrace))]
+    [Display("SA Single Trace", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    public class SASingleTrace : GeneralSingleTraceBaseStep
     {
         #region Settings
-        private SweptIMDTraceEnum _Meas;
+        private SATraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-        public SweptIMDTraceEnum Meas
+        public SATraceEnum Meas
         {
-            get { return _Meas; }
+            get
+            {
+                return _Meas;
+            }
             set
             {
                 _Meas = value;
                 UpdateTestName();
             }
         }
-
-        //private TraceManagerChannelClassEnum _Class;
-        //[Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        //public override TraceManagerChannelClassEnum Class
-        //{
-        //    get { return _Class; }
-        //    set
-        //    {
-        //        _Class = value;
-        //        UpdateTestName();
-        //    }
-        //}
-
-
         #endregion
 
-        public GeneralSweptIMDSingleTrace()
+        public SASingleTrace()
         {
             Trace = "1";
-            Meas = SweptIMDTraceEnum.Pwr2Hi;
-            //Class = TraceManagerChannelClassEnum.IMDX;
-            Channel = 1;
+            Meas = SATraceEnum.B;
+            //Class = TraceManagerChannelClassEnum.STD;
             Window = 1;
             Sheet = 1;
+            Channel = 1;
         }
 
         protected override void UpdateTestName()
         {
-            this.Trace = $"CH{Channel}_{Meas}";
-            this.Name = $"CH{Channel}_{Meas}";
+            this.Trace = $"CH{Channel.ToString()}_{Meas}";
+            this.Name = $"CH{Channel.ToString()}_{Meas}";
         }
 
         [Browsable(true)]
@@ -94,21 +103,34 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(new TraceLimits() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
-        public override void Run()
+        [Browsable(true)]
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Add Multi Peak Search", Groups: new[] { "Trace" }, Order: 70)]
+        public override void AddMultiPeakSearch()
         {
+            this.ChildTestSteps.Add(new MultiPeakSearch() { PNAX = this.PNAX, Channel = this.Channel });
+        }
+
+        public override void PrePlanRun()
+        {
+            base.PrePlanRun();
+
             int _tnum = 0;
             int _mnum = 0;
             String _MeasName = "";
-            PNAX.AddNewTrace(Channel, Window, Trace, "Swept IMD", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
+
+            PNAX.AddNewTrace(Channel, Window, Trace, "Spectrum Analyzer", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;
             mnum = _mnum;
             MeasName = _MeasName;
+        }
 
+        public override void Run()
+        {
             RunChildSteps(); //If the step supports child steps.
-            
+
+
             UpgradeVerdict(Verdict.Pass);
         }
     }
-
-
 }

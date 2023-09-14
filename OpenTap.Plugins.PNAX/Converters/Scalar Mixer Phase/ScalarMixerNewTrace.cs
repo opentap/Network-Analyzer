@@ -25,7 +25,7 @@ namespace OpenTap.Plugins.PNAX
 
         public ScalarMixerNewTrace()
         {
-            ChildTestSteps.Add(new ScalarMixerSingleTrace() { Meas = SMCTraceEnum.SC21});
+            ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = SMCTraceEnum.SC21});
         }
 
         [Browsable(false)]
@@ -52,7 +52,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new ScalarMixerSingleTrace() { Meas = this.Meas, Channel = this.Channel });
+            this.ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel });
         }
 
     }

@@ -140,13 +140,14 @@ namespace OpenTap.Plugins.PNAX
         {
             List<int> activeChannels = GetActiveChannels();
             channelsList = ChannelListCheck(channelsList, activeChannels);
+            int deftimeout = IoTimeout;
             IoTimeout = 20000;
             // Trigger every channel
             foreach (var channel in channelsList)
             {
                 ScpiCommand($":SENS{channel}:SWE:MODE SING");
             }
-            IoTimeout = 2000;
+            IoTimeout = deftimeout;
         }
 
         /// <summary>

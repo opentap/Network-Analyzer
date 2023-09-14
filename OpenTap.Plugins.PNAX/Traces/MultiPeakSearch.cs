@@ -14,32 +14,39 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
-    [Display("Marker", Groups: new[] { "PNA-X", "Trace" }, Description: "Insert a description here")]
-    public class Marker : GeneralBaseStep
+    [Display("Multi Peak Search", Groups: new[] { "PNA-X", "Trace" }, Description: "Insert a description here")]
+    public class MultiPeakSearch : GeneralBaseStep
     {
         #region Settings
         [Display("Marker Number", Groups: new[] { "Trace" }, Order: 10)]
         public int mkr { get; set; }
 
-        [Display("X-Axis Position", Groups: new[] { "Trace" }, Order: 11)]
-        public double XAxisPosition { get; set; }
+        [Display("Peak Threshold", Groups: new[] { "Trace" }, Order: 11)]
+        public double PeakThreshold { get; set; }
+
+        [Display("Peak Excursion", Groups: new[] { "Trace" }, Order: 12)]
+        public double PeakExcursion{ get; set; }
+
+        [Display("Peak Polarity", Groups: new[] { "Trace" }, Order: 13)]
+        public SAMultiPeakSearchPolarityEnumType PeakPolarity { get; set; }
         #endregion
 
-        public Marker()
+        public MultiPeakSearch()
         {
             IsControlledByParent = true;
+            PeakThreshold = -100;
+            PeakExcursion = 3;
+            PeakPolarity = SAMultiPeakSearchPolarityEnumType.POS;
         }
 
         public override void Run()
         {
             mnum = GetParent<SingleTraceBaseStep>().mnum;
 
-            PNAX.SetMarkerState(Channel, mnum, mkr, SAOnOffTypeEnum.On);
+            PNAX.SetMultiPeakSearchThreshold(Channel, mnum, PeakThreshold);
+            PNAX.SetMultiPeakSearchExcursion(Channel, mnum, PeakExcursion);
+            PNAX.SetMultiPeakSearchPolarity(Channel, mnum, PeakPolarity);
 
-            PNAX.SetMarkerXValue(Channel, mnum, mkr, XAxisPosition);
-
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
         }
     }

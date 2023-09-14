@@ -26,6 +26,8 @@
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 
+   
+
   <ItemGroup>
     <None Update="Examples\Cal-Image.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -58,6 +60,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\LMS.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\SA LinFreq Sweep implemented with Sweep.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\SA LinFreq-StoreMarker.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\SA-StoreMarker.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\Standard - CalAll - Trigger - Meas.TapPlan">
