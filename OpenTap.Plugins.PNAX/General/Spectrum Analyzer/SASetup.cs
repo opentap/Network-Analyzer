@@ -127,16 +127,17 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.SetSASweepType(Channel, SASweepType);
             switch (SASweepType)
             {
                 case SASweepTypeEnum.LinearFrequency:
+                    PNAX.SetSASweepType(Channel, SASweepType);
                     PNAX.SetStart(Channel, SweepPropertiesStart);
                     PNAX.SetStop(Channel, SweepPropertiesStop);
                     PNAX.SetPoints(Channel, SweepPropertiesPoints);
                     break;
                 case SASweepTypeEnum.SegmentSweep:
                     SetSegmentValues();
+                    PNAX.SetSASweepType(Channel, SASweepType);
                     break;
             }
 

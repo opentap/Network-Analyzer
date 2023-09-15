@@ -62,22 +62,30 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepSettingsIFBandwidth { get; set; }
 
-        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, GeneralGainCompressionSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [Display("Type", Group: "Sweep Settings", Order: 11.9)]
+        public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
+
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, GeneralGainCompressionSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Start", Group: "Sweep Settings", Order: 12)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SweepSettingsStart { get; set; }
 
-        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, GeneralGainCompressionSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Stop", Group: "Sweep Settings", Order: 13)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepSettingsStop { get; set; }
 
-        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, GeneralGainCompressionSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Center", Group: "Sweep Settings", Order: 14)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepSettingsCenter { get; set; }
 
-        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, HideIfDisabled = true)]
+        [EnabledIf("SweepType", GeneralGainCompressionSweepTypeEnum.LinearSweep, GeneralGainCompressionSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Span", Group: "Sweep Settings", Order: 15)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepSettingsSpan { get; set; }
@@ -108,7 +116,7 @@ namespace OpenTap.Plugins.PNAX
             SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
 
             //SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
-
+            IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
 
         public override void Run()
@@ -125,10 +133,16 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
                 PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
 
-                PNAX.SetStart(Channel, SweepSettingsStart);
-                PNAX.SetStop(Channel, SweepSettingsStop);
-                PNAX.SetCenter(Channel, SweepSettingsCenter);
-                PNAX.SetSpan(Channel, SweepSettingsSpan);
+                if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+                {
+                    PNAX.SetStart(Channel, SweepSettingsStart);
+                    PNAX.SetStop(Channel, SweepSettingsStop);
+                }
+                else
+                {
+                    PNAX.SetCenter(Channel, SweepSettingsCenter);
+                    PNAX.SetSpan(Channel, SweepSettingsSpan);
+                }
             }
             //else if (SweepType == GeneralGainCompressionSweepTypeEnum.CWFrequency)
             //{
