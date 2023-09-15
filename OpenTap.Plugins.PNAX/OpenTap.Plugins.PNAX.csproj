@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="General\GeneralFrequencyBaseStep.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 

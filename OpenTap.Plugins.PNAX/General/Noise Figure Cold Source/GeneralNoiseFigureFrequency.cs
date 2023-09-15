@@ -29,10 +29,17 @@ namespace OpenTap.Plugins.PNAX
         SegmentSweep
     }
 
+    public enum SweepSSCSTypeEnum
+    {
+        [Display("Start/Stop")]
+        StartStop,
+        [Display("Center/Span")]
+        CenterSpan
+    }
 
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Noise Figure Frequency", Groups: new[] { "PNA-X", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
-    public class GeneralNoiseFigureFrequency : GeneralFrequencyBaseStep
+    public class GeneralNoiseFigureFrequency : GeneralBaseStep
     {
         #region Settings
         private GeneralNFSweepTypeEnum _SweepType;
@@ -59,6 +66,72 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("X-Axis Annotation", Order: 1)]
         public XAxisAnnotation XAxisAnnotation { get; set; }
+
+        private int _SweepSettingsNumberOfPoints;
+        [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
+        public int SweepSettingsNumberOfPoints
+        {
+            get
+            {
+                return _SweepSettingsNumberOfPoints;
+            }
+            set
+            {
+                _SweepSettingsNumberOfPoints = value;
+                // Update Points on Parent step
+                try
+                {
+                    var a = GetParent<ConverterChannelBase>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.SweepPoints = _SweepSettingsNumberOfPoints;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
+            }
+        }
+
+        [Display("IF Bandwidth", Group: "Sweep Settings", Order: 11)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
+        public double SweepSettingsIFBandwidth { get; set; }
+
+        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [Display("Type", Group: "Sweep Settings", Order: 11.9)]
+        public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
+
+        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
+        [Display("Start", Group: "Sweep Settings", Order: 12)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
+        public double SweepSettingsStart { get; set; }
+
+        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
+        [Display("Stop", Group: "Sweep Settings", Order: 13)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
+        public double SweepSettingsStop { get; set; }
+
+        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
+        [Display("Center", Group: "Sweep Settings", Order: 14)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
+        public double SweepSettingsCenter { get; set; }
+
+        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
+        [Display("Span", Group: "Sweep Settings", Order: 15)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
+        public double SweepSettingsSpan { get; set; }
+
+        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.CWFrequency, HideIfDisabled = true)]
+        [Display("Fixed", Group: "Sweep Settings", Order: 16)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
+        public double SweepSettingsFixed { get; set; }
         #endregion
 
         public GeneralNoiseFigureFrequency()
@@ -79,6 +152,7 @@ namespace OpenTap.Plugins.PNAX
             SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
             SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
 
+            IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
         public override void Run()
         {
@@ -92,10 +166,16 @@ namespace OpenTap.Plugins.PNAX
                 (SweepType == GeneralNFSweepTypeEnum.LogFrequency))
             {
                 PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
-                PNAX.SetStart(Channel, SweepSettingsStart);
-                PNAX.SetStop(Channel, SweepSettingsStop);
-                PNAX.SetCenter(Channel, SweepSettingsCenter);
-                PNAX.SetSpan(Channel, SweepSettingsSpan);
+                if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+                {
+                    PNAX.SetStart(Channel, SweepSettingsStart);
+                    PNAX.SetStop(Channel, SweepSettingsStop);
+                }
+                else
+                {
+                    PNAX.SetCenter(Channel, SweepSettingsCenter);
+                    PNAX.SetSpan(Channel, SweepSettingsSpan);
+                }
             }
             else if (SweepType == GeneralNFSweepTypeEnum.CWFrequency)
             {
