@@ -366,6 +366,52 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand($"DISPlay:WINDow{window}:TABLe OFF");
             }
         }
+
+        public void SetSegmentSAMTReferenceControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:MTReference:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSAMTReference(int Channel, int segment, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:MTReference {value.ToString()}");
+        }
+
+        public void SetSegmentSADataThresholdControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:DTHReshold:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSADataThreshold(int Channel, int segment, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:DTHReshold {value.ToString()}");
+        }
+
+        public void SetSegmentSAVectorAverageControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VAVerage:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSAVectorAverage(int Channel, int segment, int value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VAVerage {value.ToString()}");
+        }
+
+        public void SetSegmentSAVideoBWControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VIDeobw:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSAVideoBW(int Channel, int segment, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VIDeobw {value.ToString()}");
+        }
+
+
         #endregion
 
         #region Configuration

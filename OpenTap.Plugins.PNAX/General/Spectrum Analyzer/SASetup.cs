@@ -13,6 +13,49 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
+    public class SASegmentDefinition
+    {
+        [Display("State", Order: 1)]
+        public bool state { get; set; }
+        [Display("Number of Points", Order: 2)]
+        public int NumberOfPoints { get; set; }
+        [Display("Start Frequency", Order: 3)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double StartFrequency { get; set; }
+        [Display("Stop Frequency", Order: 4)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double StopFrequency { get; set; }
+
+        [Display("MT Ref", Order: 5)]
+        [Unit("Hz", UseEngineeringPrefix: true)]
+        public double MTRef { get; set; }
+
+        [Display("Vect Avg", Order: 6)]
+        public int VectAvg { get; set; }
+
+        [Display("D. Threshold", Order: 7)]
+        [Unit("dBm")]
+        public double DThreshold { get; set; }
+
+        [Display("Video BW", Order: 8)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "000.000000")]
+        public double VBW { get; set; }
+    }
+
+    [Flags]
+    public enum SASegmentAttributes
+    {
+        None = 0,
+        [Display("MT Ref")]
+        MultiToneRef = 1,
+        [Display("Vect Avg")]
+        VectorAverage = 2,
+        [Display("D. Threshold")]
+        DataThreshold = 4,
+        [Display("Video BW")]
+        VideoBandwidth = 8
+    }
+
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Setup", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASetup : GeneralBaseStep
@@ -29,10 +72,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             set
             {
                 _SASweepType = value;
-                EnableSegmentSweepSettings = false;
+                SAEnableSegmentSweepSettings = false;
                 if (_SASweepType == SASweepTypeEnum.SegmentSweep)
                 {
-                    EnableSegmentSweepSettings = true;
+                    SAEnableSegmentSweepSettings = true;
                 }
             }
         }
@@ -103,6 +146,40 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
         public double RcvrDAttenuator { get; set; }
 
+
+
+
+
+
+
+        [Browsable(false)]
+        public bool SAEnableSegmentSweepSettings { get; set; } = false;
+
+        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [Display("Segment Definition Type", Group: "Sweep Properties", Order: 30)]
+        public SegmentDefinitionTypeEnum SASegmentDefinitionType { get; set; }
+
+        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.File, HideIfDisabled = false)]
+        [Display("Segment Table File Name", Group: "Sweep Properties", Order: 31)]
+        [FilePath]
+        public string SASegmentTable { get; set; }
+
+        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Segment Table", Group: "Sweep Properties", Order: 32)]
+        public List<SASegmentDefinition> SAsegmentDefinitions { get; set; }
+
+        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Show Table", Group: "Sweep Properties", Order: 33)]
+        public bool SAShowTable { get; set; }
+
+        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Segment Attributes", Group: "Sweep Properties", Order: 34)]
+        public SASegmentAttributes SASegmentAttributes { get; set; }
+
         #endregion
 
         public SASetup()
@@ -121,6 +198,12 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             DetectorType = SADetectorTypeEnum.Peak;
             VideoAverageType = SAVideoAverageTypeEnum.Power;
 
+            SASegmentDefinitionType = SegmentDefinitionTypeEnum.List;
+            SAsegmentDefinitions = new List<SASegmentDefinition>();
+            SAsegmentDefinitions.Add(new SASegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9, MTRef = 0.0, VectAvg = 1, VBW = 1e6, DThreshold = -60.0 });
+            SAShowTable = false;
+
+            //SASegmentAttributes = SASegmentAttributes.None;
         }
 
         public override void Run()
@@ -136,7 +219,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
                     PNAX.SetPoints(Channel, SweepPropertiesPoints);
                     break;
                 case SASweepTypeEnum.SegmentSweep:
-                    SetSegmentValues();
+                    SASetSegmentValues();
                     PNAX.SetSASweepType(Channel, SASweepType);
                     break;
             }
@@ -189,5 +272,54 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             return retVal;
         }
+
+        public void SASetSegmentValues()
+        {
+            if (SASegmentDefinitionType == SegmentDefinitionTypeEnum.File)
+            {
+                Log.Error("Load file Not implemented!");
+            }
+            else
+            {
+                PNAX.SegmentDeleteAllSegments(Channel);
+                int segment = 0;
+                foreach (SASegmentDefinition a in SAsegmentDefinitions)
+                {
+                    segment = PNAX.SegmentAdd(Channel);
+                    PNAX.SetSegmentState(Channel, segment, a.state);
+                    PNAX.SetSegmentNumberOfPoints(Channel, segment, a.NumberOfPoints);
+                    PNAX.SetSegmentStartFrequency(Channel, segment, a.StartFrequency);
+                    PNAX.SetSegmentStopFrequency(Channel, segment, a.StopFrequency);
+
+                    if (SASegmentAttributes.HasFlag(SASegmentAttributes.MultiToneRef))
+                    {
+                        PNAX.SetSegmentSAMTReferenceControl(Channel, segment, SAOnOffTypeEnum.On);
+                        PNAX.SetSegmentSAMTReference(Channel, segment, a.MTRef);
+                    }
+                    if (SASegmentAttributes.HasFlag(SASegmentAttributes.DataThreshold))
+                    {
+                        PNAX.SetSegmentSADataThresholdControl(Channel, segment, SAOnOffTypeEnum.On);
+                        PNAX.SetSegmentSADataThreshold(Channel, segment, a.DThreshold);
+                    }
+                    if (SASegmentAttributes.HasFlag(SASegmentAttributes.VectorAverage))
+                    {
+                        PNAX.SetSegmentSAVectorAverageControl(Channel, segment, SAOnOffTypeEnum.On);
+                        PNAX.SetSegmentSAVectorAverage(Channel, segment, a.VectAvg);
+                    }
+                    if (SASegmentAttributes.HasFlag(SASegmentAttributes.VideoBandwidth))
+                    {
+                        PNAX.SetSegmentSAVideoBWControl(Channel, segment, SAOnOffTypeEnum.On);
+                        PNAX.SetSegmentSAVideoBW(Channel, segment, a.VBW);
+                    }
+                }
+                //PNAX.SetStandardSweepType(Channel, StandardSweepTypeEnum.SegmentSweep);
+                if (SAShowTable)
+                {
+                    PNAX.SetSegmentTableShow(Channel, true, Window);
+                }
+            }
+
+        }
+
     }
 }
