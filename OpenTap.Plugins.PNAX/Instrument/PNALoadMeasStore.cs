@@ -123,7 +123,6 @@ namespace OpenTap.Plugins.PNAX
                 }
 
             }
-
             ScpiCommand($":MMEM:LOAD:FILE \"{FileName}\"");
             TapThread.Sleep(750);
             var errorList = QueryErrors();
@@ -153,7 +152,7 @@ namespace OpenTap.Plugins.PNAX
         /// <summary>
         /// Store trace info from each channel in the state
         /// </summary>
-        public List<List<string>> StoreTraceData(List<int> channelsList, bool includePassFail = false)
+        public List<List<string>> StoreTraceData(List<int> channelsList)
         {
             ScpiCommand(":FORM:DATA ASCii, 0");
 
@@ -196,54 +195,52 @@ namespace OpenTap.Plugins.PNAX
                     var xList = xString.Split(',').ToList();
                     int XCount = xList.Count;
 
-                    var yString = ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
+                    var yString = IsModelA ? ScpiQuery($"CALC{channel}:DATA? FDATA") : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
                     var yList = yString.Split(',').ToList();
 
                     resultsList.Add(xList);
                     resultsList.Add(yList);
 
-                    if (includePassFail)
+                    // now query PF
+                    String strPF = IsModelA? ScpiQuery($"CALC{channel}:LIMit:FAIL?") : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
+                    List<String> GlobalPF = new List<String>();
+                    // Create a list of n values all equal to strPF
+                    String verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
+                    for (int pfIndex = 0; pfIndex < XCount; pfIndex++)
                     {
-                        // now query PF
-                        String strPF = ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
-                        List<String> GlobalPF = new List<String>();
-                        // Create a list of n values all equal to strPF
-                        String verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
-                        for (int pfIndex = 0; pfIndex < XCount; pfIndex++)
-                        {
-                            GlobalPF.Add(verdict);
-                        }
-
-                        // query results
-                        var limitReportAllStr = ScpiQuery($"CALC{channel}:Meas{trace}:LIMit:REPort:ALL?");
-                        var limitReportAll = limitReportAllStr.Split(',').ToList();
-                        //List<double> XAxisValues = new List<double>();
-                        //List<Verdict> PassFail = new List<Verdict>();
-                        //List<double> UpperLimit = new List<double>();
-                        //List<double> LowerLimit = new List<double>();
-
-
-                        var x1 = limitReportAll.Where((item, index) => ((index == 0) || ((index >= 4) && (index % 4 == 0)))).ToList();
-                        var x2 = limitReportAll.Where((item, index) => ((index == 1) || ((index >= 5) && (index % 4 == 1)))).ToList();
-                        var x3 = limitReportAll.Where((item, index) => ((index == 2) || ((index >= 6) && (index % 4 == 2)))).ToList();
-                        var x4 = limitReportAll.Where((item, index) => ((index == 3) || ((index >= 7) && (index % 4 == 3)))).ToList();
-
-                        //for (int limitIndex = 0; limitIndex < ((limitReportAll.Count())/4); limitIndex++)
-                        //{
-                        //    XAxisValues.Add(limitReportAll[(4*limitIndex)]);
-                        //    Verdict PF = nPF == limitReportAll[(4 * limitIndex) + 1] ? Verdict.Fail : Verdict.Pass;
-                        //    PassFail.Add(PF);
-                        //    UpperLimit.Add(limitReportAll[(4 * limitIndex) + 2]);
-                        //    LowerLimit.Add(limitReportAll[(4 * limitIndex) + 3]);
-                        //}
-
-                        // Append columns
-                        resultsList.Add(GlobalPF);
-                        resultsList.Add(x1);
-                        resultsList.Add(x2);
-                        resultsList.Add(x3);
-                        resultsList.Add(x4);
+                        GlobalPF.Add(verdict);
                     }
+
+                    // query results
+                    // TODO: Find alternative, currently LIM:REP:ALL? not supported on A models
+                    var limitReportAllStr = IsModelA ? "" : ScpiQuery($"CALC{channel}:Meas{trace}:LIMit:REPort:ALL?");
+                    var limitReportAll = limitReportAllStr.Split(',').ToList();
+                    //List<double> XAxisValues = new List<double>();
+                    //List<Verdict> PassFail = new List<Verdict>();
+                    //List<double> UpperLimit = new List<double>();
+                    //List<double> LowerLimit = new List<double>();
+
+
+                    var x1 = limitReportAll.Where((item, index) => ((index == 0) || ((index >= 4) && (index % 4 == 0)))).ToList();
+                    var x2 = limitReportAll.Where((item, index) => ((index == 1) || ((index >= 5) && (index % 4 == 1)))).ToList();
+                    var x3 = limitReportAll.Where((item, index) => ((index == 2) || ((index >= 6) && (index % 4 == 2)))).ToList();
+                    var x4 = limitReportAll.Where((item, index) => ((index == 3) || ((index >= 7) && (index % 4 == 3)))).ToList();
+
+                    //for (int limitIndex = 0; limitIndex < ((limitReportAll.Count())/4); limitIndex++)
+                    //{
+                    //    XAxisValues.Add(limitReportAll[(4*limitIndex)]);
+                    //    Verdict PF = nPF == limitReportAll[(4 * limitIndex) + 1] ? Verdict.Fail : Verdict.Pass;
+                    //    PassFail.Add(PF);
+                    //    UpperLimit.Add(limitReportAll[(4 * limitIndex) + 2]);
+                    //    LowerLimit.Add(limitReportAll[(4 * limitIndex) + 3]);
+                    //}
+
+                    // Append columns
+                    resultsList.Add(GlobalPF);
+                    resultsList.Add(x1);
+                    resultsList.Add(x2);
+                    resultsList.Add(x3);
+                    resultsList.Add(x4);
                 }
             }
 
@@ -265,7 +262,7 @@ namespace OpenTap.Plugins.PNAX
             var xString = ScpiQuery($"CALC{Channel}:X:VAL?");
             var xList = xString.Split(',').ToList();
 
-            var yString = ScpiQuery($"CALC{Channel}:MEAS{mnum}:DATA:FDATA?");
+            var yString = IsModelA ? ScpiQuery($"CALC{Channel}:DATA? FDATA") : ScpiQuery($"CALC{Channel}:MEAS{mnum}:DATA:FDATA?");
             var yList = yString.Split(',').ToList();
 
             resultsList.Add(xList);
@@ -353,6 +350,7 @@ namespace OpenTap.Plugins.PNAX
         public void SaveState(string filename)
         {
             ScpiCommand($":MMEM:STOR:CSAR \"{filename}\"");
+
             TapThread.Sleep(1000);
             var errorList = QueryErrors();
 
@@ -461,7 +459,14 @@ namespace OpenTap.Plugins.PNAX
             //String opc = MyVNA.ScpiQuery("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','C:\\Program Files\\Keysight\\Test Automation\\Results\\Traces\\MyData1.s2p';*OPC?");
             // TODO PNA-L vs ENA
             //ScpiCommand("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','" + InstrumentFileName + "'");
-            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+            if (IsModelA)
+            {
+                ScpiCommand($"CALCulate{Channel}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+            }
+            else
+            {
+                ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+            }
 
             // Make sure folder exists on local PC
             bool exists = System.IO.Directory.Exists(FilePath);

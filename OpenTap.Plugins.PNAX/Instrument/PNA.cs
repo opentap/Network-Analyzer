@@ -62,7 +62,7 @@ namespace OpenTap.Plugins.PNAX
     public partial class PNAX : ScpiInstrument
     {
         #region Settings
-        [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 2)]
+        [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 3)]
         public bool isAlwaysPreset { get; set; }
 
         [Display("External Devices Policy", "Set and return whether External Devices remain activated or are de-activated when the VNA is Preset or when a Instrument State is recalled.\nOFF (0)  External devices remain active when the VNA is Preset or when a Instrument State is recalled.\nON (1)  External devices are de-activated (SYST:CONF:EDEV:STAT to OFF) when the VNA is Preset or when a Instrument State is recalled.", Group: "Instrument Settings", Order: 2)]
@@ -133,23 +133,20 @@ namespace OpenTap.Plugins.PNAX
             //    ScpiCommand("SYSTem:PREFerences:ITEM:EDEV:DPOLicy OFF");
             //    WaitForOperationComplete();
             //}
-
-
-            if (this.isAlwaysPreset)
-            {
-                ScpiCommand("SYST:FPR");
-                ScpiCommand("DISP:WIND OFF");
-                WaitForOperationComplete();
-            }
-
             String[] IDNValues = IdnString.Split(',');
             if (IDNValues[1].StartsWith("N") && IDNValues[1].EndsWith("A"))
             {
                 // We have a PNA instrument from the A family i.e. N5235A
                 IsModelA = true;
+                isAlwaysPreset = false;
             }
 
-            mnum = 1;
+            if (isAlwaysPreset)
+            {
+                Preset();
+            }
+
+            
         }
 
         public void Preset()
