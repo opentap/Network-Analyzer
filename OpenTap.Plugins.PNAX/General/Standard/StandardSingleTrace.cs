@@ -133,12 +133,26 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
+        public void AddTraceFormat(PNAX.MeasurementFormatEnum format)
+        {
+            TraceFormat trFormat = new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel };
+            trFormat.Format = format;
+            this.ChildTestSteps.Add(trFormat);
+        }
+
         [Browsable(true)]
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
         public override void AddTraceTitle()
         {
             this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
+        }
+
+        public void AddTraceTitle(String title)
+        {
+            TraceTitle trTitle = new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel };
+            trTitle.Title = title;
+            this.ChildTestSteps.Add(trTitle);
         }
 
         [Browsable(true)]

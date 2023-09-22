@@ -35,6 +35,55 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(standardNewTrace);
         }
 
+        // Overloaded Constructor for Test Plan Generator
+        public StandardChannel(int Ch, StandardSweepTypeEnum sweeptype, double Start, double Stop, double Power, double CW, int Points, double IFBW, List<StandardTrace> standardTraces)
+        {
+            Channel = Ch;
+
+            // Sweep Type
+            SweepType sweepTypeChildStep = new SweepType
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SweepPropertiesPoints = Points,
+                SweepPropertiesIFBandwidth = IFBW
+            };
+
+            sweepTypeChildStep.StandardSweepType = sweeptype;
+            if (sweeptype == StandardSweepTypeEnum.LinearFrequency || sweeptype == StandardSweepTypeEnum.LogFrequency)
+            {
+                sweepTypeChildStep.SweepPropertiesStart = Start;
+                sweepTypeChildStep.SweepPropertiesStop = Stop;
+                sweepTypeChildStep.SweepPropertiesPower = Power;
+            }
+            else if (sweeptype == StandardSweepTypeEnum.PowerSweep)
+            {
+                sweepTypeChildStep.SweepPropertiesStartPower = Start;
+                sweepTypeChildStep.SweepPropertiesStopPower = Stop;
+                sweepTypeChildStep.SweepPropertiesCWFreq = CW;
+            }
+            else if (sweeptype == StandardSweepTypeEnum.CWTime)
+            {
+                sweepTypeChildStep.SweepPropertiesPower = Power;
+                sweepTypeChildStep.SweepPropertiesCWFreq = CW;
+            }
+            else if (sweeptype == StandardSweepTypeEnum.PhaseSweep)
+            {
+                sweepTypeChildStep.SweepPropertiesStartPhase = Start;
+                sweepTypeChildStep.SweepPropertiesStopPhase = Stop;
+                sweepTypeChildStep.SweepPropertiesCWFreq = CW;
+            }
+
+            // Timing
+            Timing timing = new Timing { IsControlledByParent = true, Channel = this.Channel };
+            // Traces
+            StandardNewTrace standardNewTrace = new StandardNewTrace(standardTraces) { IsControlledByParent = true, Channel = this.Channel };
+
+            this.ChildTestSteps.Add(sweepTypeChildStep);
+            this.ChildTestSteps.Add(timing);
+            this.ChildTestSteps.Add(standardNewTrace);
+        }
+
         public override void Run()
         {
             int traceid = PNAX.GetNewTraceID(Channel);
