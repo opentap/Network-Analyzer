@@ -302,12 +302,25 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllSetProperty(String prop, String value)
         {
-            if (prop.Equals("Use Smart Cal Order") && IsModelA)
+            try
             {
-                // A model does not support this property
-                return;
+                ScpiErrorsLogLevelOverrides[342] = LogEventType.Debug;
+                ScpiCommand($"SYSTem:CALibrate:ALL:MCLass:PROPerty:VALue \"{prop}\",\"{value}\"");
             }
-            ScpiCommand($"SYSTem:CALibrate:ALL:MCLass:PROPerty:VALue \"{prop}\",\"{value}\"");
+            catch (Exception ex)
+            {
+                // Error 342, may need error 341 also
+                if (!ex.Message.StartsWith("Error: 342"))
+                {
+                    throw ex;
+                }
+
+            }
+            //if (prop.Equals("Use Smart Cal Order") && IsModelA)
+            //{
+            //    // A model does not support this property
+            //    return;
+            //}
         }
 
         public void CalAllSelectDutConnectorType(int Channel, int Port, String ConnectorType)
