@@ -23,21 +23,22 @@ namespace OpenTap.Plugins.PNAX.LMS
         public PNAX PNAX { get; set; }
 
         [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
-        public string filename { get; set; }
+        public MacroString filename { get; set; }
 
         [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
         public bool IsCustomPath { get; set; }
 
         [EnabledIf("IsCustomPath", true, HideIfDisabled = true)]
+        [DirectoryPath]
         [Display("Custom Path", Groups: new[] { "File Name Details" }, Order: 32)]
-        public String CustomPath { get; set; }
+        public MacroString CustomPath { get; set; }
         #endregion
 
         public StoreDispTraceData()
         {
-            filename = "All_Channels";
+            filename = new MacroString(this) { Text = "All_Channels" };
             IsCustomPath = false;
-            CustomPath = @"C:\";
+            CustomPath = new MacroString(this) { Text = @"C:\" };
         }
 
         public override void Run()
@@ -47,12 +48,12 @@ namespace OpenTap.Plugins.PNAX.LMS
             string dir = "";
             if (IsCustomPath)
             {
-                dir = Path.Combine(CustomPath, filename + ".csv"); ;
+                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".csv"); ;
             }
             else
             {
                 String assemblyDir = AssemblyDirectory();
-                dir = Path.Combine(assemblyDir, "Results", filename + ".csv");
+                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".csv");
             }
 
             PNAX.SaveDispState(dir);
