@@ -353,6 +353,14 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf(nameof(ShowPicture), HideIfDisabled = true)]
         public List<PictureDefinition> PictureList { get; set; }
 
+        [Display("Headless Mode", Groups: new[] { "Headless Mode" }, Description: "Settings to use in headless mode", Order: 122, Collapsed: false)]
+        public bool HeadlessMode { get; set; }
+
+        [Display("Include Power Calibration", Groups: new[] { "Headless Mode" }, Description: "Do a power calibration", Order: 123, Collapsed: false)]
+        [EnabledIf(nameof(HeadlessMode), HideIfDisabled = true)]
+        [ExternalParameter]
+        public bool HeadlessPowerCalibration { get; set; }
+
         #endregion
 
         private String QueryCalKits(DUTConnectorsEnum PortConn)
