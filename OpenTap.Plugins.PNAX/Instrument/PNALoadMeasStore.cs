@@ -63,74 +63,51 @@ namespace OpenTap.Plugins.PNAX
             return tracesList;
         }
         /// <summary>
-                 /// Load state file into Network Analyzer
-                 /// </summary>
-        public void LoadState(string filename, bool overwrite)
+        /// Load state file into Network Analyzer
+        /// </summary>
+        public void LoadState(string filePath, bool overwrite)
         {
-            String FileName = filename;
+            string fileName = filePath;
+            bool isLocalVNAInstance = VisaAddress.Contains("localhost");
 
             ScpiCommand(":SYST:PRES");
 
-            // If running VNA on same computer as TAP
-            if (VisaAddress.Contains("localhost"))
+            if (!isLocalVNAInstance)
             {
-                // use the file name since TAP and VNA are running on same computer
-                FileName = filename;
-            }
-            else
-            {
-                // VNA is being accessed remotely
-                FileName = Path.GetFileName(filename);
-                String FilePath = Path.GetDirectoryName(filename);
+                fileName = Path.GetFileName(filePath);
 
-                // first find if the file is already in the VNA
-                var mmemCatalogStr = ScpiQuery("MMEM:CATalog?");
-                List<String> mmemCat = mmemCatalogStr.Split(',').ToList();
-                bool found = false;
-                foreach (String mmem in mmemCat)
+                if (!CheckFileExists(fileName) || overwrite)
                 {
-                    if (mmem.Contains(FileName))
-                    {
-                        // found it
-                        found = true;
-                        break;
-                    }
-                }
+                    MoveFileToVNA(filePath, fileName);
 
-                if (!found || overwrite)
-                {
-                    byte[] filedata = File.ReadAllBytes(filename);
-                    // copy it
-                    ScpiIEEEBlockCommand($"MMEM:TRAN \"{FileName}\", ", filedata);
-
-                    // validate it was copied
-                    var mmemCatalogStr2 = ScpiQuery("MMEM:CATalog?");
-                    List<String> mmemCat2 = mmemCatalogStr2.Split(',').ToList();
-                    bool found2 = false;
-                    foreach (String mmem2 in mmemCat2)
-                    {
-                        if (mmem2.Contains(FileName))
-                        {
-                            // found it
-                            found2 = true;
-                            break;
-                        }
-                    }
-                    if (!found2)
+                    if (!CheckFileExists(fileName))
                     {
                         throw new Exception("Error while copying file to instrument!");
                     }
                 }
-
             }
-            ScpiCommand($":MMEM:LOAD:FILE \"{FileName}\"");
+            ScpiCommand($":MMEM:LOAD:FILE \"{fileName}\"");
             TapThread.Sleep(750);
             var errorList = QueryErrors();
 
             if (errorList.Count > 0)
                 throw new FileNotFoundException();
-
         }
+
+        private bool CheckFileExists(string fileName)
+        {
+            string mmemCatalogStr = ScpiQuery("MMEM:CATalog?");
+            string[] mmemArr = mmemCatalogStr.Split(',');
+            return mmemArr.Contains(fileName);
+        }
+
+        private void MoveFileToVNA(string filePath, string fileName)
+        {
+            byte[] filedata = File.ReadAllBytes(filePath);
+            ScpiIEEEBlockCommand($"MMEM:TRAN \"{fileName}\", ", filedata);
+        }
+
+
 
         /// <summary>
         /// Trigger sweep on channels
