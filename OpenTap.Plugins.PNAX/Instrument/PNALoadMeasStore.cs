@@ -68,7 +68,8 @@ namespace OpenTap.Plugins.PNAX
         public void LoadState(string filePath, bool overwrite)
         {
             string fileName = filePath;
-            bool isLocalVNAInstance = VisaAddress.Contains("localhost");
+            bool isLocalVNAInstance = VisaAddress.IndexOf("localhost", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                      VisaAddress.Contains("127.0.0.1");
 
             ScpiCommand(":SYST:PRES");
 
