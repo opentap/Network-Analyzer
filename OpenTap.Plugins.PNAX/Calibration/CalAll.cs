@@ -622,8 +622,8 @@ namespace OpenTap.Plugins.PNAX
             String strDutPort4 = Scpi.Format("{0}", Port4);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
-            if (strDutPort1 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
-            if (strDutPort1 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
+            if (strDutPort3 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+            if (strDutPort4 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
 
             String strPort1CalKit = Scpi.Format("{0}", Port1CalKit);
             String strPort2CalKit = Scpi.Format("{0}", Port2CalKit);
