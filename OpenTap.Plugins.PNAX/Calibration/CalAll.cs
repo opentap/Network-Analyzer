@@ -353,6 +353,15 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf(nameof(ShowPicture), HideIfDisabled = true)]
         public List<PictureDefinition> PictureList { get; set; }
 
+        private bool _headlessMode = false;
+        [Display("Headless Mode", Groups: new[] { "Headless Mode" }, Description: "Settings to use in headless mode", Order: 122, Collapsed: false)]
+        public bool HeadlessMode { get => _headlessMode; set => _headlessMode = value; }
+
+        [Display("Include Power Calibration", Groups: new[] { "Headless Mode" }, Order: 127)]
+        [EnabledIf(nameof(HeadlessMode), HideIfDisabled = true)]
+        [ExternalParameter]
+        public bool HeadlessPowerCalibration { get; set; }
+
         #endregion
 
         private String QueryCalKits(DUTConnectorsEnum PortConn)
@@ -557,6 +566,55 @@ namespace OpenTap.Plugins.PNAX
             return retString;
         }
 
+        public override void PrePlanRun()
+        {
+            base.PrePlanRun();
+
+            if (HeadlessMode)
+            {
+                // query the connected calkit and add it automatically
+                const string defaultKit = "85032F";
+                if (IsPort1CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port1CalKit = selectedKit;
+                }
+                if (IsPort2CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port2CalKit = selectedKit;
+                }
+                if (IsPort3CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port3CalKit = selectedKit;
+                }
+                if (IsPort4CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port4CalKit = selectedKit;
+                }
+
+                // enable Power Calibration if appropriate
+                if (IsPowerCalEnabled)
+                {
+                    PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
+                }
+           }
+        }
+        
         public override void Run()
         {
             PNAX.CalAllReset();
