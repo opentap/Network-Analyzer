@@ -13,12 +13,67 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public enum TriggerSourceEnumType
+    {
+        [Scpi("EXT")]
+        [Display("External")]
+        EXT,
+        [Scpi("IMM")]
+        [Display("Internal")]
+        IMM,
+        [Scpi("MAN")]
+        [Display("Manual")]
+        MAN
+    }
+
+    public enum TriggerModeEnumType
+    {
+        [Scpi("CHAN")]
+        [Display("Channel")]
+        CHAN,
+        [Scpi("SWE")]
+        [Display("Sweep")]
+        SWE,
+        [Scpi("POIN")]
+        [Display("Point")]
+        POIN,
+        [Scpi("TRAC")]
+        [Display("Trace")]
+        TRAC
+    }
+
+    public enum SweepModeEnumType
+    {
+        [Scpi("HOLD")]
+        [Display("Hold")]
+        HOLD,
+        [Scpi("CONT")]
+        [Display("Continuous")]
+        CONT,
+        [Scpi("GRO")]
+        [Display("Groups")]
+        GRO,
+        [Scpi("SING")]
+        [Display("Single")]
+        SING
+    }
+
     [Display("PNA-X", Group: "PNA-X", Description: "Insert a description here")]
     public partial class PNAX : ScpiInstrument
     {
         #region Settings
         [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 3)]
         public bool isAlwaysPreset { get; set; }
+
+        [Display("External Devices Policy", "Set and return whether External Devices remain activated or are de-activated when the VNA is Preset or when a Instrument State is recalled.\nOFF (0)  External devices remain active when the VNA is Preset or when a Instrument State is recalled.\nON (1)  External devices are de-activated (SYST:CONF:EDEV:STAT to OFF) when the VNA is Preset or when a Instrument State is recalled.", Group: "Instrument Settings", Order: 2)]
+        public bool ExternalDevices { get; set; }
+
+        [Display("Query for Errors", "Send SYST:ERR after every command. Useful for debugging", Group: "Instrument Settings", Order: 3)]
+        public bool IsQueryForErrors { get; set; }
+
+        [Display("Query for OPC", "Send OPC? after every command. Useful for debugging", Group: "Instrument Settings", Order: 4)]
+        public bool IsWaitForOpc { get; set; }
+        
         #endregion
 
         public StandardChannelValues DefaultStandardChannelValues;
@@ -44,6 +99,9 @@ namespace OpenTap.Plugins.PNAX
         {
             Name = "PNA-X";
             isAlwaysPreset = true;
+            ExternalDevices = true;
+            IsQueryForErrors = true;
+            IsWaitForOpc = true;
         }
 
         /// <summary>
@@ -65,6 +123,16 @@ namespace OpenTap.Plugins.PNAX
             this.QueryErrorAfterCommand = false;
             // TODO:  Open the connection to the instrument here
 
+            //if (this.ExternalDevices)
+            //{
+            //    ScpiCommand("SYSTem:PREFerences:ITEM:EDEV:DPOLicy ON");
+            //    WaitForOperationComplete();
+            //}
+            //else
+            //{
+            //    ScpiCommand("SYSTem:PREFerences:ITEM:EDEV:DPOLicy OFF");
+            //    WaitForOperationComplete();
+            //}
             String[] IDNValues = IdnString.Split(',');
             if (IDNValues[1].StartsWith("N") && IDNValues[1].EndsWith("A"))
             {
@@ -75,11 +143,17 @@ namespace OpenTap.Plugins.PNAX
 
             if (isAlwaysPreset)
             {
-                ScpiCommand("SYST:FPR");
-                ScpiCommand("DISP:WIND OFF");
-                WaitForOperationComplete();
+                Preset();
             }
 
+            
+        }
+
+        public void Preset()
+        {
+            ScpiCommand("SYST:FPR");
+            ScpiCommand("DISP:WIND OFF");
+            WaitForOperationComplete();
             mnum = 1;
         }
 
@@ -92,7 +166,7 @@ namespace OpenTap.Plugins.PNAX
             base.Close();
         }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Display("Update Default Values", Group: "Instrument Settings", Order: 3)]
         public void UpdateDefaultValues()
         {
@@ -186,13 +260,20 @@ namespace OpenTap.Plugins.PNAX
         {
             base.ScpiCommand(command);
 
-            WaitForOperationComplete();
-            List<ScpiError> errors = base.QueryErrors();
-
-            if (errors.Count > 0)
+            if (IsWaitForOpc)
             {
-                String errorString = String.Join(",", errors.ToArray());
-                throw new Exception($"Error: {errorString} while sending command: {command}");
+                WaitForOperationComplete();
+            }
+
+            if (IsQueryForErrors)
+            {
+                List<ScpiError> errors = base.QueryErrors();
+
+                if (errors.Count > 0)
+                {
+                    String errorString = String.Join(",", errors.ToArray());
+                    throw new Exception($"Error: {errorString} while sending command: {command}");
+                }
             }
         }
 
@@ -201,6 +282,37 @@ namespace OpenTap.Plugins.PNAX
             String strRet = base.ScpiQuery(query, isSilent);
             strRet = strRet.Replace("\n", "");
             return strRet;
+        }
+
+        public void SetTriggerSource(TriggerSourceEnumType trigerSource)
+        {
+            string scpi = Scpi.Format("{0}", trigerSource);
+            ScpiCommand($"TRIGger:SOURce {scpi}");
+        }
+
+        public void SetTriggerMode(int Channel, TriggerModeEnumType triggerMode)
+        {
+            string scpi = Scpi.Format("{0}", triggerMode);
+            ScpiCommand($"SENSe{Channel}:SWEep:TRIGger:MODE {scpi}");
+        }
+
+        public void SetSweepMode(int Channel, SweepModeEnumType sweepMode)
+        {
+            string scpi = Scpi.Format("{0}", sweepMode);
+            ScpiCommand($"SENSe{Channel}:SWEep:MODE {scpi}");
+        }
+
+        public void SendTrigger(int Channel)
+        {
+            ScpiCommand($"INITiate{Channel}:IMMediate");
+        }
+
+        public List<String> SourceCatalog(int Channel)
+        {
+            String retString = ScpiQuery($"SOURce{Channel}:CATalog?");
+            retString = retString.Replace("\"", "");
+            List<String> retVal = retString.Split(',').ToList<String>();
+            return retVal;
         }
     }
 }

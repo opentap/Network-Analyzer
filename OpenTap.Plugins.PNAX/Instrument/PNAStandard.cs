@@ -21,19 +21,29 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery($"SENSe{ Channel }:SWEep:TYPE?"); ;
         }
 
+        private void SetSweepType(int Channel, String sweepType)
+        {
+            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {sweepType}");
+        }
+
         public void SetStandardSweepType(int Channel, StandardSweepTypeEnum standardSweepType)
         {
             string scpi = Scpi.Format("{0}", standardSweepType);
-            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {scpi}");
+            SetSweepType(Channel, scpi);
         }
 
         // ScalerMixerSweepType
-        public void SetStandardSweepType(int Channel, ScalerMixerSweepType standardSweepType)
+        public void SetStandardSweepType(int Channel, ScalerMixerSweepType SMCSweepType)
         {
-            string scpi = Scpi.Format("{0}", standardSweepType);
-            ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {scpi}");
+            string scpi = Scpi.Format("{0}", SMCSweepType);
+            SetSweepType(Channel, scpi);
         }
 
+        public void SetSASweepType(int Channel, SASweepTypeEnum SASweepType)
+        {
+            string scpi = Scpi.Format("{0}", SASweepType);
+            SetSweepType(Channel, scpi);
+        }
 
         public double GetStart(int Channel)
         {
@@ -103,6 +113,16 @@ namespace OpenTap.Plugins.PNAX
         public void SetIFBandwidth(int Channel, double bw)
         {
             ScpiCommand($"SENSe{ Channel }:BANDwidth { bw }");
+        }
+
+        public string GetSourcePowerMode(int Channel, String port)
+        {
+            return ScpiQuery($"SOURce{Channel}:POWer:MODE? \"{port}\"");
+        }
+
+        public void SetSourcePowerMode(int Channel, String port, String mode)
+        {
+            ScpiCommand($"SOURce{Channel}:POWer:MODE {mode}, \"{port}\"");
         }
 
         public double GetStartPower(int Channel)
@@ -346,6 +366,52 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand($"DISPlay:WINDow{window}:TABLe OFF");
             }
         }
+
+        public void SetSegmentSAMTReferenceControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:MTReference:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSAMTReference(int Channel, int segment, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:MTReference {value.ToString()}");
+        }
+
+        public void SetSegmentSADataThresholdControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:DTHReshold:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSADataThreshold(int Channel, int segment, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:DTHReshold {value.ToString()}");
+        }
+
+        public void SetSegmentSAVectorAverageControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VAVerage:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSAVectorAverage(int Channel, int segment, int value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VAVerage {value.ToString()}");
+        }
+
+        public void SetSegmentSAVideoBWControl(int Channel, int segment, SAOnOffTypeEnum value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VIDeobw:CONTrol {scpi}");
+        }
+
+        public void SetSegmentSAVideoBW(int Channel, int segment, double value)
+        {
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VIDeobw {value.ToString()}");
+        }
+
+
         #endregion
 
         #region Configuration

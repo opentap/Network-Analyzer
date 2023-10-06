@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - Meta Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Appends Meta data to trace.")]
-    [AllowAsChildIn(typeof(StoreData))]
+    [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDataMetaData : TestStep
     {
         #region Settings
@@ -30,7 +30,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            List<(string, object)> _parentsMetaData = GetParent<StoreData>().MetaData;
+            List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
 
             // if MetaData available
             if ((MetaData.Property != null) && (MetaData.Value.Count > 0))

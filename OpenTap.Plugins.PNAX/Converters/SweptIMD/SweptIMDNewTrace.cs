@@ -270,7 +270,7 @@ namespace OpenTap.Plugins.PNAX
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
             UpdateSweptIMDConverterTestName();
-            ChildTestSteps.Add(new SweptIMDSingleTrace() { Meas = SweptIMDTraceEnum.PwrMain});
+            ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = SweptIMDTraceEnum.PwrMain});
         }
 
         protected override void AddNewTrace()
@@ -278,7 +278,7 @@ namespace OpenTap.Plugins.PNAX
             SweptIMDTraceEnum sweptIMD;
             if (Enum.TryParse<SweptIMDTraceEnum>(ParamName, out sweptIMD))
             {
-                this.ChildTestSteps.Add(new SweptIMDSingleTrace() { Meas = sweptIMD, Channel = this.Channel });
+                this.ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = sweptIMD, Channel = this.Channel });
             }
         }
 

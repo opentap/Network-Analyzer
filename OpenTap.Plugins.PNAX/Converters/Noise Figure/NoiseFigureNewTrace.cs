@@ -25,7 +25,7 @@ namespace OpenTap.Plugins.PNAX
         public NoiseFigureNewTrace()
         {
             Meas = NoiseFigureTraceEnum.NF;
-            ChildTestSteps.Add(new NoiseFigureSingleTrace() { Meas = NoiseFigureTraceEnum.NF});
+            ChildTestSteps.Add(new NoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = NoiseFigureTraceEnum.NF});
         }
 
         public override void Run()
@@ -44,7 +44,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new NoiseFigureSingleTrace() { Meas = this.Meas, Channel = this.Channel });
+            this.ChildTestSteps.Add(new NoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel });
         }
 
     }

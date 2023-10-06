@@ -9,15 +9,9 @@ using System.IO;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Store Trace Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
-    public class StoreData : TestStep
+    public class StoreData : StoreDataBase
     {
         #region Settings
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
-
-
-        [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10)]
-        public List<int> channels { get; set; }
 
         [Display("Group Results by Channel", Description: "Generate one Result file per Channel.", "Measurements", Order: 20)]
         public bool GroupByChannel { get; set; }
@@ -29,10 +23,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Limits File", "Insert .csv file containing limits to check against (*.csv)", "Measurements", Order: 40)]
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
         public string LimitsFile { get; set; }
-
-        [Browsable(false)]
-        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
-        public List<(string, object)> MetaData { get; set; }
 
         #endregion
 

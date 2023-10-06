@@ -87,21 +87,29 @@ namespace OpenTap.Plugins.PNAX
 
 
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
+        [Display("Type", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 9.9)]
+        public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
+
+        [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Start fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 10)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcStartFc { get; set; }
 
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Stop fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 11)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcStopFc { get; set; }
 
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Center fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 12)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcCenterFc { get; set; }
 
         [EnabledIf("ToneFrequencySweepType", ToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Span fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 13)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcSpanFc { get; set; }
@@ -217,6 +225,7 @@ namespace OpenTap.Plugins.PNAX
             PowerSweepCWFc = DefaultValues.PowerSweepCWFc;
             PowerSweepCWDeltaF = DefaultValues.PowerSweepCWDeltaF;
             XAxisDisplayAnnotation = DefaultValues.XAxisDisplayAnnotation;
+            IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
 
         public override void Run()
@@ -228,10 +237,16 @@ namespace OpenTap.Plugins.PNAX
             switch (ToneFrequencySweepType)
             {
                 case ToneFrequencySweepTypeEnum.SweepFc:
-                    PNAX.SetIMDSweepSettingsStartfc(Channel, SweepFcStartFc);
-                    PNAX.SetIMDSweepSettingsStopfc(Channel, SweepFcStopFc);
-                    PNAX.SetIMDSweepSettingsCenterfc(Channel, SweepFcCenterFc);
-                    PNAX.SetIMDSweepSettingsSpanfc(Channel, SweepFcSpanFc);
+                    if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+                    {
+                        PNAX.SetIMDSweepSettingsStartfc(Channel, SweepFcStartFc);
+                        PNAX.SetIMDSweepSettingsStopfc(Channel, SweepFcStopFc);
+                    }
+                    else
+                    {
+                        PNAX.SetIMDSweepSettingsCenterfc(Channel, SweepFcCenterFc);
+                        PNAX.SetIMDSweepSettingsSpanfc(Channel, SweepFcSpanFc);
+                    }
                     PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, SweepFcFixedDeltaF);
                     break;
                 case ToneFrequencySweepTypeEnum.SweepDeltaF:

@@ -13,6 +13,16 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    public class StandardTrace
+    {
+        public int Channel { get; set; }
+        public StandardTraceEnum Meas { get; set; }
+        public int Window { get; set; }
+        public int Sheet { get; set; }
+        public PNAX.MeasurementFormatEnum MeasurementFormat { get; set; }
+        public String Title { get; set; }
+    }
+
     [AllowAsChildIn(typeof(StandardChannel))]
     [AllowChildrenOfType(typeof(StandardSingleTrace))]
     [Display("Standard New Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
@@ -36,7 +46,31 @@ namespace OpenTap.Plugins.PNAX
 
         public StandardNewTrace()
         {
-            ChildTestSteps.Add(new StandardSingleTrace() { Meas = StandardTraceEnum.S11});
+            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = StandardTraceEnum.S11});
+        }
+
+        // overloaded constructor for window and sheet
+        public StandardNewTrace(List<StandardTrace> standardTraces)
+        {
+            if ((standardTraces is null) || (standardTraces.Count == 0))
+            {
+                // add default trace
+                ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = StandardTraceEnum.S11 });
+                return;
+            }
+
+            foreach (StandardTrace tr in standardTraces)
+            {
+                StandardSingleTrace sstr = new StandardSingleTrace() { PNAX = this.PNAX, Channel = tr.Channel, Meas = tr.Meas, Window = tr.Window, Sheet = tr.Sheet };
+
+                sstr.AddTraceFormat(tr.MeasurementFormat);
+
+                if (!tr.Title.Equals(""))
+                {
+                    sstr.AddTraceTitle(tr.Title);
+                }
+                ChildTestSteps.Add(sstr);
+            }
         }
 
         [Browsable(false)]
@@ -68,7 +102,7 @@ namespace OpenTap.Plugins.PNAX
             StandardTraceEnum standardTrace;
             if (Enum.TryParse<StandardTraceEnum>(Meas.ToString(), out standardTrace))
             {
-                this.ChildTestSteps.Add(new StandardSingleTrace() { Meas = standardTrace, Channel = this.Channel });
+                this.ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = standardTrace, Channel = this.Channel });
             }
         }
 

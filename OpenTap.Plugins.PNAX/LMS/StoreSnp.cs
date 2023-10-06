@@ -32,14 +32,15 @@ namespace OpenTap.Plugins.PNAX.LMS
         public List<int> Ports { get; set; }
 
         [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
-        public string filename { get; set; }
+        public MacroString filename { get; set; }
 
         [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
         public bool IsCustomPath { get; set; }
 
         [EnabledIf("IsCustomPath", true, HideIfDisabled = true)]
+        [DirectoryPath]
         [Display("Custom Path", Groups: new[] { "File Name Details" }, Order: 32)]
-        public String CustomPath { get; set; }
+        public MacroString CustomPath { get; set; }
         #endregion
 
         public StoreSnp()
@@ -47,9 +48,9 @@ namespace OpenTap.Plugins.PNAX.LMS
             Channel = 1;
             mnum = 1;
             Ports = new List<int>() { 1, 2 };
-            filename = "CH1";
+            filename = new MacroString(this) { Text = "CH1" };
             IsCustomPath = false;
-            CustomPath = @"C:\";
+            CustomPath = new MacroString(this) { Text = @"C:\" };
         }
 
         public override void Run()
@@ -62,12 +63,12 @@ namespace OpenTap.Plugins.PNAX.LMS
             string dir = "";
             if (IsCustomPath)
             {
-                dir = Path.Combine(CustomPath, filename + ".s2p"); ;
+                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".s2p"); ;
             }
             else
             {
                 String assemblyDir = AssemblyDirectory();
-                dir = Path.Combine(assemblyDir, "Results", filename + ".s2p");
+                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".s2p");
             }
 
             PNAX.SaveSnP(Channel, mnum, Ports, dir);

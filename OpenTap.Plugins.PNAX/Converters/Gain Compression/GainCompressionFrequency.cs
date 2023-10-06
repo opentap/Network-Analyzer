@@ -42,6 +42,7 @@ namespace OpenTap.Plugins.PNAX
 
             SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
 
+            IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
 
         public override void Run()
@@ -57,10 +58,16 @@ namespace OpenTap.Plugins.PNAX
 
             if (SweepType == SweepTypeEnum.LinearSweep)
             {
-                PNAX.SetStart(Channel, SweepSettingsStart);
-                PNAX.SetStop(Channel, SweepSettingsStop);
-                PNAX.SetCenter(Channel, SweepSettingsCenter);
-                PNAX.SetSpan(Channel, SweepSettingsSpan);
+                if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+                {
+                    PNAX.SetStart(Channel, SweepSettingsStart);
+                    PNAX.SetStop(Channel, SweepSettingsStop);
+                }
+                else
+                {
+                    PNAX.SetCenter(Channel, SweepSettingsCenter);
+                    PNAX.SetSpan(Channel, SweepSettingsSpan);
+                }
             }
             else if (SweepType == SweepTypeEnum.CWFrequency)
             {

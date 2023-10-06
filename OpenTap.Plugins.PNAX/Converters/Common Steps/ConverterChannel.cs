@@ -19,8 +19,32 @@ namespace OpenTap.Plugins.PNAX
     public class ConverterChannelBase : TestStep
     {
         #region Settings
+        private PNAX _PNAX;
         [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
+        public PNAX PNAX
+        {
+            get
+            {
+                return _PNAX;
+            }
+            set
+            {
+                _PNAX = value;
+
+                // Update traces
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is ConverterSingleTraceBaseStep)
+                    {
+                        (a as ConverterSingleTraceBaseStep).PNAX = value;
+                    }
+                    if (a is ConverterBaseStep)
+                    {
+                        (a as ConverterBaseStep).PNAX = value;
+                    }
+                }
+            }
+        }
 
         private int _channel;
         [Display("Channel", Order: 1)]

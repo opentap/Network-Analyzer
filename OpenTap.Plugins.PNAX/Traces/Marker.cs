@@ -27,16 +27,16 @@ namespace OpenTap.Plugins.PNAX
 
         public Marker()
         {
-
+            IsControlledByParent = true;
         }
 
         public override void Run()
         {
             mnum = GetParent<SingleTraceBaseStep>().mnum;
-            // CALCulate<cnum>:MEASure<mnum>:MARKer<mkr>:STATe?
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:MEASure{mnum.ToString()}:MARKer{mkr.ToString()}:STATe ON");
 
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:MEASure{mnum.ToString()}:MARKer{mkr.ToString()}:X {XAxisPosition.ToString()}");
+            PNAX.SetMarkerState(Channel, mnum, mkr, SAOnOffTypeEnum.On);
+
+            PNAX.SetMarkerXValue(Channel, mnum, mkr, XAxisPosition);
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.

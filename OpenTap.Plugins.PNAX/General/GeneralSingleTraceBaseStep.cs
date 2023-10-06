@@ -43,6 +43,7 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralSingleTraceBaseStep()
         {
+            IsControlledByParent = true;
             EnableTraceSettings = true;
         }
 

@@ -18,8 +18,32 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
 
+        private PNAX _PNAX;
         [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
+        public PNAX PNAX
+        {
+            get
+            {
+                return _PNAX;
+            }
+            set
+            {
+                _PNAX = value;
+
+                // Update traces
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is GeneralSingleTraceBaseStep)
+                    {
+                        (a as GeneralSingleTraceBaseStep).PNAX = value;
+                    }
+                    if (a is GeneralBaseStep)
+                    {
+                        (a as GeneralBaseStep).PNAX = value;
+                    }
+                }
+            }
+        }
 
         private int _channel;
         [Display("Channel", Order: 1)]

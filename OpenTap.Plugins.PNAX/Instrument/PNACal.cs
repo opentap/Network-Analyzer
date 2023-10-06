@@ -243,7 +243,67 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllStartRemotely()
         {
-            ScpiCommand("SYST:CORR:WIZ CALL");
+            if (IsModelA)
+            {
+                CalAllStartRemotelyWithMacro();
+            }
+            else
+            {
+                ScpiCommand("SYST:CORR:WIZ CALL");
+            }
+        }
+
+        private int calAllMacro = -1;
+        public void CalAllStartRemotelyWithMacro()
+        {
+            // setup macro the first time
+            if (calAllMacro == -1)
+            {
+                // create macro file
+                const string DEFAULT_FOLDER = @"C:\Users\Public\Documents\Network Analyzer\";
+                const string CAL_ALL_SCRIPT_NAME = "CalibrateAll.vbs";
+                const string CAL_ALL_TITLE = "CalibrateAll";
+                ScpiCommand($@"MMEM:CDIR ""{DEFAULT_FOLDER}""");
+                ScpiIEEEBlockCommand(
+                    @"MMEM:TRAN ""CalibrateAll.vbs"",",
+                    ASCIIEncoding.ASCII.GetBytes(@"Call CreateObject(""AgilentPNA835x.Application"").LaunchDialog(""CalibrateAll"")"));
+
+                // find the macro slot
+                int emptySlot = -1;
+                for (int macroSlot = 24; macroSlot > 0; macroSlot--)
+                {
+                    string title = ScpiQuery($"SYST:SHOR{macroSlot}:TITLE?", true).Trim('\n', '"');
+                    string path = ScpiQuery($"SYST:SHOR{macroSlot}:PATH?", true).Trim('\n', '"');
+
+                    if (title == CAL_ALL_TITLE && path != String.Empty)
+                    {
+                        calAllMacro = macroSlot;
+                        break;
+                    }
+                    else if (emptySlot == -1 && title == String.Empty && path == String.Empty)
+                    {
+                        emptySlot = macroSlot;
+                    }
+                }
+
+                // create the macro
+                if (calAllMacro == -1)
+                {
+                    if (emptySlot != -1)
+                    {
+                        ScpiCommand($@"SYST:SHOR{emptySlot}:TITLE ""{CAL_ALL_TITLE}""");
+                        ScpiCommand($@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + CAL_ALL_SCRIPT_NAME}""");
+                        calAllMacro = emptySlot;
+                    }
+                    else
+                    {
+                        throw new Exception("No empty slots for CalAll macro! Clear a slot and try again.");
+                    }
+                }
+            }
+
+            // call the macro
+            ScpiCommand($"SYST:SHOR{calAllMacro}:EXEC");
         }
 
         public void CalAllReset()
