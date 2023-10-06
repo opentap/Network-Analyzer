@@ -462,7 +462,15 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllStep(int CalChannel, int CalStep, CalModeEnum calMode = CalModeEnum.ASYN)
         {
-            ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:ACQuire STAN{CalStep},{calMode}");
+            if (IsModelA)
+            {
+                ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:ACQuire STAN{CalStep}");
+
+            }
+            else
+            {
+                ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:ACQuire STAN{CalStep},{calMode}");
+            }
         }
 
         public void CalAllSave(int CalChannel)
@@ -472,6 +480,8 @@ namespace OpenTap.Plugins.PNAX
 
         public int SimulatorMode()
         {
+            if (IsModelA) return 0;
+
             int mode = ScpiQuery<int>("SYST:ACT:SIMulator?");
             return mode;
         }
