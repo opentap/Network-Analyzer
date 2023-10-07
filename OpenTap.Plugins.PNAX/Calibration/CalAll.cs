@@ -581,6 +581,7 @@ namespace OpenTap.Plugins.PNAX
                     string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port1CalKit = selectedKit;
+                    Log.Debug($"Port1 calkit set to: {selectedKit}");
                 }
                 if (IsPort2CalKitEnabled)
                 {
@@ -589,6 +590,7 @@ namespace OpenTap.Plugins.PNAX
                     string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port2CalKit = selectedKit;
+                    Log.Debug($"Port2 calkit set to: {selectedKit}");
                 }
                 if (IsPort3CalKitEnabled)
                 {
@@ -597,6 +599,7 @@ namespace OpenTap.Plugins.PNAX
                     string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port3CalKit = selectedKit;
+                    Log.Debug($"Port4 calkit set to: {selectedKit}");
                 }
                 if (IsPort4CalKitEnabled)
                 {
@@ -605,14 +608,17 @@ namespace OpenTap.Plugins.PNAX
                     string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port4CalKit = selectedKit;
+                    Log.Debug($"Port4 calkit set to: {selectedKit}");
                 }
 
                 // enable Power Calibration if appropriate
                 if (IsPowerCalEnabled)
                 {
                     PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
+                    Log.Debug($"Power calibration set");
+
                 }
-           }
+            }
         }
         
         public override void Run()
