@@ -353,6 +353,19 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf(nameof(ShowPicture), HideIfDisabled = true)]
         public List<PictureDefinition> PictureList { get; set; }
 
+        private bool _headlessMode = false;
+        [Display("Headless Mode", Groups: new[] { "Headless Mode" }, Description: "Settings to use in headless mode", Order: 122, Collapsed: false)]
+        public bool HeadlessMode { get => _headlessMode; set => _headlessMode = value; }
+
+        [Display("Automatically select Cal Kit", Groups: new[] { "Headless Mode" }, Order: 127)]
+        [EnabledIf(nameof(HeadlessMode), HideIfDisabled = true)]
+        public bool AutomaticallySelectCalKit { get; set; }
+
+        [Display("Include Power Calibration", Groups: new[] { "Headless Mode" }, Order: 128)]
+        [EnabledIf(nameof(HeadlessMode), HideIfDisabled = true)]
+        [ExternalParameter]
+        public bool HeadlessPowerCalibration { get; set; }
+
         #endregion
 
         private String QueryCalKits(DUTConnectorsEnum PortConn)
@@ -557,8 +570,62 @@ namespace OpenTap.Plugins.PNAX
             return retString;
         }
 
+        private void DoHeadlessModeTasks()
+        {
+            if (HeadlessMode)
+            {
+                // query the connected calkit and add it automatically
+                const string defaultKit = "85032F";
+                if (IsPort1CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port1CalKit = selectedKit;
+                    Log.Debug($"Port1 calkit set to: {selectedKit}");
+                }
+                if (IsPort2CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port2CalKit = selectedKit;
+                    Log.Debug($"Port2 calkit set to: {selectedKit}");
+                }
+                if (IsPort3CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port3CalKit = selectedKit;
+                    Log.Debug($"Port4 calkit set to: {selectedKit}");
+                }
+                if (IsPort4CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port4CalKit = selectedKit;
+                    Log.Debug($"Port4 calkit set to: {selectedKit}");
+                }
+
+                // enable Power Calibration if appropriate
+                if (IsPowerCalEnabled)
+                {
+                    PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
+                    Log.Debug($"Power calibration set");
+                }
+            }
+        }
+        
         public override void Run()
         {
+            DoHeadlessModeTasks();
+
             PNAX.CalAllReset();
 
             // Set Channels and Ports for each channel
