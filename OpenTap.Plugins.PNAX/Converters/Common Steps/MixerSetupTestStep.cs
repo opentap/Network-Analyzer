@@ -281,6 +281,7 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetTuningTolerance(Channel, Tolerance);
                 PNAX.SetLOFrequencyDelta(Channel, LOFrequencyDelta);
             }
+            PNAX.MixerApply(Channel);
 
             UpgradeVerdict(Verdict.Pass);
         }

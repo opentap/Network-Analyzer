@@ -38,12 +38,12 @@ namespace OpenTap.Plugins.PNAX
             // Trace
             NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
 
-            this.ChildTestSteps.Add(mixerSetupTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(noiseFigure);
-            this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(frequency);
+            this.ChildTestSteps.Add(power);
+            this.ChildTestSteps.Add(noiseFigure);
+            this.ChildTestSteps.Add(mixerFrequencyTestStep);
+            this.ChildTestSteps.Add(mixerPowerTestStep);
+            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(noiseFigureNewTrace);
 
             // Once we have all child steps, lets get the number of points
