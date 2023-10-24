@@ -61,11 +61,11 @@ namespace OpenTap.Plugins.PNAX
             mixerPowerTestStep.LO2SweptPowerStop = 0.0;
             mixerPowerTestStep.LO2SweptPowerStep = 0.050;
 
-            this.ChildTestSteps.Add(mixerSetupTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(scalerMixerPower);
             this.ChildTestSteps.Add(scalerMixerSweep);
+            this.ChildTestSteps.Add(scalerMixerPower);
+            this.ChildTestSteps.Add(mixerFrequencyTestStep);
+            this.ChildTestSteps.Add(mixerPowerTestStep);
+            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(scalarMixerNewTrace);
 
             // Once we have all child steps, lets get the number of points
