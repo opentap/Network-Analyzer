@@ -18,465 +18,338 @@ namespace OpenTap.Plugins.PNAX
         #region Compression
         public CompressionMethodEnum GetCompressionMethod(int Channel)
         {
-            CompressionMethodEnum retVal = CompressionMethodEnum.CompressionFromLinearGain;
-            String retString = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:COMPression:ALGorithm?");
-            if (retString.Equals("CFLG"))
+            string retString = ScpiQuery($"SENSe{Channel}:GCSetup:COMPression:ALGorithm?");
+            if (retString.Equals("CFMG"))
             {
-                retVal = CompressionMethodEnum.CompressionFromLinearGain;
-            }
-            else if (retString.Equals("CFMG"))
-            {
-                retVal = CompressionMethodEnum.CompressionFromMaxGain;
+                return CompressionMethodEnum.CompressionFromMaxGain;
             }
             else if (retString.StartsWith("BACK"))
             {
-                retVal = CompressionMethodEnum.CompressionFromBackOff;
+                return CompressionMethodEnum.CompressionFromBackOff;
             }
             else if (retString.Equals("XYCOM"))
             {
-                retVal = CompressionMethodEnum.XYCompression;
+                return CompressionMethodEnum.XYCompression;
             }
             else if (retString.Equals("SAT"))
             {
-                retVal = CompressionMethodEnum.CompressionFromSaturation;
+                return CompressionMethodEnum.CompressionFromSaturation;
             }
-            return retVal;
+            else
+            {
+                return CompressionMethodEnum.CompressionFromLinearGain;
+            }
         }
 
         public void SetCompressionMethod(int Channel, CompressionMethodEnum method)
         {
-            String alg = Scpi.Format("{0}", method);
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:ALGorithm {alg}");
+            string alg = Scpi.Format("{0}", method);
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:ALGorithm {alg}");
         }
 
         public double GetCompressionLevel(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:COMPression:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:COMPression:LEVel?");
         }
 
         public void SetCompressionLevel(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:LEVel {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:LEVel {level}");
         }
 
         public double GetCompressionBackoffLevel(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:COMPression:BACKoff:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:COMPression:BACKoff:LEVel?");
         }
 
         public void SetCompressionBackoffLevel(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:BACKoff:LEVel {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:BACKoff:LEVel {level}");
         }
 
         public double GetCompressionDeltaX(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:COMPression:DELTa:X?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:COMPression:DELTa:X?");
         }
 
         public void SetCompressionDeltaX(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:DELTa:X {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:DELTa:X {level}");
         }
 
         public double GetCompressionDeltaY(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:COMPression:DELTa:Y?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:COMPression:DELTa:Y?");
         }
 
         public void SetCompressionDeltaY(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:DELTa:Y {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:DELTa:Y {level}");
         }
 
         public double GetCompressionSaturation(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:COMPression:SATuration:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:COMPression:SATuration:LEVel?");
         }
 
         public void SetCompressionSaturation(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:SATuration:LEVel {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:SATuration:LEVel {level}");
         }
 
         public double GetSMARTSweepTolerance(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SMARt:TOLerance?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SMARt:TOLerance?");
         }
 
         public void SetSMARTSweepTolerance(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:TOLerance {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SMARt:TOLerance {level}");
         }
 
         public double GetSMARTSweepMaximumIterations(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SMARt:MITerations?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SMARt:MITerations?");
         }
 
         public void SetSMARTSweepMaximumIterations(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:MITerations {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SMARt:MITerations {level}");
         }
 
         public bool GetSMARTSweepShowIterations(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:SMARt:SITerations?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:GCSetup:SMARt:SITerations?");
+            return !retStr.Equals("0");
         }
 
         public void SetSMARTSweepShowIterations(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:SITerations 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:SITerations 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:GCSetup:SMARt:SITerations {stateValue}");
         }
 
         public bool GetSMARTSweepReadDCAtCompression(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:SMARt:CDC?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:GCSetup:SMARt:CDC?");
+            return !retStr.Equals("0");
         }
 
         public void SetSMARTSweepReadDCAtCompression(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:CDC 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:CDC 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:GCSetup:SMARt:CDC {stateValue}");
         }
 
         public bool GetSMARTSweepSafeMode(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:SAFE:ENABle?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:GCSetup:SAFE:ENABle?");
+            return !retStr.Equals("0");
         }
 
         public void SetSMARTSweepSafeMode(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:ENABle 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:ENABle 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:ENABle {stateValue}");
         }
 
         public double GetSMARTSweepSafeModeCoarseIncrement(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SAFE:CPADjustment?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SAFE:CPADjustment?");
         }
 
         public void SetSMARTSweepSafeModeCoarseIncrement(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:CPADjustment {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:CPADjustment {level}");
         }
 
         public double GetSMARTSweepSafeModeFineIncrement(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SAFE:FPADjustment?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SAFE:FPADjustment?");
         }
 
         public void SetSMARTSweepSafeModeFineIncrement(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:FPADjustment {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:FPADjustment {level}");
         }
 
         public double GetSMARTSweepSafeModeFineThreshold(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SAFE:FTHReshold?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SAFE:FTHReshold?");
         }
 
         public void SetSMARTSweepSafeModeFineThreshold(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:FTHReshold {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:FTHReshold {level}");
         }
 
         public double GetSMARTSweepSafeModeMaxOutputPower(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SAFE:MLIMit?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SAFE:MLIMit?");
         }
 
         public void SetSMARTSweepSafeModeMaxOutputPower(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:MLIMit {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:MLIMit {level}");
         }
 
-        public String GetSMARTSweepSafeModeDCParameters(int Channel)
+        public string GetSMARTSweepSafeModeDCParameters(int Channel)
         {
-            String retVal = "";
-            retVal = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:PARameter?");
-            return retVal;
+            return ScpiQuery($"SENSe{Channel}:GCSetup:SAFE:DC:PARameter?");
         }
 
-        public void SetSMARTSweepSafeModeDCParameters(int Channel, String device)
+        public void SetSMARTSweepSafeModeDCParameters(int Channel, string device)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:PARameter \"{device}\"");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:DC:PARameter \"{device}\"");
         }
 
         public double GetSMARTSweepSafeModeMaxDCPower(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:MLIMit?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SAFE:DC:MLIMit?");
         }
 
         public void SetSMARTSweepSafeModeMaxDCPower(int Channel, double level)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SAFE:DC:MLIMit {level.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:DC:MLIMit {level}");
         }
 
 
 
         public bool Get2DSweepCompressionPointInterpolation(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:COMPression:INTerpolate?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:GCSetup:COMPression:INTerpolate?");
+            return !retStr.Equals("0");
         }
 
         public void Set2DSweepCompressionPointInterpolation(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:INTerpolate 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:COMPression:INTerpolate 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:GCSetup:COMPression:INTerpolate {stateValue}");
         }
 
         public EndOfSweepConditionEnum GetCompressionEndOfSweepCondition(int Channel)
         {
-            EndOfSweepConditionEnum retVal = EndOfSweepConditionEnum.Default;
-            String retString = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:EOSoperation?");
-            if (retString.Equals("STAN"))
+            string retString = ScpiQuery($"SENSe{Channel}:GCSetup:EOSoperation?");
+            if (retString.Equals("POFF"))
             {
-                retVal = EndOfSweepConditionEnum.Default;
-            }
-            else if (retString.Equals("POFF"))
-            {
-                retVal = EndOfSweepConditionEnum.RFOff;
+                return EndOfSweepConditionEnum.RFOff;
             }
             else if (retString.StartsWith("PSTA"))
             {
-                retVal = EndOfSweepConditionEnum.StartPower;
+                return EndOfSweepConditionEnum.StartPower;
             }
             else if (retString.Equals("PSTO"))
             {
-                retVal = EndOfSweepConditionEnum.StopPower;
+                return EndOfSweepConditionEnum.StopPower;
             }
-            return retVal;
+            else
+            {
+                return EndOfSweepConditionEnum.Default;
+            }
         }
 
         public void SetCompressionEndOfSweepCondition(int Channel, EndOfSweepConditionEnum condition)
         {
-            String cond = Scpi.Format("{0}", condition);
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:EOSoperation {cond}");
+            string cond = Scpi.Format("{0}", condition);
+            ScpiCommand($"SENSe{Channel}:GCSetup:EOSoperation {cond}");
         }
 
         public double GetCompressionSettlingTime(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SMARt:STIMe?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SMARt:STIMe?");
         }
 
         public void SetCompressionSettlingTime(int Channel, double time)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SMARt:STIMe {time.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SMARt:STIMe {time}");
         }
         #endregion
 
         #region Power
         public int GetGCPortInput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:GCSetup:PMAP:INP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:GCSetup:PMAP:INP?");
         }
 
         public int GetGCPortOutput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:GCSetup:PMAP:OUTP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:GCSetup:PMAP:OUTP?");
         }
 
         public void SetGCPortInputOutput(int Channel, PortsEnum inport, PortsEnum outport)
         {
-            String inp = Scpi.Format("{0}", inport);
-            String outp = Scpi.Format("{0}", outport);
-            ScpiCommand($"SENS{Channel.ToString()}:GCSetup:PMAP {inp},{outp}");
+            string inp = Scpi.Format("{0}", inport);
+            string outp = Scpi.Format("{0}", outport);
+            ScpiCommand($"SENS{Channel}:GCSetup:PMAP {inp},{outp}");
         }
 
         public double GetPowerLinearInputPower(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:LINear:INPut:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:POWer:LINear:INPut:LEVel?");
         }
 
         public void SetPowerLinearInputPower(int Channel, double power)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:LINear:INPut:LEVel {power.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:POWer:LINear:INPut:LEVel {power}");
         }
 
         public double GetPowerReversePower(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:REVerse:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:POWer:REVerse:LEVel?");
         }
 
         public void SetPowerReversePower(int Channel, double power)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:REVerse:LEVel {power.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:POWer:REVerse:LEVel {power}");
         }
 
         public bool GetSourceAttenuatorAutoMode(int Channel, int port)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:AUTO?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SOURce{Channel}:POWer{port}:ATTenuation:AUTO?");
+            return !retStr.Equals("0");
         }
 
         public void SetSourceAttenuatorAutoMode(int Channel, int port, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:AUTO 1");
-            }
-            else
-            {
-                ScpiCommand($"SOURce{Channel.ToString()}:POWer{port.ToString()}:ATTenuation:AUTO 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SOURce{Channel}:POWer{port}:ATTenuation:AUTO {stateValue}");
         }
 
         public void SetSourceAttenuatorAutoMode(int Channel, PortsEnum port, bool mode)
         {
-            String strPort = Scpi.Format("{0}", port);
-            if (mode == true)
-            {
-                ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ATTenuation:AUTO 1");
-            }
-            else
-            {
-                ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:ATTenuation:AUTO 0");
-            }
+            string strPort = Scpi.Format("{0}", port);
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SOURce{Channel}:POWer{strPort}:ATTenuation:AUTO {stateValue}");
         }
 
         public double GetPowerSweepStartPower(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:STARt:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:POWer:STARt:LEVel?");
         }
 
         public void SetPowerSweepStartPower(int Channel, double power)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:STARt:LEVel {power.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:POWer:STARt:LEVel {power}");
         }
 
         public double GetPowerSweepStopPower(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:POWer:STOP:LEVel?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:POWer:STOP:LEVel?");
         }
 
         public void SetPowerSweepStopPower(int Channel, double power)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:POWer:STOP:LEVel {power.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:POWer:STOP:LEVel {power}");
         }
 
         public double GetPowerSweepPowerPoints(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:GCSetup:SWEep:POWer:POINts?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:GCSetup:SWEep:POWer:POINts?");
         }
 
         public void SetPowerSweepPowerPoints(int Channel, double power)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:SWEep:POWer:POINts {power.ToString()}");
+            ScpiCommand($"SENSe{Channel}:GCSetup:SWEep:POWer:POINts {power}");
         }
 
 
@@ -486,7 +359,7 @@ namespace OpenTap.Plugins.PNAX
         public SweepTypeEnum GetSweepType(int Channel)
         {
             SweepTypeEnum retVal = SweepTypeEnum.LinearSweep;
-            String retString = ScpiQuery($"SENSe{Channel.ToString()}:SWEep:TYPE?");
+            string retString = ScpiQuery($"SENSe{Channel}:SWEep:TYPE?");
             if (retString.Equals("LIN"))
             {
                 retVal = SweepTypeEnum.LinearSweep;
@@ -512,45 +385,43 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetSweepType(int Channel, SweepTypeEnum sweeptype)
         {
-            String sweep = Scpi.Format("{0}", sweeptype);
-            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+            string sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel}:SWEep:TYPE {sweep}");
         }
 
         public void SetSweepType(int Channel, GeneralGainCompressionSweepTypeEnum sweeptype)
         {
-            String sweep = Scpi.Format("{0}", sweeptype);
-            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+            string sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel}:SWEep:TYPE {sweep}");
         }
 
         public void SetSweepType(int Channel, GeneralNFSweepTypeEnum sweeptype)
         {
-            String sweep = Scpi.Format("{0}", sweeptype);
-            ScpiCommand($"SENSe{Channel.ToString()}:SWEep:TYPE {sweep}");
+            string sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel}:SWEep:TYPE {sweep}");
         }
 
         public DataAcquisitionModeEnum GetDataAcquisitionMode(int Channel)
         {
-            DataAcquisitionModeEnum retVal = DataAcquisitionModeEnum.SMARTSweep;
-            String retString = ScpiQuery($"SENSe{Channel.ToString()}:GCSetup:AMODe?");
-            if (retString.Equals("SMAR"))
+            string retString = ScpiQuery($"SENSe{Channel}:GCSetup:AMODe?");
+            if (retString.Equals("PFREQ"))
             {
-                retVal = DataAcquisitionModeEnum.SMARTSweep;
-            }
-            else if (retString.Equals("PFREQ"))
-            {
-                retVal = DataAcquisitionModeEnum.SweepPowerPerFrequency2D;
+                return DataAcquisitionModeEnum.SweepPowerPerFrequency2D;
             }
             else if (retString.StartsWith("FPOW"))
             {
-                retVal = DataAcquisitionModeEnum.SweepFrequencyPerPower2D;
+                return DataAcquisitionModeEnum.SweepFrequencyPerPower2D;
             }
-            return retVal;
+            else
+            {
+                return DataAcquisitionModeEnum.SMARTSweep;
+            }
         }
 
         public void SetDataAcquisitionMode(int Channel, DataAcquisitionModeEnum sweeptype)
         {
-            String sweep = Scpi.Format("{0}", sweeptype);
-            ScpiCommand($"SENSe{Channel.ToString()}:GCSetup:AMODe {sweep}");
+            string sweep = Scpi.Format("{0}", sweeptype);
+            ScpiCommand($"SENSe{Channel}:GCSetup:AMODe {sweep}");
         }
         #endregion
     }

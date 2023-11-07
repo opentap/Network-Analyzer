@@ -17,56 +17,26 @@ namespace OpenTap.Plugins.PNAX
     {
         public bool GetFOMState(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:FOM:STATe?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:FOM:STATe?");
+            return !retStr.Equals( "0" );
         }
 
         public void SetFOMState(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:FOM:STATe 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:FOM:STATe 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:FOM:STATe {stateValue}");
         }
 
         public bool GetFOMMode(int Channel, int Range)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:FOM:RANGe{Range}:COUPled?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:FOM:RANGe{Range}:COUPled?");
+            return !retStr.Equals("0");
         }
 
         public void SetFOMMode(int Channel, int Range, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:FOM:RANGe{Range}:COUPled 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:FOM:RANGe{Range}:COUPled 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:FOM:RANGe{Range}:COUPled {stateValue}");
         }
 
         public void SetFOMSweepType(int Channel, int Range, StandardSweepTypeEnum standardSweepType)
@@ -161,29 +131,23 @@ namespace OpenTap.Plugins.PNAX
 
         public void FOMSetSegmentState(int Channel, int Range, int segment, bool state)
         {
-            if (state)
-            {
-                ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:STATE ON");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:STATE OFF");
-            }
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"SENSe{Channel}:FOM:RANGe{Range}:SEGMent{segment}:STATE {stateValue}");
         }
 
         public void FOMSetSegmentNumberOfPoints(int Channel, int Range, int segment, int points)
         {
-            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:SWEep:POINts {points.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment}:SWEep:POINts {points}");
         }
 
         public void FOMSetSegmentStartFrequency(int Channel, int Range, int segment, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:FREQuency:STARt {freq.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment}:FREQuency:STARt {freq}");
         }
 
         public void FOMSetSegmentStopFrequency(int Channel, int Range, int segment, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment.ToString()}:FREQuency:STOP {freq.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:FOM:RANGe{Range}:SEGMent{segment}:FREQuency:STOP {freq}");
         }
         #endregion
 

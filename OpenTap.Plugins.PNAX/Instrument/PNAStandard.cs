@@ -240,14 +240,8 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetFastSweepMode(int Channel, bool mode)
         {
-            if (mode)
-            {
-                ScpiCommand($"SENSe{ Channel }:SWEep:SPEed FAST");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SWEep:SPEed NORM");
-            }
+            string modeValue = mode ? "FAST" : "NORM";
+            ScpiCommand($"SENSe{Channel}:SWEep:SPEed {modeValue}");
         }
 
         public StandardChannelSweepModeEnum GetSweepMode(int Channel)
@@ -294,14 +288,8 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetSweepSequence(int Channel, StandardChannelSweepSequenceEnum mode)
         {
-            if (mode == StandardChannelSweepSequenceEnum.Standard)
-            {
-                ScpiCommand($"SENSe{ Channel }:SWEep:GENeration:POINtsweep OFF");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SWEep:GENeration:POINtsweep ON");
-            }
+            string modeValue = mode == StandardChannelSweepSequenceEnum.Standard ? "OFF" : "ON";
+            ScpiCommand($"SENSe{Channel}:SWEep:GENeration:POINtsweep {modeValue}");
         }
         #endregion
 
@@ -321,14 +309,8 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetSegmentState(int Channel, int segment, bool state)
         {
-            if (state)
-            {
-                ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:STATE ON");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:STATE OFF");
-            }
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"SENSe{Channel}:SEGMent{segment}:STATE {stateValue}");
         }
 
         public void SetSegmentNumberOfPoints(int Channel, int segment, int points)

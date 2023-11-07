@@ -18,52 +18,44 @@ namespace OpenTap.Plugins.PNAX
         #region Power
         public int GetSMCPortInput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:MIXer:PMAP:INP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:MIXer:PMAP:INP?");
         }
 
         public int GetSMCPortOutput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:MIXer:PMAP:OUTP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:MIXer:PMAP:OUTP?");
         }
 
         public void SetSMCPortInputOutput(int Channel, PortsEnum inport, PortsEnum outport)
         {
-            String inp = Scpi.Format("{0}", inport);
-            String outp = Scpi.Format("{0}", outport);
-            ScpiCommand($"SENS{Channel.ToString()}:MIXer:PMAP {inp},{outp}");
+            string inp = Scpi.Format("{0}", inport);
+            string outp = Scpi.Format("{0}", outport);
+            ScpiCommand($"SENS{Channel}:MIXer:PMAP {inp},{outp}");
         }
 
         // SOURce<cnum>:POWer<port>:PORT:STARt?
         public double GetSMCPowerSweepStartPower(int Channel, PortsEnum port)
         {
-            double retVal = double.NaN;
-            String strPort = Scpi.Format("{0}", port);
-            retVal = ScpiQuery<double>($"SOURce{Channel.ToString()}:POWer{strPort}:PORT:STARt?");
-            return retVal;
+            string strPort = Scpi.Format("{0}", port);
+            return ScpiQuery<double>($"SOURce{Channel}:POWer{strPort}:PORT:STARt?");
         }
 
         public void SetSMCPowerSweepStartPower(int Channel, PortsEnum port, double power)
         {
-            String strPort = Scpi.Format("{0}", port);
-            ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:PORT:STARt {power.ToString()}");
+            string strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{Channel}:POWer{strPort}:PORT:STARt {power}");
         }
 
         public double GetSMCPowerSweepStopPower(int Channel, PortsEnum port)
         {
-            double retVal = double.NaN;
-            String strPort = Scpi.Format("{0}", port);
-            retVal = ScpiQuery<double>($"SOURce{Channel.ToString()}:POWer{strPort}:PORT:STOP?");
-            return retVal;
+            string strPort = Scpi.Format("{0}", port);
+            return ScpiQuery<double>($"SOURce{Channel}:POWer{strPort}:PORT:STOP?");
         }
 
         public void SetSMCPowerSweepStopPower(int Channel, PortsEnum port, double power)
         {
-            String strPort = Scpi.Format("{0}", port);
-            ScpiCommand($"SOURce{Channel.ToString()}:POWer{strPort}:PORT:STOP {power.ToString()}");
+            string strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{Channel}:POWer{strPort}:PORT:STOP {power}");
         }
 
 
@@ -73,153 +65,81 @@ namespace OpenTap.Plugins.PNAX
         // SENSe<cnum>:SEGMent:X:SPACing <char>
         public bool GetXAxisPointSpacing(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:SEGMent:X:SPACing?");
-            if (retStr.Equals("LIN"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:SEGMent:X:SPACing?");
+            return !retStr.Equals("LIN");
         }
 
         public void SetXAxisPointSpacing(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:SEGMent:X:SPACing OBAS");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:SEGMent:X:SPACing LIN");
-            }
+            string stateValue = mode ? "OBAS" : "LIN";
+            ScpiCommand($"SENSe{Channel}:SEGMent:X:SPACing {stateValue}");
         }
 
         // SENSe<ch>:MIXer:REVerse?
         public bool GetReversedPort2Coupler(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:PATH:CONF:ELEM:STAT? \"Port2Coupler\"");
-            if (retStr.Equals("Normal"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:PATH:CONF:ELEM:STAT? \"Port2Coupler\"");
+            return !retStr.Equals("Normal");
         }
 
         public void SetReversedPort2Coupler(int Channel, bool mode)
         {
             if (mode == true)
             {
-                ScpiCommand($"SENSe{Channel.ToString()}:PATH:CONF:ELEM:STAT \"Port2Coupler\",\"Reversed\"");
+                ScpiCommand($"SENSe{Channel}:PATH:CONF:ELEM:STAT \"Port2Coupler\",\"Reversed\"");
             }
             else
             {
-                ScpiCommand($"SENSe{Channel.ToString()}:PATH:CONF:ELEM:STAT \"Port2Coupler\",\"Normal\"");
+                ScpiCommand($"SENSe{Channel}:PATH:CONF:ELEM:STAT \"Port2Coupler\",\"Normal\"");
             }
         }
 
         public bool GetAvoidSpurs(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:AVOidspurs?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:MIXer:AVOidspurs?");
+            return !retStr.Equals("0");
         }
 
         public void SetAvoidSpurs(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:AVOidspurs ON");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:AVOidspurs OFF");
-            }
+            string stateValue = mode ? "ON" : "OFF";
+            ScpiCommand($"SENSe{Channel}:MIXer:AVOidspurs {stateValue}");
         }
 
-        // SENSe<ch>:MIXer:PHASe[:STATe]?
         public bool GetMixerPhase(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:PHASe?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:MIXer:PHASe?");
+            return !retStr.Equals("0");
         }
 
         public void SetMixerPhase(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:PHASe ON");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:PHASe OFF");
-            }
+            string stateValue = mode ? "ON" : "OFF";
+            ScpiCommand($"SENSe{Channel}:MIXer:PHASe {stateValue}");
         }
 
         // SENSe<ch>:MIXer:NORMalize:POINt?
         public int GetNormalizingDataPoint(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:MIXer:NORMalize:POINt?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:MIXer:NORMalize:POINt?");
         }
 
         public void SetNormalizingDataPoint(int Channel, int datapoint)
         {
-            ScpiCommand($"SENS{Channel.ToString()}:MIXer:NORMalize:POINt {datapoint.ToString()}");
+            ScpiCommand($"SENS{Channel}:MIXer:NORMalize:POINt {datapoint}");
         }
 
         // SENSe<ch>:MIXer:PHASe:ABSolute[:STATe]?
         public bool GetMixerUseAbsolutePhase(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:MIXer:PHASe:ABSolute?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:MIXer:PHASe:ABSolute?");
+            return !retStr.Equals("0");
         }
 
         public void SetMixerUseAbsolutePhase(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:PHASe:ABSolute ON");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:MIXer:PHASe:ABSolute OFF");
-            }
+            string stateValue = mode ? "ON" : "OFF";
+            ScpiCommand($"SENSe{Channel}:MIXer:PHASe:ABSolute {stateValue}");
         }
 
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
@@ -46,14 +47,8 @@ namespace OpenTap.Plugins.PNAX
     {
         public void SetLimitTestOn(int Channel, int mnum, bool state)
         {
-            if (state)
-            {
-                ScpiCommand($"CALCulate{ Channel }:MEASure{mnum}:LIMit:STATe ON");
-            }
-            else
-            {
-                ScpiCommand($"CALCulate{ Channel }:MEASure{mnum}:LIMit:STATe OFF");
-            }
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:STATe {stateValue}");
         }
 
         public bool GetLimitTestOn(int Channel, int mnum)
@@ -69,36 +64,24 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetLimitLineOn(int Channel, int mnum, bool state)
         {
-            if (state)
-            {
-                ScpiCommand($"CALCulate{ Channel }:MEASure{mnum}:LIMit:DISPlay ON");
-            }
-            else
-            {
-                ScpiCommand($"CALCulate{ Channel }:MEASure{mnum}:LIMit:DISPlay OFF");
-            }
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:DISPlay {stateValue}");
         }
 
         public void SetLimitTestFailOn(int Channel, int mnum, bool state)
         {
-            if (state)
-            {
-                ScpiCommand($"CALCulate{ Channel }:MEASure{mnum}:LIMit:SOUNd:STATe ON");
-            }
-            else
-            {
-                ScpiCommand($"CALCulate{ Channel }:MEASure{mnum}:LIMit:SOUNd:STATe OFF");
-            }
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:SOUNd:STATe {stateValue}");
         }
 
         public void SetXPosition(int Window, double num)
         {
-            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:ANNotation:LIMit:XPOSition {num}");
+            ScpiCommand($"DISPlay:WINDow{Window}:ANNotation:LIMit:XPOSition {num}");
         }
 
         public void SetYPosition(int Window, double num)
         {
-            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:ANNotation:LIMit:YPOSition {num}");
+            ScpiCommand($"DISPlay:WINDow{Window}:ANNotation:LIMit:YPOSition {num}");
         }
 
         public void SetLimitTableShow(int window, bool state)
@@ -112,14 +95,8 @@ namespace OpenTap.Plugins.PNAX
             }
 
             // Set the window state
-            if (state)
-            {
-                ScpiCommand($"DISPlay:WINDow{window}:LIMit SEGM");
-            }
-            else
-            {
-                ScpiCommand($"DISPlay:WINDow{window}:LIMit OFF");
-            }
+            string stateValue = state ? "SEGM" : "OFF";
+            ScpiCommand($"DISPlay:WINDow{window}:LIMit {stateValue}");
         }
 
         public void SetLimitData(int Channel, int mnum, List<LimitSegmentDefinition> limitSegments)
@@ -141,6 +118,8 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetGlobalPF(bool state)
         {
+            string stateValue = state ? "SEGM" : "OFF";
+            ScpiCommand($"DISP:FSIG ON {stateValue}");
             if (state)
             {
                 ScpiCommand($"DISP:FSIG ON");
@@ -149,6 +128,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 ScpiCommand($"DISP:FSIG OFF");
             }
+
         }
     }
 }

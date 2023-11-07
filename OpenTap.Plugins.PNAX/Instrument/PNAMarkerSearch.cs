@@ -31,12 +31,12 @@ namespace OpenTap.Plugins.PNAX
         public void SetMarkerState(int Channel, int mnum, int mkr, SAOnOffTypeEnum state)
         {
             string scpi = Scpi.Format("{0}", state);
-            ScpiCommand($"CALCulate{Channel.ToString()}:MEASure{mnum.ToString()}:MARKer{mkr.ToString()}:STATe ON");
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:STATe ON");
         }
 
         public void SetMarkerXValue(int Channel, int mnum, int mkr, double value)
         {
-            ScpiCommand($"CALCulate{Channel.ToString()}:MEASure{mnum.ToString()}:MARKer{mkr.ToString()}:X {value}");
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:X {value}");
         }
 
         public void MultiPeakSearchExecute(int Channel, int mnum)

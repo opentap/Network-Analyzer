@@ -211,30 +211,28 @@ namespace OpenTap.Plugins.PNAX
     {
         public static T ConvertStringToEnum<T>(string value)
         {
-            String valueWOSpaces = value.Replace(" ", "");
+            string valueWOSpaces = value.Replace(" ", "");
             return (T)Enum.Parse(typeof(T), valueWOSpaces, ignoreCase: true);
         }
 
-        public List<String> GetAllMeasClasses()
+        public List<string> GetAllMeasClasses()
         {
-            List<String> AllMeasClasses = new List<string>();
+            List<string> AllMeasClasses = new List<string>();
             List<int> Channels = GetActiveChannels();
 
             foreach(int ch in Channels)
             {
                 ScpiCommand($"SYST:ACT:CHAN {ch}");
                 WaitForOperationComplete();
-                String mclass = ScpiQuery("SYSTem:ACTive:MCLass?");
+                string mclass = ScpiQuery("SYSTem:ACTive:MCLass?");
                 AllMeasClasses.Add(mclass);
             }
             return AllMeasClasses;
         }
 
-        public String GetChannelType(int Channel)
+        public string GetChannelType(int Channel)
         {
-            String retString = "";
-
-            retString = ScpiQuery<String>($"SENSe{Channel}:CLASs:NAME?");
+            string retString = ScpiQuery<string>($"SENSe{Channel}:CLASs:NAME?");
             retString = retString.Replace("\"", "");
             retString = retString.Replace("/", "");
 
@@ -275,12 +273,12 @@ namespace OpenTap.Plugins.PNAX
                     string title = ScpiQuery($"SYST:SHOR{macroSlot}:TITLE?", true).Trim('\n', '"');
                     string path = ScpiQuery($"SYST:SHOR{macroSlot}:PATH?", true).Trim('\n', '"');
 
-                    if (title == CAL_ALL_TITLE && path != String.Empty)
+                    if (title == CAL_ALL_TITLE && path != string.Empty)
                     {
                         calAllMacro = macroSlot;
                         break;
                     }
-                    else if (emptySlot == -1 && title == String.Empty && path == String.Empty)
+                    else if (emptySlot == -1 && title == string.Empty && path == string.Empty)
                     {
                         emptySlot = macroSlot;
                     }
@@ -321,11 +319,11 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllSelectChannels(List<int> Channels)
         {
-            String AllChannelsString = String.Join(",", Channels.ToArray());
+            string AllChannelsString = string.Join(",", Channels.ToArray());
             CalAllSelectChannels(AllChannelsString);
         }
 
-        public void CalAllSelectChannels(String Channels)
+        public void CalAllSelectChannels(string Channels)
         {
             ScpiCommand($"SYSTem:CALibrate:ALL:SELect {Channels}");
         }
@@ -335,7 +333,7 @@ namespace OpenTap.Plugins.PNAX
             List<int> Channels = GetActiveChannels();
             foreach(int ch in Channels)
             {
-                String AllPortsString = String.Join(",", Ports.ToArray());
+                string AllPortsString = string.Join(",", Ports.ToArray());
                 CalAllSelectPorts(ch, AllPortsString);
             }
         }
@@ -344,23 +342,23 @@ namespace OpenTap.Plugins.PNAX
         {
             foreach (int ch in Channels)
             {
-                String AllPortsString = String.Join(",", Ports.ToArray());
+                string AllPortsString = string.Join(",", Ports.ToArray());
                 CalAllSelectPorts(ch, AllPortsString);
             }
         }
 
         public void CalAllSelectPorts(int Channel, List<int> Ports)
         {
-            String AllPortsString = String.Join(",", Ports.ToArray());
+            string AllPortsString = string.Join(",", Ports.ToArray());
             CalAllSelectPorts(Channel, AllPortsString);
         }
 
-        public void CalAllSelectPorts(int Channel, String Ports)
+        public void CalAllSelectPorts(int Channel, string Ports)
         {
             ScpiCommand($"SYSTem:CALibrate:ALL:CHANnel{Channel}:PORTs:SELect {Ports}");
         }
 
-        public void CalAllSetProperty(String prop, String value)
+        public void CalAllSetProperty(string prop, string value)
         {
             try
             {
@@ -383,12 +381,12 @@ namespace OpenTap.Plugins.PNAX
             //}
         }
 
-        public void CalAllSelectDutConnectorType(int Channel, int Port, String ConnectorType)
+        public void CalAllSelectDutConnectorType(int Channel, int Port, string ConnectorType)
         {
             ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CONNector:PORT{Port}:SELect \"{ConnectorType}\"");
         }
 
-        public void CalAllSelectCalKit(int Channel, int Port, String CalKit)
+        public void CalAllSelectCalKit(int Channel, int Port, string CalKit)
         {
             if (IsModelA)
             {
@@ -400,7 +398,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public String CalAllGetCalKits(int Channel, DUTConnectorsEnum connector)
+        public string CalAllGetCalKits(int Channel, DUTConnectorsEnum connector)
         {
             string conn = Scpi.Format("{0}", connector);
             return ScpiQuery($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:CATalog? \"{conn}\"");
@@ -416,7 +414,7 @@ namespace OpenTap.Plugins.PNAX
 
         }
 
-        public void CalAllInit(int CalChannel, String CalSetName = "", bool MatchCalSettings = false, CalModeEnum calMode = CalModeEnum.ASYN)
+        public void CalAllInit(int CalChannel, string CalSetName = "", bool MatchCalSettings = false, CalModeEnum calMode = CalModeEnum.ASYN)
         {
             int MatchCalSettingsInt = 0;
             if (MatchCalSettings)
@@ -428,9 +426,9 @@ namespace OpenTap.Plugins.PNAX
             {
                 // Make sure it exists
                 var csetCatalogStr = ScpiQuery("CSET:CATalog?");
-                List<String> csetCat = csetCatalogStr.Split(',').ToList();
+                List<string> csetCat = csetCatalogStr.Split(',').ToList();
                 bool found = false;
-                foreach(String cset in csetCat)
+                foreach(string cset in csetCat)
                 {
                     if (cset.Equals(CalSetName))
                     {
@@ -455,7 +453,7 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery<int>($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:STEPs?");
         }
 
-        public String CalAllStepDescription(int CalChannel, int CalStep)
+        public string CalAllStepDescription(int CalChannel, int CalStep)
         {
             return ScpiQuery($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:DESCription? {CalStep}");
         }
