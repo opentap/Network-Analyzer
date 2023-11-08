@@ -97,13 +97,14 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         public override List<(string, object)> GetMetaData()
         {
             UpdateMetaData();
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("SA Power On All Channels", PowerOnAllChannels),
+                ("SA Port Powers Coupled", PortPowersCoupled),
+                ("SA Source Sweep Order", SourceSweepOrder)
+            };
 
-            retVal.Add(("SA Power On All Channels", PowerOnAllChannels));
-            retVal.Add(("SA Port Powers Coupled", PortPowersCoupled));
-            retVal.Add(("SA Source Sweep Order", SourceSweepOrder));
-
-            foreach(var a in MetaData)
+            foreach (var a in MetaData)
             {
                 retVal.Add(a);
             }

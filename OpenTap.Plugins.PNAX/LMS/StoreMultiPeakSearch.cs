@@ -86,9 +86,11 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.MultiPeakSearchExecute(Channel, mnum);
 
                     // Store Markers
-                    MetaData = new List<(string, object)>();
-                    MetaData.Add(("Sweep Step", rep+1));
-                    foreach (String source in LinFreSources)
+                    MetaData = new List<(string, object)>
+                    {
+                        ("Sweep Step", rep + 1)
+                    };
+                    foreach (string source in LinFreSources)
                     {
                         MetaData.Add(($"{source} Freq", GetCurrentSweepFreq(SourceCellSweepValues[$"{source}_start"], SourceCellSweepValues[$"{source}_stop"], steps, rep)));
                     }
@@ -109,10 +111,8 @@ namespace OpenTap.Plugins.PNAX
 
         private double GetCurrentSweepFreq(double start, double stop, int steps, int currentStep)
         {
-            double retVal = double.NaN;
             double stepsize = (stop - start) / (steps - 1);
-            retVal = start + (currentStep * stepsize);
-            return retVal;
+            return start + (currentStep * stepsize);
         }
     }
 }

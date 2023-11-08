@@ -199,8 +199,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             VideoAverageType = SAVideoAverageTypeEnum.Power;
 
             SASegmentDefinitionType = SegmentDefinitionTypeEnum.List;
-            SAsegmentDefinitions = new List<SASegmentDefinition>();
-            SAsegmentDefinitions.Add(new SASegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9, MTRef = 0.0, VectAvg = 1, VBW = 1e6, DThreshold = -60.0 });
+            SAsegmentDefinitions = new List<SASegmentDefinition>
+            {
+                new SASegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9, MTRef = 0.0, VectAvg = 1, VBW = 1e6, DThreshold = -60.0 }
+            };
             SAShowTable = false;
 
             //SASegmentAttributes = SASegmentAttributes.None;
@@ -243,9 +245,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(("SA Data Acquisition Mode", SASweepType));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("SA Data Acquisition Mode", SASweepType)
+            };
 
             switch (SASweepType)
             {

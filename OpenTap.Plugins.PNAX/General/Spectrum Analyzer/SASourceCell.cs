@@ -168,9 +168,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(($"SA {CellName} Source Power Mode", SASourceSweepType));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ($"SA {CellName} Source Power Mode", SASourceSweepType)
+            };
 
             switch (SASourceSweepType)
             {

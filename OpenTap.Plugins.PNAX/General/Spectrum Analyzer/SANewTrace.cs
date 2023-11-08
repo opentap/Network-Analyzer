@@ -70,7 +70,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>();
 
             return retVal;
         }

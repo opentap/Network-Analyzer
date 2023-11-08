@@ -49,7 +49,7 @@ namespace OpenTap.Plugins.PNAX
 
             List<List<string>> results = PNAX.StoreTraceData(Channel, mnum);
             PNAX.WaitForOperationComplete();
-            String MeasName = PNAX.GetTraceName(Channel, mnum);
+            string MeasName = PNAX.GetTraceName(Channel, mnum);
 
             var xResult = results.Where((item, index) => index % 2 == 0).ToList();
             var yResult = results.Where((item, index) => index % 2 != 0).ToList();

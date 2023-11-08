@@ -76,7 +76,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>();
 
             return retVal;
         }
@@ -87,7 +87,7 @@ namespace OpenTap.Plugins.PNAX
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DELete \'CH{Channel.ToString()}_DUMMY_1\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
 
 
             RunChildSteps(); //If the step supports child steps.

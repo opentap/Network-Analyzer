@@ -183,25 +183,26 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(String, object)> retVal = new List<(string, object)>
+            {
+                ("PowerOnAllChannels", PowerOnAllChannels),
+                ("PortPowersCoupled", PortPowersCoupled),
 
-            retVal.Add(("PowerOnAllChannels", PowerOnAllChannels));
-            retVal.Add(("PortPowersCoupled", PortPowersCoupled));
+                ("SMC PortInput", PortInput),
+                ("SMC PortOutput", PortOutput),
 
-            retVal.Add(("SMC PortInput", PortInput));
-            retVal.Add(("SMC PortOutput", PortOutput));
+                ("SMC_InputPower", InputPower),
+                ("SMC_InputPortSourceAttenuator", InputPortSourceAttenuator),
+                ("SMC_InputPortReceiverAttenuator", InputPortReceiverAttenuator),
+                ("SMC_InputSourceLevelingMode", InputSourceLevelingMode),
+                ("SMC_AutoInputPortSourceAttenuator", AutoInputPortSourceAttenuator),
 
-            retVal.Add(("SMC_InputPower", InputPower));
-            retVal.Add(("SMC_InputPortSourceAttenuator", InputPortSourceAttenuator));
-            retVal.Add(("SMC_InputPortReceiverAttenuator", InputPortReceiverAttenuator));
-            retVal.Add(("SMC_InputSourceLevelingMode", InputSourceLevelingMode));
-            retVal.Add(("SMC_AutoInputPortSourceAttenuator", AutoInputPortSourceAttenuator));
-
-            retVal.Add(("SMC_OutputPower", OutputPower));
-            retVal.Add(("SMC_OutputPortSourceAttenuator", OutputPortSourceAttenuator));
-            retVal.Add(("SMC_OutputPortReceiverAttenuator", OutputPortReceiverAttenuator));
-            retVal.Add(("SMC_OutputSourceLevelingMode", OutputSourceLevelingMode));
-            retVal.Add(("SMC_AutoOutputPortSourceAttenuator", AutoOutputPortSourceAttenuator));
+                ("SMC_OutputPower", OutputPower),
+                ("SMC_OutputPortSourceAttenuator", OutputPortSourceAttenuator),
+                ("SMC_OutputPortReceiverAttenuator", OutputPortReceiverAttenuator),
+                ("SMC_OutputSourceLevelingMode", OutputSourceLevelingMode),
+                ("SMC_AutoOutputPortSourceAttenuator", AutoOutputPortSourceAttenuator)
+            };
 
             if (EnablePowerSweepOutputEdit)
             {

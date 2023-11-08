@@ -157,9 +157,10 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(("SMC_SweepType", SweepType));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("SMC_SweepType", SweepType)
+            };
 
             if (SweepType == ScalerMixerSweepType.SegmentSweep)
             {

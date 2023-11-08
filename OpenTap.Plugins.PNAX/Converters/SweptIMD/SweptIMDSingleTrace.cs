@@ -340,7 +340,7 @@ namespace OpenTap.Plugins.PNAX
         {
             int _tnum = 0;
             int _mnum = 0;
-            String _MeasName = "";
+            string _MeasName = "";
             PNAX.AddNewTrace(Channel, Window, Trace, "Swept IMD Converters", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;
             mnum = _mnum;

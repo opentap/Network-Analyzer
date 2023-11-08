@@ -148,7 +148,7 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
-        public void AddTraceTitle(String title)
+        public void AddTraceTitle(string title)
         {
             TraceTitle trTitle = new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel };
             trTitle.Title = title;
@@ -175,7 +175,7 @@ namespace OpenTap.Plugins.PNAX
         {
             int _tnum = 0;
             int _mnum = 0;
-            String _MeasName = "";
+            string _MeasName = "";
 
             PNAX.AddNewTrace(Channel, Window, Trace, "Standard", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;

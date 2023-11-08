@@ -45,14 +45,14 @@ namespace OpenTap.Plugins.PNAX.LMS
         {
             UpgradeVerdict(Verdict.NotSet);
 
-            string dir = "";
+            string dir;
             if (IsCustomPath)
             {
                 dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".bmp"); ;
             }
             else
             {
-                String assemblyDir = AssemblyDirectory();
+                string assemblyDir = AssemblyDirectory();
                 dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".bmp");
             }
 

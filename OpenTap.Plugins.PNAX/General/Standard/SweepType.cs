@@ -156,9 +156,10 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(("Data Acquisition Mode", StandardSweepType));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("Data Acquisition Mode", StandardSweepType)
+            };
 
             switch (StandardSweepType)
             {
@@ -207,6 +208,7 @@ namespace OpenTap.Plugins.PNAX
             switch (StandardSweepType)
             {
                 case StandardSweepTypeEnum.LinearFrequency:
+                    break;
                 case StandardSweepTypeEnum.LogFrequency:
                     PNAX.SetStart(Channel, SweepPropertiesStart);
                     PNAX.SetStop(Channel, SweepPropertiesStop);

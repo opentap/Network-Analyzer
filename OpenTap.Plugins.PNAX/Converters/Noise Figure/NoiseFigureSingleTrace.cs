@@ -169,8 +169,8 @@ namespace OpenTap.Plugins.PNAX
         {
             int _tnum = 0;
             int _mnum = 0;
-            String _MeasName = "";
-            String m = Scpi.Format("{0}", Meas);
+            string _MeasName = "";
+            string m = Scpi.Format("{0}", Meas);
             PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Converters", m, ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;
             mnum = _mnum;

@@ -143,8 +143,10 @@ namespace OpenTap.Plugins.PNAX
         public GeneralBaseStep()
         {
             SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
-            segmentDefinitions = new List<SegmentDefinition>();
-            segmentDefinitions.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            segmentDefinitions = new List<SegmentDefinition>
+            {
+                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+            };
             ShowTable = false;
             Window = 1;
         }

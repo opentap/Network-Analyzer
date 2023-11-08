@@ -255,6 +255,7 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, SweepDeltaFFixedFc);
                     break;
                 case ToneFrequencySweepTypeEnum.PowerSweep:
+                    break;
                 case ToneFrequencySweepTypeEnum.CW:
                     PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
                     PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);

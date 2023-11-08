@@ -80,8 +80,8 @@ namespace OpenTap.Plugins.PNAX
                             // Now lets get the X value
                             double mrkrX = PNAX.ScpiQuery<double>($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:X?");
 
-                            String measFormat = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:FORMat?");
-                            String mrkrFormat = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:FORMat?");
+                            string measFormat = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:FORMat?");
+                            string mrkrFormat = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:FORMat?");
 
                             double mrkrY = double.NaN;
 

@@ -480,7 +480,7 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.WaitForOperationComplete();
 
                 // Read Input and Update settings
-                String inpMode = PNAX.GetMixerFrequencyInputMode(DummyChannel);
+                string inpMode = PNAX.GetMixerFrequencyInputMode(DummyChannel);
 
                 if (inpMode.Equals("SWEPT"))
                 {
@@ -608,7 +608,7 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.WaitForOperationComplete();
 
                 // Read LO1 and Update settings
-                String inpMode = PNAX.GetMixerFrequencyLOMode(DummyChannel, 2);
+                string inpMode = PNAX.GetMixerFrequencyLOMode(DummyChannel, 2);
 
                 if (inpMode.Equals("SWEPT"))
                 {

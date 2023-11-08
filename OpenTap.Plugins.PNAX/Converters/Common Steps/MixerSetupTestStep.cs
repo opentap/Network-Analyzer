@@ -289,14 +289,15 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(("Converter Stages", ConverterStages));
-            retVal.Add(("Input Port", PortInput));
-            retVal.Add(("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator));
-            retVal.Add(("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator));
-            retVal.Add(("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator));
-            retVal.Add(("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("Converter Stages", ConverterStages),
+                ("Input Port", PortInput),
+                ("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator),
+                ("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator),
+                ("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator),
+                ("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator)
+            };
             if (ConverterStages == ConverterStagesEnum._2)
             {
                 retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator));
