@@ -19,16 +19,12 @@ namespace OpenTap.Plugins.PNAX
 
         public int GetIMDPortInput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel}:IMD:PMAP:INP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:IMD:PMAP:INP?");
         }
 
         public int GetIMDPortOutput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel}:IMD:PMAP:OUTP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:IMD:PMAP:OUTP?");
         }
 
         public void SetIMDPortInputOutput(int Channel, DutInputPortsEnum inport, DutOutputPortsEnum outport)

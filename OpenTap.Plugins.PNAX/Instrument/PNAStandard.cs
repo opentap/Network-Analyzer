@@ -16,12 +16,12 @@ namespace OpenTap.Plugins.PNAX
     public partial class PNAX : ScpiInstrument
     {
         #region General|Standard|Sweep Type
-        public String GetStandardSweepType(int Channel)
+        public string GetStandardSweepType(int Channel)
         {
             return ScpiQuery($"SENSe{ Channel }:SWEep:TYPE?"); ;
         }
 
-        private void SetSweepType(int Channel, String sweepType)
+        private void SetSweepType(int Channel, string sweepType)
         {
             ScpiCommand($"SENSe{ Channel }:SWEep:TYPE {sweepType}");
         }
@@ -185,14 +185,8 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetAutoSweepTime(int Channel, bool auto)
         {
-            if (auto == true)
-            {
-                ScpiCommand($"SENSe{ Channel }:SWEep:TIME:AUTO 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SWEep:TIME:AUTO 0");
-            }
+            string stateValue = auto ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:SWEep:TIME:AUTO {stateValue}");
         }
 
         public double GetSweepTime(int Channel)
@@ -315,17 +309,17 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetSegmentNumberOfPoints(int Channel, int segment, int points)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SWEep:POINts {points.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SWEep:POINts {points}");
         }
 
         public void SetSegmentStartFrequency(int Channel, int segment, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:FREQuency:STARt {freq.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:FREQuency:STARt {freq}");
         }
 
         public void SetSegmentStopFrequency(int Channel, int segment, double freq)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:FREQuency:STOP {freq.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:FREQuency:STOP {freq}");
         }
 
         public void SetSegmentTableShow(int Channel, bool state, int window)
@@ -352,45 +346,45 @@ namespace OpenTap.Plugins.PNAX
         public void SetSegmentSAMTReferenceControl(int Channel, int segment, SAOnOffTypeEnum value)
         {
             string scpi = Scpi.Format("{0}", value);
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:MTReference:CONTrol {scpi}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:MTReference:CONTrol {scpi}");
         }
 
         public void SetSegmentSAMTReference(int Channel, int segment, double value)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:MTReference {value.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:MTReference {value}");
         }
 
         public void SetSegmentSADataThresholdControl(int Channel, int segment, SAOnOffTypeEnum value)
         {
             string scpi = Scpi.Format("{0}", value);
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:DTHReshold:CONTrol {scpi}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:DTHReshold:CONTrol {scpi}");
         }
 
         public void SetSegmentSADataThreshold(int Channel, int segment, double value)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:DTHReshold {value.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:DTHReshold {value}");
         }
 
         public void SetSegmentSAVectorAverageControl(int Channel, int segment, SAOnOffTypeEnum value)
         {
             string scpi = Scpi.Format("{0}", value);
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VAVerage:CONTrol {scpi}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:VAVerage:CONTrol {scpi}");
         }
 
         public void SetSegmentSAVectorAverage(int Channel, int segment, int value)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VAVerage {value.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:VAVerage {value}");
         }
 
         public void SetSegmentSAVideoBWControl(int Channel, int segment, SAOnOffTypeEnum value)
         {
             string scpi = Scpi.Format("{0}", value);
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VIDeobw:CONTrol {scpi}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:VIDeobw:CONTrol {scpi}");
         }
 
         public void SetSegmentSAVideoBW(int Channel, int segment, double value)
         {
-            ScpiCommand($"SENSe{ Channel }:SEGMent{segment.ToString()}:SA:VIDeobw {value.ToString()}");
+            ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:VIDeobw {value}");
         }
 
 
@@ -400,7 +394,7 @@ namespace OpenTap.Plugins.PNAX
         public ReceiverConfigurationEnumType GetReceiverConfiguration(int Channel)
         {
             ReceiverConfigurationEnumType retVal = ReceiverConfigurationEnumType.INT;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:IMD:TPOWer:LEVel?");
+            string retStr = ScpiQuery($"SENSe{Channel}:IMD:TPOWer:LEVel?");
             if (retStr.Equals("INT"))
             {
                 retVal = ReceiverConfigurationEnumType.INT;
@@ -419,7 +413,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetReceiverConfiguration(int Channel, ReceiverConfigurationEnumType rec)
         {
-            String path = Scpi.Format("{0}", rec);
+            string path = Scpi.Format("{0}", rec);
             ScpiCommand($"SENSe{ Channel }:IMD:RECeiver:CONFig:COMBiner:PATH {path}");
         }
 

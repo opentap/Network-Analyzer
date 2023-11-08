@@ -67,7 +67,7 @@ namespace OpenTap.Plugins.PNAX
                  /// </summary>
         public void LoadState(string filename, bool overwrite)
         {
-            String FileName = filename;
+            string FileName = filename;
 
             ScpiCommand(":SYST:PRES");
 
@@ -81,13 +81,13 @@ namespace OpenTap.Plugins.PNAX
             {
                 // VNA is being accessed remotely
                 FileName = Path.GetFileName(filename);
-                String FilePath = Path.GetDirectoryName(filename);
+                string FilePath = Path.GetDirectoryName(filename);
 
                 // first find if the file is already in the VNA
                 var mmemCatalogStr = ScpiQuery("MMEM:CATalog?");
-                List<String> mmemCat = mmemCatalogStr.Split(',').ToList();
+                List<string> mmemCat = mmemCatalogStr.Split(',').ToList();
                 bool found = false;
-                foreach (String mmem in mmemCat)
+                foreach (string mmem in mmemCat)
                 {
                     if (mmem.Contains(FileName))
                     {
@@ -105,9 +105,9 @@ namespace OpenTap.Plugins.PNAX
 
                     // validate it was copied
                     var mmemCatalogStr2 = ScpiQuery("MMEM:CATalog?");
-                    List<String> mmemCat2 = mmemCatalogStr2.Split(',').ToList();
+                    List<string> mmemCat2 = mmemCatalogStr2.Split(',').ToList();
                     bool found2 = false;
-                    foreach (String mmem2 in mmemCat2)
+                    foreach (string mmem2 in mmemCat2)
                     {
                         if (mmem2.Contains(FileName))
                         {
@@ -202,10 +202,10 @@ namespace OpenTap.Plugins.PNAX
                     resultsList.Add(yList);
 
                     // now query PF
-                    String strPF = IsModelA? ScpiQuery($"CALC{channel}:LIMit:FAIL?") : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
-                    List<String> GlobalPF = new List<String>();
+                    string strPF = IsModelA? ScpiQuery($"CALC{channel}:LIMit:FAIL?") : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
+                    List<string> GlobalPF = new List<string>();
                     // Create a list of n values all equal to strPF
-                    String verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
+                    string verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
                     for (int pfIndex = 0; pfIndex < XCount; pfIndex++)
                     {
                         GlobalPF.Add(verdict);
@@ -271,9 +271,9 @@ namespace OpenTap.Plugins.PNAX
             return resultsList;
         }
 
-        public String GetTraceName(int Channel, int mnum)
+        public string GetTraceName(int Channel, int mnum)
         {
-            String retVal = "undefined trace";
+            string retVal = "undefined trace";
 
             string[] tracesList = GetTraceNames(Channel);
             for (var i = 0; i < tracesList.Length; i++)
@@ -410,12 +410,12 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public void SaveScreen(String FullFileName)
+        public void SaveScreen(string FullFileName)
         {
-            String FileName = Path.GetFileName(FullFileName);
-            String FilePath = Path.GetDirectoryName(FullFileName);
-            String InstrumentFileName = "";
-            String InstrumentFolderName = "";
+            string FileName = Path.GetFileName(FullFileName);
+            string FilePath = Path.GetDirectoryName(FullFileName);
+            string InstrumentFileName = "";
+            string InstrumentFolderName = "";
 
             InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
             InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
@@ -431,24 +431,24 @@ namespace OpenTap.Plugins.PNAX
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(String.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
 
             // Write file at local PC
             File.WriteAllBytes(FullFileName, filedata);
 
             // Delete File from instrument
-            ScpiCommand(String.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+            ScpiCommand(string.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
 
             QueryErrors();
         }
 
-        public void SaveSnP(int Channel, int mnum, List<int> ports, String FullFileName)
+        public void SaveSnP(int Channel, int mnum, List<int> ports, string FullFileName)
         {
-            String strPorts = String.Join(",", ports);
-            String FileName = Path.GetFileName(FullFileName);
-            String FilePath = Path.GetDirectoryName(FullFileName);
-            String InstrumentFileName = "";
-            String InstrumentFolderName = "";
+            string strPorts = string.Join(",", ports);
+            string FileName = Path.GetFileName(FullFileName);
+            string FilePath = Path.GetDirectoryName(FullFileName);
+            string InstrumentFileName = "";
+            string InstrumentFolderName = "";
 
             InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
             InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
@@ -456,7 +456,7 @@ namespace OpenTap.Plugins.PNAX
             ChangeFolder(InstrumentFolderName);
 
             // Save screenshot to local folder on instrument: <documents>\<mode>\screen
-            //String opc = MyVNA.ScpiQuery("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','C:\\Program Files\\Keysight\\Test Automation\\Results\\Traces\\MyData1.s2p';*OPC?");
+            //string opc = MyVNA.ScpiQuery("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','C:\\Program Files\\Keysight\\Test Automation\\Results\\Traces\\MyData1.s2p';*OPC?");
             // TODO PNA-L vs ENA
             //ScpiCommand("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','" + InstrumentFileName + "'");
             if (IsModelA)
@@ -474,23 +474,23 @@ namespace OpenTap.Plugins.PNAX
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(String.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(string.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName));
 
             // Write file at local PC
             File.WriteAllBytes(FullFileName, filedata);
 
             // Delete File from instrument
-            ScpiCommand(String.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+            ScpiCommand(string.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
 
             QueryErrors();
         }
 
         public void SaveDispState(string FullFileName)
         {
-            String FileName = Path.GetFileName(FullFileName);
-            String FilePath = Path.GetDirectoryName(FullFileName);
-            String InstrumentFileName = "";
-            String InstrumentFolderName = "";
+            string FileName = Path.GetFileName(FullFileName);
+            string FilePath = Path.GetDirectoryName(FullFileName);
+            string InstrumentFileName = "";
+            string InstrumentFolderName = "";
 
             InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
             InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
@@ -506,19 +506,19 @@ namespace OpenTap.Plugins.PNAX
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(String.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
 
             // Write file at local PC
             File.WriteAllBytes(FullFileName, filedata);
 
             // Delete File from instrument
-            ScpiCommand(String.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+            ScpiCommand(string.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
 
             QueryErrors();
         }
 
 
-        private void ChangeFolder(String folder)
+        private void ChangeFolder(string folder)
         {
             // Clear System Errors
             ScpiCommand("*CLS");

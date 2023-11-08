@@ -463,7 +463,6 @@ namespace OpenTap.Plugins.PNAX
             if (IsModelA)
             {
                 ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:ACQuire STAN{CalStep}");
-
             }
             else
             {

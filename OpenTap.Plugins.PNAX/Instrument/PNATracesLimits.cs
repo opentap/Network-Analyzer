@@ -53,13 +53,8 @@ namespace OpenTap.Plugins.PNAX
 
         public bool GetLimitTestOn(int Channel, int mnum)
         {
-            bool retVal = false;
             int state = IsModelA ? ScpiQuery<int>($"CALCulate{Channel}:LIMit:STATe?") : ScpiQuery<int>($"CALCulate{ Channel }:MEASure{mnum}:LIMit:STATe?");
-            if (state == 1)
-            {
-                retVal = true;
-            }
-            return retVal;
+            return state == 1;
         }
 
         public void SetLimitLineOn(int Channel, int mnum, bool state)
@@ -106,7 +101,7 @@ namespace OpenTap.Plugins.PNAX
             int segm = 1;
             foreach(LimitSegmentDefinition limit in limitSegments)
             {
-                String t = Scpi.Format("{0}", limit.LimitType);
+                string t = Scpi.Format("{0}", limit.LimitType);
                 ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:SEGMent{segm}:TYPE {t}");
                 ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:SEGMent{segm}:STIMulus:STARt {limit.BeginStim}");
                 ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:SEGMent{segm}:STIMulus:STOP {limit.EndStim}");
@@ -118,17 +113,8 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetGlobalPF(bool state)
         {
-            string stateValue = state ? "SEGM" : "OFF";
-            ScpiCommand($"DISP:FSIG ON {stateValue}");
-            if (state)
-            {
-                ScpiCommand($"DISP:FSIG ON");
-            }
-            else
-            {
-                ScpiCommand($"DISP:FSIG OFF");
-            }
-
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"DISP:FSIG {stateValue}");
         }
     }
 }

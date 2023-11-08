@@ -374,8 +374,6 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
-
-
         public double GetSAPowerStart(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STARt? \"{src}\"");
@@ -425,8 +423,6 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:POW:SWEep:REPeat:COUNt { repeats }");
         }
-
-
 
 
         public double GetSAPhaseStart(int Channel, string src)

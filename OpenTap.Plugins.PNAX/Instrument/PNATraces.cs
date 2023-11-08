@@ -51,7 +51,7 @@ namespace OpenTap.Plugins.PNAX
             COMPlex
         }
 
-        public int AddNewTrace(int Channel, int Window, String Trace, String MeasClass, String Meas, ref int tnum, ref int mnum, ref String MeasName)
+        public int AddNewTrace(int Channel, int Window, string Trace, string MeasClass, string Meas, ref int tnum, ref int mnum, ref string MeasName)
         {
             int traceid = GetNewWindowTraceID(Window);
             mnum = GetUniqueTraceId();
@@ -63,36 +63,35 @@ namespace OpenTap.Plugins.PNAX
             // This is the format that the PNA uses
             MeasName = Trace + "_" + mnum.ToString();
 
-            ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'{MeasName}\',\'{MeasClass}\',\'{Meas.ToString()}\'");
+            ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'{MeasName}\',\'{MeasClass}\',\'{Meas}\'");
 
             // Create a window if it doesn't exist already
-            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:STATe ON");
+            ScpiCommand($"DISPlay:WINDow{Window}:STATe ON");
 
             // Display the measurement
-            ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{traceid.ToString()}:FEED \'{MeasName}\'");
+            ScpiCommand($"DISPlay:WINDow{Window}:TRACe{traceid}:FEED \'{MeasName}\'");
 
             // 
-            ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:SELect \'{MeasName}\'");
+            ScpiCommand($"CALCulate{Channel}:PARameter:SELect \'{MeasName}\'");
 
             // Get Trace number
-            tnum = ScpiQuery<int>($"CALCulate{Channel.ToString()}:PARameter:TNUMber?");
+            tnum = ScpiQuery<int>($"CALCulate{Channel}:PARameter:TNUMber?");
 
             return tnum;
         }
 
-        public void SetTraceTitle(int Window, int tnum, String TraceTitle)
+        public void SetTraceTitle(int Window, int tnum, string TraceTitle)
         {
             if (TraceTitle != "")
             {
-                ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{tnum.ToString()}:TITLe:DATA '{TraceTitle}'");
-
-                ScpiCommand($"DISPlay:WINDow{Window.ToString()}:TRACe{tnum.ToString()}:TITLe ON");
+                ScpiCommand($"DISPlay:WINDow{Window}:TRACe{tnum}:TITLe:DATA '{TraceTitle}'");
+                ScpiCommand($"DISPlay:WINDow{Window}:TRACe{tnum}:TITLe ON");
             }
         }
 
         public void SetTraceFormat(int Channel, int mnum, MeasurementFormatEnum meas)
         {
-            ScpiCommand($"CALCulate{Channel.ToString()}:MEASure{mnum.ToString()}:FORMat {meas.ToString()}");
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FORMat {meas}");
         }
     }
 }
