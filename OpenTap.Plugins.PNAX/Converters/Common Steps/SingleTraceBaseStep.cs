@@ -203,19 +203,19 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            AddNewTrace();
+            AddNewTraceToPNAX();
 
             RunChildSteps(); //If the step supports child steps.
 
             UpgradeVerdict(Verdict.Pass);
         }
 
-        protected void AddNewTrace()
+        protected void AddNewTraceToPNAX()
         {
             int _tnum = 0;
             int _mnum = 0;
             string _MeasName = "";
-            PNAX.AddNewTrace(Channel, Window, Trace, measClass, measEnumName.ToString(), ref _tnum, ref _mnum, ref _MeasName);
+            PNAX.AddNewTrace(Channel, Window, Trace, measClass, measEnumName, ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;
             mnum = _mnum;
             MeasName = _MeasName;
