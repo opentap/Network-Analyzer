@@ -32,19 +32,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        //private TraceManagerChannelClassEnum _Class;
-        //[Display("Class", Groups: new[] { "Trace" }, Order: 12)]
-        //public override TraceManagerChannelClassEnum Class
-        //{
-        //    get { return _Class; }
-        //    set
-        //    {
-        //        _Class = value;
-        //        UpdateTestName();
-        //    }
-        //}
-
-
         #endregion
 
         public GeneralSweptIMDSingleTrace()
@@ -54,11 +41,6 @@ namespace OpenTap.Plugins.PNAX
             //Class = TraceManagerChannelClassEnum.IMDX;
         }
 
-        protected override void UpdateTestName()
-        {
-            this.Trace = $"CH{Channel}_{Meas}";
-            this.Name = $"CH{Channel}_{Meas}";
-        }
     }
 
 

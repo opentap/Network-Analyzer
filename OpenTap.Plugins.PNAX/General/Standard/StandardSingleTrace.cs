@@ -103,6 +103,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Meas = value;
+                measEnumName = value.ToString();
                 UpdateTestName();
             }
         }
@@ -110,20 +111,7 @@ namespace OpenTap.Plugins.PNAX
         public StandardSingleTrace()
         {
             Meas = StandardTraceEnum.S11;
-        }
-
-        protected override void UpdateTestName()
-        {
-            this.Trace = $"CH{Channel}_{Meas}";
-            this.Name = $"CH{Channel}_{Meas}";
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
-        public override void AddTraceFormat()
-        {
-            this.ChildTestSteps.Add(new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel });
+            measClass = "Standard";
         }
 
         public void AddTraceFormat(PNAX.MeasurementFormatEnum format)
@@ -133,14 +121,6 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(trFormat);
         }
 
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
-        public override void AddTraceTitle()
-        {
-            this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
         public void AddTraceTitle(string title)
         {
             TraceTitle trTitle = new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel };
@@ -148,37 +128,5 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(trTitle);
         }
 
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
-        public override void AddMarker()
-        {
-            this.ChildTestSteps.Add(new Marker() { PNAX = this.PNAX, Channel = this.Channel, mkr = NextMarker() });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
-        public override void AddTraceLimits()
-        {
-            this.ChildTestSteps.Add(new TraceLimits() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
-        public override void Run()
-        {
-            int _tnum = 0;
-            int _mnum = 0;
-            string _MeasName = "";
-
-            PNAX.AddNewTrace(Channel, Window, Trace, "Standard", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
-            tnum = _tnum;
-            mnum = _mnum;
-            MeasName = _MeasName;
-
-            RunChildSteps(); //If the step supports child steps.
-
-
-            UpgradeVerdict(Verdict.Pass);
-        }
     }
 }

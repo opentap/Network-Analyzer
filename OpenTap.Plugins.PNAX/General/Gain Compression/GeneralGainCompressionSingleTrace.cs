@@ -61,10 +61,5 @@ namespace OpenTap.Plugins.PNAX
             measClass = "Gain Compression";
         }
 
-        protected override void UpdateTestName()
-        {
-            this.Trace = $"CH{Channel}_{Meas}";
-            this.Name = $"CH{Channel}_{Meas}";
-        }
     }
 }

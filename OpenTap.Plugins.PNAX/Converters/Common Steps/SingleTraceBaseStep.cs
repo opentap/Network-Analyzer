@@ -191,6 +191,8 @@ namespace OpenTap.Plugins.PNAX
 
         protected virtual void UpdateTestName()
         {
+            Trace = $"CH{Channel}_{measEnumName}";
+            Name = $"CH{Channel}_{measEnumName}";
         }
 
         [Browsable(false)]
