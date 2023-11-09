@@ -103,13 +103,5 @@ namespace OpenTap.Plugins.PNAX
             this.Name = $"CH{Channel}_{m}";
         }
 
-        public override void Run()
-        {
-            AddNewTrace();
-
-            RunChildSteps(); //If the step supports child steps.
-
-            UpgradeVerdict(Verdict.Pass);
-        }
     }
 }

@@ -201,6 +201,11 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
+            AddNewTrace();
+
+            RunChildSteps(); //If the step supports child steps.
+
+            UpgradeVerdict(Verdict.Pass);
         }
 
         protected void AddNewTrace()
