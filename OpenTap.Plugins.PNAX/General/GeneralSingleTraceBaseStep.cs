@@ -45,6 +45,7 @@ namespace OpenTap.Plugins.PNAX
         {
             IsControlledByParent = true;
             EnableTraceSettings = true;
+            Channel = 1;
         }
 
         protected override void UpdateTestName()

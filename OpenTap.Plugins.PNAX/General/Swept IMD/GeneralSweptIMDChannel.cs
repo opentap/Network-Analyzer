@@ -59,7 +59,7 @@ namespace OpenTap.Plugins.PNAX
             int traceid = PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_PwrMain_1\',\'Swept IMD\',\'PwrMain\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_PwrMain_1\',\'Swept IMD\',\'PwrMain\'");
 
             RunChildSteps(); //If the step supports child steps.
 

@@ -107,22 +107,15 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
-
         public StandardSingleTrace()
         {
-            Trace = "1";
             Meas = StandardTraceEnum.S11;
-            //Class = TraceManagerChannelClassEnum.STD;
-            Window = 1;
-            Sheet = 1;
-            Channel = 1;
         }
 
         protected override void UpdateTestName()
         {
-            this.Trace = $"CH{Channel.ToString()}_{Meas}";
-            this.Name = $"CH{Channel.ToString()}_{Meas}";
+            this.Trace = $"CH{Channel}_{Meas}";
+            this.Name = $"CH{Channel}_{Meas}";
         }
 
         [Browsable(true)]

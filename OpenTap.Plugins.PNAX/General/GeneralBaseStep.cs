@@ -17,63 +17,6 @@ namespace OpenTap.Plugins.PNAX
     public class GeneralBaseStep : SingleTraceBaseStep
     {
         #region Settings
-        [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = false;
-        private PNAX _PNAX;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("PNA", Order: 0.1)]
-        public virtual PNAX PNAX
-        {
-            get
-            {
-                return _PNAX;
-            }
-            set
-            {
-                _PNAX = value;
-
-                // Update traces
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is GeneralSingleTraceBaseStep)
-                    {
-                        (a as GeneralSingleTraceBaseStep).PNAX = value;
-                    }
-                    if (a is GeneralBaseStep)
-                    {
-                        (a as GeneralBaseStep).PNAX = value;
-                    }
-                }
-            }
-        }
-
-        private int _Channel;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("Channel", Order: 1)]
-        public virtual int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-
-                // Update traces
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is GeneralSingleTraceBaseStep)
-                    {
-                        (a as GeneralSingleTraceBaseStep).Channel = value;
-                    }
-                    if (a is GeneralBaseStep)
-                    {
-                        (a as GeneralBaseStep).Channel = value;
-                    }
-                }
-            }
-        }
         #endregion
 
         #region Segment Sweep
@@ -104,12 +47,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Show Table", Group: "Sweep Properties", Order: 33)]
         public bool ShowTable { get; set; }
 
-        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
-        //[EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
-        //[EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
-        //[EnabledIf("ShowTable", true, HideIfDisabled = true)]
-        //[Display("Window", Group: "Sweep Properties", Order: 34)]
-        //public new int Window { get; set; }
 
         #endregion
 

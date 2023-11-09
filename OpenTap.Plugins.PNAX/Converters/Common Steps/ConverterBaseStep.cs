@@ -17,63 +17,6 @@ namespace OpenTap.Plugins.PNAX
     public class ConverterBaseStep : SingleTraceBaseStep
     {
         #region Settings
-        [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = false;
-        private PNAX _PNAX;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("PNA", Order: 0.1)]
-        public virtual PNAX PNAX
-        {
-            get
-            {
-                return _PNAX;
-            }
-            set
-            {
-                _PNAX = value;
-
-                // Update traces
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is ConverterSingleTraceBaseStep)
-                    {
-                        (a as ConverterSingleTraceBaseStep).PNAX = value;
-                    }
-                    if (a is ConverterBaseStep)
-                    {
-                        (a as ConverterBaseStep).PNAX = value;
-                    }
-                    if (a is GeneralBaseStep)
-                    {
-                        (a as GeneralBaseStep).PNAX = value;
-                    }
-                }
-            }
-        }
-
-        private int _Channel;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("Channel", Order: 1)]
-        public virtual int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-
-                // Update traces
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is ConverterSingleTraceBaseStep)
-                    {
-                        (a as ConverterSingleTraceBaseStep).Channel = value;
-                    }
-                }
-            }
-        }
 
         [Browsable(false)]
         public bool DoubleStage { get; set; }
