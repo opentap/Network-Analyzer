@@ -269,6 +269,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Meas = value;
+                measEnumName = value.ToString();
                 UpdateTestStepName();
             }
         }
