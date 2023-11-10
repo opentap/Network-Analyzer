@@ -33,13 +33,9 @@ namespace OpenTap.Plugins.PNAX
                 // Update traces
                 foreach (var a in this.ChildTestSteps)
                 {
-                    if (a is GeneralSingleTraceBaseStep)
+                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
-                        (a as GeneralSingleTraceBaseStep).PNAX = value;
-                    }
-                    if (a is GeneralBaseStep)
-                    {
-                        (a as GeneralBaseStep).PNAX = value;
+                        (a as SingleTraceBaseStep).PNAX = value;
                     }
                 }
             }
@@ -56,9 +52,9 @@ namespace OpenTap.Plugins.PNAX
                 _channel = value;
                 foreach (var a in this.ChildTestSteps)
                 {
-                    if (a is GeneralBaseStep)
+                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
-                        (a as GeneralBaseStep).Channel = value;
+                        (a as SingleTraceBaseStep).Channel = value;
                     }
                 }
             }
