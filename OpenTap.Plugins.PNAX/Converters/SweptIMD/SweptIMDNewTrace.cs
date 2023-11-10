@@ -51,9 +51,15 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowChildrenOfType(typeof(SweptIMDSingleTrace))]
     [Display("Swept IMD Traces", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
-    public class SweptIMDNewTrace : ConverterNewTraceBaseStep
+    public class SweptIMDNewTrace : AddNewTraceBaseStep
     {
         #region Settings
+
+        private SweptIMDTraceEnum Meas;
+
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("Type", Groups: new[] { "Trace" }, Order: 0.1)]
+        public string ParamName { get; set; }
 
         private IMDTraceTypeEnum _IMDTraceType;
         [Display("Type", Groups: new[] { "Trace" }, Order: 1)]
@@ -139,7 +145,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public string ParamName { get; set; }
 
         #endregion
 
@@ -255,6 +260,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 // enable button
                 EnableButton = true;
+                Meas = (SweptIMDTraceEnum)Enum.Parse(typeof(SweptIMDTraceEnum), ParamName);
             }
             else
             {
@@ -275,11 +281,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            SweptIMDTraceEnum sweptIMD;
-            if (Enum.TryParse<SweptIMDTraceEnum>(ParamName, out sweptIMD))
-            {
-                this.ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = sweptIMD, Channel = this.Channel });
-            }
+            this.ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
         public override void Run()
