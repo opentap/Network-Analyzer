@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
     [AllowAsChildIn(typeof(SANewTrace))]
     [Display("SA Single Trace", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASingleTrace : GeneralSingleTraceBaseStep
+    public class SASingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private SATraceEnum _Meas;
@@ -69,9 +69,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             Meas = SATraceEnum.B;
             measClass = "Spectrum Analyzer";
         }
-
-
-
 
     }
 }
