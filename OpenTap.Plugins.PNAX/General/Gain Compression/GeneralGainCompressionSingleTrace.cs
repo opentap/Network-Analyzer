@@ -50,7 +50,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Meas = value;
                 measEnumName = value.ToString();
-                UpdateTestName();
+                UpdateTestStepName();
             }
         }
         #endregion

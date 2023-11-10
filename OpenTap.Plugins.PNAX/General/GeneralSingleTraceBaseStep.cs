@@ -30,7 +30,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Channel = value;
-                UpdateTestName();
+                UpdateTestStepName();
                 foreach (var a in this.ChildTestSteps)
                 {
                     if (a is GeneralBaseStep)
@@ -48,7 +48,7 @@ namespace OpenTap.Plugins.PNAX
             Channel = 1;
         }
 
-        protected override void UpdateTestName()
+        protected override void UpdateTestStepName()
         {
         }
 

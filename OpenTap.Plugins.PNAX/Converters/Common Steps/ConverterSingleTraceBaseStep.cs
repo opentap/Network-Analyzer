@@ -30,7 +30,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Channel = value;
-                UpdateTestName();
+                UpdateTestStepName();
             }
         }
 
@@ -40,7 +40,7 @@ namespace OpenTap.Plugins.PNAX
             EnableTraceSettings = true;
         }
 
-        protected override void UpdateTestName()
+        protected override void UpdateTestStepName()
         {
         }
 

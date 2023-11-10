@@ -5,6 +5,7 @@
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
 using OpenTap;
+using OpenTap.Plugins.PNAX.General.Spectrum_Analyzer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,9 +17,16 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
     [AllowChildrenOfType(typeof(GeneralSweptIMDSingleTrace))]
     [Display("Swept IMD Traces", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here")]
-    public class GeneralSweptIMDNewTrace : GeneralNewTraceBaseStep
+    public class GeneralSweptIMDNewTrace : AddNewTraceBaseStep
     {
         #region Settings
+
+        private SweptIMDTraceEnum Meas;
+
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
+        [Display("Meas", Groups: new[] { "Trace" }, Order: 0.2)]
+        public string ParamName { get; set; }
+
 
         private IMDTraceTypeEnum _IMDTraceType;
         [Display("Type", Groups: new[] { "Trace" }, Order: 1)]
@@ -104,7 +112,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public string ParamName { get; set; }
 
         #endregion
 
@@ -220,6 +227,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 // enable button
                 EnableButton = true;
+                Meas = (SweptIMDTraceEnum) Enum.Parse(typeof(SweptIMDTraceEnum), ParamName);
             }
             else
             {
@@ -235,17 +243,12 @@ namespace OpenTap.Plugins.PNAX
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
             UpdateSweptIMDTestName();
-            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = SweptIMDTraceEnum.PwrMain});
+            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
         protected override void AddNewTrace()
         {
-            SweptIMDTraceEnum sweptIMD;
-
-            if (Enum.TryParse<SweptIMDTraceEnum>(ParamName, out sweptIMD))
-            {
-                this.ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = sweptIMD, Channel = this.Channel });
-            }
+            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
         public override void Run()

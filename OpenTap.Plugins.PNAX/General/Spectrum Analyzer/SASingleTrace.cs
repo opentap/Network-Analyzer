@@ -51,7 +51,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             {
                 _Meas = value;
                 measEnumName = value.ToString();
-                UpdateTestName();
+                UpdateTestStepName();
             }
         }
 

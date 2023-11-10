@@ -177,7 +177,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
-        protected virtual void UpdateTestName()
+        protected virtual void UpdateTestStepName()
         {
             Trace = $"CH{Channel}_{measEnumName}";
             Name = $"CH{Channel}_{measEnumName}";

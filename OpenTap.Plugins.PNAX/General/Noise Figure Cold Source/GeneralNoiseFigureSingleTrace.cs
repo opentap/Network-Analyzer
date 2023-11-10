@@ -85,7 +85,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Meas = value;
                 measEnumName = value.ToString();
-                UpdateTestName();
+                UpdateTestStepName();
             }
         }
         #endregion
@@ -96,7 +96,7 @@ namespace OpenTap.Plugins.PNAX
             measClass = "Noise Figure Cold Source";
         }
 
-        protected override void UpdateTestName()
+        protected override void UpdateTestStepName()
         {
             string m = Scpi.Format("{0}", Meas);
             this.Trace = $"CH{Channel}_{m}";

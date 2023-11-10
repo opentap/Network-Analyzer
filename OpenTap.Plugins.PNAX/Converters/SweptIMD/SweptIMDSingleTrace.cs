@@ -269,7 +269,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Meas = value;
-                UpdateTestName();
+                UpdateTestStepName();
             }
         }
 

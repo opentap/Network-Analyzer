@@ -113,7 +113,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Meas = value;
                 measEnumName = Scpi.Format("{0}", value);
-                UpdateTestName();
+                UpdateTestStepName();
             }
         }
         #endregion
