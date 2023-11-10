@@ -104,7 +104,6 @@
   <ItemGroup>
     <Folder Include="General\Noise Figure Cold Source\" />
     <Folder Include="Acquisition\" />
-    <Folder Include="Common\" />
   </ItemGroup>
 
 </Project>

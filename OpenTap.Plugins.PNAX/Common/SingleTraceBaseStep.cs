@@ -4,7 +4,6 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,7 +34,7 @@ namespace OpenTap.Plugins.PNAX
                 _PNAX = value;
 
                 // Update traces
-                foreach (var a in this.ChildTestSteps)
+                foreach (var a in ChildTestSteps)
                 {
                     if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
@@ -59,7 +58,7 @@ namespace OpenTap.Plugins.PNAX
                 _Channel = value;
 
                 // Update traces
-                foreach (var a in this.ChildTestSteps)
+                foreach (var a in ChildTestSteps)
                 {
                     if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
@@ -70,6 +69,13 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [Browsable(false)]
+        public bool IsConverter { get; set; } = false;
+
+        [EnabledIf("IsConverter", true, HideIfDisabled = true)]
+        [Display("Converter Stages", Order: 10)]
+        public virtual ConverterStagesEnum ConverterStages { get; set; }
+
+        [Browsable(false)]
         public bool EnableTraceSettings { get; set; } = false;
 
 
@@ -77,32 +83,14 @@ namespace OpenTap.Plugins.PNAX
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
         public string Trace { get; set; }
 
-        private int _Window;
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
-        public int Window
-        {
-            get { return _Window; }
-            set
-            {
-                _Window = value;
-                UpdateTestName();
-            }
-        }
+        public int Window { get; set; }
 
 
-        private int _Sheet;
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
-        public int Sheet
-        {
-            get { return _Sheet; }
-            set
-            {
-                _Sheet = value;
-                UpdateTestName();
-            }
-        }
+        public int Sheet { get; set; }
 
         [Browsable(false)]
         public bool IsPropertyEnabled { get; set; } = false;
@@ -141,7 +129,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
         public virtual void AddTraceFormat()
         {
-            this.ChildTestSteps.Add(new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel });
+            ChildTestSteps.Add(new TraceFormat() { PNAX = PNAX, Channel = Channel });
         }
 
         [Browsable(true)]
@@ -149,7 +137,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
         public virtual void AddTraceTitle()
         {
-            this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
+            ChildTestSteps.Add(new TraceTitle() { PNAX = PNAX, Channel = Channel });
         }
 
         [Browsable(true)]
@@ -157,13 +145,13 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
         public virtual void AddMarker()
         {
-            this.ChildTestSteps.Add(new Marker() { PNAX = this.PNAX, Channel = this.Channel, mkr = NextMarker() });
+            ChildTestSteps.Add(new Marker() { PNAX = PNAX, Channel = Channel, mkr = NextMarker() });
         }
 
         public int NextMarker()
         {
             int retMarkerCount = 1;
-            foreach(TestStep t in ChildTestSteps)
+            foreach (TestStep t in ChildTestSteps)
             {
                 if (t is Marker)
                 {
@@ -178,7 +166,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
         public virtual void AddTraceLimits()
         {
-            this.ChildTestSteps.Add(new TraceLimits() { PNAX = this.PNAX, Channel = this.Channel });
+            ChildTestSteps.Add(new TraceLimits() { PNAX = PNAX, Channel = Channel });
         }
 
         [Browsable(true)]

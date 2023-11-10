@@ -20,7 +20,7 @@ namespace OpenTap.Plugins.PNAX
         public int Window { get; set; }
         public int Sheet { get; set; }
         public PNAX.MeasurementFormatEnum MeasurementFormat { get; set; }
-        public String Title { get; set; }
+        public string Title { get; set; }
     }
 
     [AllowAsChildIn(typeof(StandardChannel))]
