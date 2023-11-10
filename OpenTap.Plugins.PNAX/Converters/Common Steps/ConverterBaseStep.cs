@@ -27,7 +27,7 @@ namespace OpenTap.Plugins.PNAX
         private ConverterStagesEnum _ConverterStagesEnum;
         [EnabledIf("IsChildEditable", true, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 10)]
-        public virtual ConverterStagesEnum ConverterStages
+        public override ConverterStagesEnum ConverterStages
         {
             get
             {
@@ -44,6 +44,7 @@ namespace OpenTap.Plugins.PNAX
 
         public ConverterBaseStep()
         {
+            IsConverter = true;
         }
 
         public override void Run()

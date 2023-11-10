@@ -34,13 +34,9 @@ namespace OpenTap.Plugins.PNAX
                 // Update traces
                 foreach (var a in this.ChildTestSteps)
                 {
-                    if (a is ConverterSingleTraceBaseStep)
+                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
-                        (a as ConverterSingleTraceBaseStep).PNAX = value;
-                    }
-                    if (a is ConverterBaseStep)
-                    {
-                        (a as ConverterBaseStep).PNAX = value;
+                        (a as SingleTraceBaseStep).PNAX = value;
                     }
                 }
             }
@@ -57,9 +53,9 @@ namespace OpenTap.Plugins.PNAX
                 _channel = value;
                 foreach (var a in this.ChildTestSteps)
                 {
-                    if (a is ConverterBaseStep)
+                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
-                        (a as ConverterBaseStep).Channel = value;
+                        (a as SingleTraceBaseStep).Channel = value;
                     }
                 }
             }
@@ -85,9 +81,9 @@ namespace OpenTap.Plugins.PNAX
                     // Update children
                     foreach (var a in this.ChildTestSteps)
                     {
-                        if (a is ConverterBaseStep && !(a is MixerSetupTestStep) )
+                        if (a is SingleTraceBaseStep && !(a is MixerSetupTestStep) )
                         {
-                            (a as ConverterBaseStep).ConverterStages = _ConverterStagesEnum;
+                            (a as SingleTraceBaseStep).ConverterStages = _ConverterStagesEnum;
                         }
                     }
                 }

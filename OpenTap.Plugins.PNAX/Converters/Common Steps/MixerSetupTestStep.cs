@@ -219,6 +219,7 @@ namespace OpenTap.Plugins.PNAX
         public MixerSetupTestStep()
         {
             IsChildEditable = true;
+            IsConverterEditable = true;
             UpdateDefaultValues();
             // TODO
             // Add rule to indicate PortInput has to be different than PortOutput

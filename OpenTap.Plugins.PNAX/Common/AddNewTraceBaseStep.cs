@@ -26,9 +26,9 @@ namespace OpenTap.Plugins.PNAX
                 _ConverterStagesEnum = value;
                 foreach (var step in this.ChildTestSteps)
                 {
-                    if (step.GetType().IsSubclassOf(typeof(ConverterBaseStep)))
+                    if (step.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
                     {
-                        (step as ConverterBaseStep).ConverterStages = value;
+                        (step as SingleTraceBaseStep).ConverterStages = value;
                     }
                 }
             }
