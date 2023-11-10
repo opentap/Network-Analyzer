@@ -101,7 +101,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(NoiseFigureNewTrace))]
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [Display("Noise Figure Single Trace", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
-    public class NoiseFigureSingleTrace : ConverterSingleTraceBaseStep
+    public class NoiseFigureSingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private NoiseFigureTraceEnum _Meas;
@@ -113,6 +113,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Meas = value;
                 measEnumName = Scpi.Format("{0}", value);
+                IsConverter = true;
                 UpdateTestStepName();
             }
         }

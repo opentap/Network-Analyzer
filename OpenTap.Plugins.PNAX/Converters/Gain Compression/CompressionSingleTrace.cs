@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(GainCompressionNewTrace))]
     [Display("Compression Single Trace", Groups: new[] { "PNA-X", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
-    public class CompressionSingleTrace : ConverterSingleTraceBaseStep
+    public class CompressionSingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private CompressionTraceEnum _Meas;
@@ -49,6 +49,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _Meas = value;
                 measEnumName = value.ToString();
+                IsConverter = true;
                 UpdateTestStepName();
             }
         }

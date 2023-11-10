@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [Display("Noise Figure New Trace", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
-    public class NoiseFigureNewTrace : ConverterNewTraceBaseStep
+    public class NoiseFigureNewTrace : AddNewTraceBaseStep
     {
         #region Settings
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
@@ -25,26 +25,13 @@ namespace OpenTap.Plugins.PNAX
         public NoiseFigureNewTrace()
         {
             Meas = NoiseFigureTraceEnum.NF;
-            ChildTestSteps.Add(new NoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = NoiseFigureTraceEnum.NF});
-        }
-
-        public override void Run()
-        {
-            // Delete dummy trace defined during channel setup
-            // DISPlay:MEASure<mnum>:DELete?
-            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_NF_1\'");
-
-            RunChildSteps(); //If the step supports child steps.
-
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            UpgradeVerdict(Verdict.Pass);
+            IsConverter = true;
+            AddNewTrace();
         }
 
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new NoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel });
+            this.ChildTestSteps.Add(new NoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
     }

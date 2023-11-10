@@ -275,6 +275,7 @@ namespace OpenTap.Plugins.PNAX
             IMDOrder = 1;
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
+            IsConverter = true;
             UpdateSweptIMDConverterTestName();
             ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }

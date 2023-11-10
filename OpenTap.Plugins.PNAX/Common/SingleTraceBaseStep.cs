@@ -72,6 +72,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsConverter { get; set; } = false;
 
         [EnabledIf("IsConverter", true, HideIfDisabled = true)]
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 10)]
         public virtual ConverterStagesEnum ConverterStages { get; set; }
 
