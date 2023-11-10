@@ -52,7 +52,7 @@ namespace OpenTap.Plugins.PNAX
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_{measEnumName}_1\'");
+            DeleteDummyTrace();
 
             RunChildSteps(); //If the step supports child steps.
 
@@ -63,6 +63,11 @@ namespace OpenTap.Plugins.PNAX
 
         protected virtual void AddNewTrace()
         {
+        }
+
+        protected virtual void DeleteDummyTrace()
+        {
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_{measEnumName}_1\'");
         }
     }
 }

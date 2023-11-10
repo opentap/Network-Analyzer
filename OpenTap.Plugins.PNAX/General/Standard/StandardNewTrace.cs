@@ -26,27 +26,17 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(StandardChannel))]
     [AllowChildrenOfType(typeof(StandardSingleTrace))]
     [Display("Standard New Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardNewTrace : GeneralNewTraceBaseStep
+    public class StandardNewTrace : AddNewTraceBaseStep
     {
         #region Settings
-        private StandardTraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-        public StandardTraceEnum Meas
-        {
-            get
-            {
-                return _Meas;
-            }
-            set
-            {
-                _Meas = value;
-            }
-        }
+        public StandardTraceEnum Meas { get; set; }
         #endregion
 
         public StandardNewTrace()
         {
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = StandardTraceEnum.S11});
+            Meas = StandardTraceEnum.S11;
+            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
         // overloaded constructor for window and sheet
@@ -81,29 +71,14 @@ namespace OpenTap.Plugins.PNAX
             return retVal;
         }
 
-
-        public override void Run()
+        protected override void DeleteDummyTrace()
         {
-            // Delete dummy trace defined during channel setup
-            // DISPlay:MEASure<mnum>:DELete?
-            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
             PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
-
-
-            RunChildSteps(); //If the step supports child steps.
-
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            UpgradeVerdict(Verdict.Pass);
         }
 
         protected override void AddNewTrace()
         {
-            StandardTraceEnum standardTrace;
-            if (Enum.TryParse<StandardTraceEnum>(Meas.ToString(), out standardTrace))
-            {
-                this.ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = standardTrace, Channel = this.Channel });
-            }
+            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
     }
