@@ -21,26 +21,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
 
-        //[Browsable(false)]
-        //public bool HasPortPowersCoupled { get; set; } = false;
-        //private bool _portPowersCoupled;
-        //[EnabledIf("HasPortPowersCoupled", true, HideIfDisabled = false)]
-        //[Display("Port Powers Coupled", Order: 11)]
-        //public bool PortPowersCoupled
-        //{
-        //    get { return _portPowersCoupled; }
-        //    set
-        //    {
-        //        _portPowersCoupled = value;
-        //        if (value)
-        //        {
-        //            OutputPower = InputPower;
-        //            AutoOutputPortSourceAttenuator = AutoInputPortSourceAttenuator;
-        //            OutputPortSourceAttenuator = InputPortSourceAttenuator;
-        //        }
-        //    }
-        //}
-
         [Display("Input Port", Group: "DUT Input Port", Order: 20)]
         public PortsEnum PortInput { get; set; }
 
@@ -94,11 +74,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Output Port", Group: "DUT Output Port", Order: 30)]
         public virtual PortsEnum PortOutput { get; set; }
 
-        //[Display("Output Power", Group: "DUT Output Port", Order: 31)]
-        //[Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
-        //public virtual double OutputPower { get; set; }
-
-        //[EnabledIf("PortPowersCoupled", false)]
         [Display("Auto", Group: "DUT Output Port", Order: 32)]
         public bool AutoOutputPortSourceAttenuator { get; set; }
 
@@ -140,8 +115,6 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _inputPower = value;
-                //if (PortPowersCoupled)
-                //    OutputPower = value;
             }
         }
         [Display("Reverse Power", Group: "DUT Output Port", Order: 31)]

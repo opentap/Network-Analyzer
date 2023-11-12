@@ -27,9 +27,6 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("CW")]
         [Display("CW")]
         CW,
-        //[Scpi("LOP")]
-        //[Display("LO Power Sweep")]
-        //LOPowerSweep
         [Scpi("SEGM")]
         [Display("Segment Sweep fc")]
         SegmentSweepfc

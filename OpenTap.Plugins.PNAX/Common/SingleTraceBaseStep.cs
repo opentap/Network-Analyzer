@@ -14,72 +14,11 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class SingleTraceBaseStep : TestStep
+    public class SingleTraceBaseStep : PNABaseStep
     {
         #region Settings
-
-        [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = false;
-        private PNAX _PNAX;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("PNA", Order: 0.1)]
-        public virtual PNAX PNAX
-        {
-            get
-            {
-                return _PNAX;
-            }
-            set
-            {
-                _PNAX = value;
-
-                // Update traces
-                foreach (var a in ChildTestSteps)
-                {
-                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
-                    {
-                        (a as SingleTraceBaseStep).PNAX = value;
-                    }
-                }
-            }
-        }
-
-        private int _Channel;
-        [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
-        [Display("Channel", Order: 1)]
-        public virtual int Channel
-        {
-            get
-            {
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-
-                // Update traces
-                foreach (var a in ChildTestSteps)
-                {
-                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
-                    {
-                        (a as SingleTraceBaseStep).Channel = value;
-                    }
-                }
-            }
-        }
-
-        [Browsable(false)]
-        public bool IsConverter { get; set; } = false;
-        [Browsable(false)]
-        public bool IsConverterEditable { get; set; } = false;
-        [EnabledIf("IsConverter", true, HideIfDisabled = true)]
-        [EnabledIf("IsConverterEditable", true, HideIfDisabled = false)]
-        [Display("Converter Stages", Order: 10)]
-        public virtual ConverterStagesEnum ConverterStages { get; set; }
-
         [Browsable(false)]
         public bool EnableTraceSettings { get; set; } = false;
-
 
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
@@ -123,7 +62,6 @@ namespace OpenTap.Plugins.PNAX
             Trace = "1";
             Window = 1;
             Sheet = 1;
-            Channel = 1;
         }
 
         [Browsable(true)]
