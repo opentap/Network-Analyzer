@@ -123,12 +123,6 @@ namespace OpenTap.Plugins.PNAX
             Name = $"CH{Channel}_{measEnumName}";
         }
 
-        [Browsable(false)]
-        public virtual List<(string, object)> GetMetaData()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Run()
         {
             AddNewTraceToPNAX();

@@ -87,5 +87,11 @@ namespace OpenTap.Plugins.PNAX
             // You can change the verdict using UpgradeVerdict() as shown below.
             // UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public virtual List<(string, object)> GetMetaData()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

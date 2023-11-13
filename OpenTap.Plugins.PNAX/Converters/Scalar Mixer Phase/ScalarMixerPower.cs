@@ -47,20 +47,6 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool EnablePowerSweepOutputEdit { get; set; } = false;
 
-        private double _inputPower;
-        [Display("Power Level", Group: "DUT Input Port", Order: 21)]
-        [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
-        public override double InputPower
-        {
-            get { return _inputPower; }
-            set
-            {
-                _inputPower = value;
-                if (PortPowersCoupled)
-                    OutputPower = value;
-            }
-        }
-
         [EnabledIf("AutoOutputPortSourceAttenuator", false)]
         [Display("Power Level", Group: "DUT Output Port", Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
@@ -100,32 +86,28 @@ namespace OpenTap.Plugins.PNAX
         {
             HasPortPowersCoupled = true;
             HasAutoInputPort = true;
-            UpdateDefaultValues();
+            IsConverter = true;
         }
 
-        private void UpdateDefaultValues()
+        protected override void UpdatePowerValues()
         {
-            var defaultValuesSetup = PNAX.GetMixerSetupDefaultValues();
-            PortInput  = defaultValuesSetup.PortInput;
-            PortOutput = defaultValuesSetup.PortOutput;
-
             var DefaultValues = PNAX.GetScalarMixerConverterPowerDefaultValues();
             PowerOnAllChannels = DefaultValues.PowerOnAllChannels;
             PortPowersCoupled = DefaultValues.PortPowersCoupled;
 
-            InputPower                    = DefaultValues.InputPortLinearInputPower;
-            InputPortSourceAttenuator     = DefaultValues.InputPortSourceAttenuator;
+            InputPower = DefaultValues.InputPortLinearInputPower;
+            InputPortSourceAttenuator = DefaultValues.InputPortSourceAttenuator;
             AutoInputPortSourceAttenuator = DefaultValues.AutoInputPortSourceAttenuator;
-            InputPortReceiverAttenuator   = DefaultValues.InputPortReceiverAttenuator;
-            InputSourceLevelingMode       = DefaultValues.InputSourceLevelingMode;
+            InputPortReceiverAttenuator = DefaultValues.InputPortReceiverAttenuator;
+            InputSourceLevelingMode = DefaultValues.InputSourceLevelingMode;
 
-            OutputPower                    = DefaultValues.OutputPortReversePower;
+            OutputPower = DefaultValues.OutputPortReversePower;
             AutoOutputPortSourceAttenuator = DefaultValues.AutoOutputPortSourceAttenuator;
-            OutputPortSourceAttenuator     = DefaultValues.OutputPortSourceAttenuator;
-            OutputPortReceiverAttenuator   = DefaultValues.OutputPortReceiverAttenuator;
-            OutputSourceLevelingMode       = DefaultValues.OutputSourceLevelingMode;
+            OutputPortSourceAttenuator = DefaultValues.OutputPortSourceAttenuator;
+            OutputPortReceiverAttenuator = DefaultValues.OutputPortReceiverAttenuator;
+            OutputSourceLevelingMode = DefaultValues.OutputSourceLevelingMode;
 
-            InputPortSourceAttenuatorAutoValue  = InputPortSourceAttenuator;
+            InputPortSourceAttenuatorAutoValue = InputPortSourceAttenuator;
             OutputPortSourceAttenuatorAutoValue = OutputPortSourceAttenuator;
 
             InputPowerSweepStartPower = DefaultValues.InputPowerSweepStartPower;
@@ -140,24 +122,16 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.SetPowerOnAllChannels(PowerOnAllChannels);
-            PNAX.SetCoupledTonePowers(Channel, PortPowersCoupled);
+            UpgradeVerdict(Verdict.Pass);
+        }
 
+        protected override void SetPort()
+        {
             PNAX.SetSMCPortInputOutput(Channel, PortInput, PortOutput);
+        }
 
-            PNAX.SetPowerLevel(Channel, PortInput, InputPower);
-            PNAX.SetSourceAttenuator(Channel, (int)PortInput, InputPortSourceAttenuator);
-            PNAX.SetReceiverAttenuator(Channel, (int)PortInput, InputPortReceiverAttenuator);
-            PNAX.SetSourceLevelingMode(Channel, PortInput, InputSourceLevelingMode);
-            PNAX.SetSourceAttenuatorAutoMode(Channel, PortInput, AutoInputPortSourceAttenuator);
-
-
-            PNAX.SetPowerLevel(Channel, PortOutput, OutputPower);
-            PNAX.SetSourceAttenuator(Channel, (int)PortOutput, OutputPortSourceAttenuator);
-            PNAX.SetReceiverAttenuator(Channel, (int)PortOutput, OutputPortReceiverAttenuator);
-            PNAX.SetSourceLevelingMode(Channel, PortOutput, OutputSourceLevelingMode);
-            PNAX.SetSourceAttenuatorAutoMode(Channel, PortOutput, AutoOutputPortSourceAttenuator);
-
+        protected override void SetSweepPower()
+        {
             if (EnablePowerSweepOutputEdit)
             {
                 PNAX.SetSMCPowerSweepStartPower(Channel, PortInput, InputPowerSweepStartPower);
@@ -176,14 +150,12 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetSMCPowerSweepStartPower(Channel, PortOutput, OutputPowerSweepStartPower);
                 PNAX.SetSMCPowerSweepStopPower(Channel, PortOutput, OutputPowerSweepStopPower);
             }
-
-            UpgradeVerdict(Verdict.Pass);
         }
 
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>
+            List<(string, object)> retVal = new List<(string, object)>
             {
                 ("PowerOnAllChannels", PowerOnAllChannels),
                 ("PortPowersCoupled", PortPowersCoupled),
