@@ -35,7 +35,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Frequency Offset", Groups: new[] { "PNA-X", "General" }, 
         Description: "Frequency Offset Mode\nCan be added as a child to the following Channels:\n\tStandard\n\tGain Compression\n\tNoise Figure Cold Source")]
-    public class FrequencyOffset : GeneralBaseStep
+    public class FrequencyOffset : PNABaseStep
     {
         #region Settings
         [Display("Enable Frequency Offset", Order: 10)]

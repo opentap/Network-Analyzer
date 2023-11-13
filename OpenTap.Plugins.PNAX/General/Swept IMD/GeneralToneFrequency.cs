@@ -187,9 +187,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Reduce IF BW at low frequencies", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 43)]
         public bool SweepFcReduceIFBW { get; set; }
 
-
-        //[Display("Annotation", Groups: new[] { "Tone Frequency", "X-Axis Display" }, Order: 50)]
-        //public XAxisDisplayAnnotationEnum XAxisDisplayAnnotation { get; set; }
         #endregion
 
         public GeneralToneFrequency()
@@ -269,7 +266,7 @@ namespace OpenTap.Plugins.PNAX
                 //    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
                 //    break;
                 case GeneralToneFrequencySweepTypeEnum.SegmentSweepfc:
-                    SetSegmentValues();
+                    PNAX.SetSegmentValues(SegmentDefinitionType, Channel, segmentDefinitions, ShowTable);
                     break;
             }
 
@@ -280,9 +277,5 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        private void SetSegmentValues()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

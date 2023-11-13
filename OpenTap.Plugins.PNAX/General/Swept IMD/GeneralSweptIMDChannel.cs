@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Swept IMD Channel", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
-    public class GeneralSweptIMDChannel : GeneralChannelBaseStep
+    public class GeneralSweptIMDChannel : PNABaseStep
     {
         #region Settings
         private GeneralToneFrequencySweepTypeEnum ChannelSweepType { get; set; }
@@ -56,7 +56,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
             PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_PwrMain_1\',\'Swept IMD\',\'PwrMain\'");
@@ -66,7 +65,6 @@ namespace OpenTap.Plugins.PNAX
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
-            //UpdateMetaData();
         }
     }
 }

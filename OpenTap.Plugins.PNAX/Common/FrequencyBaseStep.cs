@@ -140,7 +140,7 @@ namespace OpenTap.Plugins.PNAX
             }
             else if (EnableSegmentSweepSettings)
             {
-                SetSegmentValues();
+                PNAX.SetSegmentValues(SegmentDefinitionType, Channel, SegmentDefinitions, ShowTable);
             }
             else
             {
@@ -193,30 +193,5 @@ namespace OpenTap.Plugins.PNAX
             IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
 
-        public void SetSegmentValues()
-        {
-            if (SegmentDefinitionType == SegmentDefinitionTypeEnum.File)
-            {
-                Log.Error("Load file Not implemented!");
-            }
-            else
-            {
-                PNAX.SegmentDeleteAllSegments(Channel);
-                foreach (SegmentDefinition a in SegmentDefinitions)
-                {
-                    int segment = PNAX.SegmentAdd(Channel);
-                    PNAX.SetSegmentState(Channel, segment, a.state);
-                    PNAX.SetSegmentNumberOfPoints(Channel, segment, a.NumberOfPoints);
-                    PNAX.SetSegmentStartFrequency(Channel, segment, a.StartFrequency);
-                    PNAX.SetSegmentStopFrequency(Channel, segment, a.StopFrequency);
-                }
-                PNAX.SetStandardSweepType(Channel, StandardSweepTypeEnum.SegmentSweep);
-                if (ShowTable)
-                {
-                    PNAX.SetSegmentTableShow(Channel, true, Window);
-                }
-            }
-
-        }
     }
 }

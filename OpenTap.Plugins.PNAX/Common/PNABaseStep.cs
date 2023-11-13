@@ -69,6 +69,11 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("IsConverterEditable", true, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 0.12)]
         public virtual ConverterStagesEnum ConverterStages { get; set; }
+
+        [Output]
+        [Browsable(false)]
+        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
+        public List<(string, object)> MetaData { get; private set; }
         #endregion
 
         public PNABaseStep()
@@ -92,6 +97,20 @@ namespace OpenTap.Plugins.PNAX
         public virtual List<(string, object)> GetMetaData()
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void UpdateMetaData()
+        {
+            MetaData = new List<(string, object)> { ("Channel", Channel) };
+
+            foreach (var ch in this.ChildTestSteps)
+            {
+                List<(string, object)> ret = (ch as PNABaseStep).GetMetaData();
+                foreach (var it in ret)
+                {
+                    MetaData.Add(it);
+                }
+            }
         }
     }
 }

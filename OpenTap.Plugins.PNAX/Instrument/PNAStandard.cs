@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
@@ -387,6 +388,31 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:SEGMent{segment}:SA:VIDeobw {value}");
         }
 
+        public void SetSegmentValues(SegmentDefinitionTypeEnum SegmentType, int Channel, List<SegmentDefinition> SegmentDefinitions, bool ShowTable)
+        {
+            if (SegmentType == SegmentDefinitionTypeEnum.File)
+            {
+                Log.Error("Load file Not implemented!");
+            }
+            else
+            {
+                SegmentDeleteAllSegments(Channel);
+                foreach (SegmentDefinition a in SegmentDefinitions)
+                {
+                    int segment = SegmentAdd(Channel);
+                    SetSegmentState(Channel, segment, a.state);
+                    SetSegmentNumberOfPoints(Channel, segment, a.NumberOfPoints);
+                    SetSegmentStartFrequency(Channel, segment, a.StartFrequency);
+                    SetSegmentStopFrequency(Channel, segment, a.StopFrequency);
+                }
+                SetStandardSweepType(Channel, StandardSweepTypeEnum.SegmentSweep);
+                if (ShowTable)
+                {
+                    SetSegmentTableShow(Channel, true, 1);
+                }
+            }
+
+        }
 
         #endregion
 

@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [Display("Sectrum Analyzer Channel", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SpectrumAnalyzerChannel : GeneralChannelBaseStep
+    public class SpectrumAnalyzerChannel : PNABaseStep
     {
         #region Settings
         #endregion
@@ -46,7 +46,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         {
             base.PrePlanRun();
 
-            int traceid = PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
             PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Spectrum Analyzer\',\'B\'");

@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Standard Channel", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardChannel : GeneralChannelBaseStep
+    public class StandardChannel : PNABaseStep
     {
         #region Settings
         #endregion
@@ -86,7 +86,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
             PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Standard\',\'S11\'");

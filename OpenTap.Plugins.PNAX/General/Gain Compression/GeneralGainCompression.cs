@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
     [Display("Compression", Groups: new[] { "PNA-X", "General", "Gain Compression" }, Description: "Insert a description here")]
-    public class GeneralGainCompression : GeneralBaseStep
+    public class GeneralGainCompression : PNABaseStep
     {
 
         #region Settings
@@ -150,6 +150,7 @@ namespace OpenTap.Plugins.PNAX
             switch (CompressionMethod)
             {
                 case CompressionMethodEnum.CompressionFromLinearGain:
+                    break;
                 case CompressionMethodEnum.CompressionFromMaxGain:
                     PNAX.SetCompressionLevel(Channel, CompressionLevel);
                     break;
