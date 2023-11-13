@@ -39,7 +39,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Noise Figure Frequency", Groups: new[] { "PNA-X", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
-    public class GeneralNoiseFigureFrequency : GeneralBaseStep
+    public class GeneralNoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings
         private GeneralNFSweepTypeEnum _SweepType;
@@ -53,23 +53,19 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _SweepType = value;
-                EnableSegmentSweepSettings = false;
-                if (_SweepType == GeneralNFSweepTypeEnum.SegmentSweep)
-                {
-                    EnableSegmentSweepSettings = true;
-                }
+                EnableSegmentSweepSettings = value == GeneralNFSweepTypeEnum.SegmentSweep;
+                CWFrequencyEnabled = value == GeneralNFSweepTypeEnum.CWFrequency;
+                LinearSweepEnabled = value == GeneralNFSweepTypeEnum.LinearSweep ||
+                                    value == GeneralNFSweepTypeEnum.LogFrequency;
             }
         }
-
-
-
 
         [Display("X-Axis Annotation", Order: 1)]
         public XAxisAnnotation XAxisAnnotation { get; set; }
 
         private int _SweepSettingsNumberOfPoints;
         [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
-        public int SweepSettingsNumberOfPoints
+        public override int SweepSettingsNumberOfPoints
         {
             get
             {
@@ -96,50 +92,14 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [Display("IF Bandwidth", Group: "Sweep Settings", Order: 11)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
-        public double SweepSettingsIFBandwidth { get; set; }
-
-        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [Display("Type", Group: "Sweep Settings", Order: 11.9)]
-        public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
-
-        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
-        [Display("Start", Group: "Sweep Settings", Order: 12)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
-        public double SweepSettingsStart { get; set; }
-
-        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
-        [Display("Stop", Group: "Sweep Settings", Order: 13)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
-        public double SweepSettingsStop { get; set; }
-
-        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
-        [Display("Center", Group: "Sweep Settings", Order: 14)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
-        public double SweepSettingsCenter { get; set; }
-
-        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.LinearSweep, GeneralNFSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
-        [Display("Span", Group: "Sweep Settings", Order: 15)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
-        public double SweepSettingsSpan { get; set; }
-
-        [EnabledIf("SweepType", GeneralNFSweepTypeEnum.CWFrequency, HideIfDisabled = true)]
-        [Display("Fixed", Group: "Sweep Settings", Order: 16)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
-        public double SweepSettingsFixed { get; set; }
         #endregion
 
         public GeneralNoiseFigureFrequency()
         {
-            UpdateDefaultValues();
+            XAxisAnnotation = XAxisAnnotation.Output;
         }
 
-        public void UpdateDefaultValues()
+        protected override void UpdateSweepSettings()
         {
             var DefaultValues = PNAX.GetNoiseFigureConverterFrequencyDefaultValues();
             SweepType                   = DefaultValues.GeneralNFSweepType;
@@ -154,45 +114,11 @@ namespace OpenTap.Plugins.PNAX
 
             IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
-        public override void Run()
+
+        protected override void SetSweepType()
         {
-            RunChildSteps(); //If the step supports child steps.
-
             PNAX.SetSweepType(Channel, SweepType);
-
-            PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
-
-            if ((SweepType == GeneralNFSweepTypeEnum.LinearSweep) ||
-                (SweepType == GeneralNFSweepTypeEnum.LogFrequency))
-            {
-                PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
-                if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
-                {
-                    PNAX.SetStart(Channel, SweepSettingsStart);
-                    PNAX.SetStop(Channel, SweepSettingsStop);
-                }
-                else
-                {
-                    PNAX.SetCenter(Channel, SweepSettingsCenter);
-                    PNAX.SetSpan(Channel, SweepSettingsSpan);
-                }
-            }
-            else if (SweepType == GeneralNFSweepTypeEnum.CWFrequency)
-            {
-                PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
-                PNAX.SetCWFreq(Channel, SweepSettingsFixed);
-            }
-            else if (SweepType == GeneralNFSweepTypeEnum.SegmentSweep)
-            {
-                SetSegmentValues();
-            }
-            else
-            {
-                throw new Exception("Undefined sweep type!");
-            }
-
-
-            UpgradeVerdict(Verdict.Pass);
         }
+
     }
 }

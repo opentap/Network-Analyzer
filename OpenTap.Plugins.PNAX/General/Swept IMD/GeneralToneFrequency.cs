@@ -279,5 +279,10 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        private void SetSegmentValues()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

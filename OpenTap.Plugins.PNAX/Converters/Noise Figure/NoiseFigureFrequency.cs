@@ -26,19 +26,33 @@ namespace OpenTap.Plugins.PNAX
     public class NoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings
+        private SweepTypeEnum _sweepType;
+        [Display("Sweep Type", Order: 1)]
+        public SweepTypeEnum SweepType
+        {
+            get { return _sweepType; }
+            set
+            {
+                _sweepType = value;
+                LinearSweepEnabled = SweepTypeEnum.LinearSweep == value;
+                CWFrequencyEnabled = !LinearSweepEnabled;
+                EnableSegmentSweepSettings = false;
+            }
+        }
+
         [Display("X-Axis Annotation", Order: 1)]
         public XAxisAnnotation XAxisAnnotation { get; set; }
         #endregion
 
         public NoiseFigureFrequency()
         {
-            UpdateDefaultValues();
+            IsConverter = true;
+            SweepType = SweepTypeEnum.LinearSweep;
         }
 
-        public void UpdateDefaultValues()
+        protected override void UpdateSweepSettings()
         {
             var DefaultValues = PNAX.GetNoiseFigureConverterFrequencyDefaultValues();
-            SweepType                   = DefaultValues.SweepType;
 
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
             SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
@@ -48,30 +62,6 @@ namespace OpenTap.Plugins.PNAX
             SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
             SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
 
-        }
-        public override void Run()
-        {
-            RunChildSteps(); //If the step supports child steps.
-
-            PNAX.SetSweepType(Channel, SweepType);
-
-            PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
-            PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
-
-            if (SweepType == SweepTypeEnum.LinearSweep)
-            {
-                PNAX.SetStart(Channel, SweepSettingsStart);
-                PNAX.SetStop(Channel, SweepSettingsStop);
-                PNAX.SetCenter(Channel, SweepSettingsCenter);
-                PNAX.SetSpan(Channel, SweepSettingsSpan);
-            }
-            else if (SweepType == SweepTypeEnum.CWFrequency)
-            {
-                PNAX.SetCWFreq(Channel, SweepSettingsFixed);
-            }
-
-
-            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

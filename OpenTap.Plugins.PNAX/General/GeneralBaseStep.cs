@@ -51,33 +51,6 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-        public void SetSegmentValues()
-        {
-            if (SegmentDefinitionType == SegmentDefinitionTypeEnum.File)
-            {
-                Log.Error("Load file Not implemented!");
-            }
-            else
-            {
-                PNAX.SegmentDeleteAllSegments(Channel);
-                int segment = 0;
-                foreach (SegmentDefinition a in segmentDefinitions)
-                {
-                    segment = PNAX.SegmentAdd(Channel);
-                    PNAX.SetSegmentState(Channel, segment, a.state);
-                    PNAX.SetSegmentNumberOfPoints(Channel, segment, a.NumberOfPoints);
-                    PNAX.SetSegmentStartFrequency(Channel, segment, a.StartFrequency);
-                    PNAX.SetSegmentStopFrequency(Channel, segment, a.StopFrequency);
-                }
-                PNAX.SetStandardSweepType(Channel, StandardSweepTypeEnum.SegmentSweep);
-                if (ShowTable)
-                {
-                    PNAX.SetSegmentTableShow(Channel, true, Window);
-                }
-            }
-
-        }
-
         public GeneralBaseStep()
         {
             SegmentDefinitionType = SegmentDefinitionTypeEnum.List;

@@ -18,63 +18,39 @@ namespace OpenTap.Plugins.PNAX
     public class GainCompressionFrequency : FrequencyBaseStep
     {
         #region Settings
+        private SweepTypeEnum _sweepType;
+        [Display("Sweep Type", Order: 1)]
+        public SweepTypeEnum SweepType
+        {
+            get { return _sweepType; }
+            set
+            {
+                _sweepType = value;
+                LinearSweepEnabled = SweepTypeEnum.LinearSweep == value;
+                CWFrequencyEnabled = !LinearSweepEnabled;
+                EnableSegmentSweepSettings = false;
+            }
+        }
+
         [Display("Data Acquisition Mode", Order: 2)]
         public DataAcquisitionModeEnum DataAcquisitionMode { get; set; }
         #endregion
 
         public GainCompressionFrequency()
         {
-            UpdateDefaultValues();
+            IsConverter = true;
+            SweepType = SweepTypeEnum.LinearSweep;
+            DataAcquisitionMode = DataAcquisitionModeEnum.SMARTSweep;
         }
 
-        public void UpdateDefaultValues()
+        protected override void SetSweepType()
         {
-            var DefaultValues = PNAX.GetConverterFrequencyDefaultValues();
-            SweepType                   = DefaultValues.SweepType;
-            DataAcquisitionMode         = DataAcquisitionModeEnum.SMARTSweep;
-
-            SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
-            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
-            SweepSettingsStart          = DefaultValues.SweepSettingsStart;
-            SweepSettingsStop           = DefaultValues.SweepSettingsStop;
-            SweepSettingsCenter         = DefaultValues.SweepSettingsCenter;
-            SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
-
-            SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
-
-            IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
-        }
-
-        public override void Run()
-        {
-            RunChildSteps(); //If the step supports child steps.
-
             PNAX.SetSweepType(Channel, SweepType);
+        }
 
+        protected override void SetMode()
+        {
             PNAX.SetDataAcquisitionMode(Channel, DataAcquisitionMode);
-
-            PNAX.SetPoints(Channel, SweepSettingsNumberOfPoints);
-            PNAX.SetIFBandwidth(Channel, SweepSettingsIFBandwidth);
-
-            if (SweepType == SweepTypeEnum.LinearSweep)
-            {
-                if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
-                {
-                    PNAX.SetStart(Channel, SweepSettingsStart);
-                    PNAX.SetStop(Channel, SweepSettingsStop);
-                }
-                else
-                {
-                    PNAX.SetCenter(Channel, SweepSettingsCenter);
-                    PNAX.SetSpan(Channel, SweepSettingsSpan);
-                }
-            }
-            else if (SweepType == SweepTypeEnum.CWFrequency)
-            {
-                PNAX.SetCWFreq(Channel, SweepSettingsFixed);
-            }
-
-            UpgradeVerdict(Verdict.Pass);
         }
     }
 }
