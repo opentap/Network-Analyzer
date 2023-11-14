@@ -70,5 +70,26 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             measClass = "Spectrum Analyzer";
         }
 
+        public override void PrePlanRun()
+        {
+            base.PrePlanRun();
+
+            int _tnum = 0;
+            int _mnum = 0;
+            string _MeasName = "";
+
+            PNAX.AddNewTrace(Channel, Window, Trace, "Spectrum Analyzer", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
+            tnum = _tnum;
+            mnum = _mnum;
+            MeasName = _MeasName;
+        }
+
+        public override void Run()
+        {
+            RunChildSteps(); //If the step supports child steps.
+
+
+            UpgradeVerdict(Verdict.Pass);
+        }
     }
 }

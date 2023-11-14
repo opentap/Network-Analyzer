@@ -93,7 +93,7 @@ namespace OpenTap.Plugins.PNAX
 
             }
 
-            ResultTable resultTable = new ResultTable($"Channel_{Channel.ToString()}", resultColumns.ToArray());
+            ResultTable resultTable = new ResultTable($"Channel_{Channel}", resultColumns.ToArray());
             Results.PublishTable(resultTable);
 
             UpgradeVerdict(Verdict.Pass);

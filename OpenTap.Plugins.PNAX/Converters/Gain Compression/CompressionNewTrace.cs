@@ -36,5 +36,10 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(new CompressionSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
+        protected override void DeleteDummyTrace()
+        {
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
+        }
+
     }
 }

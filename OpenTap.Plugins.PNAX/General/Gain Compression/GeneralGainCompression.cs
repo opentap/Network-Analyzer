@@ -44,5 +44,19 @@ namespace OpenTap.Plugins.PNAX
             // Max DC Power
             PNAX.SetSMARTSweepSafeModeMaxDCPower(Channel, SMARTSweepMaxDCPower);
         }
+
+        public override void Run()
+        {
+            PNAX.GetNewTraceID(Channel);
+            // Define a dummy measurement so we can setup all channel parameters
+            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
+            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_S21_1\',\'Gain Compression\',\'S21\'");
+
+            RunChildSteps(); //If the step supports child steps.
+
+            // If no verdict is used, the verdict will default to NotSet.
+            // You can change the verdict using UpgradeVerdict() as shown below.
+            UpgradeVerdict(Verdict.Pass);
+        }
     }
 }
