@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("TraceTitle", Groups: new[] { "PNA-X", "Trace" }, Description: "Insert a description here")]
-    public class TraceTitle : GeneralBaseStep
+    public class TraceTitle : PNABaseStep
     {
         #region Settings
         [Display("Trace Title", Groups: new[] { "Trace" }, Order: 9)]
@@ -31,8 +31,8 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            Window = GetParent<SingleTraceBaseStep>().Window;
-            tnum = GetParent<SingleTraceBaseStep>().tnum;
+            int Window = GetParent<SingleTraceBaseStep>().Window;
+            int tnum = GetParent<SingleTraceBaseStep>().tnum;
 
             if (Title != "")
             {

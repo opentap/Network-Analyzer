@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("Marker", Groups: new[] { "PNA-X", "Trace" }, Description: "Insert a description here")]
-    public class Marker : GeneralBaseStep
+    public class Marker : PNABaseStep
     {
         #region Settings
         [Display("Marker Number", Groups: new[] { "Trace" }, Order: 10)]
@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            mnum = GetParent<SingleTraceBaseStep>().mnum;
+            int mnum = GetParent<SingleTraceBaseStep>().mnum;
 
             PNAX.SetMarkerState(Channel, mnum, mkr, SAOnOffTypeEnum.On);
 

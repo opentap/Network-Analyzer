@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("TraceFormat", Groups: new[] { "PNA-X", "Trace"}, Description: "Insert a description here")]
-    public class TraceFormat : GeneralBaseStep
+    public class TraceFormat : PNABaseStep
     {
         #region Settings
         [Display("Format", Groups: new[] { "Trace" }, Order: 11.5)]
@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
         public override void Run()
         {
             //Channel = GetParent<GeneralSingleTraceBaseStep>().Channel;
-            mnum = GetParent<SingleTraceBaseStep>().mnum;
+            int mnum  = GetParent<SingleTraceBaseStep>().mnum;
 
             PNAX.SetTraceFormat(Channel, mnum, Format);
 

@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("Trace Limits", Groups: new[] { "PNA-X", "Trace" }, Description: "Set Limits for a trace")]
-    public class TraceLimits : GeneralBaseStep
+    public class TraceLimits : PNABaseStep
     {
         #region Settings
         [Display("Limit Test ON", Group: "Limit Test", Order: 1)]
@@ -61,8 +61,8 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            mnum = GetParent<SingleTraceBaseStep>().mnum;
-            Window = GetParent<SingleTraceBaseStep>().Window;
+            int mnum  = GetParent<SingleTraceBaseStep>().mnum;
+            int Window = GetParent<SingleTraceBaseStep>().Window;
 
             PNAX.SetLimitTestOn(Channel, mnum, LimitTest);
             PNAX.SetLimitLineOn(Channel, mnum, LimitLine);

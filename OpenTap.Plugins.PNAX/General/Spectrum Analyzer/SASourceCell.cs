@@ -19,7 +19,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
     {
         #region Settings
         [Display("Name", Group: "Sweep Properties", Order: 20)]
-        public String CellName
+        public string CellName
         {
             get
             {

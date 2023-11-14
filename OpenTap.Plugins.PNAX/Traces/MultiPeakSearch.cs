@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("Multi Peak Search", Groups: new[] { "PNA-X", "Trace" }, Description: "Insert a description here")]
-    public class MultiPeakSearch : GeneralBaseStep
+    public class MultiPeakSearch : PNABaseStep
     {
         #region Settings
         [Display("Marker Number", Groups: new[] { "Trace" }, Order: 10)]
@@ -42,7 +42,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            mnum = GetParent<SingleTraceBaseStep>().mnum;
+            int mnum = GetParent<SingleTraceBaseStep>().mnum;
 
             PNAX.SetMultiPeakSearchThreshold(Channel, mnum, PeakThreshold);
             PNAX.SetMultiPeakSearchExcursion(Channel, mnum, PeakExcursion);
