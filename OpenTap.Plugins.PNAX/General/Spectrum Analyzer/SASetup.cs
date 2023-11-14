@@ -58,7 +58,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Setup", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASetup : GeneralBaseStep
+    public class SASetup : PNABaseStep
     {
         #region Settings
         private SASweepTypeEnum _SASweepType;
@@ -146,12 +146,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
         public double RcvrDAttenuator { get; set; }
 
-
-
-
-
-
-
         [Browsable(false)]
         public bool SAEnableSegmentSweepSettings { get; set; } = false;
 
@@ -204,8 +198,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
                 new SASegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9, MTRef = 0.0, VectAvg = 1, VBW = 1e6, DThreshold = -60.0 }
             };
             SAShowTable = false;
-
-            //SASegmentAttributes = SASegmentAttributes.None;
         }
 
         public override void Run()
@@ -258,7 +250,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
                     retVal.Add(("SA Points", SweepPropertiesPoints));
                     break;
                 case SASweepTypeEnum.SegmentSweep:
-                    //SetSegmentValues();
                     break;
             }
             retVal.Add(("SA Resolution Bandwidth", ResolutionBandwidth));
@@ -315,10 +306,9 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
                         PNAX.SetSegmentSAVideoBW(Channel, segment, a.VBW);
                     }
                 }
-                //PNAX.SetStandardSweepType(Channel, StandardSweepTypeEnum.SegmentSweep);
                 if (SAShowTable)
                 {
-                    PNAX.SetSegmentTableShow(Channel, true, Window);
+                    PNAX.SetSegmentTableShow(Channel, true, 1);
                 }
             }
 

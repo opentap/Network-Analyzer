@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [AllowAsChildIn(typeof(SASource))]
     [Display("SA Source Cell", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASourceCell : GeneralBaseStep
+    public class SASourceCell : PNABaseStep
     {
         #region Settings
         [Display("Name", Group: "Sweep Properties", Order: 20)]

@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Source", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASource : GeneralBaseStep
+    public class SASource : PNABaseStep
     {
         #region Settings
         [Display("Power On (All Channels)", Group: "Power", Order: 20)]
@@ -114,7 +114,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         [Browsable(true)]
         [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
-        public void UpdateMetaData()
+        public override void UpdateMetaData()
         {
             MetaData = new List<(string, object)>();
 

@@ -21,6 +21,7 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralGainCompressionChannel()
         {
+            IsControlledByParent = false;
             // Add child steps in the order that is required
 
             // Compression

@@ -34,6 +34,7 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralSweptIMDChannel()
         {
+            IsControlledByParent = false;
             // Add child steps in the order that is required
             GeneralSweptIMDConfigure configure = new GeneralSweptIMDConfigure { IsControlledByParent = true, Channel = this.Channel };
             // Tone Power

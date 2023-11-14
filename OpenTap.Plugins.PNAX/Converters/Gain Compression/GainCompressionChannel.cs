@@ -22,7 +22,7 @@ namespace OpenTap.Plugins.PNAX
         public GainCompressionChannel()
         {
             // Add child steps in the order that is required
-
+            
             // Mixer Setup
             MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
             // Mixer Power

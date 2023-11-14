@@ -21,6 +21,8 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralNoiseFigureChannel()
         {
+            IsControlledByParent = false;
+
             // NoiseFigure
             GeneralNoiseFigure noiseFigure = new GeneralNoiseFigure { IsControlledByParent = true, Channel = this.Channel };
             // Power

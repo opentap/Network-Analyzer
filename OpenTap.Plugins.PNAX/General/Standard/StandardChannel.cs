@@ -21,6 +21,7 @@ namespace OpenTap.Plugins.PNAX
 
         public StandardChannel()
         {
+            IsControlledByParent = false;
             Channel = 1;
 
             // Sweep Type

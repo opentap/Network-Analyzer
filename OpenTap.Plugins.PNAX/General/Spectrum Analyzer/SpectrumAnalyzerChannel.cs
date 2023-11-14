@@ -21,6 +21,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         public SpectrumAnalyzerChannel()
         {
+            IsControlledByParent = false;
             Channel = 1;
 
             // SA Setup
