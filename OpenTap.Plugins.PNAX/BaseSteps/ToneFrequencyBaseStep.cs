@@ -107,7 +107,6 @@ namespace OpenTap.Plugins.PNAX
                 _SweepFcNumberOfPoints = value;
                 // Update Points on Parent step
                 UpdateMixerSweepPoints();
-
             }
         }
 
