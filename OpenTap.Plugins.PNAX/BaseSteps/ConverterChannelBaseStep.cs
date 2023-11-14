@@ -16,81 +16,9 @@ namespace OpenTap.Plugins.PNAX
     [Browsable(false)]
     [AllowAnyChild]
     [Display("Converter Channel", Groups: new[] { "Converters" }, Description: "Insert a description here")]
-    public class ConverterChannelBase : TestStep
+    public class ConverterChannelBaseStep : PNABaseStep
     {
-        #region Settings
-        private PNAX _PNAX;
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX
-        {
-            get
-            {
-                return _PNAX;
-            }
-            set
-            {
-                _PNAX = value;
-
-                // Update traces
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
-                    {
-                        (a as SingleTraceBaseStep).PNAX = value;
-                    }
-                }
-            }
-        }
-
-        private int _channel;
-        [Display("Channel", Order: 1)]
-        [Output]
-        public int Channel
-        {
-            get { return _channel; }
-            set
-            {
-                _channel = value;
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
-                    {
-                        (a as SingleTraceBaseStep).Channel = value;
-                    }
-                }
-            }
-        }
-        [Browsable(false)]
-        public bool DisabledInChannelParentStep { get; set; } = false;
-
-        private ConverterStagesEnum _ConverterStagesEnum;
-        [Display("Converter Stages", Order: 10, Description:"Stage is defined in Mixer Setup Test Step")]
-        [EnabledIf("DisabledInChannelParentStep", HideIfDisabled =false)]
-        public ConverterStagesEnum ConverterStages
-        {
-            get
-            {
-                return _ConverterStagesEnum;
-            }
-            set
-            {
-                _ConverterStagesEnum = value;
-
-                if (this.ChildTestSteps != null)
-                {
-                    // Update children
-                    foreach (var a in this.ChildTestSteps)
-                    {
-                        if (a is SingleTraceBaseStep && !(a is MixerSetupTestStep) )
-                        {
-                            (a as SingleTraceBaseStep).ConverterStages = _ConverterStagesEnum;
-                        }
-                    }
-                }
-
-            }
-        }
-
+        #region SettingsIsConverterEditable
         private LOEnum _portLO1;
         [Browsable(false)]
         public LOEnum PortLO1
@@ -114,8 +42,10 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        [Browsable(false)]
+        public bool IsSweepPointEditable {get; set;}
         private int _SweepPoints;
-        [EnabledIf("DisabledInChannelParentStep", HideIfDisabled = false)]
+        [EnabledIf("IsSweepPointEditable", HideIfDisabled = false)]
         [Display("Sweep Points", Order: 20)]
         public int SweepPoints
         {
@@ -133,34 +63,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        // TODO
-        // Set to Browsable False for release
-        // TODO
-        [Output]
-        [Browsable(true)]
-        [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
-        public List<(string, object)> MetaData { get; private set; }
-
-        // TODO
-        // Set to Browsable False for release
-        // TODO
-        [Browsable(true)]
-        [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
-        public void UpdateMetaData()
-        {
-            MetaData = new List<(string, object)>();
-
-            MetaData.Add(("Channel", this.Channel));
-
-            foreach (var ch in this.ChildTestSteps)
-            {
-                List<(string, object)> ret = (ch as ConverterBaseStep).GetMetaData();
-                foreach (var it in ret)
-                {
-                    MetaData.Add(it);
-                }
-            }
-        }
         #endregion
 
         protected void UpdateNumberOfPoints()
@@ -212,12 +114,14 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public ConverterChannelBase()
+        public ConverterChannelBaseStep()
         {
             MetaData = new List<(string, object)>();
             Channel = 1;
             var defaultValues = PNAX.GetMixerSetupDefaultValues();
             ConverterStages = defaultValues.ConverterStages;
+            IsConverter = true;
+            IsControlledByParent = false;
         }
 
         public override void Run()

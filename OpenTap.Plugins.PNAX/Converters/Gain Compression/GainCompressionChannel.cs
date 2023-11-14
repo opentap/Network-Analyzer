@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Gain Compression Converters Channel", Groups: new[] { "PNA-X", "Converters", "Gain Compression Converters" }, Description: "Gain Compression for Amplifiers GCA (Opt S9x086A 086)")]
-    public class GainCompressionChannel : ConverterChannelBase
+    public class GainCompressionChannel : ConverterChannelBaseStep
     {
         #region Settings
         #endregion
@@ -54,7 +54,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
+            PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
             PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");

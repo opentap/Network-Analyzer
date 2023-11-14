@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Scalar Mixer/Converter + Phase Channel", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalarMixerChannel : ConverterChannelBase
+    public class ScalarMixerChannel : ConverterChannelBaseStep
     {
         #region Settings
         private ScalerMixerSweepType _sweepType { get; set; }
@@ -74,7 +74,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
+            PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
             PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_SC21_1\',\'Scalar Mixer/Converter\',\'SC21\'");

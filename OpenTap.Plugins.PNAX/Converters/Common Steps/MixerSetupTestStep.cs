@@ -23,40 +23,44 @@ namespace OpenTap.Plugins.PNAX
         Custom
     }
 
+    public enum ScalerMixerSweepType
+    {
+        [Scpi("LINear")]
+        [Display("Linear Frequency", Order: 1)]
+        LinearFrequency = StandardSweepTypeEnum.LinearFrequency,
+        [Scpi("CW")]
+        [Display("CW Time", Order: 2)]
+        CWTime = StandardSweepTypeEnum.CWTime,
+        [Scpi("SEGMent")]
+        [Display("Segment Sweep", Order: 3)]
+        SegmentSweep = StandardSweepTypeEnum.SegmentSweep,
+        [Scpi("POWer")]
+        [Display("Power", Order: 4)]
+        Power = StandardSweepTypeEnum.PowerSweep
+    }
+
+    public enum ScalerMixerPhasePoint
+    {
+        [Display("Normalize First Point")]
+        FirstPoint,
+        [Display("Normalize Middle Point")]
+        MiddlePoint,
+        [Display("Normalize Last Point")]
+        LastPoint,
+        [Display("Specify Normalization Point")]
+        SpecifyPoint,
+        [Display("Use Absolute Phase (requires internal source as LO)")]
+        AbsolutePhase
+    }
+
     [AllowAsChildIn(typeof(GainCompressionChannel))]
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Setup", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert description here", Order: 1)]
-    public class MixerSetupTestStep : ConverterBaseStep
+    public class MixerSetupTestStep : PNABaseStep
     {
         #region Settings
-        private ConverterStagesEnum _ConverterStagesEnum;
-        [Display("Converter Stages", Order: 10)]
-        public override ConverterStagesEnum ConverterStages
-        {
-            get
-            {
-                return _ConverterStagesEnum;
-            }
-            set
-            {
-                _ConverterStagesEnum = value;
-                DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
-                try
-                {
-                    var a = GetParent<ConverterChannelBase>();
-                    if (a != null)
-                    {
-                        a.ConverterStages = value;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug("can't find parent yet! ex: " + ex.Message);
-                }
-            }
-        }
 
         [Display("Port", Group: "Input Port", Order: 30)]
         public PortsEnum PortInput { get; set;}
@@ -74,7 +78,7 @@ namespace OpenTap.Plugins.PNAX
                 _portLO1 = value;
                 try
                 {
-                    var a = GetParent<ConverterChannelBase>();
+                    var a = GetParent<ConverterChannelBaseStep>();
                     // only if there is a parent of type SweptIMDChannel
                     if (a != null)
                     {
@@ -100,7 +104,7 @@ namespace OpenTap.Plugins.PNAX
                 _portLO2 = value;
                 try
                 {
-                    var a = GetParent<ConverterChannelBase>();
+                    var a = GetParent<ConverterChannelBaseStep>();
                     // only if there is a parent of type SweptIMDChannel
                     if (a != null)
                     {
@@ -218,8 +222,8 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerSetupTestStep()
         {
-            IsChildEditable = true;
             IsConverterEditable = true;
+            IsConverter = true;
             UpdateDefaultValues();
             // TODO
             // Add rule to indicate PortInput has to be different than PortOutput
@@ -320,6 +324,23 @@ namespace OpenTap.Plugins.PNAX
             retVal.Add(("Output Port", PortOutput));
 
             return retVal;
+        }
+
+
+        protected override void UpdateChanelConverterStage()
+        {
+            try
+            {
+                var a = GetParent<ConverterChannelBaseStep>();
+                if (a != null)
+                {
+                    a.ConverterStages = ConverterStages;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("can't find parent yet! ex: " + ex.Message);
+            }
         }
     }
 }

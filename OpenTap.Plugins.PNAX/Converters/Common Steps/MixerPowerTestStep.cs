@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Power", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert a description here", Order: 2)]
-    public class MixerPowerTestStep : ConverterBaseStep
+    public class MixerPowerTestStep : PNABaseStep
     {
         #region Settings
         [Browsable(false)]
@@ -163,6 +163,7 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerPowerTestStep()
         {
+            IsConverter = true;
             UpdateDefaultValues();
         }
 
@@ -239,7 +240,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>();
 
             retVal.Add(("Power On All Channels", PowerOnAllChannels));
             retVal.Add(("LO1 Power", LO1Power));

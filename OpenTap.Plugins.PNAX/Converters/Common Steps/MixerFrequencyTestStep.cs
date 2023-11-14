@@ -34,7 +34,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Frequency", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert a description here", Order: 3)]
-    public class MixerFrequencyTestStep : ConverterBaseStep
+    public class MixerFrequencyTestStep : PNABaseStep
     {
         #region Settings
 
@@ -713,6 +713,7 @@ namespace OpenTap.Plugins.PNAX
 
         public MixerFrequencyTestStep()
         {
+            IsConverter = true;
             UpdateDefaultValues();
         }
 
@@ -1107,7 +1108,7 @@ namespace OpenTap.Plugins.PNAX
             #endregion
         }
 
-        private List<(String, object)> retVal = new List<(string, object)>();
+        private List<(string, object)> retVal = new List<(string, object)>();
 
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()

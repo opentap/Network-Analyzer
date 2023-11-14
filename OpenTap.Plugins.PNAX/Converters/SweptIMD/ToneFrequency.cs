@@ -113,7 +113,7 @@ namespace OpenTap.Plugins.PNAX
         {
             try
             {
-                var a = GetParent<ConverterChannelBase>();
+                var a = GetParent<ConverterChannelBaseStep>();
                 // only if there is a parent of type ScalarMixerChannel
                 if (a != null)
                 {

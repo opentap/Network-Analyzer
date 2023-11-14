@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Noise Figure Converters Channel", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
-    public class NoiseFigureChannel : ConverterChannelBase
+    public class NoiseFigureChannel : ConverterChannelBaseStep
     {
         #region Settings
         #endregion
@@ -52,10 +52,10 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
+            PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_NF_1\',\'Noise Figure Converters\',\'NF\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_NF_1\',\'Noise Figure Converters\',\'NF\'");
 
             RunChildSteps(); //If the step supports child steps.
 

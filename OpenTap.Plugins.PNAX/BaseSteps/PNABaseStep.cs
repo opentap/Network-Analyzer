@@ -65,15 +65,28 @@ namespace OpenTap.Plugins.PNAX
         public bool IsConverter { get; set; } = false;
         [Browsable(false)]
         public bool IsConverterEditable { get; set; } = false;
+        private ConverterStagesEnum _ConverterStagesEnum;
         [EnabledIf("IsConverter", true, HideIfDisabled = true)]
         [EnabledIf("IsConverterEditable", true, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 0.12)]
-        public virtual ConverterStagesEnum ConverterStages { get; set; }
+        public ConverterStagesEnum ConverterStages
+        {
+            get { return _ConverterStagesEnum; }
+            set
+            {
+                _ConverterStagesEnum = value;
+                DoubleStage = _ConverterStagesEnum == ConverterStagesEnum._2;
+                UpdateChanelConverterStage();
+                UpdateChildStepConverterStage();
+            }
+        }
+        [Browsable(false)]
+        public bool DoubleStage { get; set; }
 
         [Output]
         [Browsable(false)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
-        public List<(string, object)> MetaData { get; private set; }
+        public List<(string, object)> MetaData { get; set; }
         #endregion
 
         public PNABaseStep()
@@ -109,6 +122,24 @@ namespace OpenTap.Plugins.PNAX
                 foreach (var it in ret)
                 {
                     MetaData.Add(it);
+                }
+            }
+        }
+
+        protected virtual void UpdateChanelConverterStage()
+        {
+        }
+
+        private void UpdateChildStepConverterStage()
+        {
+            foreach (var step in this.ChildTestSteps)
+            {
+                if (step.GetType().IsSubclassOf(typeof(PNABaseStep)))
+                {
+                    if (step.GetType().Equals(typeof(MixerSetupTestStep)))
+                        continue;
+
+                    (step as PNABaseStep).ConverterStages = _ConverterStagesEnum;
                 }
             }
         }

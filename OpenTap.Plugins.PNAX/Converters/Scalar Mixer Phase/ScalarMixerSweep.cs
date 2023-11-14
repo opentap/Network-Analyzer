@@ -17,12 +17,12 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Scalar Mixer Sweep", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalarMixerSweep : MixerSweepBaseStep
+    public class ScalarMixerSweep : PNABaseStep
     {
         #region Settings
         private ScalerMixerSweepType _sweepType;
         [Display("Sweep Type", Order: 21)]
-        public override ScalerMixerSweepType SweepType
+        public ScalerMixerSweepType SweepType
         {
             get { return _sweepType; }
             set
@@ -51,8 +51,50 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        [Display("X-Axis Point Spacing", Order: 22)]
+        public bool IsXAxisPointSpacing { get; set; }
+
+        [Display("Avoid Spurs", Order: 23)]
+        public bool IsAvoidSpurs { get; set; }
+
+
+
         [Display("Reversed Port 2 Coupler", Order: 24)]
         public bool IsReversedPortTwoCoupler { get; set; }
+
+        private int _numberOfPoints;
+        [EnabledIf("SweepType", ScalerMixerSweepType.LinearFrequency, ScalerMixerSweepType.CWTime, ScalerMixerSweepType.Power)]
+        [Display("Number Of Points", Order: 25)]
+        public int NumberOfPoints
+        {
+            get
+            {
+                if (SweepType == ScalerMixerSweepType.SegmentSweep)
+                    return 21;
+                else
+                    return _numberOfPoints;
+            }
+            set
+            {
+                _numberOfPoints = value;
+
+                // Update Points on Parent step
+                try
+                {
+                    var a = GetParent<ConverterChannelBaseStep>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.SweepPoints = _numberOfPoints;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
+            }
+        }
 
         [Display("IF Bandwidth", Order: 26)]
         [Unit("Hz", UseEngineeringPrefix: true)]

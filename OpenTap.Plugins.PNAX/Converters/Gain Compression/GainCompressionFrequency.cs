@@ -34,6 +34,36 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Data Acquisition Mode", Order: 2)]
         public DataAcquisitionModeEnum DataAcquisitionMode { get; set; }
+
+        private int _SweepSettingsNumberOfPoints;
+        [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
+        public override int SweepSettingsNumberOfPoints
+        {
+            get
+            {
+                return _SweepSettingsNumberOfPoints;
+            }
+            set
+            {
+                _SweepSettingsNumberOfPoints = value;
+                // Update Points on Parent step
+                try
+                {
+                    var a = GetParent<ConverterChannelBaseStep>();
+                    // only if there is a parent of type ScalarMixerChannel
+                    if (a != null)
+                    {
+                        a.SweepPoints = _SweepSettingsNumberOfPoints;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("can't find parent yet! ex: " + ex.Message);
+                }
+
+            }
+        }
+
         #endregion
 
         public GainCompressionFrequency()

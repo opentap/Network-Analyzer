@@ -12,28 +12,6 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
 
-        private ConverterStagesEnum _ConverterStagesEnum;
-        [EnabledIf("IsConverter", true, HideIfDisabled = false)]
-        [Display("Converter Stages", Order: 10)]
-        public override ConverterStagesEnum ConverterStages
-        {
-            get
-            {
-                return _ConverterStagesEnum;
-            }
-            set
-            {
-                _ConverterStagesEnum = value;
-                foreach (var step in this.ChildTestSteps)
-                {
-                    if (step.GetType().IsSubclassOf(typeof(SingleTraceBaseStep)))
-                    {
-                        (step as SingleTraceBaseStep).ConverterStages = value;
-                    }
-                }
-            }
-        }
-
         [Browsable(false)]
         public bool EnableButton { get; set; } = true;
 
