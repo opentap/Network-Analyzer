@@ -106,22 +106,11 @@ namespace OpenTap.Plugins.PNAX
             {
                 _SweepFcNumberOfPoints = value;
                 // Update Points on Parent step
-                try
-                {
-                    var a = GetParent<ConverterChannelBase>();
-                    // only if there is a parent of type ScalarMixerChannel
-                    if (a != null)
-                    {
-                        a.SweepPoints = _SweepFcNumberOfPoints;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug("can't find parent yet! ex: " + ex.Message);
-                }
+                UpdateMixerSweepPoints();
 
             }
         }
+
 
         [Display("Main Tone IFBW", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 41)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -223,6 +212,10 @@ namespace OpenTap.Plugins.PNAX
         }
 
         protected virtual void SetSegmentValues()
+        {
+        }
+
+        protected virtual void UpdateMixerSweepPoints()
         {
         }
 

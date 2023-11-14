@@ -99,6 +99,7 @@ namespace OpenTap.Plugins.PNAX
         {
             IsSweepPointsEnabled = true;
             IsSegmentEnabled = false;
+            IsConverter = true;
         }
 
         protected override void UpdateTypeAndNotation()
@@ -106,6 +107,23 @@ namespace OpenTap.Plugins.PNAX
             var DefaultValues = PNAX.GetToneFrequencyDefaultValues();
             ToneFrequencySweepType = DefaultValues.ToneFrequencySweepType;
             XAxisDisplayAnnotation = DefaultValues.XAxisDisplayAnnotation;
+        }
+
+        protected override void UpdateMixerSweepPoints()
+        {
+            try
+            {
+                var a = GetParent<ConverterChannelBase>();
+                // only if there is a parent of type ScalarMixerChannel
+                if (a != null)
+                {
+                    a.SweepPoints = SweepFcNumberOfPoints;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("can't find parent yet! ex: " + ex.Message);
+            }
         }
 
     }
