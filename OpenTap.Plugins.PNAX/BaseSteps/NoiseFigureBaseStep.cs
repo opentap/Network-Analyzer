@@ -208,9 +208,36 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.SetNFNoiseReceiver(Channel, NoiseReceiver);
-            PNAX.SetNFAverage(Channel, AverageNumber);
-            PNAX.SetNFNoiseAverage(Channel, IsAverageOn);
+            SetNoiseAverage();
+            SetNoiseBandWidth();
+
+            SetTempAndOtherSettings();
+
+            SetCustomerTuner();
+
+            UpgradeVerdict(Verdict.Pass);
+        }
+
+        protected virtual void SetTempAndOtherSettings()
+        {
+            PNAX.SetNFTemperature(Channel, SourceTemperature);
+            PNAX.SetNFUse302K(Channel, Use302K);
+
+            PNAX.SetNFMaxImpedanceStates(Channel, MaxImpedanceStates);
+            PNAX.SetNFEnableSourcePulling(Channel, EnableSourcePulling);
+        }
+
+        protected virtual void SetCustomerTuner()
+        {
+            if (!NoiseTunerFile.Equals(""))
+            {
+                PNAX.SetNFEnableCustomNoiseTuner(Channel, true);
+                PNAX.SetNFCustomNoiseTunerFile(Channel, NoiseTunerFile);
+            }
+        }
+
+        protected virtual void SetNoiseBandWidth()
+        {
             PNAX.SetNFNarrowbandNoiseFigureCompensation(Channel, UseNarrowbandCompensation);
 
             if (NoiseReceiver == NoiseReceiver.NoiseReceiver)
@@ -226,20 +253,13 @@ namespace OpenTap.Plugins.PNAX
             {
                 throw new Exception("Unknown Noise Receiver mode!");
             }
+        }
 
-            PNAX.SetNFTemperature(Channel, SourceTemperature);
-            PNAX.SetNFUse302K(Channel, Use302K);
-
-            PNAX.SetNFMaxImpedanceStates(Channel, MaxImpedanceStates);
-            PNAX.SetNFEnableSourcePulling(Channel, EnableSourcePulling);
-
-            if (!NoiseTunerFile.Equals(""))
-            {
-                PNAX.SetNFEnableCustomNoiseTuner(Channel, true);
-                PNAX.SetNFCustomNoiseTunerFile(Channel, NoiseTunerFile);
-            }
-
-            UpgradeVerdict(Verdict.Pass);
+        protected virtual void SetNoiseAverage()
+        {
+            PNAX.SetNFNoiseReceiver(Channel, NoiseReceiver);
+            PNAX.SetNFAverage(Channel, AverageNumber);
+            PNAX.SetNFNoiseAverage(Channel, IsAverageOn);
         }
     }
 }

@@ -166,44 +166,64 @@ namespace OpenTap.Plugins.PNAX
             SetSweepType();
             if (IsSweepFCEnabled)
             {
-                if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
-                {
-                    PNAX.SetIMDSweepSettingsStartfc(Channel, SweepFcStartFc);
-                    PNAX.SetIMDSweepSettingsStopfc(Channel, SweepFcStopFc);
-                }
-                else
-                {
-                    PNAX.SetIMDSweepSettingsCenterfc(Channel, SweepFcCenterFc);
-                    PNAX.SetIMDSweepSettingsSpanfc(Channel, SweepFcSpanFc);
-                }
-                PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, SweepFcFixedDeltaF);
-                PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
+                SetSweepFC();
             }
             else if (IsSweepDeltaFEnabled)
             {
-                PNAX.SetIMDSweepSettingsStartDeltaF(Channel, SweepDeltaFStartDeltaF);
-                PNAX.SetIMDSweepSettingsStopDeltaF(Channel, SweepDeltaFStopDeltaF);
-                PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, SweepDeltaFFixedFc);
-                PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
+                SetSweepDeltaF();
             }
             else if (IsPowerSweepEnabled)
             {
-                PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
-                PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);
-                PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, PowerSweepCWFc);
-                PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
-                PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
+                SetPowerSweep();
             }
             else if (IsSegmentEnabled)
             {
                 SetSegmentValues();
             }
 
+            SetSweepTone();
+
+            UpgradeVerdict(Verdict.Pass);
+        }
+
+        protected virtual void SetSweepTone()
+        {
             PNAX.SetIMDSweepSettingsMainToneIFBW(Channel, SweepFcMixedToneIFBW);
             PNAX.SetIMDSweepSettingsIMToneIFBW(Channel, SweepFcIMToneIFBW);
             PNAX.SetLFAutoBW(Channel, SweepFcReduceIFBW);
+        }
 
-            UpgradeVerdict(Verdict.Pass);
+        protected virtual void SetPowerSweep()
+        {
+            PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
+            PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);
+            PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, PowerSweepCWFc);
+            PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
+            PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
+        }
+
+        protected virtual void SetSweepDeltaF()
+        {
+            PNAX.SetIMDSweepSettingsStartDeltaF(Channel, SweepDeltaFStartDeltaF);
+            PNAX.SetIMDSweepSettingsStopDeltaF(Channel, SweepDeltaFStopDeltaF);
+            PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, SweepDeltaFFixedFc);
+            PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
+        }
+
+        protected virtual void SetSweepFC()
+        {
+            if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+            {
+                PNAX.SetIMDSweepSettingsStartfc(Channel, SweepFcStartFc);
+                PNAX.SetIMDSweepSettingsStopfc(Channel, SweepFcStopFc);
+            }
+            else
+            {
+                PNAX.SetIMDSweepSettingsCenterfc(Channel, SweepFcCenterFc);
+                PNAX.SetIMDSweepSettingsSpanfc(Channel, SweepFcSpanFc);
+            }
+            PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, SweepFcFixedDeltaF);
+            PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
         }
 
         protected virtual void SetSweepType()

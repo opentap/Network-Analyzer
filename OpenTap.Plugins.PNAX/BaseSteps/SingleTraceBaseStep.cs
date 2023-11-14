@@ -141,7 +141,6 @@ namespace OpenTap.Plugins.PNAX
             tnum = _tnum;
             mnum = _mnum;
             MeasName = _MeasName;
-            UpgradeVerdict(Verdict.Pass);
         }
 
     }
