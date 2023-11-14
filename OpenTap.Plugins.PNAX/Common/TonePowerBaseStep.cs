@@ -43,7 +43,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [Browsable(false)]
-    public class TonePowerBase : PNABaseStep
+    public class TonePowerBaseStep : PNABaseStep
     {
         #region Settings
         [Browsable(false)]
@@ -160,7 +160,7 @@ namespace OpenTap.Plugins.PNAX
         public double StopF2Power { get; set; }
         #endregion
 
-        public TonePowerBase()
+        public TonePowerBaseStep()
         {
             // ToDo: Set default values for properties / settings.
             PowerOnAllChannels = true;
