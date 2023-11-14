@@ -51,6 +51,7 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
+
         public GeneralBaseStep()
         {
             SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
