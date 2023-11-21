@@ -172,6 +172,11 @@ namespace OpenTap.Plugins.PNAX
             SweepPropertiesPower = defaultValues.Power;
             SweepPropertiesPoints = defaultValues.Points;
             SweepPropertiesIFBandwidth = defaultValues.IFBandWidth;
+
+            SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
+            SegmentDefinitions = new List<SegmentDefinition>();
+            SegmentDefinitions.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            ShowTable = false;
         }
 
         [Browsable(false)]
@@ -229,7 +234,6 @@ namespace OpenTap.Plugins.PNAX
             switch (StandardSweepType)
             {
                 case StandardSweepTypeEnum.LinearFrequency:
-                    break;
                 case StandardSweepTypeEnum.LogFrequency:
                     PNAX.SetStart(Channel, SweepPropertiesStart);
                     PNAX.SetStop(Channel, SweepPropertiesStop);

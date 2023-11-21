@@ -238,7 +238,7 @@ namespace OpenTap.Plugins.PNAX
                 ListOfTracesInWindow = ListOfTracesInWindow.Replace("\n", "");
                 string[] listTraces = ListOfTracesInWindow.Split(',');
 
-                if (listTraces[0].Equals("\"NO CATALOG\""))
+                if (listTraces[0].Equals("\"NO CATALOG\"") || listTraces[0].Equals("\"EMPTY\""))
                 {
                     // channel does not have any traces
                     TraceCount = 1;
