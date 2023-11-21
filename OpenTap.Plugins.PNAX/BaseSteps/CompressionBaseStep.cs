@@ -184,7 +184,6 @@ namespace OpenTap.Plugins.PNAX
         private void SetCompressionEnding()
         {
             PNAX.Set2DSweepCompressionPointInterpolation(Channel, CompressionPointInterpolation);
-
             PNAX.SetCompressionEndOfSweepCondition(Channel, EndOfSweepCondition);
             PNAX.SetCompressionSettlingTime(Channel, SettlingTime);
         }

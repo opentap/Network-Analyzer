@@ -118,13 +118,6 @@ namespace OpenTap.Plugins.PNAX
             OutputPowerSweepStopPower = DefaultValues.OutputPowerSweepStopPower;
         }
 
-        public override void Run()
-        {
-            RunChildSteps(); //If the step supports child steps.
-
-            UpgradeVerdict(Verdict.Pass);
-        }
-
         protected override void SetPort()
         {
             PNAX.SetSMCPortInputOutput(Channel, PortInput, PortOutput);
