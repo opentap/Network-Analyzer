@@ -208,7 +208,6 @@ namespace OpenTap.Plugins.PNAX
             switch (CompressionMethod)
             {
                 case CompressionMethodEnum.CompressionFromLinearGain:
-                    break;
                 case CompressionMethodEnum.CompressionFromMaxGain:
                     PNAX.SetCompressionLevel(Channel, CompressionLevel);
                     break;
