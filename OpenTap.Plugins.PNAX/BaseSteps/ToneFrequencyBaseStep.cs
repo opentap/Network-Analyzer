@@ -171,7 +171,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 SetSweepDeltaF();
             }
-            else if (IsPowerSweepEnabled)
+            else if (IsPowerSweepEnabled)   // Power Sweep, CW, LoPowerSweep
             {
                 SetPowerSweep();
             }

@@ -63,5 +63,16 @@ namespace OpenTap.Plugins.PNAX
             SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
 
         }
+
+        protected override void SetSweepType()
+        {
+            PNAX.SetSweepType(Channel, SweepType);
+        }
+
+        protected override void SetMode()
+        {
+            // Noise Frequency does not set Mode, only Gain Compression Frequency, which also derives from same base class
+
+        }
     }
 }

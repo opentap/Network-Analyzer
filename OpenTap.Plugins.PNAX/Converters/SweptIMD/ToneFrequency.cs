@@ -126,5 +126,9 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        protected override void SetSweepType()
+        {
+            PNAX.SetIMDSweepType(Channel, ToneFrequencySweepType);
+        }
     }
 }

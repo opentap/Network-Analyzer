@@ -180,11 +180,13 @@ namespace OpenTap.Plugins.PNAX
             SetIMDLevelingMode();
             if (IsPowerSweep)
             {
-                SetIMDFixedPower();
+                // Power Sweep uses Start and Stop
+                SetIMDStartStopPower();
             }
             else
             {
-                SetIMDStartStopPower();
+                // All power sweeps use Fixed f1 and f2
+                SetIMDFixedPower();
             }
             UpgradeVerdict(Verdict.Pass);
         }
