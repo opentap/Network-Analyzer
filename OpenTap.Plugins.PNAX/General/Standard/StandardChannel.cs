@@ -14,13 +14,14 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Standard Channel", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class StandardChannel : GeneralChannelBaseStep
+    public class StandardChannel : PNABaseStep
     {
         #region Settings
         #endregion
 
         public StandardChannel()
         {
+            IsControlledByParent = false;
             Channel = 1;
 
             // Sweep Type
@@ -86,10 +87,10 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
+            PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_1\',\'Standard\',\'S11\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Standard\',\'S11\'");
 
             RunChildSteps(); //If the step supports child steps.
 

@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Data", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SAData : GeneralBaseStep
+    public class SAData : PNABaseStep
     {
         #region Settings
 
@@ -42,14 +42,14 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Display("Erase files each new sweep", Groups: new[] { "Export" }, Order: 35)]
         public bool EraseFilesState { get; set; }
         [Display("File name prefix", Groups: new[] { "Export" }, Order: 36)]
-        public String FileName { get; set; }
+        public string FileName { get; set; }
 
         [Display("Export to FIFO buffer", Groups: new[] { "Export" }, Order: 40)]
         public bool ExportFifoState { get; set; }
         [Display("Export to shared memory", Groups: new[] { "Export" }, Order: 41)]
         public bool ExportToSharedMemoryState { get; set; }
         [Display("Share name", Groups: new[] { "Export" }, Order: 42)]
-        public String ShareName { get; set; }
+        public string ShareName { get; set; }
 
         [Display("Export IQ data to binary file", Groups: new[] { "Export IQ data" }, Order: 50)]
         public bool ExportIQToBinaryState { get; set; }
@@ -83,7 +83,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>();
 
             return retVal;
         }
@@ -97,6 +97,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             }
             return retVal;
         }
+
         public override void Run()
         {
             PNAX.SADataType(Channel, DataFormat);

@@ -66,13 +66,13 @@ namespace OpenTap.Plugins.PNAX
                         var FullTraceName = results[0];
                         results.RemoveAt(0);
 
-                        List<List<String>> xResult = new List<List<string>>();
-                        List<List<String>> yResult = new List<List<String>>();
-                        List<List<String>> pf = new List<List<String>>();
-                        List<List<String>> x1 = new List<List<String>>();
-                        List<List<String>> x2 = new List<List<String>>();
-                        List<List<String>> x3 = new List<List<String>>();
-                        List<List<String>> x4 = new List<List<String>>();
+                        List<List<string>> xResult = new List<List<string>>();
+                        List<List<string>> yResult = new List<List<string>>();
+                        List<List<string>> pf = new List<List<string>>();
+                        List<List<string>> x1 = new List<List<string>>();
+                        List<List<string>> x2 = new List<List<string>>();
+                        List<List<string>> x3 = new List<List<string>>();
+                        List<List<string>> x4 = new List<List<string>>();
 
                         xResult = results.Where((item, index) => ((index == 0) || ((index >= 7) && (index % 7 == 0)))).ToList();
                         yResult = results.Where((item, index) => ((index == 1) || ((index >= 8) && (index % 7 == 1)))).ToList();
@@ -145,7 +145,7 @@ namespace OpenTap.Plugins.PNAX
                                 }
 
                                 // append pf
-                                List<String> pfByRow = new List<string>();
+                                List<string> pfByRow = new List<string>();
                                 var arraypf = x2[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();
                                 foreach (var item in arraypf)
                                 {

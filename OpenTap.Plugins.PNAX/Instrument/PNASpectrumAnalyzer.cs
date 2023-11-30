@@ -148,26 +148,14 @@ namespace OpenTap.Plugins.PNAX
 
         public bool GetSAResolutionBandwidthAuto(int Channel)
         {
-            bool retVal = false;
             int retInt = ScpiQuery<int>($"SENSe{ Channel }:SA:BANDwidth:RESolution:AUTO?");
-            if (retInt == 1)
-            {
-                retVal = true;
-            }
-
-            return retVal;
+            return retInt == 1;
         }
 
         public void SetSAResolutionBandwidthAuto(int Channel, bool auto)
         {
-            if (auto == true)
-            {
-                ScpiCommand($"SENSe{ Channel }:SA:BANDwidth:RESolution:AUTO 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SA:BANDwidth:RESolution:AUTO 0");
-            }
+            string stateValue = auto ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:SA:BANDwidth:RESolution:AUTO {stateValue}");
         }
 
         public double GetSAVideoBandwidth(int Channel)
@@ -182,33 +170,21 @@ namespace OpenTap.Plugins.PNAX
 
         public bool GetSAVideoBandwidthAuto(int Channel)
         {
-            bool retVal = false;
             int retInt = ScpiQuery<int>($"SENSe{ Channel }:SA:BANDwidth:VIDeo:AUTO?");
-            if (retInt == 1)
-            {
-                retVal = true;
-            }
-
-            return retVal;
+            return (retInt == 1);
         }
 
         public void SetSAVideoBandwidthAuto(int Channel, bool auto)
         {
-            if (auto == true)
-            {
-                ScpiCommand($"SENSe{ Channel }:SA:BANDwidth:VIDeo:AUTO 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SA:BANDwidth:VIDeo:AUTO 0");
-            }
+            string stateValue = auto ?"1" : "0";
+            ScpiCommand($"SENSe{Channel}:SA:BANDwidth:VIDeo:AUTO {stateValue}");
         }
 
         public SADetectorTypeEnum GetSADetectorType(int Channel)
         {
             SADetectorTypeEnum retVal = SADetectorTypeEnum.Peak;
 
-            String retStr = ScpiQuery($"SENSe{ Channel }:SA:DETector:FUNCtion?");
+            string retStr = ScpiQuery($"SENSe{ Channel }:SA:DETector:FUNCtion?");
 
             if (retStr.Equals("PEAK"))
             {
@@ -254,26 +230,14 @@ namespace OpenTap.Plugins.PNAX
 
         public bool GetSADetectorBypass(int Channel)
         {
-            bool retVal = false;
             int retInt = ScpiQuery<int>($"SENSe{ Channel }:SA:DETector:BYPass:STATe?");
-            if (retInt == 1)
-            {
-                retVal = true;
-            }
-
-            return retVal;
+            return retInt == 1;
         }
 
         public void SetSADetectorBypass(int Channel, bool bypass)
         {
-            if (bypass == true)
-            {
-                ScpiCommand($"SENSe{ Channel }:SA:DETector:BYPass:STATe 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{ Channel }:SA:DETector:BYPass:STATe 0");
-            }
+            string stateValue = bypass ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:SA:DETector:BYPass:STATe {stateValue}");
         }
 
         //
@@ -281,15 +245,11 @@ namespace OpenTap.Plugins.PNAX
         {
             SAVideoAverageTypeEnum retVal = SAVideoAverageTypeEnum.Power;
 
-            String retStr = ScpiQuery($"SENSe{ Channel }:SA:BANDwidth:VIDeo:AVER:TYPE?");
+            string retStr = ScpiQuery($"SENSe{ Channel }:SA:BANDwidth:VIDeo:AVER:TYPE?");
 
             if (retStr.Equals("VOLT"))
             {
                 retVal = SAVideoAverageTypeEnum.Voltage;
-            }
-            else if (retStr.Equals("POW"))
-            {
-                retVal = SAVideoAverageTypeEnum.Power;
             }
             else if (retStr.Equals("LOG"))
             {
@@ -339,56 +299,56 @@ namespace OpenTap.Plugins.PNAX
 
         #region SA Source
 
-        public SAOnOffTypeEnum GetSASourcePowerMode(int Channel, String port)
+        public SAOnOffTypeEnum GetSASourcePowerMode(int Channel, string port)
         {
             SAOnOffTypeEnum retVal = ScpiQuery<SAOnOffTypeEnum>($"SOURce{Channel}:POWer:MODE? \"{port}\"");
             return retVal;
         }
 
-        public void SetSASourcePowerMode(int Channel, String port, SAOnOffTypeEnum state)
+        public void SetSASourcePowerMode(int Channel, string port, SAOnOffTypeEnum state)
         {
             string scpi = Scpi.Format("{0}", state);
             SetSourcePowerMode(Channel, port, scpi);
         }
 
-        public SASourceSweepTypeEnum GetSASweepType(int Channel, String src)
+        public SASourceSweepTypeEnum GetSASweepType(int Channel, string src)
         {
             SASourceSweepTypeEnum retVal = ScpiQuery<SASourceSweepTypeEnum>($"SENSe{ Channel }:SA:SOURce:SWEep:TYPE? \"{src}\"");
             return retVal;
         }
 
-        public void SetSASweepType(int Channel, String src, SASourceSweepTypeEnum saSourceSweepType)
+        public void SetSASweepType(int Channel, string src, SASourceSweepTypeEnum saSourceSweepType)
         {
             string scpi = Scpi.Format("{0}", saSourceSweepType);
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:SWEep:TYPE {scpi},\"{src}\"");
         }
 
-        public double GetSAFrequencyStart(int Channel, String src)
+        public double GetSAFrequencyStart(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:FREQuency:STARt? \"{src}\"");
         }
 
-        public void SetSAFrequencyStart(int Channel, String src, double freq)
+        public void SetSAFrequencyStart(int Channel, string src, double freq)
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:FREQuency:STARt { freq },\"{src}\"");
         }
 
-        public double GetSAFrequencyStop(int Channel, String src)
+        public double GetSAFrequencyStop(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:FREQuency:STOP? \"{src}\""); ;
         }
 
-        public void SetSAFrequencyStop(int Channel, String src, double freq)
+        public void SetSAFrequencyStop(int Channel, string src, double freq)
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:FREQuency:STOP { freq },\"{src}\"");
         }
 
-        public double GetSAFrequencyCW(int Channel, String src)
+        public double GetSAFrequencyCW(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:FREQuency:CW? \"{src}\"");
         }
 
-        public void SetSAFrequencyCW(int Channel, String src, double freq)
+        public void SetSAFrequencyCW(int Channel, string src, double freq)
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:FREQuency:CW { freq },\"{src}\"");
         }
@@ -414,34 +374,32 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
-
-
-        public double GetSAPowerStart(int Channel, String src)
+        public double GetSAPowerStart(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STARt? \"{src}\"");
         }
 
-        public void SetSAPowerStart(int Channel, String src, double freq)
+        public void SetSAPowerStart(int Channel, string src, double freq)
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STARt { freq },\"{src}\"");
         }
 
-        public double GetSAPowerStop(int Channel, String src)
+        public double GetSAPowerStop(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:STOP? \"{src}\""); ;
         }
 
-        public void SetSAPowerStop(int Channel, String src, double freq)
+        public void SetSAPowerStop(int Channel, string src, double freq)
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:STOP { freq },\"{src}\"");
         }
 
-        public double GetSAPowerLevel(int Channel, String src)
+        public double GetSAPowerLevel(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{ Channel }:SA:SOURce:POWer:VALue? \"{src}\"");
         }
 
-        public void SetSAPowerLevel(int Channel, String src, double freq)
+        public void SetSAPowerLevel(int Channel, string src, double freq)
         {
             ScpiCommand($"SENSe{ Channel }:SA:SOURce:POWer:VALue { freq },\"{src}\"");
         }
@@ -467,34 +425,32 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
-
-
-        public double GetSAPhaseStart(int Channel, String src)
+        public double GetSAPhaseStart(int Channel, string src)
         {
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STARt? \"{src}\"");
         }
 
-        public void SetSAPhaseStart(int Channel, String src, double freq)
+        public void SetSAPhaseStart(int Channel, string src, double freq)
         {
             ScpiCommand($"SOURce{ Channel }:PHASe:STARt { freq },\"{src}\"");
         }
 
-        public double GetSAPhaseStop(int Channel, String src)
+        public double GetSAPhaseStop(int Channel, string src)
         {
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STOP? \"{src}\""); ;
         }
 
-        public void SetSAPhaseStop(int Channel, String src, double freq)
+        public void SetSAPhaseStop(int Channel, string src, double freq)
         {
             ScpiCommand($"SOURce{ Channel }:PHASe:STOP { freq },\"{src}\"");
         }
 
-        public double GetSAPhaseLevel(int Channel, String src)
+        public double GetSAPhaseLevel(int Channel, string src)
         {
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:FIXed? \"{src}\"");
         }
 
-        public void SetSAPhaseLevel(int Channel, String src, double freq)
+        public void SetSAPhaseLevel(int Channel, string src, double freq)
         {
             ScpiCommand($"SOURce{ Channel }:PHASe:FIXed { freq },\"{src}\"");
         }
@@ -515,7 +471,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:SA:DATA:TYPE { scpi }");
         }
 
-        public void SADataReceiversList(int Channel, String recList)
+        public void SADataReceiversList(int Channel, string recList)
         {
             ScpiCommand($"SENSe{ Channel }:SA:DATA:RECeivers:LIST \"{ recList }\"");
         }
@@ -567,7 +523,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:ERASe:STATe { scpi }");
         }
 
-        public void SADataFilePrefix(int Channel, String prefix)
+        public void SADataFilePrefix(int Channel, string prefix)
         {
             ScpiCommand($"SENSe{ Channel }:SA:DATA:FILE:PREFix \"{ prefix }\"");
         }
@@ -584,7 +540,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:SA:DATA:SHARed:STATe { scpi }");
         }
 
-        public void SADataSharedName(int Channel, String name)
+        public void SADataSharedName(int Channel, string name)
         {
             ScpiCommand($"SENSe{ Channel }:SA:DATA:SHARed:NAME \"{ name }\"");
         }

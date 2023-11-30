@@ -27,7 +27,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(StandardChannel))]
     [Display("Timing", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
-    public class Timing : GeneralBaseStep
+    public class Timing : PNABaseStep
     {
         #region Settings
         [EnabledIf("AutoSweepTime", false, HideIfDisabled = false)]
@@ -99,9 +99,10 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(("Auto Sweep Time", AutoSweepTime));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("Auto Sweep Time", AutoSweepTime)
+            };
             if (AutoSweepTime == false)
             {
                 retVal.Add(("Sweep Time", SweepTime));

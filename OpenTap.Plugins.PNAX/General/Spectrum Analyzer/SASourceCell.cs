@@ -15,11 +15,11 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [AllowAsChildIn(typeof(SASource))]
     [Display("SA Source Cell", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASourceCell : GeneralBaseStep
+    public class SASourceCell : PNABaseStep
     {
         #region Settings
         [Display("Name", Group: "Sweep Properties", Order: 20)]
-        public String CellName
+        public string CellName
         {
             get
             {
@@ -168,9 +168,10 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            retVal.Add(($"SA {CellName} Source Power Mode", SASourceSweepType));
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ($"SA {CellName} Source Power Mode", SASourceSweepType)
+            };
 
             switch (SASourceSweepType)
             {

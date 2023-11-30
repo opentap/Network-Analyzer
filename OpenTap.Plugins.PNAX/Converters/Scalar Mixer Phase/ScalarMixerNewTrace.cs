@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Scalar Mixer New Trace", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
-    public class ScalarMixerNewTrace : ConverterNewTraceBaseStep
+    public class ScalarMixerNewTrace : AddNewTraceBaseStep
     {
         #region Settings
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
@@ -25,34 +25,27 @@ namespace OpenTap.Plugins.PNAX
 
         public ScalarMixerNewTrace()
         {
-            ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = SMCTraceEnum.SC21});
+            Meas = SMCTraceEnum.SC21;
+            IsConverter = true;
+            AddNewTrace();
         }
 
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>();
 
             return retVal;
         }
 
-        public override void Run()
-        {
-            // Delete dummy trace defined during channel setup
-            // DISPlay:MEASure<mnum>:DELete?
-            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
-
-            RunChildSteps(); //If the step supports child steps.
-
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            UpgradeVerdict(Verdict.Pass);
-        }
-
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel });
+            ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+        }
+
+        protected override void DeleteDummyTrace()
+        {
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
         }
 
     }

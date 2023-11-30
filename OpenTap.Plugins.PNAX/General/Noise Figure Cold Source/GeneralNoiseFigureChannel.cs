@@ -14,20 +14,21 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Noise Figure Cold Source Channel", Groups: new[] { "PNA-X", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
-    public class GeneralNoiseFigureChannel : GeneralChannelBaseStep
+    public class GeneralNoiseFigureChannel : PNABaseStep
     {
         #region Settings
         #endregion
 
         public GeneralNoiseFigureChannel()
         {
+            IsControlledByParent = false;
+
             // NoiseFigure
             GeneralNoiseFigure noiseFigure = new GeneralNoiseFigure { IsControlledByParent = true, Channel = this.Channel };
             // Power
             GeneralNoiseFigurePower power = new GeneralNoiseFigurePower { IsControlledByParent = true, Channel = this.Channel };
             // Frequency
             GeneralNoiseFigureFrequency frequency = new GeneralNoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel };
-
             // Trace
             GeneralNoiseFigureNewTrace noiseFigureNewTrace = new GeneralNoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel };
 
@@ -42,17 +43,16 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
+            PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_NF_1\',\'Noise Figure Cold Source\',\'NF\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_NF_1\',\'Noise Figure Cold Source\',\'NF\'");
 
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
-            //UpdateMetaData();
         }
     }
 }

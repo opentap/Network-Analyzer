@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
     [AllowAsChildIn(typeof(SANewTrace))]
     [Display("SA Single Trace", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASingleTrace : GeneralSingleTraceBaseStep
+    public class SASingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private SATraceEnum _Meas;
@@ -50,57 +50,9 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             set
             {
                 _Meas = value;
-                UpdateTestName();
+                measEnumName = value.ToString();
+                UpdateTestStepName();
             }
-        }
-        #endregion
-
-        public SASingleTrace()
-        {
-            Trace = "1";
-            Meas = SATraceEnum.B;
-            //Class = TraceManagerChannelClassEnum.STD;
-            Window = 1;
-            Sheet = 1;
-            Channel = 1;
-        }
-
-        protected override void UpdateTestName()
-        {
-            this.Trace = $"CH{Channel.ToString()}_{Meas}";
-            this.Name = $"CH{Channel.ToString()}_{Meas}";
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
-        public override void AddTraceFormat()
-        {
-            this.ChildTestSteps.Add(new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
-        public override void AddTraceTitle()
-        {
-            this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
-        public override void AddMarker()
-        {
-            this.ChildTestSteps.Add(new Marker() { PNAX = this.PNAX, Channel = this.Channel, mkr = NextMarker() });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
-        public override void AddTraceLimits()
-        {
-            this.ChildTestSteps.Add(new TraceLimits() { PNAX = this.PNAX, Channel = this.Channel });
         }
 
         [Browsable(true)]
@@ -110,6 +62,13 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         {
             this.ChildTestSteps.Add(new MultiPeakSearch() { PNAX = this.PNAX, Channel = this.Channel });
         }
+        #endregion
+
+        public SASingleTrace()
+        {
+            Meas = SATraceEnum.B;
+            measClass = "Spectrum Analyzer";
+        }
 
         public override void PrePlanRun()
         {
@@ -117,7 +76,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             int _tnum = 0;
             int _mnum = 0;
-            String _MeasName = "";
+            string _MeasName = "";
 
             PNAX.AddNewTrace(Channel, Window, Trace, "Spectrum Analyzer", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
             tnum = _tnum;

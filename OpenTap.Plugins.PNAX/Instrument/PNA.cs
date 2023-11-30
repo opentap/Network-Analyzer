@@ -133,7 +133,7 @@ namespace OpenTap.Plugins.PNAX
             //    ScpiCommand("SYSTem:PREFerences:ITEM:EDEV:DPOLicy OFF");
             //    WaitForOperationComplete();
             //}
-            String[] IDNValues = IdnString.Split(',');
+            string[] IDNValues = IdnString.Split(',');
             if (IDNValues[1].StartsWith("N") && IDNValues[1].EndsWith("A"))
             {
                 // We have a PNA instrument from the A family i.e. N5235A
@@ -202,7 +202,7 @@ namespace OpenTap.Plugins.PNAX
             // Query Channel for list of measurements
             var ListOfMeas = ScpiQuery($"CALC{Channel}:PAR:CAT:EXT?");
             ListOfMeas = ListOfMeas.Replace("\n", "");
-            String[] list = ListOfMeas.Split(',');
+            string[] list = ListOfMeas.Split(',');
 
             if (list[0].Equals("\"NO CATALOG\""))
             {
@@ -236,9 +236,9 @@ namespace OpenTap.Plugins.PNAX
                 // now lets find trace count in this window
                 var ListOfTracesInWindow = ScpiQuery($"DISPlay:WINDow{Window}:CAT?");
                 ListOfTracesInWindow = ListOfTracesInWindow.Replace("\n", "");
-                String[] listTraces = ListOfTracesInWindow.Split(',');
+                string[] listTraces = ListOfTracesInWindow.Split(',');
 
-                if (listTraces[0].Equals("\"NO CATALOG\""))
+                if (listTraces[0].Equals("\"NO CATALOG\"") || listTraces[0].Equals("\"EMPTY\""))
                 {
                     // channel does not have any traces
                     TraceCount = 1;
@@ -271,7 +271,7 @@ namespace OpenTap.Plugins.PNAX
 
                 if (errors.Count > 0)
                 {
-                    String errorString = String.Join(",", errors.ToArray());
+                    string errorString = string.Join(",", errors.ToArray());
                     throw new Exception($"Error: {errorString} while sending command: {command}");
                 }
             }
@@ -279,7 +279,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override string ScpiQuery(string query, bool isSilent = false)
         {
-            String strRet = base.ScpiQuery(query, isSilent);
+            string strRet = base.ScpiQuery(query, isSilent);
             strRet = strRet.Replace("\n", "");
             return strRet;
         }
@@ -307,11 +307,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"INITiate{Channel}:IMMediate");
         }
 
-        public List<String> SourceCatalog(int Channel)
+        public List<string> SourceCatalog(int Channel)
         {
-            String retString = ScpiQuery($"SOURce{Channel}:CATalog?");
+            string retString = ScpiQuery($"SOURce{Channel}:CATalog?");
             retString = retString.Replace("\"", "");
-            List<String> retVal = retString.Split(',').ToList<String>();
+            List<string> retVal = retString.Split(',').ToList<string>();
             return retVal;
         }
     }

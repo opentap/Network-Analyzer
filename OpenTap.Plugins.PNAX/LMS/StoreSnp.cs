@@ -67,7 +67,7 @@ namespace OpenTap.Plugins.PNAX.LMS
             }
             else
             {
-                String assemblyDir = AssemblyDirectory();
+                string assemblyDir = AssemblyDirectory();
                 dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".s2p");
             }
 

@@ -18,264 +18,174 @@ namespace OpenTap.Plugins.PNAX
         #region Noise Figure
         public double GetNFBandwidth(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:NOISe:BWIDth?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:NOISe:BWIDth?");
         }
 
         public void SetNFBandwidth(int Channel, NoiseBandwidthNoise bw)
         {
-            String noise = Scpi.Format("{0}", bw);
+            string noise = Scpi.Format("{0}", bw);
             double dblNoise = double.Parse(noise);
             SetNFBandwidth(Channel, dblNoise);
         }
 
         public void SetNFBandwidth(int Channel, NoiseBandwidthNormal bw)
         {
-            String noise = Scpi.Format("{0}", bw);
+            string noise = Scpi.Format("{0}", bw);
             double dblNoise = double.Parse(noise);
             SetNFBandwidth(Channel, dblNoise);
         }
 
         public void SetNFBandwidth(int Channel, double bw)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:BWIDth {bw.ToString()}");
+            ScpiCommand($"SENSe{Channel}:NOISe:BWIDth {bw}");
         }
 
         public int GetNFAverage(int Channel)
         {
-            int retVal = 1;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:NOISe:AVERage?");
-            return retVal;
+            return ScpiQuery<int>($"SENSe{Channel}:NOISe:AVERage?");
         }
 
         public void SetNFAverage(int Channel, int avg)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:AVERage {avg.ToString()}");
+            ScpiCommand($"SENSe{Channel}:NOISe:AVERage {avg}");
         }
 
         public bool GetNFNoiseAverage(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:AVERage:STATe?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:NOISe:AVERage:STATe?");
+            return !retStr.Equals("0");
         }
 
         public void SetNFNoiseAverage(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:AVERage:STATe 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:AVERage:STATe 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:NOISe:AVERage:STATe {stateValue}");
         }
 
         public bool GetNFNarrowbandNoiseFigureCompensation(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:NARRowband:STATe?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:NOISe:NARRowband:STATe?");
+            return !retStr.Equals("0");
         }
 
         public void SetNFNarrowbandNoiseFigureCompensation(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:NARRowband:STATe 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:NARRowband:STATe 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:NOISe:NARRowband:STATe {stateValue}");
         }
-
         public NoiseReceiver GetNFNoiseReceiver(int Channel)
         {
-            NoiseReceiver retVal = NoiseReceiver.NoiseReceiver;
-            String retString = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:RECeiver?");
+            string retString = ScpiQuery($"SENSe{Channel}:NOISe:RECeiver?");
             if (retString.Equals("NORM"))
             {
-                retVal = NoiseReceiver.NAReceiver;
+                return NoiseReceiver.NAReceiver;
             }
             else if (retString.Equals("NOIS"))
             {
-                retVal = NoiseReceiver.NoiseReceiver;
+                return NoiseReceiver.NoiseReceiver;
             }
             else
             {
                 throw new Exception("Unknown Noise Receiver!");
             }
-            return retVal;
         }
 
         public void SetNFNoiseReceiver(int Channel, NoiseReceiver rec)
         {
-            String nr = Scpi.Format("{0}", rec);
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:RECeiver {nr}");
+            string nr = Scpi.Format("{0}", rec);
+            ScpiCommand($"SENSe{Channel}:NOISe:RECeiver {nr}");
         }
 
         public ReceiverGain GetNFReceiverGain(int Channel)
         {
-            ReceiverGain retVal = ReceiverGain.High;
-            int retInt = ScpiQuery<int>($"SENSe{Channel.ToString()}:NOISe:GAIN?");
+            int retInt = ScpiQuery<int>($"SENSe{Channel}:NOISe:GAIN?");
             if (retInt == 0)
             {
-                retVal = ReceiverGain.Low;
+                return ReceiverGain.Low;
             }
             else if (retInt == 15)
             {
-                retVal = ReceiverGain.Medium;
+                return ReceiverGain.Medium;
             }
             else if (retInt == 30)
             {
-                retVal = ReceiverGain.High;
+                return ReceiverGain.High;
             }
             else
             {
                 throw new Exception("Unknown Noise Receiver!");
             }
-            return retVal;
         }
 
         public void SetNFReceiverGain(int Channel, ReceiverGain rec)
         {
-            String nr = Scpi.Format("{0}", rec);
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:GAIN {nr}");
+            string nr = Scpi.Format("{0}", rec);
+            ScpiCommand($"SENSe{Channel}:NOISe:GAIN {nr}");
         }
 
         public double GetNFTemperature(int Channel)
         {
-            double retVal = double.NaN;
-            retVal = ScpiQuery<double>($"SENSe{Channel.ToString()}:NOISe:TEMPerature:SOURce?");
-            return retVal;
+            return ScpiQuery<double>($"SENSe{Channel}:NOISe:TEMPerature:SOURce?");
         }
 
         public void SetNFTemperature(int Channel, double temp)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:TEMPerature:SOURce {temp.ToString()}");
+            ScpiCommand($"SENSe{Channel}:NOISe:TEMPerature:SOURce {temp}");
         }
 
         public bool GetNFUse302K(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:TEMPerature:SOURce:AUTO?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:NOISe:TEMPerature:SOURce:AUTO?");
+            return !retStr.Equals("0");
         }
 
         public void SetNFUse302K(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:TEMPerature:SOURce:AUTO 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:TEMPerature:SOURce:AUTO 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:NOISe:TEMPerature:SOURce:AUTO {stateValue}");
         }
 
         public int GetNFMaxImpedanceStates(int Channel)
         {
-            int retVal = 4;
-            retVal = ScpiQuery<int>($"SENSe{Channel.ToString()}:NOISe:IMPedance:COUNt?");
-            return retVal;
+            return ScpiQuery<int>($"SENSe{Channel}:NOISe:IMPedance:COUNt?");
         }
 
         public void SetNFMaxImpedanceStates(int Channel, int states)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:IMPedance:COUNt {states.ToString()}");
+            ScpiCommand($"SENSe{Channel}:NOISe:IMPedance:COUNt {states}");
         }
 
-        public bool GetNFEnableSourcePulling (int Channel)
+        public bool GetNFEnableSourcePulling(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:PULL?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:NOISe:PULL?");
+            return !retStr.Equals("0");
         }
-
         public void SetNFEnableSourcePulling(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:PULL 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:PULL 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:NOISe:PULL {stateValue}");
         }
 
         public bool GetNFEnableCustomNoiseTuner(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:TUNer:FILE:STATe?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SENSe{Channel}:NOISe:TUNer:FILE:STATe?");
+            return !retStr.Equals("0");
         }
 
         public void SetNFEnableCustomNoiseTuner(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:TUNer:FILE:STATe 1");
-            }
-            else
-            {
-                ScpiCommand($"SENSe{Channel.ToString()}:NOISe:TUNer:FILE:STATe 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SENSe{Channel}:NOISe:TUNer:FILE:STATe {stateValue}");
         }
 
-        public String GetNFCustomNoiseTunerFile(int Channel)
+        public string GetNFCustomNoiseTunerFile(int Channel)
         {
-            String retStr = ScpiQuery($"SENSe{Channel.ToString()}:NOISe:TUNer:FILE:NAME?");
-            return retStr;
+            return ScpiQuery($"SENSe{Channel}:NOISe:TUNer:FILE:NAME?");
         }
 
-        public void SetNFCustomNoiseTunerFile(int Channel, String tunerfile)
+        public void SetNFCustomNoiseTunerFile(int Channel, string tunerfile)
         {
-            ScpiCommand($"SENSe{Channel.ToString()}:NOISe:TUNer:FILE:NAME \"{tunerfile}\"");
+            ScpiCommand($"SENSe{Channel}:NOISe:TUNer:FILE:NAME \"{tunerfile}\"");
         }
 
 
@@ -285,65 +195,44 @@ namespace OpenTap.Plugins.PNAX
         #region Power
         public int GetNFPortInput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:NOISe:PMAP:INP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:NOISe:PMAP:INP?");
         }
 
         public int GetNFPortOutput(int Channel)
         {
-            int retVal;
-            retVal = ScpiQuery<int>($"SENS{Channel.ToString()}:NOISe:PMAP:OUTP?");
-            return retVal;
+            return ScpiQuery<int>($"SENS{Channel}:NOISe:PMAP:OUTP?");
         }
 
         public void SetNFPortInputOutput(int Channel, PortsEnum inport, PortsEnum outport)
         {
-            String inp = Scpi.Format("{0}", inport);
-            String outp = Scpi.Format("{0}", outport);
-            ScpiCommand($"SENS{Channel.ToString()}:NOISe:PMAP {inp},{outp}");
+            string inp = Scpi.Format("{0}", inport);
+            string outp = Scpi.Format("{0}", outport);
+            ScpiCommand($"SENS{Channel}:NOISe:PMAP {inp},{outp}");
         }
 
         public bool GetCoupledTonePowers(int Channel)
         {
-            bool retVal = false;
-            String retStr = ScpiQuery($"SOURce{Channel.ToString()}:POWer:COUPle?");
-            if (retStr.Equals("0"))
-            {
-                retVal = false;
-            }
-            else
-            {
-                retVal = true;
-            }
-            return retVal;
+            string retStr = ScpiQuery($"SOURce{Channel}:POWer:COUPle?");
+            return !retStr.Equals("0");
         }
 
         public void SetCoupledTonePowers(int Channel, bool mode)
         {
-            if (mode == true)
-            {
-                ScpiCommand($"SOURce{Channel.ToString()}:POWer:COUPle 1");
-            }
-            else
-            {
-                ScpiCommand($"SOURce{Channel.ToString()}:POWer:COUPle 0");
-            }
+            string stateValue = mode ? "1" : "0";
+            ScpiCommand($"SOURce{Channel}:POWer:COUPle {stateValue}");
         }
 
         // SOURce<cnum>:POWer<port>[:LEVel][:IMMediate][:AMPLitude]? [src]
         public double GetPowerLevel(int Channel, PortsEnum port)
         {
-            double retVal = double.NaN;
-            String p = Scpi.Format("{0}", port);
-            retVal = ScpiQuery<double>($"SOURce{Channel.ToString()}:POWer{p}?");
-            return retVal;
+            string p = Scpi.Format("{0}", port);
+            return ScpiQuery<double>($"SOURce{Channel}:POWer{p}?");
         }
 
         public void SetPowerLevel(int Channel, PortsEnum port, double power)
         {
-            String p = Scpi.Format("{0}", port);
-            ScpiCommand($"SOURce{Channel.ToString()}:POWer{p} {power.ToString()}");
+            string p = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{Channel}:POWer{p} {power}");
         }
 
 

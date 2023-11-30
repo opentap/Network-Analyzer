@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Source", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SASource : GeneralBaseStep
+    public class SASource : PNABaseStep
     {
         #region Settings
         [Display("Power On (All Channels)", Group: "Power", Order: 20)]
@@ -97,13 +97,14 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         public override List<(string, object)> GetMetaData()
         {
             UpdateMetaData();
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>
+            {
+                ("SA Power On All Channels", PowerOnAllChannels),
+                ("SA Port Powers Coupled", PortPowersCoupled),
+                ("SA Source Sweep Order", SourceSweepOrder)
+            };
 
-            retVal.Add(("SA Power On All Channels", PowerOnAllChannels));
-            retVal.Add(("SA Port Powers Coupled", PortPowersCoupled));
-            retVal.Add(("SA Source Sweep Order", SourceSweepOrder));
-
-            foreach(var a in MetaData)
+            foreach (var a in MetaData)
             {
                 retVal.Add(a);
             }
@@ -113,7 +114,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         [Browsable(true)]
         [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
-        public void UpdateMetaData()
+        public override void UpdateMetaData()
         {
             MetaData = new List<(string, object)>();
 

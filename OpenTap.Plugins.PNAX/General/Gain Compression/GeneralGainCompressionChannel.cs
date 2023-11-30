@@ -14,13 +14,14 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Gain Compression Channel", Groups: new[] { "PNA-X", "General", "Gain Compression" }, Description: "Insert a description here")]
-    public class GeneralGainCompressionChannel : GeneralChannelBaseStep
+    public class GeneralGainCompressionChannel : PNABaseStep
     {
         #region Settings
         #endregion
 
         public GeneralGainCompressionChannel()
         {
+            IsControlledByParent = false;
             // Add child steps in the order that is required
 
             // Compression
@@ -29,7 +30,6 @@ namespace OpenTap.Plugins.PNAX
             GeneralGainCompressionPower power = new GeneralGainCompressionPower { IsControlledByParent = true, Channel = this.Channel};
             // Frequency
             GeneralGainCompressionFrequency frequency = new GeneralGainCompressionFrequency { IsControlledByParent = true, Channel = this.Channel};
-
             // Traces
             GeneralGainCompressionNewTrace gainCompressionNewTrace = new GeneralGainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel};
 
@@ -41,17 +41,16 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            int traceid = PNAX.GetNewTraceID(Channel);
+            PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_S21_1\',\'Gain Compression\',\'S21\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_S21_1\',\'Gain Compression\',\'S21\'");
 
             RunChildSteps(); //If the step supports child steps.
 
             // If no verdict is used, the verdict will default to NotSet.
             // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
-            //UpdateMetaData();
         }
     }
 }

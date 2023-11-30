@@ -16,27 +16,31 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [AllowChildrenOfType(typeof(SASingleTrace))]
     [Display("SA New Trace", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
-    public class SANewTrace : GeneralNewTraceBaseStep
+    public class SANewTrace : AddNewTraceBaseStep
     {
         #region Settings
-        private SATraceEnum _Meas;
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
-        public SATraceEnum Meas
-        {
-            get
-            {
-                return _Meas;
-            }
-            set
-            {
-                _Meas = value;
-            }
-        }
+        public SATraceEnum Meas { get; set; }
         #endregion
 
         public SANewTrace()
         {
-            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = SATraceEnum.B });
+            Meas = SATraceEnum.B;
+            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+        }
+
+        protected override void AddNewTrace()
+        {
+            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+        }
+
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+
+            return retVal;
         }
 
         public override void PrePlanRun()
@@ -46,7 +50,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel.ToString()}:PARameter:DELete \'CH{Channel.ToString()}_DUMMY_1\'");
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
         }
 
         public override void Run()
@@ -57,24 +61,5 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             // You can change the verdict using UpgradeVerdict() as shown below.
             UpgradeVerdict(Verdict.Pass);
         }
-
-        protected override void AddNewTrace()
-        {
-            SATraceEnum saTrace;
-            if (Enum.TryParse<SATraceEnum>(Meas.ToString(), out saTrace))
-            {
-                this.ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = saTrace, Channel = this.Channel });
-            }
-        }
-
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(String, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
-
     }
 }

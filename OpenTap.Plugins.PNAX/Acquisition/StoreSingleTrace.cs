@@ -5,6 +5,7 @@
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
 using OpenTap;
+using OpenTap.Plugins.PNAX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -92,7 +93,7 @@ namespace OpenTap.Plugins.PNAX
 
             }
 
-            ResultTable resultTable = new ResultTable($"Channel_{Channel.ToString()}", resultColumns.ToArray());
+            ResultTable resultTable = new ResultTable($"Channel_{Channel}", resultColumns.ToArray());
             Results.PublishTable(resultTable);
 
             UpgradeVerdict(Verdict.Pass);

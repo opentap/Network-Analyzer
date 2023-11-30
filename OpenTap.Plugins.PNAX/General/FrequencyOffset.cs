@@ -35,7 +35,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Frequency Offset", Groups: new[] { "PNA-X", "General" }, 
         Description: "Frequency Offset Mode\nCan be added as a child to the following Channels:\n\tStandard\n\tGain Compression\n\tNoise Figure Cold Source")]
-    public class FrequencyOffset : GeneralBaseStep
+    public class FrequencyOffset : PNABaseStep
     {
         #region Settings
         [Display("Enable Frequency Offset", Order: 10)]
@@ -409,8 +409,10 @@ namespace OpenTap.Plugins.PNAX
             PrimaryPoints = 201;
             PrimaryCW = 1e9;
             PrimarySweepTime = 0.016884;
-            PrimarySegmentDefinition = new List<SegmentDefinition>();
-            PrimarySegmentDefinition.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            PrimarySegmentDefinition = new List<SegmentDefinition>
+            {
+                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+            };
 
             SourceMode = FOMModeEnum.Coupled;
             SourceSweepType = StandardSweepTypeEnum.LinearFrequency;
@@ -418,8 +420,10 @@ namespace OpenTap.Plugins.PNAX
             SourceStop = 50e9;
             SourceCW = 1e9;
             SourceSweepTime = 0.016884;
-            SourceSegmentDefinition = new List<SegmentDefinition>();
-            SourceSegmentDefinition.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            SourceSegmentDefinition = new List<SegmentDefinition>
+            {
+                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+            };
             SourceOffset = 0;
             SourceMultiplier = 1;
             SourceDivisor = 1;
@@ -430,8 +434,10 @@ namespace OpenTap.Plugins.PNAX
             ReceiversStop = 50e9;
             ReceiversCW = 1e9;
             ReceiversSweepTime = 0.016884;
-            ReceiversSegmentDefinition = new List<SegmentDefinition>();
-            ReceiversSegmentDefinition.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            ReceiversSegmentDefinition = new List<SegmentDefinition>
+            {
+                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+            };
             ReceiversOffset = 0;
             ReceiversMultiplier = 1;
             ReceiversDivisor = 1;
@@ -442,8 +448,10 @@ namespace OpenTap.Plugins.PNAX
             Source2Stop = 50e9;
             Source2CW = 1e9;
             Source2SweepTime = 0.016884;
-            Source2SegmentDefinition = new List<SegmentDefinition>();
-            Source2SegmentDefinition.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            Source2SegmentDefinition = new List<SegmentDefinition>
+            {
+                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+            };
             Source2Offset = 0;
             Source2Multiplier = 1;
             Source2Divisor = 1;
@@ -454,8 +462,10 @@ namespace OpenTap.Plugins.PNAX
             Source3Stop = 13.51e9;
             Source3CW = 1e9;
             Source3SweepTime = 0.016884;
-            Source3SegmentDefinition = new List<SegmentDefinition>();
-            Source3SegmentDefinition.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            Source3SegmentDefinition = new List<SegmentDefinition>
+            {
+                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+            };
             Source3Offset = 0;
             Source3Multiplier = 1;
             Source3Divisor = 1;
@@ -468,165 +478,52 @@ namespace OpenTap.Plugins.PNAX
 
             // Primary
             PNAX.SetFOMSweepType(Channel, 1, PrimarySweepType);
-            switch (PrimarySweepType)
-            {
-                case StandardSweepTypeEnum.LinearFrequency:
-                case StandardSweepTypeEnum.LogFrequency:
-                    PNAX.SetFOMStart(Channel, 1, PrimaryStart);
-                    PNAX.SetFOMStop(Channel, 1, PrimaryStop);
-                    PNAX.SetPoints(Channel, PrimaryPoints);
-                    break;
-                case StandardSweepTypeEnum.PowerSweep:
-                    PNAX.SetFOMCW(Channel, 1, PrimaryCW);
-                    PNAX.SetPoints(Channel, PrimaryPoints);
-                    break;
-                case StandardSweepTypeEnum.CWTime:
-                case StandardSweepTypeEnum.PhaseSweep:
-                    PNAX.SetFOMCW(Channel, 1, PrimaryCW);
-                    PNAX.SetSweepTime(Channel, PrimarySweepTime);
-                    PNAX.SetPoints(Channel, PrimaryPoints);
-                    break;
-                case StandardSweepTypeEnum.SegmentSweep:
-                    SetFOMSegmentValues(1, PrimarySegmentDefinition);
-                    break;
-            }
+            SetSweep(PrimarySweepType, 1, PrimaryStart, PrimaryStop, PrimaryPoints, true, PrimaryCW, PrimarySweepTime, PrimarySegmentDefinition);
 
             // Source
             if(SourceMode == FOMModeEnum.Coupled)
             {
-                PNAX.SetFOMOffset(Channel, 2, SourceOffset);
-                PNAX.SetFOMMultiplier(Channel, 2, SourceMultiplier);
-                PNAX.SetFOMDivisor(Channel, 2, SourceDivisor);
+                SetCoupled(2, SourceOffset, SourceMultiplier, SourceDivisor);
             }
             else
             {
                 PNAX.SetFOMSweepType(Channel, 2, SourceSweepType);
-                switch (SourceSweepType)
-                {
-                    case StandardSweepTypeEnum.LinearFrequency:
-                    case StandardSweepTypeEnum.LogFrequency:
-                        PNAX.SetFOMStart(Channel, 2, SourceStart);
-                        PNAX.SetFOMStop(Channel, 2, SourceStop);
-                        //PNAX.SetPoints(Channel, SourcePoints);
-                        break;
-                    case StandardSweepTypeEnum.PowerSweep:
-                        PNAX.SetFOMCW(Channel, 2, SourceCW);
-                        //PNAX.SetPoints(Channel, SourcePoints);
-                        break;
-                    case StandardSweepTypeEnum.CWTime:
-                    case StandardSweepTypeEnum.PhaseSweep:
-                        PNAX.SetFOMCW(Channel, 2, SourceCW);
-                        PNAX.SetSweepTime(Channel, SourceSweepTime);
-                        //PNAX.SetPoints(Channel, SourcePoints);
-                        break;
-                    case StandardSweepTypeEnum.SegmentSweep:
-                        SetFOMSegmentValues(2, SourceSegmentDefinition);
-                        break;
-                }
+                SetSweep(SourceSweepType, 2, SourceStart, SourceStop, 0, false, SourceCW, SourceSweepTime, SourceSegmentDefinition);
             }
 
             // Receivers
             if (ReceiversMode == FOMModeEnum.Coupled)
             {
-                PNAX.SetFOMOffset(Channel, 3, ReceiversOffset);
-                PNAX.SetFOMMultiplier(Channel, 3, ReceiversMultiplier);
-                PNAX.SetFOMDivisor(Channel, 3, ReceiversDivisor);
+                SetCoupled(3, ReceiversOffset, ReceiversMultiplier, ReceiversDivisor);
             }
             else
             {
                 PNAX.SetFOMSweepType(Channel, 3, ReceiversSweepType);
-                switch (ReceiversSweepType)
-                {
-                    case StandardSweepTypeEnum.LinearFrequency:
-                    case StandardSweepTypeEnum.LogFrequency:
-                        PNAX.SetFOMStart(Channel, 3, ReceiversStart);
-                        PNAX.SetFOMStop(Channel, 3, ReceiversStop);
-                        //PNAX.SetPoints(Channel, ReceiversPoints);
-                        break;
-                    case StandardSweepTypeEnum.PowerSweep:
-                        PNAX.SetFOMCW(Channel, 3, ReceiversCW);
-                        //PNAX.SetPoints(Channel, ReceiversPoints);
-                        break;
-                    case StandardSweepTypeEnum.CWTime:
-                    case StandardSweepTypeEnum.PhaseSweep:
-                        PNAX.SetFOMCW(Channel, 3, ReceiversCW);
-                        PNAX.SetSweepTime(Channel, ReceiversSweepTime);
-                        //PNAX.SetPoints(Channel, ReceiversPoints);
-                        break;
-                    case StandardSweepTypeEnum.SegmentSweep:
-                        SetFOMSegmentValues(3, ReceiversSegmentDefinition);
-                        break;
-                }
+                SetSweep(ReceiversSweepType, 3, ReceiversStart, ReceiversStop, 0, false, ReceiversCW, ReceiversSweepTime, ReceiversSegmentDefinition);
             }
 
 
             // Source2
             if (Source2Mode == FOMModeEnum.Coupled)
             {
-                PNAX.SetFOMOffset(Channel, 4, Source2Offset);
-                PNAX.SetFOMMultiplier(Channel, 4, Source2Multiplier);
-                PNAX.SetFOMDivisor(Channel, 4, Source2Divisor);
+                SetCoupled(4, Source2Offset, Source2Multiplier, Source2Divisor);
             }
             else
             {
                 PNAX.SetFOMSweepType(Channel, 4, Source2SweepType);
-                switch (Source2SweepType)
-                {
-                    case StandardSweepTypeEnum.LinearFrequency:
-                    case StandardSweepTypeEnum.LogFrequency:
-                        PNAX.SetFOMStart(Channel, 4, Source2Start);
-                        PNAX.SetFOMStop(Channel, 4, Source2Stop);
-                        //PNAX.SetPoints(Channel, Source2Points);
-                        break;
-                    case StandardSweepTypeEnum.PowerSweep:
-                        PNAX.SetFOMCW(Channel, 4, Source2CW);
-                        //PNAX.SetPoints(Channel, Source2Points);
-                        break;
-                    case StandardSweepTypeEnum.CWTime:
-                    case StandardSweepTypeEnum.PhaseSweep:
-                        PNAX.SetFOMCW(Channel, 4, Source2CW);
-                        PNAX.SetSweepTime(Channel, Source2SweepTime);
-                        //PNAX.SetPoints(Channel, Source2Points);
-                        break;
-                    case StandardSweepTypeEnum.SegmentSweep:
-                        SetFOMSegmentValues(4, Source2SegmentDefinition);
-                        break;
-                }
+                SetSweep(Source2SweepType, 4, Source2Start, Source2Stop, 0, false, Source2CW, Source2SweepTime, Source2SegmentDefinition);
             }
 
 
             // Source3
             if (Source3Mode == FOMModeEnum.Coupled)
             {
-                PNAX.SetFOMOffset(Channel, 5, Source3Offset);
-                PNAX.SetFOMMultiplier(Channel, 5, Source3Multiplier);
-                PNAX.SetFOMDivisor(Channel, 5, Source3Divisor);
+                SetCoupled(5, Source3Offset, Source3Multiplier, Source3Divisor);
             }
             else
             {
                 PNAX.SetFOMSweepType(Channel, 5, Source3SweepType);
-                switch (Source3SweepType)
-                {
-                    case StandardSweepTypeEnum.LinearFrequency:
-                    case StandardSweepTypeEnum.LogFrequency:
-                        PNAX.SetFOMStart(Channel, 5, Source3Start);
-                        PNAX.SetFOMStop(Channel, 5, Source3Stop);
-                        //PNAX.SetPoints(Channel, Source3Points);
-                        break;
-                    case StandardSweepTypeEnum.PowerSweep:
-                        PNAX.SetFOMCW(Channel, 5, Source3CW);
-                        //PNAX.SetPoints(Channel, Source3Points);
-                        break;
-                    case StandardSweepTypeEnum.CWTime:
-                    case StandardSweepTypeEnum.PhaseSweep:
-                        PNAX.SetFOMCW(Channel, 5, Source3CW);
-                        PNAX.SetSweepTime(Channel, Source3SweepTime);
-                        //PNAX.SetPoints(Channel, Source3Points);
-                        break;
-                    case StandardSweepTypeEnum.SegmentSweep:
-                        SetFOMSegmentValues(5, Source3SegmentDefinition);
-                        break;
-                }
+                SetSweep(Source3SweepType, 5, Source3Start, Source3Stop, 0, false, Source3CW, Source3SweepTime, Source3SegmentDefinition);
             }
 
 
@@ -638,10 +535,9 @@ namespace OpenTap.Plugins.PNAX
         public void SetFOMSegmentValues(int Range, List<SegmentDefinition> SegmentDefinitions)
         {
             PNAX.FOMSegmentDeleteAllSegments(Channel, Range);
-            int segment = 0;
             foreach (SegmentDefinition a in SegmentDefinitions)
             {
-                segment = PNAX.FOMSegmentAdd(Channel, Range);
+                int segment = PNAX.FOMSegmentAdd(Channel, Range);
                 PNAX.FOMSetSegmentState(Channel, Range, segment, a.state);
                 PNAX.FOMSetSegmentNumberOfPoints(Channel, Range, segment, a.NumberOfPoints);
                 PNAX.FOMSetSegmentStartFrequency(Channel, Range, segment, a.StartFrequency);
@@ -653,11 +549,50 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()
         {
-            List<(String, object)> retVal = new List<(string, object)>();
+            List<(string, object)> retVal = new List<(string, object)>();
 
             return retVal;
         }
 
+        private void SetSweep(StandardSweepTypeEnum SweepType, int Range, double Start, double Stop, int Points, bool IfSetPoints,
+                              double CW, double SweepTime, List<SegmentDefinition> SegmentDefinition)
+        {
+            switch (SweepType)
+            {
+                case StandardSweepTypeEnum.LinearFrequency:
+                    break;
+                case StandardSweepTypeEnum.LogFrequency:
+                    PNAX.SetFOMStart(Channel, Range, Start);
+                    PNAX.SetFOMStop(Channel, Range, Stop);
+                    if (IfSetPoints)
+                        PNAX.SetPoints(Channel, Points);
+                    break;
+                case StandardSweepTypeEnum.PowerSweep:
+                    PNAX.SetFOMCW(Channel, Range, CW);
+                    if (IfSetPoints)
+                        PNAX.SetPoints(Channel, Points);
+                    break;
+                case StandardSweepTypeEnum.CWTime:
+                    break;
+                case StandardSweepTypeEnum.PhaseSweep:
+                    PNAX.SetFOMCW(Channel, Range, CW);
+                    PNAX.SetSweepTime(Channel, SweepTime);
+                    if (IfSetPoints)
+                        PNAX.SetPoints(Channel, Points);
+                    break;
+                case StandardSweepTypeEnum.SegmentSweep:
+                    SetFOMSegmentValues(Range, SegmentDefinition);
+                    break;
+            }
+
+        }
+
+        private void SetCoupled(int Range, double Offset, double Multiplier, double Divisor)
+        {
+            PNAX.SetFOMOffset(Channel, Range, Offset);
+            PNAX.SetFOMMultiplier(Channel, Range, Multiplier);
+            PNAX.SetFOMDivisor(Channel, Range, Divisor);
+        }
 
     }
 }

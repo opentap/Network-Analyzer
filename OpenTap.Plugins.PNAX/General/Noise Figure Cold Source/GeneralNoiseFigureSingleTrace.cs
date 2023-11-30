@@ -73,7 +73,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(GeneralNoiseFigureNewTrace))]
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Noise Figure Single Trace", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
-    public class GeneralNoiseFigureSingleTrace : GeneralSingleTraceBaseStep
+    public class GeneralNoiseFigureSingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private GeneralNoiseFigureTraceEnum _Meas;
@@ -84,72 +84,24 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Meas = value;
-                UpdateTestName();
+                measEnumName = value.ToString();
+                UpdateTestStepName();
             }
         }
         #endregion
 
         public GeneralNoiseFigureSingleTrace()
         {
-            Trace = "1";
             Meas = GeneralNoiseFigureTraceEnum.NF;
-            Channel = 1;
-            Window = 1;
-            Sheet = 1;
+            measClass = "Noise Figure Cold Source";
         }
 
-        protected override void UpdateTestName()
+        protected override void UpdateTestStepName()
         {
-            String m = Scpi.Format("{0}", Meas);
+            string m = Scpi.Format("{0}", Meas);
             this.Trace = $"CH{Channel}_{m}";
             this.Name = $"CH{Channel}_{m}";
         }
 
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
-        public override void AddTraceFormat()
-        {
-            this.ChildTestSteps.Add(new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
-        public override void AddTraceTitle()
-        {
-            this.ChildTestSteps.Add(new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
-        public override void AddMarker()
-        {
-            this.ChildTestSteps.Add(new Marker() { PNAX = this.PNAX, Channel = this.Channel, mkr = NextMarker() });
-        }
-
-        [Browsable(true)]
-        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
-        [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
-        public override void AddTraceLimits()
-        {
-            this.ChildTestSteps.Add(new TraceLimits() { PNAX = this.PNAX, Channel = this.Channel });
-        }
-
-        public override void Run()
-        {
-            int _tnum = 0;
-            int _mnum = 0;
-            String _MeasName = "";
-            PNAX.AddNewTrace(Channel, Window, Trace, "Noise Figure Cold Source", Meas.ToString(), ref _tnum, ref _mnum, ref _MeasName);
-            tnum = _tnum;
-            mnum = _mnum;
-            MeasName = _MeasName;
-
-            RunChildSteps(); //If the step supports child steps.
-
-            UpgradeVerdict(Verdict.Pass);
-        }
     }
 }

@@ -13,22 +13,13 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
       <SetAssemblyInfo Attributes="Version"/>
       <!--ObfuscateWithDotfuscator/-->
     </File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/two channels - Standard and GCA.TapPlan" SourcePath="Examples/two channels - Standard and GCA.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/two channels - Standard.TapPlan" SourcePath="Examples/two channels - Standard.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard - CalAll - Trigger - Meas.TapPlan" SourcePath="Examples/Standard - CalAll - Trigger - Meas.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/FOM.TapPlan" SourcePath="Examples/FOM.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/GCX 20 MHz - 45 GHz 2 stage.TapPlan" SourcePath="Examples/GCX 20 MHz - 45 GHz 2 stage.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard-AllFormats.TapPlan" SourcePath="Examples/Standard-AllFormats.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/LMS.TapPlan" SourcePath="Examples/LMS.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Std-GC.csa" SourcePath="Examples/Std-GC.csa" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard and SMC - StoreTrace with MetaData.TapPlan" SourcePath="Examples/Standard and SMC - StoreTrace with MetaData.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard with limits.TapPlan" SourcePath="Examples/Standard with limits.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA-StoreMarker.TapPlan" SourcePath="Examples/SA-StoreMarker.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA LinFreq-StoreMarker.TapPlan" SourcePath="Examples/SA LinFreq-StoreMarker.TapPlan" ></File>
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA LinFreq Sweep implemented with Sweep.TapPlan" SourcePath="Examples/SA LinFreq Sweep implemented with Sweep.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA Segment Sweep.TapPlan" SourcePath="Examples/SA Segment Sweep.TapPlan" ></File>
 
-	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Cal-Image.TapPlan" SourcePath="Examples/Cal-Image.TapPlan" ></File>
+	<!--<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Cal-Image.TapPlan" SourcePath="Examples/Cal-Image.TapPlan" ></File>-->
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 1.png" SourcePath="Examples/Images/Sample Image 1.png" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 2.png" SourcePath="Examples/Images/Sample Image 2.png" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 3.png" SourcePath="Examples/Images/Sample Image 3.png" ></File>

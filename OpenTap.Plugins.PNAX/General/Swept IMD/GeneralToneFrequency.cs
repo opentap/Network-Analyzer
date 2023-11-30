@@ -27,9 +27,6 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("CW")]
         [Display("CW")]
         CW,
-        //[Scpi("LOP")]
-        //[Display("LO Power Sweep")]
-        //LOPowerSweep
         [Scpi("SEGM")]
         [Display("Segment Sweep fc")]
         SegmentSweepfc
@@ -38,7 +35,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
     [Display("Tone Frequency", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
-    public class GeneralToneFrequency : GeneralBaseStep
+    public class GeneralToneFrequency : ToneFrequencyBaseStep
     {
         #region Settings
 
@@ -56,11 +53,12 @@ namespace OpenTap.Plugins.PNAX
             {
                 _ToneFrequencySweepType = value;
                 // Update Segment Settings Visibility
-                EnableSegmentSweepSettings = false;
-                if (_ToneFrequencySweepType == GeneralToneFrequencySweepTypeEnum.SegmentSweepfc)
-                {
-                    EnableSegmentSweepSettings = true;
-                }
+                IsSegmentEnabled = value == GeneralToneFrequencySweepTypeEnum.SegmentSweepfc;
+                IsSweepFCEnabled = value == GeneralToneFrequencySweepTypeEnum.SweepFc;
+                IsFixedDeltaFEnabled = IsSweepFCEnabled || IsSegmentEnabled;
+                IsSweepDeltaFEnabled = value == GeneralToneFrequencySweepTypeEnum.SweepDeltaF;
+                IsPowerSweepEnabled = value == GeneralToneFrequencySweepTypeEnum.CW || value == GeneralToneFrequencySweepTypeEnum.PowerSweep;
+                IsSweepPointsEnabled = !IsSegmentEnabled;
 
                 // Update Channel value
                 try
@@ -80,207 +78,57 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        #endregion
 
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
-        [Display("Type", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 9.9)]
-        public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
+        #region Segment Sweep
+        [Browsable(false)]
+        public bool EnableSegmentSweepSettings { get; set; } = false;
 
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
-        [Display("Start fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 10)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcStartFc { get; set; }
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [Display("Segment Definition Type", Group: "Sweep Properties", Order: 30)]
+        public SegmentDefinitionTypeEnum SegmentDefinitionType { get; set; }
 
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
-        [Display("Stop fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 11)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcStopFc { get; set; }
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.File, HideIfDisabled = false)]
+        [Display("Segment Table File Name", Group: "Sweep Properties", Order: 31)]
+        [FilePath]
+        public string SegmentTable { get; set; }
 
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
-        [Display("Center fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 12)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcCenterFc { get; set; }
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Segment Table", Group: "Sweep Properties", Order: 32)]
+        public List<SegmentDefinition> SegmentDefinitions { get; set; }
 
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, HideIfDisabled = true)]
-        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
-        [Display("Span fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 13)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcSpanFc { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, GeneralToneFrequencySweepTypeEnum.SegmentSweepfc,  HideIfDisabled = true)]
-        [Display("Fixed DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 14)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcFixedDeltaF { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
-        [Display("Start DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 20)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepDeltaFStartDeltaF { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
-        [Display("Stop DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 21)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepDeltaFStopDeltaF { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepDeltaF, HideIfDisabled = true)]
-        [Display("Fixed fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 22)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepDeltaFFixedFc { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.PowerSweep, GeneralToneFrequencySweepTypeEnum.CW, HideIfDisabled = true)]
-        [Display("CW f1", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 30)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double PowerSweepCWF1 { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.PowerSweep, GeneralToneFrequencySweepTypeEnum.CW, HideIfDisabled = true)]
-        [Display("CW f2", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 31)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double PowerSweepCWF2 { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.PowerSweep, GeneralToneFrequencySweepTypeEnum.CW, HideIfDisabled = true)]
-        [Display("CW fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 32)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double PowerSweepCWFc { get; set; }
-
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.PowerSweep, GeneralToneFrequencySweepTypeEnum.CW, HideIfDisabled = true)]
-        [Display("CW DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 33)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double PowerSweepCWDeltaF { get; set; }
-
-        private int _SweepFcNumberOfPoints;
-        [EnabledIf("ToneFrequencySweepType", GeneralToneFrequencySweepTypeEnum.SweepFc, GeneralToneFrequencySweepTypeEnum.SweepDeltaF, GeneralToneFrequencySweepTypeEnum.PowerSweep, GeneralToneFrequencySweepTypeEnum.CW, HideIfDisabled = true)]
-        [Display("Number of Points", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 40)]
-        public int SweepFcNumberOfPoints
-        {
-            get
-            {
-                return _SweepFcNumberOfPoints;
-            }
-            set
-            {
-                _SweepFcNumberOfPoints = value;
-                // Update Points on Parent step
-                try
-                {
-                    var a = GetParent<ConverterChannelBase>();
-                    // only if there is a parent of type ScalarMixerChannel
-                    if (a != null)
-                    {
-                        a.SweepPoints = _SweepFcNumberOfPoints;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug("can't find parent yet! ex: " + ex.Message);
-                }
-
-            }
-        }
-
-        [Display("Main Tone IFBW", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 41)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcMixedToneIFBW { get; set; }
-
-        [Display("IM Tone IFBW", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 42)]
-        [Unit("Hz", UseEngineeringPrefix: true)]
-        public double SweepFcIMToneIFBW { get; set; }
-
-        [Display("Reduce IF BW at low frequencies", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 43)]
-        public bool SweepFcReduceIFBW { get; set; }
+        //[EnabledIf("StandardSweepType", StandardSweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
+        [EnabledIf("EnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [Display("Show Table", Group: "Sweep Properties", Order: 33)]
+        public bool ShowTable { get; set; }
 
 
-        //[Display("Annotation", Groups: new[] { "Tone Frequency", "X-Axis Display" }, Order: 50)]
-        //public XAxisDisplayAnnotationEnum XAxisDisplayAnnotation { get; set; }
         #endregion
 
         public GeneralToneFrequency()
         {
-            UpdateDefaultValues();
         }
 
-        private void UpdateDefaultValues()
+        protected override void UpdateTypeAndNotation()
         {
             var DefaultValues = PNAX.GetToneFrequencyDefaultValues();
             ToneFrequencySweepType = DefaultValues.GeneralToneFrequencySweepType;
-            SweepFcStartFc = DefaultValues.SweepFcStartFc;
-            SweepFcStopFc = DefaultValues.SweepFcStopFc;
-            SweepFcCenterFc = DefaultValues.SweepFcCenterFc;
-            SweepFcSpanFc = DefaultValues.SweepFcSpanFc;
-            SweepFcFixedDeltaF = DefaultValues.SweepFcFixedDeltaF;
-            SweepFcNumberOfPoints = DefaultValues.SweepFcNumberOfPoints;
-            SweepFcMixedToneIFBW = DefaultValues.SweepFcMixedToneIFBW;
-            SweepFcIMToneIFBW = DefaultValues.SweepFcIMToneIFBW;
-            SweepFcReduceIFBW = DefaultValues.SweepFcReduceIFBW;
-            SweepDeltaFStartDeltaF = DefaultValues.SweepDeltaFStartDeltaF;
-            SweepDeltaFStopDeltaF = DefaultValues.SweepDeltaFStopDeltaF;
-            SweepDeltaFFixedFc = DefaultValues.SweepDeltaFFixedFc;
-            PowerSweepCWF1 = DefaultValues.PowerSweepCWF1;
-            PowerSweepCWF2 = DefaultValues.PowerSweepCWF2;
-            PowerSweepCWFc = DefaultValues.PowerSweepCWFc;
-            PowerSweepCWDeltaF = DefaultValues.PowerSweepCWDeltaF;
-            //XAxisDisplayAnnotation = DefaultValues.XAxisDisplayAnnotation;
-            IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
 
-        public override void Run()
+        protected override void SetSweepType()
         {
-            RunChildSteps(); //If the step supports child steps.
-
             PNAX.SetIMDSweepType(Channel, ToneFrequencySweepType);
+        }
 
-            switch (ToneFrequencySweepType)
-            {
-                case GeneralToneFrequencySweepTypeEnum.SweepFc:
-                    if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
-                    {
-                        PNAX.SetIMDSweepSettingsStartfc(Channel, SweepFcStartFc);
-                        PNAX.SetIMDSweepSettingsStopfc(Channel, SweepFcStopFc);
-                    }
-                    else
-                    {
-                        PNAX.SetIMDSweepSettingsCenterfc(Channel, SweepFcCenterFc);
-                        PNAX.SetIMDSweepSettingsSpanfc(Channel, SweepFcSpanFc);
-                    }
-                    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, SweepFcFixedDeltaF);
-                    PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
-                    break;
-                case GeneralToneFrequencySweepTypeEnum.SweepDeltaF:
-                    PNAX.SetIMDSweepSettingsStartDeltaF(Channel, SweepDeltaFStartDeltaF);
-                    PNAX.SetIMDSweepSettingsStopDeltaF(Channel, SweepDeltaFStopDeltaF);
-                    PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, SweepDeltaFFixedFc);
-                    PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
-                    break;
-                case GeneralToneFrequencySweepTypeEnum.PowerSweep:
-                case GeneralToneFrequencySweepTypeEnum.CW:
-                    PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
-                    PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);
-                    PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, PowerSweepCWFc);
-                    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
-                    PNAX.SetPoints(Channel, SweepFcNumberOfPoints);
-                    break;
-                //case GeneralToneFrequencySweepTypeEnum.LOPowerSweep:
-                //    // LO - These values are set on the MixerFrequencyTestStep
-                //    // so no need to set these values here
-                //    //PNAX.SetLOSweptPowerStart(Channel, 1, LO1SweptPowerStart);
-                //    //PNAX.SetLOSweptPowerStop(Channel, 1, LO1SweptPowerStop);
-
-                //    PNAX.SetIMDSweepSettingsFixedf1(Channel, PowerSweepCWF1);
-                //    PNAX.SetIMDSweepSettingsFixedf2(Channel, PowerSweepCWF2);
-                //    PNAX.SetIMDSweepSettingsCenterfcFixed(Channel, PowerSweepCWFc);
-                //    PNAX.SetIMDSweepSettingsFixedDeltaF(Channel, PowerSweepCWDeltaF);
-                //    break;
-                case GeneralToneFrequencySweepTypeEnum.SegmentSweepfc:
-                    SetSegmentValues();
-                    break;
-            }
-
-            PNAX.SetIMDSweepSettingsMainToneIFBW(Channel, SweepFcMixedToneIFBW);
-            PNAX.SetIMDSweepSettingsIMToneIFBW(Channel, SweepFcIMToneIFBW);
-            PNAX.SetLFAutoBW(Channel, SweepFcReduceIFBW);
-
-            UpgradeVerdict(Verdict.Pass);
+        protected override void SetSegmentValues()
+        {
+            PNAX.SetSegmentValues(SegmentDefinitionType, Channel, SegmentDefinitions, ShowTable);
         }
     }
 }
