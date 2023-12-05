@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
-    [Display("Sectrum Analyzer Channel", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display("Sectrum Analyzer Channel", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SpectrumAnalyzerChannel : PNABaseStep
     {
         #region Settings

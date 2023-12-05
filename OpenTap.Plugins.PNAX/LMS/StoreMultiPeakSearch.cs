@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Multi Peak Search", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Insert a description here")]
+    [Display("Store Multi Peak Search", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Insert a description here")]
     public class StoreMultiPeakSearch : TestStep
     {
         #region Settings

@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(GainCompressionChannel))]
-    [Display("Gain Compression Frequency", Groups: new[] { "PNA-X", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
+    [Display("Gain Compression Frequency", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
     public class GainCompressionFrequency : FrequencyBaseStep
     {
         #region Settings

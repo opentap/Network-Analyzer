@@ -16,7 +16,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(StoreMultiPeakSearch))]
-    [Display("Store Marker Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
+    [Display("Store Marker Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
     public class StoreMarkerData : StoreDataBase
     {
         #region Settings

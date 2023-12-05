@@ -57,7 +57,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
     }
 
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [Display("SA Setup", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display("SA Setup", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASetup : PNABaseStep
     {
         #region Settings

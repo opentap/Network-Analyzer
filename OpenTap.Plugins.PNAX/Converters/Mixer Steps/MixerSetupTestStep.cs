@@ -57,7 +57,7 @@ namespace OpenTap.Plugins.PNAX
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Mixer Setup", Groups: new[] { "PNA-X", "Converters" }, Description: "Insert description here", Order: 1)]
+    [Display("Mixer Setup", Groups: new[] { "Network Analyzer", "Converters" }, Description: "Insert description here", Order: 1)]
     public class MixerSetupTestStep : PNABaseStep
     {
         #region Settings

@@ -24,7 +24,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
-    [Display("Configure", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
+    [Display("Configure", Groups: new[] { "Network Analyzer", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
     public class GeneralSweptIMDConfigure : PNABaseStep
     {
         #region Settings
