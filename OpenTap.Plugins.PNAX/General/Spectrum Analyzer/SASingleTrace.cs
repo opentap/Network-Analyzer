@@ -35,7 +35,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
 
     [AllowAsChildIn(typeof(SANewTrace))]
-    [Display("SA Single Trace", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display("SA Single Trace", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASingleTrace : SingleTraceBaseStep
     {
         #region Settings

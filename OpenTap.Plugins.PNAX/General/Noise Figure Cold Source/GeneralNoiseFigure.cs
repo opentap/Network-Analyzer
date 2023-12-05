@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 
 
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
-    [Display("Noise Figure", Groups: new[] { "PNA-X", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
+    [Display("Noise Figure", Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
     public class GeneralNoiseFigure : NoiseFigureBaseStep
     {
     }

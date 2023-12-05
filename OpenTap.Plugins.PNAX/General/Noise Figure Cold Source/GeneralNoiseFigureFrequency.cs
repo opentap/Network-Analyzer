@@ -38,7 +38,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
-    [Display("Noise Figure Frequency", Groups: new[] { "PNA-X", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
+    [Display("Noise Figure Frequency", Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
     public class GeneralNoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings

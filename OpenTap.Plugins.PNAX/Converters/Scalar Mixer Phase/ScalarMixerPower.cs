@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Scalar Mixer Power", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display("Scalar Mixer Power", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerPower : PowerBaseStep
     {
         #region Settings

@@ -15,7 +15,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(SingleTraceBaseStep))]
-    [Display("Marker", Groups: new[] { "PNA-X", "Trace" }, Description: "Insert a description here")]
+    [Display("Marker", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Insert a description here")]
     public class Marker : PNABaseStep
     {
         #region Settings

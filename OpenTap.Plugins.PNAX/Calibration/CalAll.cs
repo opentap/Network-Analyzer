@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
 
     }
 
-    [Display("Cal All", Groups: new[] { "PNA-X", "Calibration" }, Description: "Insert a description here")]
+    [Display("Cal All", Groups: new[] { "Network Analyzer", "Calibration" }, Description: "Insert a description here")]
     public class CalAll : TestStep
     {
         #region Settings

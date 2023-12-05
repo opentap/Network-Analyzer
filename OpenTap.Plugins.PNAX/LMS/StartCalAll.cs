@@ -7,7 +7,7 @@ using System.IO;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Start Cal All", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Starts Cal All on the instrument")]
+    [Display("Start Cal All", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Starts Cal All on the instrument")]
     public class StartCalAll : TestStep
     {
         #region Settings

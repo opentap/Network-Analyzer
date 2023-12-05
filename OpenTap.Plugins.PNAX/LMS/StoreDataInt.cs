@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Trace Data - Integer", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Appends an integer data to trace.")]
+    [Display("Store Trace Data - Integer", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends an integer data to trace.")]
     [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDataInt : TestStep
     {

@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
-    [Display("Tone Power", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here")]
+    [Display("Tone Power", Groups: new[] { "Network Analyzer", "General", "Swept IMD" }, Description: "Insert a description here")]
     public class GeneralTonePower : TonePowerBaseStep
     {
         #region Settings

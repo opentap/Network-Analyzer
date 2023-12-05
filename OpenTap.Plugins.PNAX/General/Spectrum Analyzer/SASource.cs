@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [Display("SA Source", Groups: new[] { "PNA-X", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display("SA Source", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASource : PNABaseStep
     {
         #region Settings

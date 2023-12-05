@@ -25,7 +25,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(StandardChannel))]
     [AllowChildrenOfType(typeof(StandardSingleTrace))]
-    [Display("Standard New Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
+    [Display("Standard New Trace", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class StandardNewTrace : AddNewTraceBaseStep
     {
         #region Settings

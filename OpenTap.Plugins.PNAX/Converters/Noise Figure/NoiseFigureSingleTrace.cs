@@ -100,7 +100,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(NoiseFigureNewTrace))]
     [AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [Display("Noise Figure Single Trace", Groups: new[] { "PNA-X", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
+    [Display("Noise Figure Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
     public class NoiseFigureSingleTrace : SingleTraceBaseStep
     {
         #region Settings

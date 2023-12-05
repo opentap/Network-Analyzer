@@ -14,7 +14,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Single Trace", Groups: new[] { "PNA-X", "Acquisition" }, Description: "Stores trace data for a single given trace")]
+    [Display("Store Single Trace", Groups: new[] { "Network Analyzer", "Acquisition" }, Description: "Stores trace data for a single given trace")]
     public class StoreSingleTraceAdvanced : TestStep
     {
         #region Settings

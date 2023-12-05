@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(ScalarMixerChannel))]
     [AllowAsChildIn(typeof(ScalarMixerNewTrace))]
-    [Display("Scalar Mixer Single Trace", Groups: new[] { "PNA-X", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display("Scalar Mixer Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerSingleTrace : SingleTraceBaseStep
     {
         #region Settings

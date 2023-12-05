@@ -257,7 +257,7 @@ namespace OpenTap.Plugins.PNAX
 
     [AllowAsChildIn(typeof(SweptIMDChannel))]
     [AllowAsChildIn(typeof(SweptIMDNewTrace))]
-    [Display("Swept IMD Single Trace", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
+    [Display("Swept IMD Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
     public class SweptIMDSingleTrace : SingleTraceBaseStep
     {
         #region Settings

@@ -49,7 +49,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [AllowAsChildIn(typeof(SweptIMDChannel))]
-    [Display("Tone Frequency", Groups: new[] { "PNA-X", "Converters", "Swept IMD Converters" }, Description: "Insert a description here", Order: 4)]
+    [Display("Tone Frequency", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here", Order: 4)]
     public class ToneFrequency : ToneFrequencyBaseStep
     {
         #region Settings

@@ -58,7 +58,7 @@ namespace OpenTap.Plugins.PNAX
         SING
     }
 
-    [Display("PNA-X", Group: "PNA-X", Description: "Insert a description here")]
+    [Display("PNA-X", Group: "Network Analyzer", Description: "Insert a description here")]
     public partial class PNAX : ScpiInstrument
     {
         #region Settings

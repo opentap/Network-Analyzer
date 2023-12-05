@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Noise Figure Cold Source Channel", Groups: new[] { "PNA-X", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
+    [Display("Noise Figure Cold Source Channel", Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
     public class GeneralNoiseFigureChannel : PNABaseStep
     {
         #region Settings

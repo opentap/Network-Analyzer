@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Preset", Groups: new[] { "PNA-X" }, Description: "Insert a description here")]
+    [Display("Preset", Groups: new[] { "Network Analyzer" }, Description: "Insert a description here")]
     public class Preset : TestStep
     {
         #region Settings

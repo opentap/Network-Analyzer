@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Swept IMD Channel", Groups: new[] { "PNA-X", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
+    [Display("Swept IMD Channel", Groups: new[] { "Network Analyzer", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
     public class GeneralSweptIMDChannel : PNABaseStep
     {
         #region Settings

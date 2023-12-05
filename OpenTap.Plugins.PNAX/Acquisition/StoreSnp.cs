@@ -16,7 +16,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store SNP", Groups: new[] { "PNA-X", "Acquisition" }, Description: "Store SNP File")]
+    [Display("Store SNP", Groups: new[] { "Network Analyzer", "Acquisition" }, Description: "Store SNP File")]
     public class StoreSnpAdvanced : TestStep
     {
         #region Settings

@@ -89,7 +89,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [AllowAsChildIn(typeof(StandardNewTrace))]
-    [Display("Standard Single Trace", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
+    [Display("Standard Single Trace", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class StandardSingleTrace : SingleTraceBaseStep
     {
         private StandardTraceEnum _Meas;

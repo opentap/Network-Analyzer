@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Trigger Channels", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Triggers every channel")]
+    [Display("Trigger Channels", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Triggers every channel")]
     public class Measure : TestStep
     {
         #region Settings

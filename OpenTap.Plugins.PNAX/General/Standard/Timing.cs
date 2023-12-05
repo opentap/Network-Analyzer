@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [AllowAsChildIn(typeof(StandardChannel))]
-    [Display("Timing", Groups: new[] { "PNA-X", "General",  "Standard" }, Description: "Insert a description here")]
+    [Display("Timing", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class Timing : PNABaseStep
     {
         #region Settings

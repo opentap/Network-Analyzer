@@ -15,7 +15,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Displayed Trace Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Store all trace data on screen to CSV")]
+    [Display("Store Displayed Trace Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Store all trace data on screen to CSV")]
     public class StoreDispTraceData : TestStep
     {
         #region Settings

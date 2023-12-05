@@ -15,7 +15,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Screen Shot", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Store screen shot")]
+    [Display("Store Screen Shot", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Store screen shot")]
     public class StoreScreenShot : TestStep
     {
         #region Settings

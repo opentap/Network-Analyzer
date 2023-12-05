@@ -27,7 +27,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [Display("Gain Compression Frequency", Groups: new[] { "PNA-X", "General", "Gain Compression" }, Description: "Insert a description here")]
+    [Display("Gain Compression Frequency", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompressionFrequency : FrequencyBaseStep
     {
         #region Settings

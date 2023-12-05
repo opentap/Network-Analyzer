@@ -8,7 +8,7 @@ using System.IO;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Trace Data", Groups: new[] { "PNA-X", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
+    [Display("Store Trace Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
     public class StoreData : StoreDataBase
     {
         #region Settings

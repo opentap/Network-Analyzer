@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Gain Compression Channel", Groups: new[] { "PNA-X", "General", "Gain Compression" }, Description: "Insert a description here")]
+    [Display("Gain Compression Channel", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompressionChannel : PNABaseStep
     {
         #region Settings
