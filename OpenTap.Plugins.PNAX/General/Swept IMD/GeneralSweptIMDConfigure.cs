@@ -28,12 +28,17 @@ namespace OpenTap.Plugins.PNAX
     public class GeneralSweptIMDConfigure : PNABaseStep
     {
         #region Settings
-        [Display("Receiver Configuration", Groups: new[] { "Receiver Configuration"}, Order: 10)]
+        [Display("Enable Receiver Configuration", Groups: new[] { "Receiver Configuration" }, Order: 10)]
+        public bool EnableReceiverConfiguration { get; set; }
+
+        [EnabledIf(nameof(EnableReceiverConfiguration), true, HideIfDisabled = true)]
+        [Display("Receiver Configuration", Groups: new[] { "Receiver Configuration"}, Order: 11)]
         public ReceiverConfigurationEnumType ReceiverConfiguration { get; set; }
         #endregion
 
         public GeneralSweptIMDConfigure()
         {
+            EnableReceiverConfiguration = true;
             ReceiverConfiguration = ReceiverConfigurationEnumType.INT;
         }
 
@@ -41,8 +46,11 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.SetReceiverConfiguration(Channel, ReceiverConfiguration);
-            
+            if (EnableReceiverConfiguration)
+            {
+                PNAX.SetReceiverConfiguration(Channel, ReceiverConfiguration);
+            }
+
             UpgradeVerdict(Verdict.Pass);
         }
     }
