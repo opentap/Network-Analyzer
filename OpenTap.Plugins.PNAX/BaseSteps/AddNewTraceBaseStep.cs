@@ -11,7 +11,6 @@ namespace OpenTap.Plugins.PNAX
     public class AddNewTraceBaseStep : SingleTraceBaseStep
     {
         #region Settings
-
         [Browsable(false)]
         public bool EnableButton { get; set; } = true;
 
@@ -24,6 +23,12 @@ namespace OpenTap.Plugins.PNAX
             AddNewTrace();
         }
         #endregion
+
+        public override void UpdateTestStepName()
+        {
+            // No need to update Test Name on New Trace Test Step
+            // only on Single Trace
+        }
 
         public override void Run()
         {

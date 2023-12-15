@@ -96,7 +96,7 @@ namespace OpenTap.Plugins.PNAX
             measClass = "Noise Figure Cold Source";
         }
 
-        protected override void UpdateTestStepName()
+        public override void UpdateTestStepName()
         {
             string m = Scpi.Format("{0}", Meas);
             this.Trace = $"CH{Channel}_{m}";

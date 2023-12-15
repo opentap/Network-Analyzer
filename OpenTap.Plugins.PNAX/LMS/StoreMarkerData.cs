@@ -65,7 +65,7 @@ namespace OpenTap.Plugins.PNAX
                     Log.Info($"Looking for Markers for Channel{channel} Trace: {trace}");
 
                     // trace is MNUM in help file
-                    PNAX.ScpiCommand($"CALC{channel}:PAR:MNUM:SEL {trace}");
+                    PNAX.SelectMeasurement(channel, trace);
 
                     for (int mkr = 1; mkr < 16; mkr++)
                     {

@@ -69,7 +69,8 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _IMDTraceType = value;
-                if (_IMDTraceType == IMDTraceTypeEnum.TonePower)
+                if ((_IMDTraceType == IMDTraceTypeEnum.TonePower) ||
+                    (_IMDTraceType == IMDTraceTypeEnum.ToneGain))
                 {
                     IMDOrderOptions = new List<int> { 1, 2, 3, 5, 7, 9 };
                     IMDOrder = 1;

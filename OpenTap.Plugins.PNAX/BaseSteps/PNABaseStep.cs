@@ -57,6 +57,10 @@ namespace OpenTap.Plugins.PNAX
                     {
                         (a as PNABaseStep).Channel = value;
                     }
+                    if (a is SingleTraceBaseStep)
+                    {
+                        (a as SingleTraceBaseStep).UpdateTestStepName();
+                    }
                 }
             }
         }
