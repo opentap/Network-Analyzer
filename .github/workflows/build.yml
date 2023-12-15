@@ -31,27 +31,27 @@ jobs:
           retention-days: 14
           path: |
             OpenTap.Plugins.PNAX/bin/Release/*.TapPackage
-
-Publish:
-  # Only publish on the main branch, the release branch, or if the commit is tagged.
-  if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
-  runs-on:  ${{ matrix.os }}
-  # This step depends on the build step
-  needs:
-    - build-ubuntu
-  steps:
-    # Download the tap-package artifact from the Build step
-    - name: Download TapPackage Arfifact
-      uses: actions/download-artifact@v3
-      with:
-        name: tap-package
-        path: .
-    # Setup OpenTAP with the PackagePublish package in order to publish the newly created package
-    - name: Setup OpenTAP
-      uses: opentap/setup-opentap@v1.0
-      with:
-        version: 9.17.4
-        packages: "PackagePublish:rc"
-    # Publish the package. This requires the package management key to be configured in the 'PUBLIC_REPO_PASS' environment variable.
-    - name: Publish
-      run: tap package publish -r http://packages.opentap.io -k ${{ secrets.NETWORKANALYZERPLUGIN }} *.TapPackage
+            
+  Publish:
+    # Only publish on the main branch, the release branch, or if the commit is tagged.
+    if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
+    runs-on:  ${{ matrix.os }}
+    # This step depends on the build step
+    needs:
+      - build-ubuntu
+    steps:
+      # Download the tap-package artifact from the Build step
+      - name: Download TapPackage Arfifact
+        uses: actions/download-artifact@v3
+        with:
+          name: tap-package
+          path: .
+      # Setup OpenTAP with the PackagePublish package in order to publish the newly created package
+      - name: Setup OpenTAP
+        uses: opentap/setup-opentap@v1.0
+        with:
+          version: 9.17.4
+          packages: "PackagePublish:rc"
+      # Publish the package. This requires the package management key to be configured in the 'PUBLIC_REPO_PASS' environment variable.
+      - name: Publish
+        run: tap package publish -r http://packages.opentap.io -k ${{ secrets.NETWORKANALYZERPLUGIN }} *.TapPackage
