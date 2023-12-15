@@ -190,7 +190,7 @@ namespace OpenTap.Plugins.PNAX
                 foreach (var trace in traceNumList)
                 {
                     // trace is MNUM in help file
-                    ScpiCommand($"CALC{channel}:PAR:MNUM:SEL {trace}");
+                    SelectMeasurement(channel, trace);
                     var xString = ScpiQuery($"CALC{channel}:X:VAL?");
                     var xList = xString.Split(',').ToList();
                     int XCount = xList.Count;
@@ -258,7 +258,7 @@ namespace OpenTap.Plugins.PNAX
 
             // Return trace information
             // trace is MNUM in help file
-            ScpiCommand($"CALC{Channel}:PAR:MNUM:SEL {mnum}");
+            SelectMeasurement(Channel, mnum);
             var xString = ScpiQuery($"CALC{Channel}:X:VAL?");
             var xList = xString.Split(',').ToList();
 
@@ -324,7 +324,7 @@ namespace OpenTap.Plugins.PNAX
                 foreach (var trace in traceNumList)
                 {
                     // Select trace
-                    ScpiCommand($"CALC{channel}:PAR:MNUM:SEL {trace}");
+                    SelectMeasurement(channel, trace);
 
                     // Turn marker on
                     ScpiCommand($"CALC{channel}:MARK1:STAT 1");

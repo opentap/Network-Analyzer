@@ -89,9 +89,70 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        public bool GetTraceTitleState(int Window, int tnum)
+        {
+            return ScpiQuery<bool>($"DISPlay:WINDow{Window}:TRACe{tnum}:TITLe?");
+        }
+
+        public String GetTraceTitle(int Window, int tnum)
+        {
+            String titleData = ScpiQuery($"DISPlay:WINDow{Window}:TRACe{tnum}:TITLe:DATA?");
+            titleData = titleData.Replace("\"", "");
+            return titleData;
+        }
+
         public void SetTraceFormat(int Channel, int mnum, MeasurementFormatEnum meas)
         {
             ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FORMat {meas}");
+        }
+
+        public void SelectMeasurement(int Channel, int mnum)
+        {
+            ScpiCommand($"CALC{Channel}:PAR:MNUM:SEL {mnum}");
+        }
+
+        public void SelectMeasurement(int Channel, String mnum)
+        {
+            ScpiCommand($"CALC{Channel}:PAR:MNUM:SEL {mnum}");
+        }
+
+        public int GetSelectedTraceNumber(int Channel)
+        {
+            return ScpiQuery<int>($"CALC{Channel}:PAR:TNUMber?");
+        }
+
+        public int GetSelectedWindowNumber(int Channel)
+        {
+            return ScpiQuery<int>($"CALC{Channel}:PAR:WNUMber?");
+        }
+
+        public string GetTraceTitle(int Channel, int mnum, string MeasName)
+        {
+            // Set Active Measurement
+            SelectMeasurement(Channel, mnum);
+
+            // Get TNUM
+            int tnum = GetSelectedTraceNumber(Channel);
+
+            // Get WNUM
+            int wnum = GetSelectedWindowNumber(Channel);
+
+            // Get Trace Title using TNUM and WNUM
+            bool traceState = GetTraceTitleState(wnum, tnum);
+
+            if (traceState)
+            {
+                // Replace MeasName with TraceTitle
+                String traceTitle = GetTraceTitle(wnum, tnum);
+                MeasName = traceTitle;
+            }
+            else
+            {
+                // Title has not been set, 
+                // continue using MeasName
+            }
+
+            return MeasName;
         }
     }
 }

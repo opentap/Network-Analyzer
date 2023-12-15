@@ -29,6 +29,9 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("File Name", Groups: new[] { "Trace" }, Order: 22)]
         public string filename { get; set; }
+
+        [Display("Use Trace Title as Column Name", Groups: new[] { "Publish Results" }, Order: 23)]
+        public bool UseTraceTitle { get; set; }
         #endregion
 
         public StoreSingleTrace()
@@ -36,6 +39,7 @@ namespace OpenTap.Plugins.PNAX
             Channel = 1;
             mnum = 1;
             filename = "MyTrace";
+            UseTraceTitle = false;
         }
 
         public override void Run()
@@ -50,6 +54,10 @@ namespace OpenTap.Plugins.PNAX
             List<List<string>> results = PNAX.StoreTraceData(Channel, mnum);
             PNAX.WaitForOperationComplete();
             string MeasName = PNAX.GetTraceName(Channel, mnum);
+            if (UseTraceTitle)
+            {
+                MeasName = PNAX.GetTraceTitle(Channel, mnum, MeasName);
+            }
 
             var xResult = results.Where((item, index) => index % 2 == 0).ToList();
             var yResult = results.Where((item, index) => index % 2 != 0).ToList();

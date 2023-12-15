@@ -27,12 +27,16 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
         public Input<int> mnum { get; set; }
+
+        [Display("Use Trace Title as Column Name", Groups: new[] { "Publish Results" }, Order: 30)]
+        public bool UseTraceTitle { get; set; }
         #endregion
 
         public StoreSingleTraceAdvanced()
         {
             Channel = new Input<int>();
             mnum = new Input<int>();
+            UseTraceTitle = false;
         }
 
         public override void Run()
@@ -55,6 +59,12 @@ namespace OpenTap.Plugins.PNAX
 
             List<List<string>> results = PNAX.StoreTraceData(Channel.Value, mnum.Value);
             PNAX.WaitForOperationComplete();
+            string MeasName = x.MeasName;
+
+            if (UseTraceTitle)
+            {
+                MeasName = PNAX.GetTraceTitle(Channel.Value, mnum.Value, MeasName);
+            }
 
             var xResult = results.Where((item, index) => index % 2 == 0).ToList();
             var yResult = results.Where((item, index) => index % 2 != 0).ToList();
@@ -70,7 +80,7 @@ namespace OpenTap.Plugins.PNAX
             if (xResult[0].Count == yResult[0].Count)
             {
                 // one data per frequency point
-                ResultColumn resultColumn2 = new ResultColumn($"{x.MeasName}", yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
+                ResultColumn resultColumn2 = new ResultColumn($"{MeasName}", yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
                 resultColumns.Add(resultColumn2);
             }
             else
@@ -86,9 +96,9 @@ namespace OpenTap.Plugins.PNAX
                     point2[index] = twoPoints[j++];
                 }
 
-                ResultColumn resultColumni = new ResultColumn($"{x.MeasName}_i", point1);
+                ResultColumn resultColumni = new ResultColumn($"{MeasName}_i", point1);
                 resultColumns.Add(resultColumni);
-                ResultColumn resultColumnj = new ResultColumn($"{x.MeasName}_j", point2);
+                ResultColumn resultColumnj = new ResultColumn($"{MeasName}_j", point2);
                 resultColumns.Add(resultColumnj);
 
             }

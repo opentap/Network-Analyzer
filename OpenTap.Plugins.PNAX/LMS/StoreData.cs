@@ -24,6 +24,8 @@ namespace OpenTap.Plugins.PNAX
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csv")]
         public string LimitsFile { get; set; }
 
+        [Display("Use Trace Title as Column Name", Groups: new[] { "Publish Results" }, Order: 50)]
+        public bool UseTraceTitle { get; set; }
         #endregion
 
         public StoreData()
@@ -35,6 +37,7 @@ namespace OpenTap.Plugins.PNAX
             GroupByChannel = true;
 
             MetaData = new List<(string, object)>();
+            UseTraceTitle = false;
         }
 
         public override void Run()
@@ -96,10 +99,18 @@ namespace OpenTap.Plugins.PNAX
                                 resultColumns.Add(resultColumn);
                             }
 
+                            String TraceName = FullTraceName[i];
+                            int mnum = int.Parse(TraceName.Split('_').Last());
+
+                            if (UseTraceTitle)
+                            {
+                                TraceName = PNAX.GetTraceTitle(channel, mnum, TraceName);
+                            }
+
                             if (xResult[i].Count == yResult[i].Count)
                             {
                                 // one data per frequency point
-                                ResultColumn resultColumn = new ResultColumn($"{FullTraceName[i]}", yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                ResultColumn resultColumn = new ResultColumn($"{TraceName}", yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
                                 resultColumns.Add(resultColumn);
                             }
                             else
@@ -115,30 +126,29 @@ namespace OpenTap.Plugins.PNAX
                                     point2[index] = twoPoints[j++];
                                 }
 
-                                ResultColumn resultColumni = new ResultColumn($"{FullTraceName[i]}_i", point1);
+                                ResultColumn resultColumni = new ResultColumn($"{TraceName}_i", point1);
                                 resultColumns.Add(resultColumni);
-                                ResultColumn resultColumnj = new ResultColumn($"{FullTraceName[i]}_j", point2);
+                                ResultColumn resultColumnj = new ResultColumn($"{TraceName}_j", point2);
                                 resultColumns.Add(resultColumnj);
 
                             }
 
                             // Find if limit is turned on for this trace
-                            int mnum = int.Parse(FullTraceName[i].Split('_').Last());
                             bool limitON = PNAX.GetLimitTestOn(channel, mnum);
 
                             if (limitON)
                             {
                                 // append global pf
-                                ResultColumn resultColumn = new ResultColumn($"{FullTraceName[i]}_GlobalPF", pf[i].ToArray());
+                                ResultColumn resultColumn = new ResultColumn($"{TraceName}_GlobalPF", pf[i].ToArray());
                                 resultColumns.Add(resultColumn);
                                 if (resultColumn.Data.GetValue(0).Equals("Fail"))
                                 {
-                                    Log.Warning($"Trace: {FullTraceName[i]} failed limits!");
+                                    Log.Warning($"Trace: {TraceName} failed limits!");
                                     UpgradeVerdict(Verdict.Fail);
                                 }
 
                                 // append xaxisvalues
-                                resultColumn = new ResultColumn($"{FullTraceName[i]}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                resultColumn = new ResultColumn($"{TraceName}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
                                 if (false)
                                 {
                                     resultColumns.Add(resultColumn);
@@ -152,18 +162,18 @@ namespace OpenTap.Plugins.PNAX
                                     Verdict a = item == 1 ? Verdict.Pass : Verdict.Fail;
                                     pfByRow.Add(a.ToString());
                                 }
-                                resultColumn = new ResultColumn($"{FullTraceName[i]}_PF", pfByRow.ToArray());
+                                resultColumn = new ResultColumn($"{TraceName}_PF", pfByRow.ToArray());
                                 resultColumns.Add(resultColumn);
 
                                 // append upperlimit
-                                resultColumn = new ResultColumn($"{FullTraceName[i]}_UL", x3[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                resultColumn = new ResultColumn($"{TraceName}_UL", x3[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
                                 if ((double)resultColumn.Data.GetValue(0) != 3.40282346639E+38)
                                 {
                                     resultColumns.Add(resultColumn);
                                 }
 
                                 // append lowerlimit
-                                resultColumn = new ResultColumn($"{FullTraceName[i]}_LL", x4[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                resultColumn = new ResultColumn($"{TraceName}_LL", x4[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
                                 if ((double)resultColumn.Data.GetValue(0) != -3.40282346639E+38)
                                 {
                                     resultColumns.Add(resultColumn);
