@@ -281,7 +281,7 @@ namespace OpenTap.Plugins.PNAX
                 if (i % 2 == 0)
                 {
                     var traceinfo = tracesList[i].Split('_');
-                    if (int.Parse(traceinfo[2]) == mnum)
+                    if (int.Parse(traceinfo[(traceinfo.Length-1)]) == mnum) // custom traces such as CH1_PowerSupply_VM1_2 have more than 3 elements once they are split by '_', using the last item as the mnum
                     {
                         retVal = traceinfo[1];
                         return retVal;

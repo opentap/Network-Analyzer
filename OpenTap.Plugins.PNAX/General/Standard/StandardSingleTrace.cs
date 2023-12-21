@@ -41,8 +41,10 @@ namespace OpenTap.Plugins.PNAX
         Scd22,
         Scc22,
         [Display("Sds21/Scs21")]
+        [Scpi("Sds21/Scs21")]
         Sds21Scs21,
         [Display("Ssd12/Ssc12")]
+        [Scpi("Ssd12/Ssc12")]
         Ssd12Ssc12,
         A1,
         A2,
@@ -92,8 +94,11 @@ namespace OpenTap.Plugins.PNAX
     [Display("Standard Single Trace", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class StandardSingleTrace : SingleTraceBaseStep
     {
+
         private StandardTraceEnum _Meas;
-        [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
+
+        [EnabledIf(nameof(CustomTraceMeas), false, HideIfDisabled = true)]
+        [Display("Meas", Groups: new[] { "Trace" }, Order: 11.1)]
         public StandardTraceEnum Meas
         {
             get
@@ -103,7 +108,8 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Meas = value;
-                measEnumName = value.ToString();
+                string scpi = Scpi.Format("{0}", value);
+                measEnumName = scpi;    // value.ToString();
                 UpdateTestStepName();
             }
         }
