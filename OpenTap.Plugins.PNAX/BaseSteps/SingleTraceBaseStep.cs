@@ -24,10 +24,45 @@ namespace OpenTap.Plugins.PNAX
         [Display("Trace", Groups: new[] { "Trace" }, Order: 10)]
         public string Trace { get; set; }
 
+        private bool _CustomTraceMeas;
+        [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
+        [Display("Custom Meas", Groups: new[] { "Trace" }, Order: 10.9)]
+        public bool CustomTraceMeas
+        {
+            get
+            {
+                return _CustomTraceMeas;
+            }
+            set
+            {
+                _CustomTraceMeas = value;
+                UpdateTestStepName();
+            }
+        }
+
+        private string _CustomMeas;
+        [EnabledIf(nameof(CustomTraceMeas), true, HideIfDisabled = true)]
+        [Display("Meas", Groups: new[] { "Trace" }, Order: 11.2)]
+        public String CustomMeas
+        {
+            get
+            {
+                return _CustomMeas;
+            }
+            set
+            {
+                _CustomMeas = value;
+                if (CustomTraceMeas)
+                {
+                    //measEnumName = value.ToString();
+                    UpdateTestStepName();
+                }
+            }
+        }
+
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
         public int Window { get; set; }
-
 
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Sheet", Groups: new[] { "Trace" }, Order: 15)]
@@ -56,12 +91,15 @@ namespace OpenTap.Plugins.PNAX
 
         protected string measClass;
         protected string measEnumName;
+        protected string finalMeasEnumName;
 
         public SingleTraceBaseStep()
         {
             Trace = "1";
             Window = 1;
             Sheet = 1;
+            CustomTraceMeas = false;
+            CustomMeas = "Device0_AM1";
         }
 
         [Browsable(true)]
@@ -119,8 +157,17 @@ namespace OpenTap.Plugins.PNAX
 
         public virtual void UpdateTestStepName()
         {
-            Trace = $"CH{Channel}_{measEnumName}";
-            Name = $"CH{Channel}_{measEnumName}";
+            if (CustomTraceMeas)
+            {
+                finalMeasEnumName = CustomMeas;
+            }
+            else
+            {
+                finalMeasEnumName = measEnumName;
+            }
+
+            Trace = $"CH{Channel}_{finalMeasEnumName}";
+            Name = $"CH{Channel}_{finalMeasEnumName}";
         }
 
         public override void Run()
@@ -137,7 +184,14 @@ namespace OpenTap.Plugins.PNAX
             int _tnum = 0;
             int _mnum = 0;
             string _MeasName = "";
-            PNAX.AddNewTrace(Channel, Window, Trace, measClass, measEnumName, ref _tnum, ref _mnum, ref _MeasName);
+            //if (CustomTraceMeas)
+            //{
+            //    PNAX.AddNewTrace(Channel, Window, Trace, measClass, CustomMeas, ref _tnum, ref _mnum, ref _MeasName);
+            //}
+            //else
+            //{
+                PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
+            //}
             tnum = _tnum;
             mnum = _mnum;
             MeasName = _MeasName;
