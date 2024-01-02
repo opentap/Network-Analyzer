@@ -8,6 +8,8 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
 -->
 <Package Name="PNA-X" Version="$(GitVersion)" OS="Windows,Linux" Architecture="AnyCPU" xmlns="http://opentap.io/schemas/package">
   <Description>OpenTAP plugin for PNA-X Measurements.</Description>
+  <SourceUrl>https://github.com/opentap/Network-Analyzer</SourceUrl>
+  <SourceLicense>MIT</SourceLicense>
   <Files>
     <File Path="Packages/OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.dll" SourcePath="OpenTap.Plugins.PNAX.dll">
       <SetAssemblyInfo Attributes="Version"/>
