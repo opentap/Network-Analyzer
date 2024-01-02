@@ -35,7 +35,7 @@ jobs:
   Publish:
     # Only publish on the main branch, the release branch, or if the commit is tagged.
     if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
-    runs-on:  ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     # This step depends on the build step
     needs:
       - build-ubuntu
