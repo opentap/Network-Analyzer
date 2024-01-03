@@ -31,7 +31,20 @@ jobs:
           retention-days: 14
           path: |
             OpenTap.Plugins.PNAX/bin/Release/*.TapPackage
-            
+
+  Debug:
+    runs-on: ${{ matrix.os }}
+    # This step depends on the build step
+    strategy:
+      matrix:
+        os: [ ubuntu-20.04]
+    needs:
+      - build-ubuntu
+    steps:
+      # Debug
+      - name: Debug
+        run: echo "ref is ${{ github.ref }}"
+        
   Publish:
     # Only publish on the main branch, the release branch, or if the commit is tagged.
     if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
