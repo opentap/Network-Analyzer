@@ -58,8 +58,8 @@ jobs:
       - name: Download TapPackage Arfifact
         uses: actions/download-artifact@v3
         with:
-          name: tap-package
-          path: .
+          name: package
+          path: ./
       # Setup OpenTAP with the PackagePublish package in order to publish the newly created package
       - name: Setup OpenTAP
         uses: opentap/setup-opentap@v1.0
