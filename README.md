@@ -13,9 +13,9 @@ The Network Analyzer (NA) Plugin is an OpenTAP plugin designed for seamless cont
 
     Effortlessly parameterize test configurations within the PathWave Test Automation editor. This feature allows dynamic adjustment of test scenarios on the fly, enhancing flexibility and promoting comprehensive test coverage without manual intervention.
 
-* Data Acquisition and Measurement output
+* Data Acquisition and Measurement Output
 
-    The plugin offers robost data acquisition capabilities. You can capture, log, and save data from your network analyzer, enhancing your ability to monitor and optimize performance..
+    The plugin offers robost data acquisition capabilities. You can capture, log, and save data from your network analyzer, enhancing your ability to monitor and optimize performance.
 
 * Spectrum Analyzer (SA) Mode
   
@@ -23,7 +23,7 @@ The Network Analyzer (NA) Plugin is an OpenTAP plugin designed for seamless cont
 
 * Calibration
 
-    Perform calibration tasks through PathWave Test Automation editor without the need for intricate scripting. The plugin supports calibration routines, ensuring the accuracy and reliability of your network analyzer measurements.
+    Perform calibration tasks through PathWave Test Automation Editor without the need for intricate scripting. The plugin supports calibration routines, ensuring the accuracy and reliability of your network analyzer measurements.
 
 * Channel/Trace Setup
 
@@ -36,18 +36,18 @@ The Network Analyzer (NA) Plugin is an OpenTAP plugin designed for seamless cont
 Download the NA Plugin installer from [here](https://packages.opentap.io/)
 Run the installer and follow the on-screen instructions to complete the installation process.
 
-### Build from source (Windows with Visual Studio Installed):
+### Build from source (Windows with Visual Studio installed):
 ```
 git clone https://github.com/opentap/Network-Analyzer.git
 cd Network-Analyzer
 start OpenTap.Plugins.PNAX.sln
 ```
 
-## List of Supported Instrument
-All the keysight network analyzer with "NASCAR" firmware. The main testing environment for this plugin is N5247B.
+## List of Supported Instruments
+All the Keysight network analyzer with "NASCAR" firmware. The main testing environment for this plugin is N5247B.
 
 ## Support
-For any questions, issues, or assistance, please submit a ticket in this repo.
+For any questions, issues, or assistance, please submit an Issue in this repo.
 
 ## License
 The Network Analyzer Plugin is released under the MIT License. Feel free to use, modify, and distribute it in accordance with the terms of the license.
