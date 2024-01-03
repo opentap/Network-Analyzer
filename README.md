@@ -44,7 +44,7 @@ start OpenTap.Plugins.PNAX.sln
 ```
 
 ## List of Supported Instruments
-All the Keysight network analyzer with "NASCAR" firmware. The main testing environment for this plugin is N5247B.
+All active Keysight Network Analyzers with recent firmware. The main testing environment for this plugin is the N5247B.
 
 ## Support
 For any questions, issues, or assistance, please submit an Issue in this repo.
