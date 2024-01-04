@@ -68,7 +68,7 @@ jobs:
       - name: Install PackagePublish
         run: tap package install -f PackagePublish --version beta
       - name: Install Repository Client
-        run: tap package install -f "Repository Client" --version 1.0
+        run: tap package install -f "Repository Client"
       - name: Display Package Installed
         run: tap package list -i
       # Publish the package. This requires the package management key to be configured in the 'PUBLIC_REPO_PASS' environment variable.
