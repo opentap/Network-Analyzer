@@ -47,19 +47,19 @@ start OpenTap.Plugins.PNAX.sln
 All active Keysight Network Analyzers with recent firmware. You can check the compatibility in below table. The main testing environment for this plugin is the N5245B.
 
 | VNA Family | Supported Instruments |
-| :---       | :----:                |
+| :---:      | :----                 |
 | PNA        | N522xB                |
-|            | N523xB                |
-|^           | N523xB                |
+| PNA        | N523xB                |
+| PNA        | N523xB                |
 | ENA        | E5080A                |
-|            | E5080B                |
-|^           | E5081A                |
+| ENA        | E5080B                |
+| ENA        | E5081A                |
 | PXI        | M983xA                |
-|            | M980xA                |
-|^           | M937xA                |
+| PXI        | M980xA                |
+| PXI        | M937xA                |
 | Streamline | P50xxA/B              |
-|            | P937xA/B              |
-|^           | P938xB                |
+| Streamline | P937xA/B              |
+| Streamline | P938xB                |
 
 ## Support
 For any questions, issues, or assistance, please submit an Issue in this repo.
