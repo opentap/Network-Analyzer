@@ -152,7 +152,10 @@ namespace OpenTap.Plugins.PNAX
         public void Preset()
         {
             ScpiCommand("SYST:FPR");
-            ScpiCommand("DISP:WIND OFF");
+            if (!IsModelA)
+            {
+                ScpiCommand("DISP:WIND OFF");
+            }
             WaitForOperationComplete();
             mnum = 1;
         }
