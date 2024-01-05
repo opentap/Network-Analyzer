@@ -48,18 +48,18 @@ All active Keysight Network Analyzers with recent firmware. You can check the co
 
 | VNA Family | Supported Instruments |
 | :---:      | :----                 |
-| PNA        | N522xB                |
-| PNA        | N523xB                |
-| PNA        | N523xB                |
+| PNA        | N5221B, N5222B, N5224B, N5225B, N5227B |
+| PNA        | N5231B, N5232B, N5234B, N5235B, N5239B |
+| PNA        | N5241B, N5242B, N5244B, N5245B, N5247B, N5249B |
 | ENA        | E5080A                |
 | ENA        | E5080B                |
 | ENA        | E5081A                |
-| PXI        | M983xA                |
-| PXI        | M980xA                |
-| PXI        | M937xA                |
-| Streamline | P50xxA/B              |
-| Streamline | P937xA/B              |
-| Streamline | P938xB                |
+| PXI        | M9370A, M9371A, M9372A, M9373A, M9374A, M9375A |
+| PXI        | M9800A, M9801A, M9802A, M9803A, M9804A, M9805A, M9806A, M9807A, M9808A |
+| PXI        | M9370A, M9371A, M9372A, M9373A, M9374A, M9375A |
+| Streamline | P5000A, P5001A, P5002A, P5003A, P5004A, P5005A, P5006A, P5007A, P5008A, P5020A, P5021A, P5022A, P5023A, P5024A, P5025A, P5026A, P5027A, P5028A, P5000B, P5001B, P5002B, P5003B, P5004B, P5005B, P5006B, P5007B, P5008B, P5020B, P5021B, P5022B, P5023B, P5024B, P5025B, P5026B, P5027B, P5028B |
+| Streamline | P9370A, P9371A, P9372A, P9373A, P9374A, P9375A, P9377B, P9382B, P9384B, P9370B, P9371B, P9372B, P9373B, P9374B, P9375B |
+| Streamline | M9815AS, M9816AS, M9817AS, M9818AS, M9815A, M9816A, M9817A, M9818A, M9810A, M9834A, M9837A |
 
 ## Support
 For any questions, issues, or assistance, please submit an Issue in this repo.
