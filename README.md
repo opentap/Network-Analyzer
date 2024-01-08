@@ -33,7 +33,7 @@ The Network Analyzer (NA) Plugin is an OpenTAP plugin designed for seamless cont
 
 ### Installation:
 
-Download the NA Plugin installer from [here](https://packages.opentap.io/)
+Download the NA Plugin installer from [here](https://packages.opentap.io/#name=%2FPackages%2FNetwork+Analyzer&version=0.5.14%2B41b8f68e&os=Windows%2CLinux&architecture=AnyCPU)
 Run the installer and follow the on-screen instructions to complete the installation process.
 
 ### Build from source (Windows with Visual Studio installed):
