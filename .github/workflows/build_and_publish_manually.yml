@@ -1,7 +1,12 @@
 name: Manually Build and Publish Branch
 
 on: 
-  workflow_dispatch: {}
+  workflow_dispatch: 
+    inputs:
+      publish:
+        description: 'Publish to packages.opentap.io'
+        required: false
+        type: boolean
 
 jobs:
   build-ubuntu:
@@ -34,6 +39,7 @@ jobs:
             OpenTap.Plugins.PNAX/bin/Release/*.TapPackage
         
   Publish:
+    if: ${{ inputs.publish }}
     environment: packages.opentap.io
     runs-on: ubuntu-20.04
     # This step depends on the build step
