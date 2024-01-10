@@ -131,7 +131,24 @@ namespace OpenTap.Plugins.PNAX.General
         {
             List<(string, object)> retVal = new List<(string, object)>();
 
+            retVal.Add(($"ControlledSource", ControlledSource));
+
+            retVal.Add(($"{ControlledSource} EnableLeveling", EnableLeveling));
             retVal.Add(($"{ControlledSource} LevelingReceiver", LevelingReceiver));
+            retVal.Add(($"{ControlledSource} LevelingType", receiverLevelingType));
+
+            retVal.Add(($"{ControlledSource} MaxPower", MaxPower));
+            retVal.Add(($"{ControlledSource} MinPower", MinPower));
+            retVal.Add(($"{ControlledSource} EnableSafeModeLeveling", EnableSafeModeLeveling));
+            retVal.Add(($"{ControlledSource} SafeMaxStepSize", SafeMaxStepSize));
+            retVal.Add(($"{ControlledSource} UpdateSourcePowerCalibration", EnableUpdateSourcePowerCalibration));
+            retVal.Add(($"{ControlledSource} SourceALCHardware", sourceLevelingMode));
+
+            retVal.Add(($"{ControlledSource} {LevelingReceiver} LevelingTolerance", LevelingTolerance));
+            retVal.Add(($"{ControlledSource} {LevelingReceiver} LevelingMaxIterations", LevelingMaxIterations));
+            retVal.Add(($"{ControlledSource} {LevelingReceiver} receiverLevelingFrequency", receiverLevelingFType));
+            retVal.Add(($"{ControlledSource} {LevelingReceiver} LevelingIFBW", LevelingIFBW));
+            retVal.Add(($"{ControlledSource} {LevelingReceiver} ReceiverLevelingIFBW", receiverLevelingIFBW));
 
             return retVal;
         }
