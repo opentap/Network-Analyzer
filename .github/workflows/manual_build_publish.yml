@@ -1,4 +1,4 @@
-name: Manually Build / Publish Branch
+name: Manual Build / Publish Branch
 
 on: 
   workflow_dispatch: 
@@ -9,7 +9,7 @@ on:
         type: boolean
 
 jobs:
-  build-ubuntu:
+  manual-build-ubuntu:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -38,13 +38,13 @@ jobs:
           path: |
             OpenTap.Plugins.PNAX/bin/Release/*.TapPackage
         
-  Publish:
+  manual-publish:
     if: ${{ inputs.publish }}
     environment: packages.opentap.io
     runs-on: ubuntu-20.04
     # This step depends on the build step
     needs:
-      - build-ubuntu
+      - manual-build-ubuntu
     steps:
       # Download the tap-package artifact from the Build step
       - name: Download TapPackage Arfifact
