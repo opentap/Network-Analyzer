@@ -1,4 +1,4 @@
-name: Manually Build and Publish Branch
+name: Manually Build / Publish Branch
 
 on: 
   workflow_dispatch: 
