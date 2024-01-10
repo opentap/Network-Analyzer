@@ -19,7 +19,7 @@ namespace OpenTap.Plugins.PNAX.General
     public class ReceiverLevelingSource : PNABaseStep
     {
         #region Settings
-        [Display("Controlled Source", Group: "Controlled Source Properties", Order: 20)]
+        [Display("Controlled Source", Group: "Receiver Leveling Setup", Order: 20)]
         public string ControlledSource
         {
             get
@@ -32,18 +32,96 @@ namespace OpenTap.Plugins.PNAX.General
             }
         }
 
-        [Display("Leveling Receiver", Group: "Controlled Source Properties", Order: 22)]
+        [Display("Enabling Leveling", Group: "Receiver Leveling Setup", Order: 21)]
+        public bool EnableLeveling { get; set; }
+
+        [Display("Leveling Receiver", Group: "Receiver Leveling Setup", Order: 22)]
         public string LevelingReceiver { get; set; }
+
+        [Display("Leveling Type", Group: "Receiver Leveling Setup", Order: 23)]
+        public ReceiverLevelingTypeEnum receiverLevelingType { get; set; }
+
+
+
+        [Display("Max Power", Group: "Controlled Source", Order: 30)]
+        public double MaxPower { get; set; }
+
+        [Display("Min Power", Group: "Controlled Source", Order: 31)]
+        public double MinPower { get; set; }
+
+        [Display("Enable Safe Mode Leveling", Group: "Controlled Source", Order: 32)]
+        public bool EnableSafeModeLeveling { get; set; }
+
+        [EnabledIf("EnableSafeModeLeveling", true, HideIfDisabled = false)]
+        [Display("Max Step Size", Group: "Controlled Source", Order: 33)]
+        public double SafeMaxStepSize { get; set; }
+
+        [Display("Update Source Power Calibration with Leveling Data", Group: "Controlled Source", Order: 34)]
+        public bool EnableUpdateSourcePowerCalibration { get; set; }
+
+        [Display("Source ALC Hardware", Group: "Controlled Source", Order: 35)]
+        public SourceLevelingModeType sourceLevelingMode { get; set; }
+
+
+        [Display("Leveling Tolerance", Group: "Leveling Receiver", Order: 40)]
+        public double LevelingTolerance { get; set; }
+
+        [Display("Leveling Max Iterations", Group: "Leveling Receiver", Order: 41)]
+        public int LevelingMaxIterations { get; set; }
+
+        [Display("Leveling Receiver Frequency", Group: "Leveling Receiver", Order: 42)]
+        public ReceiverLevelingFTypeEnum receiverLevelingFType { get; set; }
+
+        [Display("Leveling IFBW", Group: "Leveling Receiver", Order: 43)]
+        public bool LevelingIFBW { get; set; }
+
+        [Display("IFBW", Group: "Leveling Receiver", Order: 44)]
+        public ReceiverLevelingIFBWEnum receiverLevelingIFBW { get; set; }
+
+
         #endregion
 
         public ReceiverLevelingSource()
         {
+            EnableLeveling = false;
+            receiverLevelingType = ReceiverLevelingTypeEnum.Presweep;
+            MaxPower = 30.0;
+            MinPower = -120;
+            EnableSafeModeLeveling = false;
+            SafeMaxStepSize = 1;
+            EnableUpdateSourcePowerCalibration = false;
+            sourceLevelingMode = SourceLevelingModeType.INTernal;
 
+            LevelingTolerance = 0.1;
+            LevelingMaxIterations = 10;
+            receiverLevelingFType = ReceiverLevelingFTypeEnum.Auto;
+            LevelingIFBW = false;
+            receiverLevelingIFBW = ReceiverLevelingIFBWEnum.IFBW_100k;
         }
 
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.
+
+            PNAX.SetReferenceReceiver(Channel, ControlledSource, LevelingReceiver);
+            PNAX.ReceiverLevelingType(Channel, ControlledSource, receiverLevelingType);
+
+            PNAX.ReceiverLevelingMaxPower(Channel, ControlledSource, MaxPower);
+            PNAX.ReceiverLevelingMinPower(Channel, ControlledSource, MinPower);
+            PNAX.ReceiverLevelingEnableSafeMode(Channel, ControlledSource, EnableSafeModeLeveling);
+            PNAX.ReceiverLevelingSafeModeStepPowerLevel(Channel, ControlledSource, SafeMaxStepSize);
+            PNAX.ReceiverLevelingUpdateSourcePowerCal(Channel, ControlledSource, EnableUpdateSourcePowerCalibration);
+            PNAX.ReceiverLevelingSourceALC(Channel, ControlledSource, sourceLevelingMode);
+
+            PNAX.ReceiverLevelingTolerance(Channel, ControlledSource, LevelingTolerance);
+            PNAX.ReceiverLevelingMaxIterations(Channel, ControlledSource, LevelingMaxIterations);
+            //PNAX.ReceiverLevelingMaxIterationsEnable(Channel, ControlledSource, true);    
+            PNAX.ReceiverLevelingFrequency(Channel, ControlledSource, receiverLevelingFType);
+            PNAX.ReceiverLevelingIFBW(Channel, ControlledSource, LevelingIFBW);
+            PNAX.ReceiverIFBW(Channel, ControlledSource, receiverLevelingIFBW);
+
+            // Last enable receiver leveling
+            PNAX.ReceiverLevelingState(Channel, ControlledSource, EnableLeveling);
 
             UpgradeVerdict(Verdict.Pass);
         }
