@@ -15,8 +15,10 @@ namespace OpenTap.Plugins.PNAX
 {
     public enum SourceLevelingModeType
     {
+        [Scpi("INTernal")]
         [Display("Internal")]
         INTernal,
+        [Scpi("OPENloop")]
         [Display("Open Loop")]
         OPENloop
     }
