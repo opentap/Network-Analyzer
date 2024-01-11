@@ -1,9 +1,15 @@
-name: Build Plugin .TapPackage
+name: Manual Build / Publish Branch
 
-on: [push, pull_request]
+on: 
+  workflow_dispatch: 
+    inputs:
+      publish:
+        description: 'Publish to packages.opentap.io'
+        required: false
+        type: boolean
 
 jobs:
-  build-ubuntu:
+  manual-build-ubuntu:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -31,15 +37,14 @@ jobs:
           retention-days: 14
           path: |
             OpenTap.Plugins.PNAX/bin/Release/*.TapPackage
-
-  Publish:
-    # Only publish on the main branch, the release branch, or if the commit is tagged.
-    if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
+        
+  manual-publish:
+    if: ${{ inputs.publish }}
     environment: packages.opentap.io
     runs-on: ubuntu-20.04
     # This step depends on the build step
     needs:
-      - build-ubuntu
+      - manual-build-ubuntu
     steps:
       # Download the tap-package artifact from the Build step
       - name: Download TapPackage Arfifact
