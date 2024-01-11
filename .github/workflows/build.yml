@@ -60,4 +60,4 @@ jobs:
         run: tap package list -i
       # Publish the package. This requires the package management key to be configured in the 'PUBLIC_REPO_PASS' environment variable.
       - name: Publish
-        run: tap repo upload -t ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} "*.TapPackage"
+        run: tap repo upload -v -t ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} "*.TapPackage"
