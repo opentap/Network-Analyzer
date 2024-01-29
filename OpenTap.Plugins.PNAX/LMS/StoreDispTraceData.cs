@@ -58,6 +58,9 @@ namespace OpenTap.Plugins.PNAX.LMS
 
             PNAX.SaveDispState(dir);
 
+            // Supported child steps will provide MetaData to be added to the publish table
+            RunChildSteps();
+
             UpgradeVerdict(Verdict.Pass);
         }
 

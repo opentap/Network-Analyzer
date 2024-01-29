@@ -11,10 +11,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenTap.Plugins.PNAX.LMS;
 //using Newtonsoft.Json;
 
 namespace OpenTap.Plugins.PNAX
 {
+    [AllowAsChildIn(typeof(TestPlan))]
+    [AllowAsChildIn(typeof(StoreData))]
+    [AllowAsChildIn(typeof(StoreDispTraceData))]
     [AllowAsChildIn(typeof(StoreMultiPeakSearch))]
     [Display("Store Marker Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
     public class StoreMarkerData : StoreDataBase
