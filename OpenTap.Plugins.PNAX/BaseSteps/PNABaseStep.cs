@@ -19,7 +19,7 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
 
         [Browsable(false)]
-        public bool IsControlledByParent { get; set; } = true;
+        public bool IsControlledByParent { get; set; } = false;
         private PNAX _PNAX;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]

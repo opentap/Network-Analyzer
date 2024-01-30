@@ -280,6 +280,27 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        public void ScpiCommand(string command, int timeOut)
+        {
+            base.ScpiCommand(command);
+
+            if (IsWaitForOpc)
+            {
+                WaitForOperationComplete(timeOut);
+            }
+
+            if (IsQueryForErrors)
+            {
+                List<ScpiError> errors = base.QueryErrors();
+
+                if (errors.Count > 0)
+                {
+                    string errorString = string.Join(",", errors.ToArray());
+                    throw new Exception($"Error: {errorString} while sending command: {command}");
+                }
+            }
+        }
+
         public override string ScpiQuery(string query, bool isSilent = false)
         {
             string strRet = base.ScpiQuery(query, isSilent);
@@ -316,6 +337,35 @@ namespace OpenTap.Plugins.PNAX
             retString = retString.Replace("\"", "");
             List<string> retVal = retString.Split(',').ToList<string>();
             return retVal;
+        }
+
+        public List<string> CalsetCatalog()
+        {
+            string retString = ScpiQuery($"CSET:CATalog?");
+            retString = retString.Replace("\"", "");
+            List<string> retVal = retString.Split(',').ToList<string>();
+            return retVal;
+        }
+
+        public void LoadCalset(int Channel, string calset, bool UseCalSetStimulus = true)
+        {
+            String StateStr = "OFF";
+            if (UseCalSetStimulus)
+            {
+                StateStr = "ON";
+            }
+
+            List<String> calsets = CalsetCatalog();
+
+            // Find if any of the calsets on the instruments matches the desired calset
+            bool calset_exists = calsets.Any(s => s.Equals(calset));
+
+            if (!calset_exists)
+            {
+                throw new Exception("selected Cal set does not exist!");
+            }
+
+            ScpiCommand($"SENSe{Channel}:CORRection:CSET:ACTivate \"{calset}, {StateStr}");
         }
     }
 }
