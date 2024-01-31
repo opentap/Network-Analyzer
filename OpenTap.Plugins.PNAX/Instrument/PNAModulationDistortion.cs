@@ -298,8 +298,23 @@ namespace OpenTap.Plugins.PNAX
         ACPAvgDist21dBc = 64
     }
 
-    
+    public enum MODAntialiasFilterEnum
+    {
+        [Scpi("NARR")]
+        Narrow,
+        [Scpi("WIDE")]
+        Wide,
+        [Scpi("AUTO")]
+        Auto
+    }
 
+    public enum MODFilterEnum
+    {
+        [Scpi("NONE")]
+        None,
+        [Scpi("RRC")]
+        RRC
+    }
 
     public partial class PNAX : ScpiInstrument
     {
@@ -521,6 +536,63 @@ namespace OpenTap.Plugins.PNAX
                 StateStr = "DISTortion";
             }
             ScpiCommand($"DISPlay:WINDow{wnum}:TABLe {StateStr}");
+        }
+
+        public void MODCorrelationAperture(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:CORRelation:APERture {value}");
+        }
+
+        public void MODCorrelationApertureAuto(int Channel, bool state)
+        {
+            String StateStr = "OFF";
+            if (state)
+            {
+                StateStr = "ON";
+            }
+            ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:CORRelation:APERture:AUTO:STATe {StateStr}");
+        }
+
+        public void MODAntialiasFilter(int Channel, MODAntialiasFilterEnum antialiasFilter)
+        {
+            string modAntialiasFilter = Scpi.Format("{0}", antialiasFilter);
+            ScpiCommand($"SENSe{Channel}:DISTortion:ADC:FILTer:TYPE {modAntialiasFilter}");
+        }
+
+        public void MODEVMNormalization(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:EVM:NORMalize {value}");
+        }
+
+        public void MODDutNF(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:DUT:NOMinal:NF {value}");
+        }
+
+        public void MODFilter(int Channel, MODFilterEnum filter)
+        {
+            string Filter = Scpi.Format("{0}", filter);
+            ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:FILTer {Filter}");
+        }
+
+        public void MODFilterAlpha(int Channel, int alpha)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:FILTer:ALPHa {alpha}");
+        }
+
+        public void MODFilterSymbolRate(int Channel, double srate)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:FILTer:SRATe {srate}");
+        }
+
+        public void MODFilterSymbolRateAuto(int Channel, bool state)
+        {
+            String StateStr = "OFF";
+            if (state)
+            {
+                StateStr = "ON";
+            }
+            ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:FILTer:SRATe:AUTO:STATe {StateStr}");
         }
     }
 }

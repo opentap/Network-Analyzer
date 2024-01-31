@@ -67,6 +67,59 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double MODNPRIBW { get; set; }
 
+
+
+        [Display("Measurement Details", Group: "Measurement Details", Order: 30)]
+        public bool EnableMeasurementDetails { get; set; }
+
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [Display("Equalization Aperture", Group: "Measurement Details", Order: 31)]
+        public bool EqualizationApertureAuto { get; set; }
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [EnabledIf("EqualizationApertureAuto", false, HideIfDisabled = true)]
+        [Display("Equalization Aperture", Group: "Measurement Details", Order: 32)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
+        public double EqualizationAperture { get; set; }
+
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [Display("ADC Anti-alias Filter", Group: "Measurement Details", Order: 33)]
+        public MODAntialiasFilterEnum MODAntialiasFilter { get; set; }
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [Display("EVM Normalization", Group: "Measurement Details", Order: 34)]
+        public double EVMNormalization { get; set; }
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [Display("Modulation Filter", Group: "Measurement Details", Order: 35)]
+        public MODFilterEnum MODFilter { get; set; }
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [EnabledIf("MODFilter", MODFilterEnum.RRC, HideIfDisabled = true)]
+        [Display("Symbol Rate Auto", Group: "Measurement Details", Order: 36)]
+        public bool SymbolRateAuto { get; set; }
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [EnabledIf("MODFilter", MODFilterEnum.RRC, HideIfDisabled = true)]
+        [EnabledIf("SymbolRateAuto", false, HideIfDisabled = true)]
+        [Display("Alpha", Group: "Measurement Details", Order: 37)]
+        public int MODAlpha { get; set; }
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [EnabledIf("MODFilter", MODFilterEnum.RRC, HideIfDisabled = true)]
+        [EnabledIf("SymbolRateAuto", false, HideIfDisabled = true)]
+        [Display("Symbol Rate", Group: "Measurement Details", Order: 38)]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
+        public double SymbolRate { get; set; }
+
+
+        [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
+        [Display("DUT NF", Group: "Measurement Details", Order: 39)]
+        [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
+        public double DutNF { get; set; }
+
         #endregion
 
         public MODMeasure()
@@ -84,6 +137,19 @@ namespace OpenTap.Plugins.PNAX
 
             MODNPROffset = 0;
             MODNPRIBW = 10e6;
+
+            Rules.Add(() => ((EVMNormalization >= 0.1) && (EVMNormalization <= 1)), "EVM normalization must be between 0.1 and 1", nameof(EVMNormalization));
+            Rules.Add(() => ((MODAlpha >= 0) && (MODAlpha <= 1)), "Alpha must be between 0 and 1", nameof(MODAlpha));
+            EnableMeasurementDetails = false;
+            EqualizationAperture = 10.24e6;
+            EqualizationApertureAuto = true;
+            MODAntialiasFilter = MODAntialiasFilterEnum.Auto;
+            EVMNormalization = 1;
+            MODFilter = MODFilterEnum.None;
+            MODAlpha = 0;
+            SymbolRate = 10e6;
+            SymbolRateAuto = true;
+            DutNF = 0;
         }
 
         public override void Run()
@@ -116,6 +182,26 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.MODSetIBW(Channel, MODNPRIBW, MODMeasConfigTypeEnum.Notch);
                 }
             }
+
+            if (EnableMeasurementDetails)
+            {
+                PNAX.MODCorrelationApertureAuto(Channel, EqualizationApertureAuto);
+                if (!EqualizationApertureAuto)
+                {
+                    PNAX.MODCorrelationAperture(Channel, EqualizationAperture);
+                }
+                PNAX.MODAntialiasFilter(Channel, MODAntialiasFilter);
+                PNAX.MODEVMNormalization(Channel, EVMNormalization);
+                PNAX.MODFilter(Channel, MODFilter);
+                PNAX.MODFilterSymbolRateAuto(Channel, SymbolRateAuto);
+                if (!SymbolRateAuto)
+                {
+                    PNAX.MODFilterAlpha(Channel, MODAlpha);
+                    PNAX.MODFilterSymbolRate(Channel, SymbolRate);
+                }
+                PNAX.MODDutNF(Channel, DutNF);
+            }
+
             UpgradeVerdict(Verdict.Pass);
         }
     }
