@@ -8,7 +8,9 @@ using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace OpenTap.Plugins.PNAX
@@ -19,23 +21,52 @@ namespace OpenTap.Plugins.PNAX
     public class MODSaveDistortionTable : PNABaseStep
     {
         #region Settings
-        [Display("Modulation Distortion File", Group: "Settings", Order: 11)]
-        public String ModulationDistortionFile { get; set; }
+        [Display("Modulation Distortion File", Groups: new[] { "File Name Details" }, Order: 30)]
+        public MacroString ModulationDistortionFile { get; set; }
 
+        [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
+        public bool IsCustomPath { get; set; }
+
+        [EnabledIf("IsCustomPath", true, HideIfDisabled = true)]
+        [DirectoryPath]
+        [Display("Custom Path", Groups: new[] { "File Name Details" }, Order: 32)]
+        public MacroString CustomPath { get; set; }
         #endregion
 
         public MODSaveDistortionTable()
         {
-            ModulationDistortionFile = "myModDistortionTable.csv";
+            ModulationDistortionFile = new MacroString(this) { Text = "myModDistortionTable" };
+            IsCustomPath = false;
+            CustomPath = new MacroString(this) { Text = @"C:\" };
         }
 
         public override void Run()
         {
-            RunChildSteps(); //If the step supports child steps.
+            UpgradeVerdict(Verdict.NotSet);
 
-            PNAX.MODSaveDistortionTable(Channel, ModulationDistortionFile);
+            string dir = "";
+            if (IsCustomPath)
+            {
+                dir = Path.Combine(CustomPath.Expand(PlanRun), ModulationDistortionFile.Expand(PlanRun) + ".csv"); ;
+            }
+            else
+            {
+                String assemblyDir = AssemblyDirectory();
+                dir = Path.Combine(assemblyDir, "Results", ModulationDistortionFile.Expand(PlanRun) + ".csv");
+            }
+
+
+            PNAX.MODSaveDistortionTable(Channel, dir);
 
             UpgradeVerdict(Verdict.Pass);
+        }
+
+        public string AssemblyDirectory()
+        {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
         }
     }
 }

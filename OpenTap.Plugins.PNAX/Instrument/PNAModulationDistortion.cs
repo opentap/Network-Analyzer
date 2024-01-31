@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
@@ -383,9 +384,36 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery($"SOURce{Channel}:MODulation:CORRection:COLLection:ACQuire:DETails? \"{port}\"");
         }
 
-        public void MODSaveDistortionTable(int Channel, string filename)
+        public void MODSaveDistortionTable(int Channel, string FullFileName)
         {
-            ScpiCommand($"SENSe{Channel}:DISTortion:TABLe:DISPlay:SAVE \"{filename}\"");
+            string FileName = Path.GetFileName(FullFileName);
+            string FilePath = Path.GetDirectoryName(FullFileName);
+            string InstrumentFileName = "";
+            string InstrumentFolderName = "";
+
+            InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
+            InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
+
+            ChangeFolder(InstrumentFolderName);
+
+            // Save csv data to local folder on instrument: <documents>\<mode>\screen
+            ScpiCommand($"SENSe{Channel}:DISTortion:TABLe:DISPlay:SAVE \"{InstrumentFileName}\"");
+
+            // Make sure folder exists on local PC
+            bool exists = System.IO.Directory.Exists(FilePath);
+            if (!exists)
+                System.IO.Directory.CreateDirectory(FilePath);
+
+            // Copy from instrument to local PC
+            byte[] filedata = ScpiQueryBlock(string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+
+            // Write file at local PC
+            File.WriteAllBytes(FullFileName, filedata);
+
+            // Delete File from instrument
+            ScpiCommand(string.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+
+            QueryErrors();
         }
 
         public string MODGetCalibrationStatus(int Channel, string port)

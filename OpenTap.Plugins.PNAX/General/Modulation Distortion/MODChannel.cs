@@ -25,10 +25,10 @@ namespace OpenTap.Plugins.PNAX
             IsControlledByParent = false;
             Channel = 1;
 
-            MODModulate modModulate = new MODModulate { IsControlledByParent = true, Channel = this.Channel };
-            MODMeasure modMeasure = new MODMeasure { IsControlledByParent = true, Channel = this.Channel };
             // Traces
             MODNewTrace modNewTrace = new MODNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            MODModulate modModulate = new MODModulate { IsControlledByParent = true, Channel = this.Channel };
+            MODMeasure modMeasure = new MODMeasure { IsControlledByParent = true, Channel = this.Channel };
 
             this.ChildTestSteps.Add(modModulate);
             this.ChildTestSteps.Add(modMeasure);
