@@ -322,8 +322,13 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetSweepMode(int Channel, SweepModeEnumType sweepMode)
         {
+            int deftimeout = IoTimeout;
+            IoTimeout = 60000;
+
             string scpi = Scpi.Format("{0}", sweepMode);
             ScpiCommand($"SENSe{Channel}:SWEep:MODE {scpi}");
+
+            IoTimeout = deftimeout;
         }
 
         public void SendTrigger(int Channel)

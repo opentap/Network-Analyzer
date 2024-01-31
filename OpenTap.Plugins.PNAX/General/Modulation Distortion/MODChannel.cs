@@ -17,13 +17,16 @@ namespace OpenTap.Plugins.PNAX
     public class MODChannel : PNABaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
+
+        [Display("Sweep Mode", Group: "Settings", Order: 10)]
+        public SweepModeEnumType sweepMode { get; set; }
         #endregion
 
         public MODChannel()
         {
             IsControlledByParent = false;
             Channel = 1;
+            sweepMode = SweepModeEnumType.SING;
 
             // Traces
             MODNewTrace modNewTrace = new MODNewTrace { IsControlledByParent = true, Channel = this.Channel };
@@ -47,6 +50,8 @@ namespace OpenTap.Plugins.PNAX
             PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Modulation Distortion\',\'PIn1\'");
 
             RunChildSteps(); //If the step supports child steps.
+
+            PNAX.SetSweepMode(Channel, SweepModeEnumType.SING);
 
             UpgradeVerdict(Verdict.Pass);
         }
