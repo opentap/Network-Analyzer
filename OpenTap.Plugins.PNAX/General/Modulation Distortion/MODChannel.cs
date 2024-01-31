@@ -31,6 +31,7 @@ namespace OpenTap.Plugins.PNAX
             // Traces
             MODNewTrace modNewTrace = new MODNewTrace { IsControlledByParent = true, Channel = this.Channel };
             MODModulate modModulate = new MODModulate { IsControlledByParent = true, Channel = this.Channel };
+            MODSourceCorrection modSourceCorrection = new MODSourceCorrection { IsControlledByParent = true, Channel = this.Channel };
             MODSweep modSweep = new MODSweep { IsControlledByParent = true, Channel = this.Channel };
             MODRFPath modRFPath = new MODRFPath { IsControlledByParent = true, Channel = this.Channel };
             MODMeasure modMeasure = new MODMeasure { IsControlledByParent = true, Channel = this.Channel };
@@ -39,6 +40,7 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(modSweep);
             this.ChildTestSteps.Add(modRFPath);
             this.ChildTestSteps.Add(modModulate);
+            this.ChildTestSteps.Add(modSourceCorrection);
             this.ChildTestSteps.Add(modMeasure);
         }
 
