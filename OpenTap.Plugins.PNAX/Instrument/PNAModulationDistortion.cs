@@ -342,6 +342,17 @@ namespace OpenTap.Plugins.PNAX
         List
     }
 
+    public enum MODDutPortEnum
+    {
+        [Scpi("Port 1")]
+        Port1 = 1,
+        [Scpi("Port 2")]
+        Port2 = 2,
+        [Scpi("Port 3")]
+        Port3 = 3,
+        [Scpi("Port 4")]
+        Port4 = 4
+    }
 
     public partial class PNAX : ScpiInstrument
     {
@@ -415,6 +426,69 @@ namespace OpenTap.Plugins.PNAX
         }
 
         #endregion
+
+        #region RF Path
+        public void MODSourceAttenuatorInclude(int Channel, bool state)
+        {
+            String StateStr = "OFF";
+            if (state)
+            {
+                StateStr = "ON";
+            }
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:SOURce:ATTenuation:INCLude {StateStr}");
+        }
+
+        public void MODSourceAttenuator(int Channel, double value, MODDutPortEnum source)
+        {
+            string dutport = Scpi.Format("{0}", source);
+            ScpiCommand($"SOURce{Channel}:POWer:ATTenuation {value}, \"{dutport}\"");
+        }
+
+        public void MODNominalSource(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:SOURce:NOMinal:AMPLifier {value}");
+        }
+
+        public void MODDutInput(int Channel, MODDutPortEnum dutinput)
+        {
+            int port = (int)dutinput;
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:DUT:INPut {port}");
+        }
+
+        public void MODNominalDUTGain(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:DUT:NOMinal:GAIN {value}");
+        }
+
+        public void MODDutOutput(int Channel, MODDutPortEnum dutoutput)
+        {
+            int port = (int)dutoutput;
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:DUT:OUTPut {port}");
+        }
+
+        public void MODReceiverAttenuator(int Channel, double value, MODDutPortEnum dutport)
+        {
+            int port = (int)dutport;
+            ScpiCommand($"SOURce{Channel}:POWer{port}:ATTenuation:RECeiver:TEST {value}");
+        }
+        
+        public void MODNominalDUTNFInclude(int Channel, bool state)
+        {
+            String StateStr = "OFF";
+            if (state)
+            {
+                StateStr = "ON";
+            }
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:DUT:NOMinal:NF:INCLude {StateStr}");
+        }
+
+        public void MODNominalDUTNF(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:PATH:DUT:NOMinal:NF {value}");
+        }
+
+        #endregion
+
 
         public void SetMODSource(int Channel, String source)
         {
