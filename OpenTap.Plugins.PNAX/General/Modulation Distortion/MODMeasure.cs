@@ -74,7 +74,7 @@ namespace OpenTap.Plugins.PNAX
 
 
         [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
-        [Display("Equalization Aperture", Group: "Measurement Details", Order: 31)]
+        [Display("Equalization Aperture Auto", Group: "Measurement Details", Order: 31)]
         public bool EqualizationApertureAuto { get; set; }
 
         [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]

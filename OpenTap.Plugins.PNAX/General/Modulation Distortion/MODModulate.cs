@@ -33,125 +33,125 @@ namespace OpenTap.Plugins.PNAX
         [Display("Source Correction", Group: "Settings", Order: 13)]
         public MODSourceCorrectionEnum ModSourceCorrection { get; set; }
 
-        [Display("Enable Cal", Group: "Modulation Cal \\ Power", Order: 21)]
+        [Display("Enable Cal", Groups: new[] { "Modulation Cal", "Power" }, Order: 21)]
         public bool PowerEnableCal { get; set; }
 
         [EnabledIf("PowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Port", Group: "Modulation Cal \\ Power", Order: 22)]
+        [Display("Cal Port", Groups: new[] { "Modulation Cal", "Power" }, Order: 22)]
         public MODCalPortEnum PowerCalPort { get; set; }
 
         [EnabledIf("PowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Span", Group: "Modulation Cal \\ Power", Order: 23)]
+        [Display("Cal Span", Groups: new[] { "Modulation Cal", "Power" }, Order: 23)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double PowerCalSpan { get; set; }
 
         [EnabledIf("PowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Max Iterations", Group: "Modulation Cal \\ Power", Order: 24)]
+        [Display("Max Iterations", Groups: new[] { "Modulation Cal", "Power" }, Order: 24)]
         public int PowerMaxIterations { get; set; }
 
         [EnabledIf("PowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Desired Tolerance", Group: "Modulation Cal \\ Power", Order: 25)]
+        [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "Power" }, Order: 25)]
         [Unit("dB", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double PowerDesiredTolerance { get; set; }
 
 
-        [Display("Enable Cal", Group: "Modulation Cal \\ Equalization", Order: 31)]
+        [Display("Enable Cal", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 31)]
         public bool EqualizationEnableCal { get; set; }
 
         [EnabledIf("EqualizationEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Port", Group: "Modulation Cal \\ Equalization", Order: 32)]
+        [Display("Cal Port", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 32)]
         public MODCalPortEnum EqualizationCalPort { get; set; }
 
         [EnabledIf("EqualizationEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Span", Group: "Modulation Cal \\ Equalization", Order: 33)]
+        [Display("Cal Span", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 33)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double EqualizationCalSpan { get; set; }
 
         [EnabledIf("EqualizationEnableCal", true, HideIfDisabled = true)]
-        [Display("Max Iterations", Group: "Modulation Cal \\ Equalization", Order: 34)]
+        [Display("Max Iterations", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 34)]
         public int EqualizationMaxIterations { get; set; }
 
         [EnabledIf("EqualizationEnableCal", true, HideIfDisabled = true)]
-        [Display("Desired Tolerance", Group: "Modulation Cal \\ Equalization", Order: 35)]
+        [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 35)]
         [Unit("dB-pk", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double EqualizationDesiredTolerance { get; set; }
 
 
 
-        [Display("Enable Cal", Group: "Modulation Cal \\ Distortion", Order: 41)]
+        [Display("Enable Cal", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 41)]
         public bool DistortionEnableCal { get; set; }
 
         [EnabledIf("DistortionEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Port", Group: "Modulation Cal \\ Distortion", Order: 42)]
+        [Display("Cal Port", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 42)]
         public MODCalPortEnum DistortionCalPort { get; set; }
 
         [EnabledIf("DistortionEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Span", Group: "Modulation Cal \\ Distortion", Order: 43)]
+        [Display("Cal Span", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 43)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double DistortionCalSpan { get; set; }
 
         [EnabledIf("DistortionEnableCal", true, HideIfDisabled = true)]
-        [Display("Max Iterations", Group: "Modulation Cal \\ Distortion", Order: 44)]
+        [Display("Max Iterations", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 44)]
         public int DistortionMaxIterations { get; set; }
 
         [EnabledIf("DistortionEnableCal", true, HideIfDisabled = true)]
-        [Display("Desired Tolerance", Group: "Modulation Cal \\ Distortion", Order: 45)]
+        [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 45)]
         [Unit("dBc", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double DistortionDesiredTolerance { get; set; }
 
 
 
-        [Display("Enable Cal", Group: "Modulation Cal \\ ACP Lower", Order: 51)]
+        [Display("Enable Cal", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 51)]
         public bool ACPLowerEnableCal { get; set; }
 
         [EnabledIf("ACPLowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Port", Group: "Modulation Cal \\ ACP Lower", Order: 52)]
+        [Display("Cal Port", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 52)]
         public MODCalPortEnum ACPLowerCalPort { get; set; }
 
         [EnabledIf("ACPLowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Span", Group: "Modulation Cal \\ ACP Lower", Order: 53)]
+        [Display("Cal Span", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 53)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double ACPLowerCalSpan { get; set; }
 
         [EnabledIf("ACPLowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Guard Band", Group: "Modulation Cal \\ ACP Lower", Order: 53.5)]
+        [Display("Guard Band", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 53.5)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double ACPLowerGuardBand { get; set; }
 
         [EnabledIf("ACPLowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Max Iterations", Group: "Modulation Cal \\ ACP Lower", Order: 54)]
+        [Display("Max Iterations", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 54)]
         public int ACPLowerMaxIterations { get; set; }
 
         [EnabledIf("ACPLowerEnableCal", true, HideIfDisabled = true)]
-        [Display("Desired Tolerance", Group: "Modulation Cal \\ ACP Lower", Order: 55)]
+        [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 55)]
         [Unit("dBc", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double ACPLowerDesiredTolerance { get; set; }
 
 
 
-        [Display("Enable Cal", Group: "Modulation Cal \\ ACP Upper", Order: 61)]
+        [Display("Enable Cal", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 61)]
         public bool ACPUpperEnableCal { get; set; }
 
         [EnabledIf("ACPUpperEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Port", Group: "Modulation Cal \\ ACP Upper", Order: 62)]
+        [Display("Cal Port", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 62)]
         public MODCalPortEnum ACPUpperCalPort { get; set; }
 
         [EnabledIf("ACPUpperEnableCal", true, HideIfDisabled = true)]
-        [Display("Cal Span", Group: "Modulation Cal \\ ACP Upper", Order: 63)]
+        [Display("Cal Span", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 63)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double ACPUpperCalSpan { get; set; }
 
         [EnabledIf("ACPUpperEnableCal", true, HideIfDisabled = true)]
-        [Display("Guard Band", Group: "Modulation Cal \\ ACP Upper", Order: 53.5)]
+        [Display("Guard Band", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 53.5)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double ACPUpperGuardBand { get; set; }
 
         [EnabledIf("ACPUpperEnableCal", true, HideIfDisabled = true)]
-        [Display("Max Iterations", Group: "Modulation Cal \\ ACP Upper", Order: 64)]
+        [Display("Max Iterations", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 64)]
         public int ACPUpperMaxIterations { get; set; }
 
         [EnabledIf("ACPUpperEnableCal", true, HideIfDisabled = true)]
-        [Display("Desired Tolerance", Group: "Modulation Cal \\ ACP Upper", Order: 65)]
+        [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 65)]
         [Unit("dBc", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double ACPUpperDesiredTolerance { get; set; }
         #endregion
@@ -264,7 +264,9 @@ namespace OpenTap.Plugins.PNAX
             // Execute Calibration
             PNAX.MODCalibrationMeasure(Channel, Source);
             //PNAX.WaitForOperationComplete(60000);
-            Log.Info("MOD Calibration Details: " + PNAX.MODGetCalibrationDetails(Channel, Source));
+            // Calibration details returns multiple single responses, using SCPIQuery leaves multiple lines on the queue
+            // Better not to use Calibration Details for now
+            //Log.Info("MOD Calibration Details: " + PNAX.MODGetCalibrationDetails(Channel, Source)); 
             Log.Info("MOD Calibration Status: " + PNAX.MODGetCalibrationStatus(Channel, Source));
 
             // Source Correction

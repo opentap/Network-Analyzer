@@ -316,8 +316,106 @@ namespace OpenTap.Plugins.PNAX
         RRC
     }
 
+    public enum MODSweepTypeEnum
+    {
+        [Scpi("FIX")]
+        Fixed,
+        [Scpi("POW")]
+        Power
+    }
+
+    public enum MODPowerPortEnum
+    {
+        [Scpi("DIN1")]
+        [Display("DUT input")]
+        Din,
+        [Scpi("DOUT2")]
+        [Display("DUT output")]
+        Dout
+    }
+
+    public enum MODSweepPowerTypeEnum
+    {
+        [Scpi("RAMP")]
+        Ramp,
+        [Scpi("LIST")]
+        List
+    }
+
+
     public partial class PNAX : ScpiInstrument
     {
+        #region Sweep
+        public void MODSweepType(int Channel, MODSweepTypeEnum swepTypeEnum)
+        {
+            string SweepType = Scpi.Format("{0}", swepTypeEnum);
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:TYPE {SweepType}");
+        }
+
+        public void MODCarrierFreq(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:CARRier:FREQuency {value}");
+        }
+
+        public void MODSpan(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:FREQuency:SPAN {value}");
+        }
+
+        public void MODNoiseBW(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:SA:BANDwidth:NOISe {value}");
+        }
+
+        public void MODSetPowerPort(int Channel, MODPowerPortEnum powerPort)
+        {
+            string MODPowerPort = Scpi.Format("{0}", powerPort);
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:LEVel:PORT {MODPowerPort}");
+        }
+
+        public void MODSetPower(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:LEVel {value}");
+        }
+
+        public void MODPowerSweepType(int Channel, MODSweepPowerTypeEnum powerType, int index = 1)
+        {
+            string MODPowerType = Scpi.Format("{0}", powerType);
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:LEVel{index}:TYPE {MODPowerType}");
+        }
+
+        public void MODPowerSweepStart(int Channel, double value, int index = 1)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:RAMP:LEVel{index}:STARt {value}");
+        }
+
+        public void MODPowerSweepStop(int Channel, double value, int index = 1)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:RAMP:LEVel{index}:STOP {value}");
+        }
+
+        public void MODPowerSweepNumberOfPoints(int Channel, int value)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:RAMP:POINts {value}");
+        }
+
+        public void MODPowerSweepNoiseBW(int Channel, int value, int index = 1)
+        {
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:LIST{index}:NBW {value}");
+        }
+
+        public void MODPowerSweepAutoIncreaseBW(int Channel, bool state)
+        {
+            String StateStr = "OFF";
+            if (state)
+            {
+                StateStr = "ON";
+            }
+            ScpiCommand($"SENSe{Channel}:DISTortion:SWEep:POWer:CARRier:RAMP:NBW:AUTO {StateStr}");
+        }
+
+        #endregion
+
         public void SetMODSource(int Channel, String source)
         {
             ScpiCommand($"SENSe{Channel}:DISTortion:MODulate:SOURce \"{source}\"");
@@ -396,7 +494,18 @@ namespace OpenTap.Plugins.PNAX
 
         public string MODGetCalibrationDetails(int Channel, string port)
         {
-            return ScpiQuery($"SOURce{Channel}:MODulation:CORRection:COLLection:ACQuire:DETails? \"{port}\"");
+            // Calibration details returns multiple single responses, using SCPIQuery leaves multiple lines on the queue
+            // Better not to use Calibration Details for now
+
+            String retString = "";
+            //String line = "";
+            //retString = ScpiQuery($"SOURce{Channel}:MODulation:CORRection:COLLection:ACQuire:DETails? \"{port}\"");
+            //do
+            //{
+            //    line = ScpiQuery($"");
+            //    retString += line;
+            //} while (!line.Equals("\""));
+            return retString;
         }
 
         public void MODSaveDistortionTable(int Channel, string FullFileName)
