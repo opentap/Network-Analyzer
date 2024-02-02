@@ -18,7 +18,7 @@ namespace OpenTap.Plugins.PNAX
     #region enums
     static class EnumExtensions
     {
-        public static List<string> MODGetFlags(this Enum flags)
+        public static List<string> MODGetFlagsScpi(this Enum flags)
         {
             List<string> retString = new List<string>();
             foreach (var value in Enum.GetValues(flags.GetType()).Cast<Enum>())
@@ -30,6 +30,24 @@ namespace OpenTap.Plugins.PNAX
                 if ((bits & mask) == bits)
                 {
                     string paramName = Scpi.Format("{0}", value);
+                    retString.Add(paramName);
+                }
+            }
+            return retString;
+        }
+
+        public static List<string> MODGetFlagsDisplay(this Enum flags)
+        {
+            List<string> retString = new List<string>();
+            foreach (var value in Enum.GetValues(flags.GetType()).Cast<Enum>())
+            {
+                ulong mask = Convert.ToUInt64(flags);
+                ulong bits = Convert.ToUInt64(value);
+                if (bits == 0L)
+                    continue; // skip the zero value
+                if ((bits & mask) == bits)
+                {
+                    string paramName = value.ToString();
                     retString.Add(paramName);
                 }
             }
@@ -660,7 +678,7 @@ namespace OpenTap.Plugins.PNAX
         
         public void MODTableAddParameter(int Channel, MODTableSetupCarrierEnum modParamName)
         {
-            List<string> paramNames = modParamName.MODGetFlags();
+            List<string> paramNames = modParamName.MODGetFlagsScpi();
 
             foreach (string paramName in paramNames)
             {
@@ -670,7 +688,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void MODTableAddParameter(int Channel, MODTableSetupEVMEnum modParamName)
         {
-            List<string> paramNames = modParamName.MODGetFlags();
+            List<string> paramNames = modParamName.MODGetFlagsScpi();
 
             foreach (string paramName in paramNames)
             {
@@ -680,7 +698,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void MODTableAddParameter(int Channel, MODTableSetupNPREnum modParamName)
         {
-            List<string> paramNames = modParamName.MODGetFlags();
+            List<string> paramNames = modParamName.MODGetFlagsScpi();
 
             foreach (string paramName in paramNames)
             {
@@ -690,7 +708,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void MODTableAddParameter(int Channel, MODTableSetupACPEnum modParamName)
         {
-            List<string> paramNames = modParamName.MODGetFlags();
+            List<string> paramNames = modParamName.MODGetFlagsScpi();
 
             foreach (string paramName in paramNames)
             {
@@ -700,7 +718,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void MODTableAddParameter(int Channel, MODTableSetupACPAvgEnum modParamName)
         {
-            List<string> paramNames = modParamName.MODGetFlags();
+            List<string> paramNames = modParamName.MODGetFlagsScpi();
 
             foreach (string paramName in paramNames)
             {

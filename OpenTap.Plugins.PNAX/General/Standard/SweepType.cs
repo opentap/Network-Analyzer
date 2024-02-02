@@ -190,7 +190,6 @@ namespace OpenTap.Plugins.PNAX
             switch (StandardSweepType)
             {
                 case StandardSweepTypeEnum.LinearFrequency:
-                    break;
                 case StandardSweepTypeEnum.LogFrequency:
                     retVal.Add(("Start", SweepPropertiesStart));
                     retVal.Add(("Stop", SweepPropertiesStop));
@@ -212,7 +211,6 @@ namespace OpenTap.Plugins.PNAX
                     retVal.Add(("IF Bandwidth", SweepPropertiesIFBandwidth));
                     break;
                 case StandardSweepTypeEnum.SegmentSweep:
-                    break;
                 case StandardSweepTypeEnum.PhaseSweep:
                     retVal.Add(("Start Phase", SweepPropertiesStartPhase));
                     retVal.Add(("Stop Phase", SweepPropertiesStopPhase));

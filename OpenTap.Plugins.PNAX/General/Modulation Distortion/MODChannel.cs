@@ -56,6 +56,7 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetSweepMode(Channel, SweepModeEnumType.SING);
 
             UpgradeVerdict(Verdict.Pass);
+            UpdateMetaData();
         }
     }
 }

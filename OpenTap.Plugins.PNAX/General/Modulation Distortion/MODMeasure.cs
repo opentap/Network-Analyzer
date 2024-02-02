@@ -153,6 +153,49 @@ namespace OpenTap.Plugins.PNAX
             DutNF = 0;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+            retVal.Add(("MODMeasurementType", MODMeasurementType));
+            if (Autofill)
+            {
+                retVal.Add(("Autofill", Autofill));
+            }
+            else
+            {
+                retVal.Add(("MODCarrierOffset", MODCarrierOffset));
+                retVal.Add(("MODCarrierIBW", MODCarrierIBW));
+                if ((MODMeasurementType == MODMeasurementTypeEnum.ACP) ||
+                    (MODMeasurementType == MODMeasurementTypeEnum.ACPEVM))
+                {
+                    retVal.Add(("MODACPLowOffset", MODACPLowOffset));
+                    retVal.Add(("MODACPLowIBW", MODACPLowIBW));
+                    retVal.Add(("MODACPUpperOffset", MODACPUpperOffset));
+                    retVal.Add(("MODACPUpperIBW", MODACPUpperIBW));
+                }
+                else if ((MODMeasurementType == MODMeasurementTypeEnum.NPR))
+                {
+                    retVal.Add(("MODNPROffset", MODNPROffset));
+                    retVal.Add(("MODNPRIBW", MODNPRIBW));
+                }
+                if (EnableMeasurementDetails)
+                {
+                    retVal.Add(("EnableMeasurementDetails", EnableMeasurementDetails));
+                    retVal.Add(("EqualizationAperture", EqualizationAperture));
+                    retVal.Add(("EqualizationApertureAuto", EqualizationApertureAuto));
+                    retVal.Add(("MODAntialiasFilter", MODAntialiasFilter));
+                    retVal.Add(("EVMNormalization", EVMNormalization));
+                    retVal.Add(("MODFilter", MODFilter));
+                    retVal.Add(("MODAlpha", MODAlpha));
+                    retVal.Add(("SymbolRate", SymbolRate));
+                    retVal.Add(("SymbolRateAuto", SymbolRateAuto));
+                    retVal.Add(("DutNF", DutNF));
+                }
+            }
+            return retVal;
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

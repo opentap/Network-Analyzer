@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("MOD Get Data", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
-    public class MODGetData : PNABaseStep
+    public class MODGetData : StoreDataBase
     {
         #region Settings
         [Display("All data", Group: "Settings", Order: 21)]
@@ -23,42 +23,61 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf("AllData", false, HideIfDisabled = true)]
         [Display("Parameter Name", Group: "Settings", Order: 22)]
         public string paramName { get; set; }
+
         #endregion
 
         public MODGetData()
         {
+            channels = new List<int>() { 1 };
             AllData = true;
             paramName = "Carrier In1 dBm";
         }
 
         public override void Run()
         {
+            MetaData = new List<(string, object)>();
+            UpgradeVerdict(Verdict.NotSet);
+
             RunChildSteps(); //If the step supports child steps.
 
-            List<string> ResultNames = new List<string>();
-            List<IConvertible> ResultValues = new List<IConvertible>();
-
-            if (AllData)
+            foreach (int Channel in channels)
             {
-                List<string> allColumns = PNAX.MODGetAllColumnNames(Channel);
-                foreach(string paramName in allColumns)
+                List<string> ResultNames = new List<string>();
+                List<IConvertible> ResultValues = new List<IConvertible>();
+
+                if (AllData)
                 {
+                    List<string> allColumns = PNAX.MODGetAllColumnNames(Channel);
+                    foreach (string paramName in allColumns)
+                    {
+                        double value = PNAX.MODGetDataValue(Channel, paramName);
+
+                        ResultNames.Add(paramName);
+                        ResultValues.Add((IConvertible)value);
+                    }
+                }
+                else
+                {
+                    // Query a particular field
                     double value = PNAX.MODGetDataValue(Channel, paramName);
 
                     ResultNames.Add(paramName);
                     ResultValues.Add((IConvertible)value);
                 }
-            }
-            else
-            {
-                // Query a particular field
-                double value = PNAX.MODGetDataValue(Channel, paramName);
 
-                ResultNames.Add(paramName);
-                ResultValues.Add((IConvertible)value);
-            }
+                //if MetaData available
+                if ((MetaData != null) && (MetaData.Count > 0))
+                {
+                    // for every item in metadata
+                    for (int i = 0; i < MetaData.Count; i++)
+                    {
+                        ResultNames.Add(MetaData[i].Item1);
+                        ResultValues.Add((IConvertible)MetaData[i].Item2);
+                    }
+                }
 
-            Results.Publish($"MOD_Data_Channel_{Channel.ToString()}", ResultNames, ResultValues.ToArray());
+                Results.Publish($"MOD_Data_Channel_{Channel.ToString()}", ResultNames, ResultValues.ToArray());
+            }
 
             UpgradeVerdict(Verdict.Pass);
         }

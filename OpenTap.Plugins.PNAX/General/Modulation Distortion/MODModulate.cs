@@ -41,6 +41,17 @@ namespace OpenTap.Plugins.PNAX
             EnableModulation = false;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+            retVal.Add(("MODSource", MODSource));
+            retVal.Add(("ModulationFile", ModulationFile));
+            retVal.Add(("EnableModulation", EnableModulation));
+
+            return retVal;
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

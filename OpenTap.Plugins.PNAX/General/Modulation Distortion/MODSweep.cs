@@ -78,6 +78,27 @@ namespace OpenTap.Plugins.PNAX
             AutoIncreaseNBW = false;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+            retVal.Add(("SweepType", MODSweepType));
+            retVal.Add(("CarrierFrequency", CarrierFrequency));
+            retVal.Add(("Span", Span));
+            retVal.Add(("NoiseBW", NoiseBW));
+            retVal.Add(("PowerPort", PowerPort));
+            retVal.Add(("Power", MODPower));
+            if (MODSweepType == MODSweepTypeEnum.Power)
+            {
+                retVal.Add(("StartPower", MODStartPower));
+                retVal.Add(("StopPower", MODStopPower));
+                retVal.Add(("NumberOfPoints", NumberOfPoints));
+                retVal.Add(("AutoIncreaseNBW", AutoIncreaseNBW));
+            }
+
+            return retVal;
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

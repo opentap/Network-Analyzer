@@ -182,6 +182,53 @@ namespace OpenTap.Plugins.PNAX
             LO2Attenuator = 0;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+            retVal.Add(("ConverterStages", ConverterStages));
+            retVal.Add(("InputMixerFrequency", InputMixerFrequency));
+            retVal.Add(("InputPort", InputPort));
+            retVal.Add(("OutputMixerFrequency", OutputMixerFrequency));
+            retVal.Add(("OutputPort", OutputPort));
+
+            retVal.Add(("LO1FractionalMultiplierNumerator", LO1FractionalMultiplierNumerator));
+            retVal.Add(("LO1FractionalMultiplierDenominator", LO1FractionalMultiplierDenominator));
+            retVal.Add(("LO1MixerFrequency", LO1MixerFrequency));
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                retVal.Add(("IFMixerFrequency", IFMixerFrequency));
+                retVal.Add(("LO2FractionalMultiplierNumerator", LO2FractionalMultiplierNumerator));
+                retVal.Add(("LO2FractionalMultiplierDenominator", LO2FractionalMultiplierDenominator));
+                retVal.Add(("LO2MixerFrequency", LO2MixerFrequency));
+            }
+
+            retVal.Add(("EnableEmbeddedLO", EnableEmbeddedLO));
+            if (EnableEmbeddedLO)
+            {
+                retVal.Add(("TuningMethod", TuningMethod));
+                retVal.Add(("TuneEvery", TuneEvery));
+                retVal.Add(("BroadBandSearch", BroadBandSearch));
+                retVal.Add(("NoiseBW", NoiseBW));
+                retVal.Add(("MaxIterations", MaxIterations));
+                retVal.Add(("Tolerance", Tolerance));
+                retVal.Add(("LOFrequencyDelta", LOFrequencyDelta));
+            }
+            retVal.Add(("LO1Source", LO1Source));
+            retVal.Add(("LO1Power", LO1Power));
+            retVal.Add(("LO1SourceLevelingMode", LO1SourceLevelingMode));
+            retVal.Add(("LO1Attenuator", LO1Attenuator));
+
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                retVal.Add(("LO2Source", LO2Source));
+                retVal.Add(("LO2Power", LO2Power));
+                retVal.Add(("LO2SourceLevelingMode", LO2SourceLevelingMode));
+                retVal.Add(("LO2Attenuator", LO2Attenuator));
+            }
+            return retVal;
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

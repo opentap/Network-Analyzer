@@ -186,9 +186,57 @@ namespace OpenTap.Plugins.PNAX
             ACPUpperGuardBand = 0;
             ACPUpperMaxIterations = 2;
             ACPUpperDesiredTolerance = -40;
+        }
 
-
-
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+            retVal.Add(("Source", Source));
+            retVal.Add(("ModSourceCorrection", ModSourceCorrection));
+            retVal.Add(("PowerEnableCal", PowerEnableCal));
+            if (PowerEnableCal)
+            {
+                retVal.Add(("PowerCalPort", PowerCalPort));
+                retVal.Add(("PowerCalSpan", PowerCalSpan));
+                retVal.Add(("PowerMaxIterations", PowerMaxIterations));
+                retVal.Add(("PowerDesiredTolerance", PowerDesiredTolerance));
+            }
+            retVal.Add(("EqualizationEnableCal", EqualizationEnableCal));
+            if (PowerEnableCal)
+            {
+                retVal.Add(("EqualizationCalPort", EqualizationCalPort));
+                retVal.Add(("EqualizationCalSpan", EqualizationCalSpan));
+                retVal.Add(("EqualizationMaxIterations", EqualizationMaxIterations));
+                retVal.Add(("EqualizationDesiredTolerance", EqualizationDesiredTolerance));
+            }
+            retVal.Add(("DistortionEnableCal", DistortionEnableCal));
+            if (PowerEnableCal)
+            {
+                retVal.Add(("DistortionCalPort", DistortionCalPort));
+                retVal.Add(("DistortionCalSpan", DistortionCalSpan));
+                retVal.Add(("DistortionMaxIterations", DistortionMaxIterations));
+                retVal.Add(("DistortionDesiredTolerance", DistortionDesiredTolerance));
+            }
+            retVal.Add(("ACPLowerEnableCal", ACPLowerEnableCal));
+            if (PowerEnableCal)
+            {
+                retVal.Add(("ACPLowerCalPort", ACPLowerCalPort));
+                retVal.Add(("ACPLowerCalSpan", ACPLowerCalSpan));
+                retVal.Add(("ACPLowerGuardBand", ACPLowerGuardBand));
+                retVal.Add(("ACPLowerMaxIterations", ACPLowerMaxIterations));
+                retVal.Add(("ACPLowerDesiredTolerance", ACPLowerDesiredTolerance));
+            }
+            retVal.Add(("ACPUpperEnableCal", ACPUpperEnableCal));
+            if (PowerEnableCal)
+            {
+                retVal.Add(("ACPUpperCalPort", ACPUpperCalPort));
+                retVal.Add(("ACPUpperCalSpan", ACPUpperCalSpan));
+                retVal.Add(("ACPUpperGuardBand", ACPUpperGuardBand));
+                retVal.Add(("ACPUpperMaxIterations", ACPUpperMaxIterations));
+                retVal.Add(("ACPUpperDesiredTolerance", ACPUpperDesiredTolerance));
+            }
+            return retVal;
         }
 
         public override void Run()

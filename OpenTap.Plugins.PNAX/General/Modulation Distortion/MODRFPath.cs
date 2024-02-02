@@ -69,6 +69,23 @@ namespace OpenTap.Plugins.PNAX
             NominalDUTNF = 0;
         }
 
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            List<(string, object)> retVal = new List<(string, object)>();
+            retVal.Add(("IncludeSourceAtt", IncludeSourceAtt));
+            retVal.Add(("SourceAttenuator", SourceAttenuator));
+            retVal.Add(("NominalSourceAmp", NominalSourceAmp));
+            retVal.Add(("DUTInput", DUTInput));
+            retVal.Add(("NominalDUTGain", NominalDUTGain));
+            retVal.Add(("DUTOutput", DUTOutput));
+            retVal.Add(("ReceiverAttenuator", ReceiverAttenuator));
+            retVal.Add(("IncludeNominalDUTNF", IncludeNominalDUTNF));
+            retVal.Add(("NominalDUTNF", NominalDUTNF));
+
+            return retVal;
+        }
+
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.

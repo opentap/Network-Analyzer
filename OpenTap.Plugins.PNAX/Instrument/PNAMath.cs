@@ -43,8 +43,84 @@ namespace OpenTap.Plugins.PNAX
         public double EndResp { get; set; }
     }
 
+    [Flags]
+    public enum MathStatisticTypeEnum
+    {
+        [Scpi("PTP")]
+        [Display("Peak to Peak")]
+        Ptp=1,
+        [Scpi("STDEV")]
+        [Display("Std Dev")]
+        Std=2,
+        [Scpi("MEAN")]
+        [Display("Mean")]
+        Mean=4,
+        [Scpi("MIN")]
+        [Display("Min")]
+        Min=8,
+        [Scpi("MAX")]
+        [Display("Max")]
+        Max=16
+    }
+
+    public enum MathStatisticsRangeEnum
+    {
+        [Scpi("0")]
+        [Display("Full Span")]
+        FullSpan,
+        [Scpi("1")]
+        [Display("User 1")]
+        User1,
+        [Scpi("2")]
+        [Display("User 2")]
+        User2,
+        [Scpi("3")]
+        [Display("User 3")]
+        User3,
+        [Scpi("4")]
+        [Display("User 4")]
+        User4,
+        [Scpi("5")]
+        [Display("User 5")]
+        User5,
+        [Scpi("6")]
+        [Display("User 6")]
+        User6,
+        [Scpi("7")]
+        [Display("User 7")]
+        User7,
+        [Scpi("8")]
+        [Display("User 8")]
+        User8,
+        [Scpi("9")]
+        [Display("User 9")]
+        User9,
+        [Scpi("10")]
+        [Display("User 10")]
+        User10,
+        [Scpi("11")]
+        [Display("User 11")]
+        User11,
+        [Scpi("12")]
+        [Display("User 12")]
+        User12,
+        [Scpi("13")]
+        [Display("User 13")]
+        User13,
+        [Scpi("14")]
+        [Display("User 14")]
+        User14,
+        [Scpi("15")]
+        [Display("User 15")]
+        User15,
+        [Scpi("16")]
+        [Display("User 16")]
+        User16,
+    }
+
     public partial class PNAX : ScpiInstrument
     {
+        #region Limits
         public void SetLimitTestOn(int Channel, int mnum, bool state)
         {
             string stateValue = state ? "ON" : "OFF";
@@ -116,5 +192,62 @@ namespace OpenTap.Plugins.PNAX
             string stateValue = state ? "ON" : "OFF";
             ScpiCommand($"DISP:FSIG {stateValue}");
         }
+        #endregion
+
+        #region Statistics
+        public void MathStatistics(int Channel, int mnum, bool state)
+        {
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:STATistics:STATe {stateValue}");
+        }
+
+        public void MathType(int Channel, int mnum, MathStatisticTypeEnum mathStatisticType)
+        {
+            string StatisticType = Scpi.Format("{0}", mathStatisticType);
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:TYPE {StatisticType}");
+        }
+
+        public void MathExecuteStatistics(int Channel, int mnum)
+        {
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:EXECute");
+        }
+
+        public double MathData(int Channel, int mnum)
+        {
+            return ScpiQuery<double>($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:DATA?");
+        }
+
+        public void MathShowResistance(int Channel, int mnum, bool state)
+        {
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:STATistics:RESistance:STATe {stateValue}");
+        }
+
+        public void MathStatisticsRange(int Channel, int mnum, MathStatisticsRangeEnum mathStatisticsRange)
+        {
+            string StatisticRange = Scpi.Format("{0}", mathStatisticsRange);
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:DOMain:USER:RANGe {StatisticRange}");
+        }
+
+        public void MathStatisticsRangeStart(int Channel, int mnum, MathStatisticsRangeEnum mathStatisticsRange, double value)
+        {
+            if (mathStatisticsRange == MathStatisticsRangeEnum.FullSpan)
+            {
+                throw new Exception("Full span can't set start/stop");
+            }
+            string StatisticRange = Scpi.Format("{0}", mathStatisticsRange);
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:DOMain:USER:STARt {StatisticRange}, {value}");
+        }
+
+        public void MathStatisticsRangeStop(int Channel, int mnum, MathStatisticsRangeEnum mathStatisticsRange, double value)
+        {
+            if (mathStatisticsRange == MathStatisticsRangeEnum.FullSpan)
+            {
+                throw new Exception("Full span can't set start/stop");
+            }
+            string StatisticRange = Scpi.Format("{0}", mathStatisticsRange);
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:DOMain:USER:STOP {StatisticRange}, {value}");
+        }
+        #endregion
     }
 }
