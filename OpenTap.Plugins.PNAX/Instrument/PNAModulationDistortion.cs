@@ -15,6 +15,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    #region enums
     static class EnumExtensions
     {
         public static List<string> MODGetFlags(this Enum flags)
@@ -353,6 +354,7 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("Port 4")]
         Port4 = 4
     }
+    #endregion
 
     public partial class PNAX : ScpiInstrument
     {
@@ -489,7 +491,7 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-
+        #region Modulate and Measure
         public void SetMODSource(int Channel, String source)
         {
             ScpiCommand($"SENSe{Channel}:DISTortion:MODulate:SOURce \"{source}\"");
@@ -777,5 +779,14 @@ namespace OpenTap.Plugins.PNAX
             }
             ScpiCommand($"SENSe{Channel}:DISTortion:MEASure:FILTer:SRATe:AUTO:STATe {StateStr}");
         }
+
+        #endregion
+
+        #region Mixers
+        public void MODMixerSourceRole(int Channel, string role, string source)
+        {
+            ScpiCommand($"SENSe{Channel}:ROLE:DEVice \"{role}\",\"{source}\"");
+        }
+        #endregion
     }
 }

@@ -15,6 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [AllowAsChildIn(typeof(TestPlan))]
     [AllowAsChildIn(typeof(MODChannel))]
+    [AllowAsChildIn(typeof(MODXChannel))]
     [Display("MOD Measure", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
     public class MODMeasure : PNABaseStep
     {

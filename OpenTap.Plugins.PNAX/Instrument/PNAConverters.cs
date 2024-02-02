@@ -99,6 +99,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{ Channel }:MIXer:LO{ Stage }:NAME \"{str}\"");
         }
 
+        public void SetPortLO(int Channel, int Stage, string value)
+        {
+            ScpiCommand($"SENSe{ Channel }:MIXer:LO{ Stage }:NAME \"{value}\"");
+        }
+
         public bool GetEnableEmbeddedLO(int Channel)
         {
             return ScpiQuery<bool>($"SENS{ Channel }:MIXer:ELO:STATe?");
@@ -198,6 +203,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENS{ Channel }:MIXer:ELO:TUNing:IFBW { value }");
         }
 
+        public void SetTuningNoiseBW(int Channel, double value)
+        {
+            ScpiCommand($"SENSe{Channel}:MIXer:ELO:TUNing:NBW {value}");
+        }
+
         // PNA UI shows "Max Iterations" for this parameter
         public int GetTuningMaxIterations(int Channel)
         {
@@ -229,6 +239,11 @@ namespace OpenTap.Plugins.PNAX
         public void SetLOFrequencyDelta(int Channel, double value)
         {
             ScpiCommand($"SENS{ Channel }:MIXer:ELO:LO:DELTa { value }");
+        }
+
+        public void ResetLO(int Channel)
+        {
+            ScpiCommand($"SENS{ Channel }:MIXer:ELO:RESet");
         }
 
         #endregion
@@ -272,6 +287,12 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SOURce{ Channel }:POWer{strPort}:ALC:MODE {mode}");
         }
 
+        public void SetSourceLevelingMode(int Channel, MODDutPortEnum port, string mode)
+        {
+            string strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{ Channel }:POWer:ALC:MODE {mode},\"{strPort}\"");
+        }
+
         public void SetSourceLevelingMode(int Channel, PortsEnum port, InputSourceLevelingModeEnum mode)
         {
             string strPort = Scpi.Format("{0}", port);
@@ -305,6 +326,12 @@ namespace OpenTap.Plugins.PNAX
         {
             string strPort = Scpi.Format("{0}", port);
             ScpiCommand($"SOURce{ Channel }:POWer{strPort}:ATTenuation { value }");
+        }
+
+        public void SetSourceAttenuator(int Channel, MODDutPortEnum port, double value)
+        {
+            string strPort = Scpi.Format("{0}", port);
+            ScpiCommand($"SOURce{ Channel }:POWer:ATTenuation { value },\"{strPort}\"");
         }
 
         public double GetReceiverAttenuator(int Channel, int port)

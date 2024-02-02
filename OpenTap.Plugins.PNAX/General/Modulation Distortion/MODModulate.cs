@@ -16,6 +16,7 @@ namespace OpenTap.Plugins.PNAX
     
     [AllowAsChildIn(typeof(TestPlan))]
     [AllowAsChildIn(typeof(MODChannel))]
+    [AllowAsChildIn(typeof(MODXChannel))]
     [Display("MOD Modulation", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
     public class MODModulate : PNABaseStep
     {
