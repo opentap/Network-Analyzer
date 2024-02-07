@@ -609,6 +609,11 @@ namespace OpenTap.Plugins.PNAX
             string InstrumentFileName = "";
             string InstrumentFolderName = "";
 
+            if (GetDriveAccess() == false)
+            {
+                throw new Exception("Make Sure to Enable Remote Drive Access on the VNA.\nGo to Instrument | Setup | System Setup | Remote Interface… and Enable Remote Drive Access");
+            }
+
             InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + FileName;
             InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
 

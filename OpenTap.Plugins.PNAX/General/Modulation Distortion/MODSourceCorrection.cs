@@ -241,6 +241,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
+            UpgradeVerdict(Verdict.NotSet);
             RunChildSteps(); //If the step supports child steps.
 
             PNAX.MODCalEnable(Channel, Source, PowerEnableCal, MODCalTypeEnum.POWer);
@@ -298,12 +299,21 @@ namespace OpenTap.Plugins.PNAX
             // Calibration details returns multiple single responses, using SCPIQuery leaves multiple lines on the queue
             // Better not to use Calibration Details for now
             //Log.Info("MOD Calibration Details: " + PNAX.MODGetCalibrationDetails(Channel, Source)); 
-            Log.Info("MOD Calibration Status: " + PNAX.MODGetCalibrationStatus(Channel, Source));
+            String calStatus = PNAX.MODGetCalibrationStatus(Channel, Source);
+            Log.Info("MOD Calibration Status: " + calStatus);
 
-            // Source Correction
-            PNAX.MODSourceCorrection(Channel, Source, ModSourceCorrection);
+            if (calStatus.Equals("Calibration failed."))
+            {
+                //throw new Exception("Calibration Failed!");
+                UpgradeVerdict(Verdict.Fail);
+            }
+            else
+            {
+                // Source Correction
+                PNAX.MODSourceCorrection(Channel, Source, ModSourceCorrection);
 
-            UpgradeVerdict(Verdict.Pass);
+                UpgradeVerdict(Verdict.Pass);
+            } 
         }
     }
 }
