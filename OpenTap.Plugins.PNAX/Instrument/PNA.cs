@@ -58,6 +58,46 @@ namespace OpenTap.Plugins.PNAX
         SING
     }
 
+
+    public enum VNAReferenceOscillatorEnumtype
+    {
+        [Display("Internal")]
+        [Scpi("INT")]
+        Internal,
+        [Display("External")]
+        [Scpi("EXT")]
+        External,
+        [Display("PXI Backplane")]
+        [Scpi("PXI")]
+        PXI
+    }
+
+
+    public enum VNAReferenceFreqEnumtype
+    {
+        [Display("10 MHz")]
+        [Scpi("1E7")]
+        Ten,
+        [Display("100 MHz")]
+        [Scpi("1E8")]
+        Hundred,
+    }
+
+
+    public enum VNAReferenceInEnumtype
+    {
+        [Display("Internal")]
+        Internal,
+        [Display("External 10 MHz")]
+        External10,
+        [Display("External 100 MHz")]
+        External100,
+        [Display("PXI Backplane")]
+        PXIBackplane
+    }
+
+
+
     [Display("PNA-X", Group: "Network Analyzer", Description: "Insert a description here")]
     public partial class PNAX : ScpiInstrument
     {
@@ -73,7 +113,18 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Query for OPC", "Send OPC? after every command. Useful for debugging", Group: "Instrument Settings", Order: 4)]
         public bool IsWaitForOpc { get; set; }
-        
+
+        [Display("Enable Reference Oscillator Settings", Group: "Reference", Order: 10)]
+        public bool EnableReferenceOscillatorSettings { get; set; }
+
+        [EnabledIf("EnableReferenceOscillatorSettings", true, HideIfDisabled = true)]
+        [Display("Reference In", "Set the frequency reference of the instrument", Group: "Reference", Order: 11)]
+        public VNAReferenceInEnumtype VNAReferenceIn { get; set; }
+
+        [EnabledIf("EnableReferenceOscillatorSettings", true, HideIfDisabled = true)]
+        [Display("Reference Out", "Set Reference out frequency", Group: "Reference", Order: 12)]
+        public VNAReferenceFreqEnumtype VNAReferenceOut { get; set; }
+
         #endregion
 
         public StandardChannelValues DefaultStandardChannelValues;
@@ -102,6 +153,10 @@ namespace OpenTap.Plugins.PNAX
             ExternalDevices = true;
             IsQueryForErrors = true;
             IsWaitForOpc = true;
+
+            EnableReferenceOscillatorSettings = false;
+            VNAReferenceIn = VNAReferenceInEnumtype.Internal;
+            VNAReferenceOut = VNAReferenceFreqEnumtype.Ten;
         }
 
         /// <summary>
@@ -146,7 +201,11 @@ namespace OpenTap.Plugins.PNAX
                 Preset();
             }
 
-            
+            if (EnableReferenceOscillatorSettings)
+            {
+                SetReferenceIn(VNAReferenceIn);
+                SetVNAOutputReferenceOscillatorFrequency(VNAReferenceOut);
+            }
         }
 
         public void Preset()
@@ -280,6 +339,27 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        public void ScpiCommand(string command, int timeOut)
+        {
+            base.ScpiCommand(command);
+
+            if (IsWaitForOpc)
+            {
+                WaitForOperationComplete(timeOut);
+            }
+
+            if (IsQueryForErrors)
+            {
+                List<ScpiError> errors = base.QueryErrors();
+
+                if (errors.Count > 0)
+                {
+                    string errorString = string.Join(",", errors.ToArray());
+                    throw new Exception($"Error: {errorString} while sending command: {command}");
+                }
+            }
+        }
+
         public override string ScpiQuery(string query, bool isSilent = false)
         {
             string strRet = base.ScpiQuery(query, isSilent);
@@ -301,8 +381,13 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetSweepMode(int Channel, SweepModeEnumType sweepMode)
         {
+            int deftimeout = IoTimeout;
+            IoTimeout = 60000;
+
             string scpi = Scpi.Format("{0}", sweepMode);
             ScpiCommand($"SENSe{Channel}:SWEep:MODE {scpi}");
+
+            IoTimeout = deftimeout;
         }
 
         public void SendTrigger(int Channel)
@@ -316,6 +401,79 @@ namespace OpenTap.Plugins.PNAX
             retString = retString.Replace("\"", "");
             List<string> retVal = retString.Split(',').ToList<string>();
             return retVal;
+        }
+
+        public List<string> CalsetCatalog()
+        {
+            string retString = ScpiQuery($"CSET:CATalog?");
+            retString = retString.Replace("\"", "");
+            List<string> retVal = retString.Split(',').ToList<string>();
+            return retVal;
+        }
+
+        public void LoadCalset(int Channel, string calset, bool UseCalSetStimulus = true)
+        {
+            String StateStr = "OFF";
+            if (UseCalSetStimulus)
+            {
+                StateStr = "ON";
+            }
+
+            List<String> calsets = CalsetCatalog();
+
+            // Find if any of the calsets on the instruments matches the desired calset
+            bool calset_exists = calsets.Any(s => s.Equals(calset));
+
+            if (!calset_exists)
+            {
+                throw new Exception("selected Cal set does not exist!");
+            }
+
+            ScpiCommand($"SENSe{Channel}:CORRection:CSET:ACTivate \"{calset}, {StateStr}");
+        }
+
+        public void SetVNAReferenceOscillator(VNAReferenceOscillatorEnumtype referenceOscillator)
+        {
+            string state = Scpi.Format("{0}", referenceOscillator);
+            ScpiCommand($"SENSe:ROSCillator:SOURce {state}");
+        }
+
+        public void SetVNAReferenceOscillatorFrequency(VNAReferenceFreqEnumtype referenceFreq)
+        {
+            string freq = Scpi.Format("{0}", referenceFreq);
+            ScpiCommand($"SENSe:ROSCillator:EXTernal:FREQuency {freq}");
+        }
+
+        public void SetVNAOutputReferenceOscillatorFrequency(VNAReferenceFreqEnumtype referenceFreq)
+        {
+            string freq = Scpi.Format("{0}", referenceFreq);
+            ScpiCommand($"SENSe:ROSCillator:OUTPut:FREQuency {freq}");
+        }
+
+        public void SetReferenceIn(VNAReferenceInEnumtype refIn)
+        {
+            switch (refIn)
+            {
+                case VNAReferenceInEnumtype.Internal:
+                    SetVNAReferenceOscillator(VNAReferenceOscillatorEnumtype.Internal);
+                    break;
+                case VNAReferenceInEnumtype.External10:
+                    SetVNAReferenceOscillator(VNAReferenceOscillatorEnumtype.External);
+                    SetVNAReferenceOscillatorFrequency(VNAReferenceFreqEnumtype.Ten);
+                    break;
+                case VNAReferenceInEnumtype.External100:
+                    SetVNAReferenceOscillator(VNAReferenceOscillatorEnumtype.External);
+                    SetVNAReferenceOscillatorFrequency(VNAReferenceFreqEnumtype.Hundred);
+                    break;
+                case VNAReferenceInEnumtype.PXIBackplane:
+                    SetVNAReferenceOscillator(VNAReferenceOscillatorEnumtype.PXI);
+                    break;
+            }
+        }
+
+        public bool GetDriveAccess()
+        {
+            return ScpiQuery<bool>("SYSTem:COMMunicate:DRIVe:ENABle?");
         }
     }
 }

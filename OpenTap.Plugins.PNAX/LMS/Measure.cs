@@ -23,11 +23,15 @@ namespace OpenTap.Plugins.PNAX
         [Display("Channels", Description: "Choose which channels to trigger.", "Measurements")]
         public List<int> channels { get; set; }
         // ToDo: Add property here for each parameter the end user should be able to change
+
+        [Display("Sweep Mode", Group: "Settings", Order: 10)]
+        public SweepModeEnumType sweepMode { get; set; }
         #endregion
 
         public Measure()
         {
             channels = new List<int> { };
+            sweepMode = SweepModeEnumType.SING;
             // ToDo: Set default values for properties / settings.
         }
 
@@ -37,7 +41,13 @@ namespace OpenTap.Plugins.PNAX
 
             try
             {
-                PNAX.MeasureState(channels);
+                List<int> activeChannels = PNAX.GetActiveChannels();
+                channels = PNAX.ChannelListCheck(channels, activeChannels);
+                // Trigger every channel
+                foreach (var channel in channels)
+                {
+                    PNAX.SetSweepMode(channel, sweepMode);
+                }
                 PNAX.WaitForOperationComplete();
             }
             catch (IndexOutOfRangeException ex)
