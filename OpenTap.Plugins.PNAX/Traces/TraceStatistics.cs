@@ -1,4 +1,4 @@
-﻿// Author: MyName
+﻿// Author: CMontes
 // Copyright:   Copyright 2024 Keysight Technologies
 //              You have a royalty-free right to use, modify, reproduce and distribute
 //              the sample application files (and/or any modified version) in any way
@@ -123,6 +123,11 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
+            if (IsControlledByParent)
+            {
+                mnum = GetParent<SingleTraceBaseStep>().mnum;
+            }
+
             PNAX.MathStatistics(Channel, mnum, EnableStatistics);
             if (EnableStatistics)
             {
