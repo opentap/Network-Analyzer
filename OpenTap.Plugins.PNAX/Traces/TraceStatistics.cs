@@ -126,6 +126,7 @@ namespace OpenTap.Plugins.PNAX
             if (IsControlledByParent)
             {
                 mnum = GetParent<SingleTraceBaseStep>().mnum;
+                Channel = GetParent<SingleTraceBaseStep>().Channel;
             }
 
             PNAX.MathStatistics(Channel, mnum, EnableStatistics);
