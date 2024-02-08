@@ -114,10 +114,15 @@ namespace OpenTap.Plugins.PNAX
         [Display("Query for OPC", "Send OPC? after every command. Useful for debugging", Group: "Instrument Settings", Order: 4)]
         public bool IsWaitForOpc { get; set; }
 
-        [Display("Reference In", "", Group: "Reference", Order: 10)]
+        [Display("Enable Reference Oscillator Settings", Group: "Reference", Order: 10)]
+        public bool EnableReferenceOscillatorSettings { get; set; }
+
+        [EnabledIf("EnableReferenceOscillatorSettings", true, HideIfDisabled = true)]
+        [Display("Reference In", "Set the frequency reference of the instrument", Group: "Reference", Order: 11)]
         public VNAReferenceInEnumtype VNAReferenceIn { get; set; }
 
-        [Display("Reference Out", "", Group: "Reference", Order: 11)]
+        [EnabledIf("EnableReferenceOscillatorSettings", true, HideIfDisabled = true)]
+        [Display("Reference Out", "Set Reference out frequency", Group: "Reference", Order: 12)]
         public VNAReferenceFreqEnumtype VNAReferenceOut { get; set; }
 
         #endregion
@@ -149,6 +154,7 @@ namespace OpenTap.Plugins.PNAX
             IsQueryForErrors = true;
             IsWaitForOpc = true;
 
+            EnableReferenceOscillatorSettings = false;
             VNAReferenceIn = VNAReferenceInEnumtype.Internal;
             VNAReferenceOut = VNAReferenceFreqEnumtype.Ten;
         }
@@ -195,8 +201,11 @@ namespace OpenTap.Plugins.PNAX
                 Preset();
             }
 
-            SetReferenceIn(VNAReferenceIn);
-            SetVNAOutputReferenceOscillatorFrequency(VNAReferenceOut);
+            if (EnableReferenceOscillatorSettings)
+            {
+                SetReferenceIn(VNAReferenceIn);
+                SetVNAOutputReferenceOscillatorFrequency(VNAReferenceOut);
+            }
         }
 
         public void Preset()
