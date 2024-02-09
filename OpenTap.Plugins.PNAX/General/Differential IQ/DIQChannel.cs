@@ -26,8 +26,12 @@ namespace OpenTap.Plugins.PNAX
 
             // Traces
             DIQNewTrace standardNewTrace = new DIQNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            DIQFrequencyRange freqRange = new DIQFrequencyRange { IsControlledByParent = true, Channel = this.Channel };
+            DIQSources sources = new DIQSources { IsControlledByParent = true, Channel = this.Channel };
 
             this.ChildTestSteps.Add(standardNewTrace);
+            this.ChildTestSteps.Add(freqRange);
+            this.ChildTestSteps.Add(sources);
         }
 
 
