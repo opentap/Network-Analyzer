@@ -13,11 +13,30 @@ using System.Linq;
 
 namespace OpenTap.Plugins.PNAX
 {
+
+    public enum DIQPortStateEnumtype
+    {
+        [Display("Auto On")]
+        [Scpi("AUTO")]
+        Auto,
+        [Display("Always On")]
+        [Scpi("ON")]
+        On,
+        [Display("Off")]
+        [Scpi("OFF")]
+        Off
+    }
+
     public partial class PNAX : ScpiInstrument
     {
         public void DIQFrequencyRangeAdd(int Channel)
         {
             ScpiCommand($"SENSe{Channel}:DIQ:FREQuency:RANGe:ADD");
+        }
+
+        public void DIQFrequencyRangeDelete(int Channel)
+        {
+            ScpiCommand($"SENSe{Channel}:DIQ:FREQuency:RANGe:DELete");
         }
 
         public int DIQFrequencyRangeCount(int Channel)
@@ -31,9 +50,19 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:DIQ:FREQuency:RANGe{range}:STARt {value}");
         }
 
+        public double DIQFrequencyRangeStart(int Channel, int range)
+        {
+            return ScpiQuery<double>($"SENSe{Channel}:DIQ:FREQuency:RANGe{range}:STARt?");
+        }
+
         public void DIQFrequencyRangeStop(int Channel, int range, double value)
         {
             ScpiCommand($"SENSe{Channel}:DIQ:FREQuency:RANGe{range}:STOP {value}");
+        }
+
+        public double DIQFrequencyRangeStop(int Channel, int range)
+        {
+            return ScpiQuery<double>($"SENSe{Channel}:DIQ:FREQuency:RANGe{range}:STOP?");
         }
 
         public void DIQFrequencyRangeIFBW(int Channel, int range, double value)
@@ -77,9 +106,9 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         #region Source Configuration
-        public void DIQSourceState(int Channel, string source, bool state)
+        public void DIQSourceState(int Channel, string source, DIQPortStateEnumtype state)
         {
-            string stateValue = state ? "ON" : "OFF";
+            string stateValue = Scpi.Format("{0}", state);
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:STATe {stateValue},\"{source}\"");
         }
 

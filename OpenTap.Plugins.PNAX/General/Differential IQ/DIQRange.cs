@@ -53,12 +53,12 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [EnabledIf("Couple", false, HideIfDisabled = true)]
+        [EnabledIf("Couple", false, HideIfDisabled = false)]
         [Display("Start", Groups: new[] { "Frequency" }, Order: 31)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double FreqStart { get; set; }
 
-        [EnabledIf("Couple", false, HideIfDisabled = true)]
+        [EnabledIf("Couple", false, HideIfDisabled = false)]
         [Display("Stop", Groups: new[] { "Frequency" }, Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double FreqStop { get; set; }
@@ -117,8 +117,37 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            // TODO
-            // Add ScpiControl
+            if (Range > 1)
+            {
+                // First range will always be available after preset
+                // no need to add it
+                PNAX.DIQFrequencyRangeAdd(Channel);
+            }
+            if (!Couple)
+            {
+                PNAX.DIQFrequencyRangeStart(Channel, Range, FreqStart);
+                PNAX.DIQFrequencyRangeStop(Channel, Range, FreqStop);
+            }
+            PNAX.DIQFrequencyRangeIFBW(Channel, Range, IFBW);
+
+            PNAX.DIQFrequencyRangeCouplingState(Channel, Range, Couple);
+            if (Couple)
+            {
+                PNAX.DIQFrequencyRangeCouplingID(Channel, Range, CoupleID);
+                PNAX.DIQFrequencyRangeCouplingOffset(Channel, Range, Offset);
+                PNAX.DIQFrequencyRangeCouplingUp(Channel, Range, UpDownConversion);
+                PNAX.DIQFrequencyRangeCouplingMultiplier(Channel, Range, Multiplier);
+                PNAX.DIQFrequencyRangeCouplingDivisor(Channel, Range, Divisor);
+            }
+            PNAX.WaitForOperationComplete();
+
+            // If Couple enabled, then read values for Freq
+            if (Couple)
+            {
+                // Read Values from instrument
+                FreqStart = PNAX.DIQFrequencyRangeStart(Channel, Range);
+                FreqStop = PNAX.DIQFrequencyRangeStop(Channel, Range);
+            }
 
             UpgradeVerdict(Verdict.Pass);
         }

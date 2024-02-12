@@ -19,22 +19,95 @@ namespace OpenTap.Plugins.PNAX
     public class DIQSource : PNABaseStep
     {
         #region Settings
-        // ToDo: Add property here for each parameter the end user should be able to change
+        [Display("Name", Group: "Source", Order: 20)]
+        public string SourceName
+        {
+            get
+            {
+                return this.Name;
+            }
+            set
+            {
+                this.Name = value;
+            }
+        }
+
+        [Display("Source State", Groups: new[] { "Source" }, Order: 21)]
+        public DIQPortStateEnumtype SourceState { get; set; }
+
+        [Display("Frequency Range", Groups: new[] { "Source" }, Order: 22)]
+        public int FreqRange { get; set; }
+
+
+        private bool _SweepPower;
+        [Display("Sweep Power", Groups: new[] { "Power" }, Order: 30)]
+        public bool SweepPower 
+        {
+            get
+            {
+                return _SweepPower;
+            }
+            set
+            {
+                _SweepPower = value;
+                if (_SweepPower)
+                {
+                    Autorange = false;
+                }
+            }
+        }
+
+
+        [Display("Start Power", Groups: new[] { "Power" }, Order: 31)]
+        [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
+        public double StartPower { get; set; }
+
+        [EnabledIf("SweepPower", true, HideIfDisabled = false)]
+        [Display("Stop Power", Groups: new[] { "Power" }, Order: 32)]
+        [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
+        public double StopPower { get; set; }
+
+        [Display("Leveling Mode", Groups: new[] { "Power" }, Order: 33)]
+        public string LevelingMode { get; set; }
+
+        private bool _Autorange;
+        [EnabledIf("SweepPower", false, HideIfDisabled = false)]
+        [Display("Auto range source attenuator", Groups: new[] { "Power" }, Order: 34)]
+        public bool Autorange
+        {
+            get
+            {
+                return _Autorange;
+            }
+            set
+            {
+                _Autorange = value;
+                if (_Autorange)
+                {
+                    SourceAttenuator = 0;
+                }
+            }
+        }
+
+
+        [EnabledIf("Autorange", false, HideIfDisabled = false)]
+        [Display("Source Attenuator", Groups: new[] { "Power" }, Order: 35)]
+        [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
+        public int SourceAttenuator { get; set; }
         #endregion
 
         public DIQSource()
         {
-            // ToDo: Set default values for properties / settings.
+            SourceName = "Source";
+            SourceState = DIQPortStateEnumtype.Auto;
+            FreqRange = 1;
         }
 
         public override void Run()
         {
-            // ToDo: Add test case code.
             RunChildSteps(); //If the step supports child steps.
 
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            // UpgradeVerdict(Verdict.Pass);
+            UpgradeVerdict(Verdict.Pass);
         }
     }
 }

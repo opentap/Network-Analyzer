@@ -27,13 +27,28 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Source", Group: "Sources", Order: 40)]
         public void AddSource()
         {
-            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel };
+            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel , SourceName = "Source" };
             this.ChildTestSteps.Add(newSource);
         }
 
         public DIQSources()
         {
             PowerOnAllChannels = true;
+
+            // Add Default Sources
+            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 1" };
+            this.ChildTestSteps.Add(newSource);
+            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 2" };
+            this.ChildTestSteps.Add(newSource);
+            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 3" };
+            this.ChildTestSteps.Add(newSource);
+            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 4" };
+            this.ChildTestSteps.Add(newSource);
+            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 1 Src2" };
+            this.ChildTestSteps.Add(newSource);
+            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Source3" };
+            this.ChildTestSteps.Add(newSource);
+
         }
 
         public override void Run()

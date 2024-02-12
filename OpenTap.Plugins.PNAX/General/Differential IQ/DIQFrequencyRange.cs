@@ -41,7 +41,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            RunChildSteps(); //If the step supports child steps.
+            RunChildSteps();
 
             UpgradeVerdict(Verdict.Pass);
         }
