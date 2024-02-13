@@ -37,16 +37,47 @@ namespace OpenTap.Plugins.PNAX
 
             // Add Default Sources
             DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 1" };
+            newSource.SourceState = DIQPortStateEnumtype.Auto;
             this.ChildTestSteps.Add(newSource);
             newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 2" };
+            newSource.SourceState = DIQPortStateEnumtype.Off;
+            newSource.ReferencedTo = "Port 4";
+            newSource.rCont = "a2";
+            newSource.rRef = "a4";
+            newSource.TRec = "b2";
+            newSource.RRec = "a2";
             this.ChildTestSteps.Add(newSource);
             newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 3" };
+            newSource.SourceState = DIQPortStateEnumtype.Off;
+            newSource.ReferencedTo = "Port 1";
+            newSource.rCont = "a3";
+            newSource.rRef = "a1";
+            newSource.TRec = "b3";
+            newSource.RRec = "a3";
             this.ChildTestSteps.Add(newSource);
             newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 4" };
+            newSource.SourceState = DIQPortStateEnumtype.Off;
+            newSource.ReferencedTo = "Port 2";
+            newSource.rCont = "a4";
+            newSource.rRef = "a2";
+            newSource.TRec = "b4";
+            newSource.RRec = "a4";
             this.ChildTestSteps.Add(newSource);
             newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 1 Src2" };
+            newSource.SourceState = DIQPortStateEnumtype.Off;
+            newSource.ReferencedTo = "Source3";
+            newSource.rCont = "a1";
+            newSource.rRef = "a3";
+            newSource.TRec = "b1";
+            newSource.RRec = "a1";
             this.ChildTestSteps.Add(newSource);
             newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Source3" };
+            newSource.SourceState = DIQPortStateEnumtype.Off;
+            newSource.ReferencedTo = "Port 4";
+            newSource.rCont = "a1";
+            newSource.rRef = "a4";
+            newSource.TRec = "b4";
+            newSource.RRec = "a4";
             this.ChildTestSteps.Add(newSource);
 
         }

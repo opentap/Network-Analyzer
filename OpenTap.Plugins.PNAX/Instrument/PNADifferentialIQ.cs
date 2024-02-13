@@ -27,6 +27,19 @@ namespace OpenTap.Plugins.PNAX
         Off
     }
 
+    public enum DIQPhaseStateEnumtype
+    {
+        [Display("Off")]
+        [Scpi("OFF")]
+        Off,
+        [Display("Controlled")]
+        [Scpi("CONT")]
+        Controlled,
+        [Display("Open loop")]
+        [Scpi("OPEN")]
+        Oopenloop
+    }
+
     public partial class PNAX : ScpiInstrument
     {
         public void DIQFrequencyRangeAdd(int Channel)
@@ -112,7 +125,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:STATe {stateValue},\"{source}\"");
         }
 
-        public void DIQSourceFreqRange(int Channel, string source, double value)
+        public void DIQSourceFreqRange(int Channel, string source, int value)
         {
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:RANGe {value},\"{source}\"");
         }
@@ -142,7 +155,7 @@ namespace OpenTap.Plugins.PNAX
 
         public void DIQSourceLevelingMode(int Channel, string source, string mode)
         {
-            ScpiCommand($"SENSe{Channel}:DIQ:PORT:POWer:ALC:MODE {mode},\"{source}\"");
+            ScpiCommand($"SENSe{Channel}:DIQ:PORT:POWer:ALC:MODE \"{mode}\",\"{source}\"");
         }
 
         public void DIQSourcePowerAttenuation(int Channel, string source, double value)
@@ -158,9 +171,9 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         #region Source Phase
-        public void DIQSourcePhaseState(int Channel, string source, bool state)
+        public void DIQSourcePhaseState(int Channel, string source, DIQPhaseStateEnumtype state)
         {
-            string stateValue = state ? "ON" : "OFF";
+            string stateValue = Scpi.Format("{0}", state);
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:PHASe:STATe {stateValue},\"{source}\"");
         }
 
@@ -185,7 +198,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:PHASe:REFerence \"{refer}\",\"{source}\"");
         }
 
-        public void DIQSourcePhasecontrolParam(int Channel, string source, string param)
+        public void DIQSourcePhaseControlParam(int Channel, string source, string param)
         {
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:PHASe:PARameter \"{param}\",\"{source}\"");
         }
