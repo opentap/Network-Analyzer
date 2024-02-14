@@ -60,6 +60,11 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        [EnabledIf(nameof(CustomTraceMeas), true, HideIfDisabled = true)]
+        [Display("Expression", Groups: new[] { "Trace" }, Order: 11.21)]
+        public string Expression { get; set; }
+
+
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
         public int Window { get; set; }
@@ -179,7 +184,7 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        protected void AddNewTraceToPNAX()
+        protected virtual void AddNewTraceToPNAX()
         {
             int _tnum = 0;
             int _mnum = 0;

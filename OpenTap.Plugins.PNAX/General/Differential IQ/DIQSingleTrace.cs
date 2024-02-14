@@ -37,10 +37,12 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+
         public DIQSingleTrace()
         {
             Meas = DIQTraceEnum.IPwrF1;
             measClass = "Differential I/Q";
+            Expression = "";
         }
 
         public void AddTraceFormat(PNAX.MeasurementFormatEnum format)
@@ -55,6 +57,36 @@ namespace OpenTap.Plugins.PNAX
             TraceTitle trTitle = new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel };
             trTitle.Title = title;
             this.ChildTestSteps.Add(trTitle);
+        }
+
+        public override void Run()
+        {
+            AddNewTraceToPNAX();
+
+            RunChildSteps(); //If the step supports child steps.
+
+            UpgradeVerdict(Verdict.Pass);
+        }
+
+        protected override void AddNewTraceToPNAX()
+        {
+            int _tnum = 0;
+            int _mnum = 0;
+            string _MeasName = "";
+            if (CustomTraceMeas)
+            {
+                // Define new trace
+                PNAX.DIQParameterDefine(Channel, CustomMeas, Expression);
+                // add new trace
+                PNAX.AddNewTrace(Channel, Window, Trace, measClass, CustomMeas, ref _tnum, ref _mnum, ref _MeasName);
+            }
+            else
+            {
+                PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
+            }
+            tnum = _tnum;
+            mnum = _mnum;
+            MeasName = _MeasName;
         }
 
     }
