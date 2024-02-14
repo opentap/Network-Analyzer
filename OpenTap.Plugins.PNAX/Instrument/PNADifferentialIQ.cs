@@ -130,6 +130,15 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:RANGe {value},\"{source}\"");
         }
 
+        public void DIQSourceFreqRange(int Channel, string source, string value)
+        {
+            // Expecting a string like "F1", need to remove the 'F' and parse the number to int
+            string replaceValue = value.Replace("F", "");
+            int range;
+            if (!int.TryParse(replaceValue, out range)) throw new Exception($"Invalid Frequency Range: {value}");
+            ScpiCommand($"SENSe{Channel}:DIQ:PORT:RANGe {range},\"{source}\"");
+        }
+
         public void DIQSourceExternalPort(int Channel, string source, int port)
         {
             ScpiCommand($"SOURce{Channel}:PHASe:EXTernal:PORT {port},\"{source}\"");
@@ -234,6 +243,13 @@ namespace OpenTap.Plugins.PNAX
         public void DIQSourceMatchCorrectionRange(int Channel, string source, string ranges)
         {
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:MATCh:RANGe \"{ranges}\",\"{source}\"");
+        }
+
+        public void DIQSourceMatchCorrectionRange(int Channel, string source, List<string> ranges)
+        {
+            // overload that takes a list of strings
+            string rangeList = string.Join(",", ranges);
+            ScpiCommand($"SENSe{Channel}:DIQ:PORT:MATCh:RANGe \"{rangeList}\",\"{source}\"");
         }
         #endregion
 

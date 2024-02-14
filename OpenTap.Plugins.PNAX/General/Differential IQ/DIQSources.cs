@@ -19,6 +19,24 @@ namespace OpenTap.Plugins.PNAX
     public class DIQSources : PNABaseStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsRangesVisible { get; set; } = false;
+
+        private int _NumberOfRanges;
+        [EnabledIf("IsRangesVisible", true, HideIfDisabled = true)]
+        public int NumberOfRanges
+        {
+            set
+            {
+                _NumberOfRanges = value;
+                UpdateChildStepRanges();
+            }
+            get
+            {
+                return _NumberOfRanges;
+            }
+        }
+
         [Display("Power On (All Channels)", Group: "Power", Order: 20)]
         public bool PowerOnAllChannels { get; set; }
         #endregion
@@ -29,6 +47,17 @@ namespace OpenTap.Plugins.PNAX
         {
             DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel , SourceName = "Source" };
             this.ChildTestSteps.Add(newSource);
+        }
+
+        private void UpdateChildStepRanges()
+        {
+            foreach (var step in this.ChildTestSteps)
+            {
+                if (step.GetType().Equals(typeof(DIQSource)))
+                {
+                    (step as DIQSource).NumberOfRanges = _NumberOfRanges;
+                }
+            }
         }
 
         public DIQSources()

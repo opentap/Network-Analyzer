@@ -19,6 +19,24 @@ namespace OpenTap.Plugins.PNAX
     public class DIQSource : PNABaseStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsRangesVisible { get; set; } = false;
+
+        private int _NumberOfRanges;
+        [EnabledIf("IsRangesVisible", true, HideIfDisabled = true)]
+        public int NumberOfRanges
+        {
+            set
+            {
+                _NumberOfRanges = value;
+                UpdateAvailableRanges();
+            }
+            get
+            {
+                return _NumberOfRanges;
+            }
+        }
+
         [Display("Name", Group: "Source", Order: 20)]
         public string SourceName
         {
@@ -29,20 +47,29 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 this.Name = value;
+                if (this.Name.Contains("Port"))
+                {
+                    IsExternalPort = false;
+                }
+                else
+                {
+                    IsExternalPort = true;
+                    ExtSourcePort = 1;
+                }
             }
         }
 
         [Display("Source State", Groups: new[] { "Source" }, Order: 21)]
         public DIQPortStateEnumtype SourceState { get; set; }
 
-        // TODO
-        // Add options according to Ranges in DIQFrequencyRange
-        // i.e. F1
         [Display("Frequency Range", Groups: new[] { "Source" }, Order: 22)]
-        public int FreqRange { get; set; }
+        [AvailableValues(nameof(FreqRangesListOfAvailableValues))]
+        public string FreqRange { get; set; }
 
-        // TODO
-        // Enable only for external sources
+        [Browsable(false)]
+        public bool IsExternalPort { get; set; } = false;
+
+        [EnabledIf("IsExternalPort", true, HideIfDisabled = true)]
         [Display("External Source Port", Groups: new[] { "Source" }, Order: 23)]
         public int ExtSourcePort { get; set; }
 
@@ -94,6 +121,7 @@ namespace OpenTap.Plugins.PNAX
         public double StopPower { get; set; }
 
         [Display("Leveling Mode", Groups: new[] { "Power" }, Order: 33)]
+        [AvailableValues(nameof(LevelingModeListOfAvailableValues))]
         public string LevelingMode { get; set; }
 
         private bool _Autorange;
@@ -168,18 +196,15 @@ namespace OpenTap.Plugins.PNAX
 
 
         [Display("Referenced to", Groups: new[] { "Phase" }, Order: 44)]
+        [AvailableValues(nameof(ReferencedToListOfAvailableValues))]
         public string ReferencedTo { get; set; }
 
-        // TODO
-        // Add options 
-        // i.e. a1,a2,a3,a4,b1,b2,b3,b4
         [Display("Receiver to measure the controlled source", Groups: new[] { "Phase" }, Order: 45)]
+        [AvailableValues(nameof(ReceiverListOfAvailableValues))]
         public string rCont { get; set; }
 
-        // TODO
-        // Add options 
-        // i.e. a1,a2,a3,a4,b1,b2,b3,b4
         [Display("Receiver to measure the reference source", Groups: new[] { "Phase" }, Order: 46)]
+        [AvailableValues(nameof(ReceiverListOfAvailableValues))]
         public string rRef { get; set; }
 
         [Display("Tolerance", Groups: new[] { "Phase" }, Order: 47)]
@@ -193,31 +218,148 @@ namespace OpenTap.Plugins.PNAX
         [Display("Match Correction On", Groups: new[] { "Match Correction" }, Order: 50)]
         public bool MatchCorrection { get; set; }
 
-        // TODO
-        // Add options 
-        // i.e. b1,b2,b3,b4
         [Display("Test Receiver", Groups: new[] { "Match Correction" }, Order: 51)]
+        [AvailableValues(nameof(TRecListOfAvailableValues))]
         public string TRec { get; set; }
 
-        // TODO
-        // Add options 
-        // i.e. a1,a2,a3,a4
         [Display("Reference Receiver", Groups: new[] { "Match Correction" }, Order: 52)]
+        [AvailableValues(nameof(RRecListOfAvailableValues))]
         public string RRec { get; set; }
 
-        // TODO
-        // Add options according to the Ranges define in DIQFrequencyRange
-        // i.e. F1,F2, etc
-        [Display("Match Frequency Range", Groups: new[] { "Match Correction" }, Order: 53)]
+        private List<string> _SelectMatchFreqRange;
+        [Display("Select Frequency Range", Groups: new[] { "Match Correction" }, Order: 53)]
+        [AvailableValues(nameof(FreqRangesListOfAvailableValues))]
+        public List<string> SelectMatchFreqRange
+        {
+            get
+            {
+                MatchFreqRange = string.Join(",", _SelectMatchFreqRange);
+                return _SelectMatchFreqRange;
+            }
+            set
+            {
+                _SelectMatchFreqRange = value;
+                //MatchFreqRange = string.Join(",", _SelectMatchFreqRange);
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsMatchFreqRangeEditable { get; set; } = false;
+
+        [EnabledIf("IsMatchFreqRangeEditable", true, HideIfDisabled = false)]
+        [Display("Match Frequency Range", Groups: new[] { "Match Correction" }, Order: 54)]
         public string MatchFreqRange { get; set; }
 
+
+        private List<string> _FreqRangesListOfAvailableValues;
+        [Display("Frequency Range Values", "Editable list for Frequency Range values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+        public List<string> FreqRangesListOfAvailableValues
+        {
+            get { return _FreqRangesListOfAvailableValues; }
+            set
+            {
+                _FreqRangesListOfAvailableValues = value;
+                OnPropertyChanged("FreqRangesListOfAvailableValues");
+            }
+        }
+
+        private List<string> _LevelingModeListOfAvailableValues;
+        [Display("Leveling Mode Values", "Editable list for Leveling Mode values", Groups: new[] { "Available Values Setup" }, Order: 102, Collapsed: true)]
+        public List<string> LevelingModeListOfAvailableValues
+        {
+            get { return _LevelingModeListOfAvailableValues; }
+            set
+            {
+                _LevelingModeListOfAvailableValues = value;
+                OnPropertyChanged("LevelingModeListOfAvailableValues");
+            }
+        }
+
+        private List<string> _ReferencedToListOfAvailableValues;
+        [Display("Referenced To Values", "Editable list for Referenced To values", Groups: new[] { "Available Values Setup" }, Order: 103, Collapsed: true)]
+        public List<string> ReferencedToListOfAvailableValues
+        {
+            get { return _ReferencedToListOfAvailableValues; }
+            set
+            {
+                _ReferencedToListOfAvailableValues = value;
+                OnPropertyChanged("ReferencedToListOfAvailableValues");
+            }
+        }
+
+        private List<string> _ReceiverListOfAvailableValues;
+        [Display("Receiver Values", "Editable list for Receiver values", Groups: new[] { "Available Values Setup" }, Order: 104, Collapsed: true)]
+        public List<string> ReceiverListOfAvailableValues
+        {
+            get { return _ReceiverListOfAvailableValues; }
+            set
+            {
+                _ReceiverListOfAvailableValues = value;
+                OnPropertyChanged("ReceiverListOfAvailableValues");
+            }
+        }
+
+        private List<string> _TRecListOfAvailableValues;
+        [Display("Test Receiver Values", "Editable list for Test Receiver values", Groups: new[] { "Available Values Setup" }, Order: 105, Collapsed: true)]
+        public List<string> TRecListOfAvailableValues
+        {
+            get { return _TRecListOfAvailableValues; }
+            set
+            {
+                _TRecListOfAvailableValues = value;
+                OnPropertyChanged("TRecListOfAvailableValues");
+            }
+        }
+
+        private List<string> _RRecListOfAvailableValues;
+        [Display("Reference Receiver Values", "Editable list for Reference Receiver values", Groups: new[] { "Available Values Setup" }, Order: 106, Collapsed: true)]
+        public List<string> RRecListOfAvailableValues
+        {
+            get { return _RRecListOfAvailableValues; }
+            set
+            {
+                _RRecListOfAvailableValues = value;
+                OnPropertyChanged("RRecListOfAvailableValues");
+            }
+        }
+
+
+        private List<string> _listOfAvailableValues;
+        [Display("Available Values", "An editable list of values.")]
+        public List<string> ListOfAvailableValues
+        {
+            get { return _listOfAvailableValues; }
+            set
+            {
+                _listOfAvailableValues = value;
+                OnPropertyChanged("ListOfAvailableValues");
+            }
+        }
+
         #endregion
+        protected void UpdateAvailableRanges()
+        {
+            // Start a new list
+            _FreqRangesListOfAvailableValues = new List<string>();
+            // Fill it with the number of available ranges
+            for (int i = 0; i < NumberOfRanges; i++)
+            {
+                _FreqRangesListOfAvailableValues.Add($"F{i + 1}");
+            }
+        }
 
         public DIQSource()
         {
+            _FreqRangesListOfAvailableValues = new List<string> { "F1" };
+            _LevelingModeListOfAvailableValues = new List<string> { "Internal", "Internal-R1,1", "Open Loop", "Open Loop-R1,1" };
+            _ReferencedToListOfAvailableValues = new List<string> { "Port 3", "Port 4", "Source3" };
+            _ReceiverListOfAvailableValues = new List<string> { "a1", "a2", "a3", "a4", "b1", "b2", "b3", "b4" };
+            _TRecListOfAvailableValues = new List<string> { "b1", "b2", "b3", "b4" };
+            _RRecListOfAvailableValues = new List<string> { "a1", "a2", "a3", "a4" };
+
             SourceName = "Source";
             SourceState = DIQPortStateEnumtype.Auto;
-            FreqRange = 1;
+            FreqRange = "F1";
             ExtSourcePort = 0;
 
             SweepPower = false;
@@ -240,7 +382,7 @@ namespace OpenTap.Plugins.PNAX
             MatchCorrection = false;
             TRec = "b1";
             RRec = "a1";
-            MatchFreqRange = "F1";
+            SelectMatchFreqRange = new List<string>() { "F1" };
         }
 
         public override void Run()

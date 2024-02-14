@@ -35,9 +35,38 @@ namespace OpenTap.Plugins.PNAX
 
         public DIQFrequencyRange()
         {
+            ChildTestSteps.ChildStepsChanged += childStepsChanged;
+
             DIQRange newRange = new DIQRange { IsControlledByParent = true, Channel = this.Channel, Range = 1 };
             this.ChildTestSteps.Add(newRange);
         }
+
+        void childStepsChanged(TestStepList sender, TestStepList.ChildStepsChangedAction Action, ITestStep Object, int Index)
+        {
+            // Count how many childs the Frequency Range step has
+            Log.Info($"DIQFrequencyRange has {this.ChildTestSteps.Count}");
+            Log.Info($"Action: {Action}");
+
+            // and send this value to the DIQ Channel so it can pass it down to the DIQ Source / DIQ Sources
+            UpdateChanelRangeCount();
+        }
+
+        protected void UpdateChanelRangeCount()
+        {
+            try
+            {
+                var a = GetParent<DIQChannel>();
+                if (a != null)
+                {
+                    a.NumberOfRanges = this.ChildTestSteps.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("can't find parent yet! ex: " + ex.Message);
+            }
+        }
+
 
         public override void Run()
         {

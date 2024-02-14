@@ -17,12 +17,42 @@ namespace OpenTap.Plugins.PNAX
     public class DIQChannel : PNABaseStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsRangesVisible { get; set; } = false;
+
+        private int _NumberOfRanges;
+        [EnabledIf("IsRangesVisible", true, HideIfDisabled = true)]
+        public int NumberOfRanges
+        {
+            set
+            {
+                _NumberOfRanges = value;
+                UpdateChildStepRanges();
+            }
+            get
+            {
+                return _NumberOfRanges;
+            }
+        }
+
         #endregion
+
+        private void UpdateChildStepRanges()
+        {
+            foreach (var step in this.ChildTestSteps)
+            {
+                if (step.GetType().Equals(typeof(DIQSources)))
+                {
+                    (step as DIQSources).NumberOfRanges = _NumberOfRanges;
+                }
+            }
+        }
 
         public DIQChannel()
         {
             IsControlledByParent = false;
             Channel = 1;
+            NumberOfRanges = 1;
 
             // Traces
             DIQNewTrace standardNewTrace = new DIQNewTrace { IsControlledByParent = true, Channel = this.Channel };
