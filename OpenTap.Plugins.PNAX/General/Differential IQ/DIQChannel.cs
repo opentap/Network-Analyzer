@@ -1,5 +1,5 @@
 ﻿// Author: CMontes
-// Copyright:   Copyright 2023 Keysight Technologies
+// Copyright:   Copyright 2023-2024 Keysight Technologies
 //              You have a royalty-free right to use, modify, reproduce and distribute
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
