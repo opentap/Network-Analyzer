@@ -197,7 +197,19 @@ namespace OpenTap.Plugins.PNAX
         EVMDistUn21 = 8,
         [Display("EVM Norm")]
         [Scpi("EVM Norm")]
-        EVMNorm = 16
+        EVMNorm = 16,
+        [Display("Equalized EVM at Input")]
+        [Scpi("EvmInEq1")]
+        EvmInEq1 = 32,
+        [Display("Unequalized EVM at Input")]
+        [Scpi("EvmInUn1")]
+        EvmInUn1 = 64,
+        [Display("Equalized EVM at Output")]
+        [Scpi("EvmOutEq2")]
+        EvmOutEq2 = 128,
+        [Display("Unequalized EVM at Output")]
+        [Scpi("EvmOutUn2")]
+        EvmOutUn2 = 256
     }
 
     [Flags]

@@ -13,6 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
+    [AllowAsChildIn(typeof(TestPlan))]
     [AllowAsChildIn(typeof(SASource))]
     [Display("SA Source Cell", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASourceCell : PNABaseStep
@@ -96,6 +97,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         public SASourceCell()
         {
+            CellName = "Port 1";
             State = SAOnOffTypeEnum.Off;
             SASourceSweepType = SASourceSweepTypeEnum.CWTime;
 

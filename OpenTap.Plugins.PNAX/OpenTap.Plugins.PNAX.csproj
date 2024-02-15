@@ -102,6 +102,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="General\Differential IQ\" />
     <Folder Include="General\Noise Figure Cold Source\" />
     <Folder Include="Acquisition\" />
   </ItemGroup>
