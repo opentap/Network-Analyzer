@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,6 +19,9 @@ namespace OpenTap.Plugins.PNAX
     public class PulseSetup : PNABaseStep
     {
         #region Settings
+        [Browsable(false)]
+        public bool IsSettingReadOnly { get; set; } = false;
+
 
         [Display("Pulse Mode", Group: "Pulse Measurement", Order: 21)]
         public PulseModeEnumtype PulseMode { get; set; }
@@ -58,6 +62,9 @@ namespace OpenTap.Plugins.PNAX
         [Display("Autoselect Profile Sweep Time", Groups: new[] { "Properties" }, Order: 46)]
         public bool ProfileSweepTimeAuto { get; set; }
 
+        [XmlIgnore]
+        [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
+        [Browsable(true)]
         [Display("Sweep Time", Groups: new[] { "Properties" }, Order: 47)]
         [Unit("sec", UseEngineeringPrefix: true, StringFormat: "00.000")]
         public double SweepTime { get; set; }
@@ -78,6 +85,19 @@ namespace OpenTap.Plugins.PNAX
         [Display("Autoselect Pulse Generators", Groups: new[] { "Measurement Timing" }, Order: 52)]
         public bool PulseGeneratorsAuto { get; set; }
 
+        [Display("Trigger Source", Groups: new[] { "Pulse Trigger" }, Order: 60)]
+        public PulseTriggerEnumtype PulseTriggerType { get; set; }
+
+
+        [EnabledIf("PulseTriggerType", PulseTriggerEnumtype.External, HideIfDisabled = false)]
+        [Display("Trigger Level/Edge", Groups: new[] { "Pulse Trigger" }, Order: 61)]
+        public PulseTriggerLevelEdgeEnumtype pulseTriggerLevelEdge { get; set; }
+
+        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulse Trigger" }, Order: 62)]
+        public bool SynchADCUsingPulseTrigger { get; set; }
+
+        [Display("ADC trigger delay", Groups: new[] { "Pulse Trigger" }, Order: 63)]
+        public double ADCTriggerDelay { get; set; }
         #endregion
 
         public PulseSetup()
@@ -94,20 +114,150 @@ namespace OpenTap.Plugins.PNAX
             IfPathGainAndLossAuto = true;
             OptimizePulseFrequency = true;
             ProfileSweepTimeAuto = true;
-            SweepTime = 16.884e-3;
+            //SweepTime = 16.884e-3;
             NumberOfPoints = 201;
             IFBW = 15e3;
 
             PulseClockPrimary = PulsePrimaryClockEnumtype.Internal;
             WidthAndDelayAuto = true;
             PulseGeneratorsAuto = true;
+
+            PulseTriggerType = PulseTriggerEnumtype.Internal;
+            pulseTriggerLevelEdge = PulseTriggerLevelEdgeEnumtype.HighLevel;
+            SynchADCUsingPulseTrigger = false;
+            ADCTriggerDelay = 250e-3;
+
+            PulseGenerators pulseGenerators = new PulseGenerators { IsControlledByParent = true, Channel = this.Channel };
+            this.ChildTestSteps.Add(pulseGenerators);
         }
 
         public override void Run()
         {
-            RunChildSteps(); //If the step supports child steps.
+            RunChildSteps(); // Pulse Generators
+
+            // Pulse Measurement
+            PNAX.PulseMode(Channel, PulseMode);
+
+            // Pulse Timing
+            PNAX.PulsePrimaryWidth(Channel, PulseWidthPrimary);
+            PNAX.PulsePrimaryPeriod(Channel, PulsePeriodPrimary);
+            PNAX.PulsePrimaryFrequency(Channel, PulseFrequencyPrimary);
+
+            // Pulse Properties
+            PNAX.PulseDetectionMethodAuto(Channel, PulseDetectionMethodAuto);
+            if (PulseDetectionMethodAuto == false)
+            {
+                PNAX.PulseDetectionMethod(Channel, PulseDetectionMethod);
+                if (PulseDetectionMethod == PulseDetectionMethodEnumtype.Narrowband)
+                {
+                    PNAX.PulseDetectionSWGating(Channel, PulseDetectionMethodSWGating);
+                }
+
+                PNAX.PulseOptimizePRF(Channel, OptimizePulseFrequency);
+            }
+            PNAX.PulseIFGainAuto(Channel, IfPathGainAndLossAuto);
+            // TODO Add Missing IF Path, IF Input, IF Attenuator, IF Filter, IF Gain, ADC Filter
+            PNAX.PulseProfileSweepTimeAuto(Channel, ProfileSweepTimeAuto);
+            PNAX.PulseNumberOfPoints(Channel, NumberOfPoints);
+            PNAX.PulseIFBW(Channel, IFBW);
+
+            // Measurement Timing
+            PNAX.PulsePrimaryClock(Channel, PulseClockPrimary);
+            PNAX.PulseWidthAndDelayAuto(Channel, WidthAndDelayAuto);
+            PNAX.PulseGeneratorsAutoselect(Channel, PulseGeneratorsAuto);
+
+            // Trigger
+            PNAX.PulseGeneratorTrigger(Channel, PulseTriggerType);
+            switch (pulseTriggerLevelEdge)
+            {
+                case PulseTriggerLevelEdgeEnumtype.HighLevel:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Level);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Positive);
+                    break;
+                case PulseTriggerLevelEdgeEnumtype.LowLevel:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Level);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Negative);
+                    break;
+                case PulseTriggerLevelEdgeEnumtype.PositiveEdge:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Edge);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Positive);
+                    break;
+                case PulseTriggerLevelEdgeEnumtype.NegativeEdge:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Edge);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Negative);
+                    break;
+            }
+            PNAX.PulseGeneratorSyncADCs(Channel, SynchADCUsingPulseTrigger);
+            PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
+
+
+
+
+            // Update Sweep Time on UI
+            SweepTime = PNAX.PulseSweepTimeQ(Channel);
+            // Update Measurement Timing on UI
+
 
             UpgradeVerdict(Verdict.Pass);
         }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            UpdateMetaData();
+            List<(string, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(($"PulseMode", PulseMode));
+            retVal.Add(($"PulseWidthPrimary", PulseWidthPrimary));
+            retVal.Add(($"PulsePeriodPrimary", PulsePeriodPrimary));
+            retVal.Add(($"PulseFrequencyPrimary", PulseFrequencyPrimary));
+            retVal.Add(($"PulseDetectionMethodAuto", PulseDetectionMethodAuto));
+            if (PulseDetectionMethodAuto == false)
+            {
+                retVal.Add(($"PulseDetectionMethod", PulseDetectionMethod));
+                if (PulseDetectionMethod == PulseDetectionMethodEnumtype.Narrowband)
+                {
+                    retVal.Add(($"PulseDetectionMethodSWGating", PulseDetectionMethodSWGating));
+                }
+                retVal.Add(($"OptimizePulseFrequency", OptimizePulseFrequency));
+
+            }
+            retVal.Add(($"IfPathGainAndLossAuto", IfPathGainAndLossAuto));
+            retVal.Add(($"ProfileSweepTimeAuto", ProfileSweepTimeAuto));
+            retVal.Add(($"NumberOfPoints", NumberOfPoints));
+            retVal.Add(($"IFBW", IFBW));
+            retVal.Add(($"PulseClockPrimary", PulseClockPrimary));
+            retVal.Add(($"WidthAndDelayAuto", WidthAndDelayAuto));
+            retVal.Add(($"PulseGeneratorsAuto", PulseGeneratorsAuto));
+            retVal.Add(($"PulseTriggerType", PulseTriggerType));
+            retVal.Add(($"SynchADCUsingPulseTrigger", SynchADCUsingPulseTrigger));
+            retVal.Add(($"Pulse0GeneratorDelay", ADCTriggerDelay));
+            retVal.Add(($"SweepTime", SweepTime));
+
+
+            foreach (var a in MetaData)
+            {
+                retVal.Add(a);
+            }
+
+            return retVal;
+        }
+
+        [Browsable(true)]
+        [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
+        public override void UpdateMetaData()
+        {
+            MetaData = new List<(string, object)>();
+
+            foreach (var ch in this.ChildTestSteps)
+            {
+                List<(string, object)> ret = (ch as PulseGenerators).GetMetaData();
+                foreach (var it in ret)
+                {
+                    MetaData.Add(it);
+                }
+            }
+        }
+
     }
 }

@@ -87,6 +87,18 @@ namespace OpenTap.Plugins.PNAX
         Negative
     }
 
+    public enum PulseTriggerLevelEdgeEnumtype
+    {
+        [Display("High Level")]
+        HighLevel,
+        [Display("Low Level")]
+        LowLevel,
+        [Display("Positive Edge")]
+        PositiveEdge,
+        [Display("Negative Edge")]
+        NegativeEdge
+    }
+
     public enum PulseALCModeEnumType
     {
         [Scpi("INT")]
@@ -135,8 +147,6 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:SWEep:PULSe:DETectmode:AUTO {stateValue}");
         }
 
-        // OFF  Narrowband
-        // ON   Wideband
         public void PulseDetectionMethod(int Channel, PulseDetectionMethodEnumtype state)
         {
             string stateValue = Scpi.Format("{0}", state);
@@ -176,6 +186,10 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{Channel}:SWEep:TIME:STOP {value}");
         }
+        public double PulseSweepTimeQ(int Channel)
+        {
+            return ScpiQuery<double>($"SENSe{Channel}:SWEep:TIME:STOP?");
+        }
 
         public double PulseSweepTimeStart(int Channel)
         {
@@ -212,6 +226,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:SWEep:PULSe:DRIVe:AUTO {stateValue}");
         }
 
+        // Modulator Drive in Pulse Generators Dialog
         public void PulseGeneratorPulseGen(int Channel, string pulseGen)
         {
             PulseConfigElement(Channel, "PulseModDrive", pulseGen);
@@ -253,16 +268,28 @@ namespace OpenTap.Plugins.PNAX
         #region Pulsed Sources
         public void PulseGeneratorSource1EnableModulator(int Channel, bool state)
         {
-            string stateValue = state ? "ON" : "OFF";
+            string stateValue = state ? "Enable" : "Disable";
             PulseConfigElement(Channel, "Src1Out1PulseModEnable", stateValue);
         }
 
         public void PulseGeneratorSource2EnableModulator(int Channel, bool state)
         {
-            string stateValue = state ? "ON" : "OFF";
+            string stateValue = state ? "Enable" : "Disable";
             PulseConfigElement(Channel, "Src2Out1PulseModEnable", stateValue);
         }
 
+        public void PulseGeneratorALCOpenLoop(int Channel, bool pulseALCMode)
+        {
+            if (pulseALCMode)
+            {
+                PulseGeneratorALCOpenLoop(Channel, PulseALCModeEnumType.OpenLoop);
+            }
+            else
+            {
+                PulseGeneratorALCOpenLoop(Channel, PulseALCModeEnumType.Internal);
+            }
+        }
+        
         public void PulseGeneratorALCOpenLoop(int Channel, PulseALCModeEnumType pulseALCMode)
         {
             string ALCMode = Scpi.Format("{0}", pulseALCMode);
@@ -280,7 +307,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:PULSe:HDELay:MODulator {value}");
         }
 
-        public double PulseGeneratorADCDelay(int Channel)
+        public double PulseGeneratorFixedADCDelay(int Channel)
         {
             return ScpiQuery<double>($"SENSe{Channel}:PULSe:HDELay:ADC?");
         }
@@ -289,8 +316,7 @@ namespace OpenTap.Plugins.PNAX
         #region Pulsed Receivers
         public void PulseGeneratorSyncADCs(int Channel, bool state)
         {
-            string stateValue = state ? "ON" : "OFF";
-            ScpiCommand($"SENSe{Channel}:PULSe:HDELay:STATe {stateValue}");
+            PulseGeneratorEnable(Channel, "Pulse0", state);
         }
 
         public void Pulse4Option(int Channel, bool state)
