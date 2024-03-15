@@ -22,16 +22,23 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsSettingReadOnly { get; set; } = false;
 
-        //// TODO
-        //// Update parent step Pulse Timing section with these values
-        //[Display("Trigger", Groups: new[] { "Pulse Generators" }, Order: 21)]
-        //public PulseTriggerEnumtype PulseTriggerType { get; set; }
+        // Update parent step Pulse Timing section with these values
+        [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
+        [Display("Trigger", Groups: new[] { "Pulse Generators" }, Order: 21, Description: "Set this value on parent step")]
+        public PulseTriggerEnumtype PulseTriggerType { get; set; }
 
-        //[Display("Frequency", Groups: new[] { "Pulse Generators" }, Order: 22)]
-        //public double Frequency { get; set; }
+        // Update parent step Pulse Timing section with these values
+        [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
+        [Display("Frequency", Groups: new[] { "Pulse Generators" }, Order: 22, Description: "Set this value on parent step")]
+        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
+        public double Frequency { get; set; }
 
-        //[Display("Period", Groups: new[] { "Pulse Generators" }, Order: 23)]
-        //public double Period { get; set; }
+
+        // Update parent step Pulse Timing section with these values
+        [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
+        [Display("Period", Groups: new[] { "Pulse Generators" }, Order: 23, Description: "Set this value on parent step")]
+        [Unit("sec", UseEngineeringPrefix: true, StringFormat: "0.000")]
+        public double Period { get; set; }
 
 
         [Display("Source 1 Enable Modulator", Groups: new[] { "Pulsed Sources" }, Order: 31)]
@@ -50,16 +57,15 @@ namespace OpenTap.Plugins.PNAX
 
 
         private bool _SynchADCUsingPulseTrigger;
-        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulsed Receivers" }, Order: 41)]
+        [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
+        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulsed Receivers" }, Order: 41, Description:"Set this value on parent step")]
         public bool SynchADCUsingPulseTrigger
         {
             set
             {
                 _SynchADCUsingPulseTrigger = value;
-                
-                // TODO
-                // Update Child Step with PulseName 'Pulse0'
-                // Update Parent Step 
+
+                UpdatePulse0Enable();
             }
             get
             {
@@ -102,6 +108,23 @@ namespace OpenTap.Plugins.PNAX
         }
 
         #endregion
+
+
+        private void UpdatePulse0Enable()
+        {
+            foreach (var a in this.ChildTestSteps)
+            {
+                if (a is Generator)
+                {
+                    if ((a as Generator).PulseName.Equals("Pulse0"))
+                    {
+                        (a as Generator).PulseEnable = _SynchADCUsingPulseTrigger;
+                        return;
+                    }
+                }
+            }
+        }
+
 
         public PulseGenerators()
         {
