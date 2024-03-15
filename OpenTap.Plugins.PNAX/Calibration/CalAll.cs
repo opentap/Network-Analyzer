@@ -658,10 +658,10 @@ namespace OpenTap.Plugins.PNAX
             {
                 PNAX.CalAllSetProperty("Enable Phase Correction", EnablePhaseCorrection.ToString());
             }
-            if (IsPowerCalEnabled)
-            {
+            //if (IsPowerCalEnabled)
+            //{
                 PNAX.CalAllSetProperty("Include Power Calibration", IncludePowerCalibration.ToString());
-            }
+            //}
             if (IsIMDEnabled)
             {
                 PNAX.CalAllSetProperty("Max Product Order", MaxProductOrder.ToString());
