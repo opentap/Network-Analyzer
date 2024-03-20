@@ -43,6 +43,57 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double PulseFrequencyPrimary { get; set; }
 
+
+        private PulseTriggerEnumtype _PulseTriggerType;
+        [Display("Trigger Source", Groups: new[] { "Pulse Trigger" }, Order: 60)]
+        public PulseTriggerEnumtype PulseTriggerType
+        {
+            get
+            {
+                return _PulseTriggerType;
+            }
+            set
+            {
+                _PulseTriggerType = value;
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is PulseGenerators)
+                    {
+                        (a as PulseGenerators).PulseTriggerType = value;
+                    }
+                }
+            }
+        }
+
+
+        [EnabledIf("PulseTriggerType", PulseTriggerEnumtype.External, HideIfDisabled = false)]
+        [Display("Trigger Level/Edge", Groups: new[] { "Pulse Trigger" }, Order: 61)]
+        public PulseTriggerLevelEdgeEnumtype pulseTriggerLevelEdge { get; set; }
+
+        private bool _SynchADCUsingPulseTrigger;
+        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulse Trigger" }, Order: 62)]
+        public bool SynchADCUsingPulseTrigger
+        {
+            get
+            {
+                return _SynchADCUsingPulseTrigger;
+            }
+            set
+            {
+                _SynchADCUsingPulseTrigger = value;
+                foreach (var a in this.ChildTestSteps)
+                {
+                    if (a is PulseGenerators)
+                    {
+                        (a as PulseGenerators).SynchADCUsingPulseTrigger = value;
+                    }
+                }
+            }
+        }
+
+        [Display("ADC trigger delay", Groups: new[] { "Pulse Trigger" }, Order: 63)]
+        public double ADCTriggerDelay { get; set; }
+
         #endregion
 
         public PulseSetupBasic()
@@ -52,6 +103,12 @@ namespace OpenTap.Plugins.PNAX
             PulseWidthPrimary = 100e-6;
             PulsePeriodPrimary = 1e-3;
             PulseFrequencyPrimary = 1e3;
+
+            PulseTriggerType = PulseTriggerEnumtype.Internal;
+            pulseTriggerLevelEdge = PulseTriggerLevelEdgeEnumtype.HighLevel;
+            SynchADCUsingPulseTrigger = false;
+            ADCTriggerDelay = 250e-3;
+
         }
 
         public override void Run()
@@ -63,6 +120,30 @@ namespace OpenTap.Plugins.PNAX
             PNAX.PulsePrimaryWidth(Channel, PulseWidthPrimary);
             PNAX.PulsePrimaryPeriod(Channel, PulsePeriodPrimary);
             PNAX.PulsePrimaryFrequency(Channel, PulseFrequencyPrimary);
+
+            // Trigger
+            PNAX.PulseGeneratorTrigger(Channel, PulseTriggerType);
+            switch (pulseTriggerLevelEdge)
+            {
+                case PulseTriggerLevelEdgeEnumtype.HighLevel:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Level);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Positive);
+                    break;
+                case PulseTriggerLevelEdgeEnumtype.LowLevel:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Level);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Negative);
+                    break;
+                case PulseTriggerLevelEdgeEnumtype.PositiveEdge:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Edge);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Positive);
+                    break;
+                case PulseTriggerLevelEdgeEnumtype.NegativeEdge:
+                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Edge);
+                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Negative);
+                    break;
+            }
+            PNAX.PulseGeneratorSyncADCs(Channel, SynchADCUsingPulseTrigger);
+            PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
 
             RunChildSteps(); //If the step supports child steps.
 
