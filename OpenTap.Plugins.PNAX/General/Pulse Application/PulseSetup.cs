@@ -92,6 +92,11 @@ namespace OpenTap.Plugins.PNAX
         [Display("Autoselect IF Path Gain and Loss", Groups: new[] { "Properties"}, Order: 44)]
         public bool IfPathGainAndLossAuto { get; set; }
 
+        [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
+        [Display("IF Path...", Groups: new[] { "Properties" }, Order: 44.1)]
+        public List<IFPathDefinition> IFPathList { get; set; }
+
+
         [EnabledIf("PulseDetectionMethodAuto", false, HideIfDisabled = false)]
         [EnabledIf("PulseDetectionMethod", PulseDetectionMethodEnumtype.Narrowband, HideIfDisabled = false)]
         [Display("Optimize Pulse Frequency", Groups: new[] { "Properties" }, Order: 45)]
@@ -174,8 +179,36 @@ namespace OpenTap.Plugins.PNAX
         public double ADCTriggerDelay { get; set; }
         #endregion
 
+        private List<string> _IFPathListOfAvailableValues;
+        [Display("IF Path Values", "Editable list for Pulse Gen values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+        public List<string> IFPathListOfAvailableValues
+        {
+            get { return _IFPathListOfAvailableValues; }
+            set
+            {
+                _IFPathListOfAvailableValues = value;
+                OnPropertyChanged("IFPathListOfAvailableValues");
+            }
+        }
+
+        private static List<string> _IFInputListOfAvailableValues;
+        [Display("IF Input Values", "Editable list for Pulse Gen values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+        public static List<string> IFInputListOfAvailableValues
+        {
+            get { return _IFInputListOfAvailableValues; }
+            set
+            {
+                _IFInputListOfAvailableValues = value;
+                //PulseSetup.OnPropertyChanged("IFInputListOfAvailableValues");
+            }
+        }
+
+
         public PulseSetup()
         {
+            _IFPathListOfAvailableValues = new List<string> { "A", "B", "C", "D", "R1", "R2", "R3", "R4" };
+            _IFInputListOfAvailableValues = new List<string> { "Internal", "External" };
+
             PulseGenerators pulseGenerators = new PulseGenerators { IsControlledByParent = true, Channel = this.Channel };
             this.ChildTestSteps.Add(pulseGenerators);
 
@@ -335,4 +368,23 @@ namespace OpenTap.Plugins.PNAX
         }
 
     }
+
+    public class IFPathDefinition
+    {
+        [Display("IF Path", Order: 1)]
+        [AvailableValues(nameof(PulseSetup.IFPathListOfAvailableValues))]
+        public String PathName { get; set; }
+
+        [Display("IF Input", Order: 2)]
+        [AvailableValues(nameof(IFInputValues))]
+        public String IFInput { get; set; }
+
+        public List<string> IFInputValues = PulseSetup.IFInputListOfAvailableValues;
+        public IFPathDefinition()
+        {
+            PathName = "A";
+            IFInput = "Internal";
+        }
+    }
+
 }

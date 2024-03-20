@@ -26,6 +26,16 @@ namespace OpenTap.Plugins.PNAX
         Profile
     }
 
+    public enum PulseModeBasicEnumtype
+    {
+        [Display("Off")]
+        [Scpi("OFF")]
+        Off,
+        [Display("Standard Pulse")]
+        [Scpi("STD")]
+        Standard,
+    }
+
     public enum PulseDetectionMethodEnumtype
     {
         [Display("Narrowband")]
@@ -117,6 +127,12 @@ namespace OpenTap.Plugins.PNAX
 
         #region Pulse Measurement
         public void PulseMode(int Channel, PulseModeEnumtype mode)
+        {
+            string modeValue = Scpi.Format("{0}", mode);
+            ScpiCommand($"SENSe{Channel}:SWEep:PULSe:MODE {modeValue}");
+        }
+
+        public void PulseMode(int Channel, PulseModeBasicEnumtype mode)
         {
             string modeValue = Scpi.Format("{0}", mode);
             ScpiCommand($"SENSe{Channel}:SWEep:PULSe:MODE {modeValue}");

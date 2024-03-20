@@ -43,8 +43,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("Cal Set Name", Order: 0.2)]
         public String CalSetName { get; set; }
 
+        [Display("Auto Select Channels", Group: "Cal All", Order: 1)]
+        public bool AutoSelectChannels { get; set; }
+
         private List<CalibrateAllSelectedChannels> _CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
-        [Display("Calibrate All Selected Channels", Group: "Cal All", Order: 1)]
+        [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
+        [Display("Calibrate All Selected Channels", Group: "Cal All", Order: 1.1)]
         public List<CalibrateAllSelectedChannels> CalAllSelectedChannels
         {
             get
@@ -62,8 +66,10 @@ namespace OpenTap.Plugins.PNAX
                 // TODO
             }
         }
+
         [Browsable(true)]
-        [Display("Query Channels", Group: "Cal All", Order: 1.1)]
+        [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
+        [Display("Query Channels", Group: "Cal All", Order: 1.2)]
         public void QueryChannelsButton()
         {
             if (PNAX.IsConnected)
@@ -73,6 +79,10 @@ namespace OpenTap.Plugins.PNAX
             }
             QueryChannels();
         }
+
+        [EnabledIf("AutoSelectChannels", true, HideIfDisabled = true)]
+        [Display("Channel Cal Ports", Group: "Cal All", Order: 1.3)]
+        public List<int> CalChannels { get; set; }
 
         [Browsable(false)]
         public bool IsAnyCalEnabled { get; set; }
@@ -495,6 +505,8 @@ namespace OpenTap.Plugins.PNAX
 
         public CalAll()
         {
+            AutoSelectChannels = true;
+            CalChannels = new List<int> { 1, 2 };
             UserSmartCalOrder = false;
             IndependentCalibrationChannels = new List<int>();
             ExtraPowerCals = ExtraPowerCalsEnum.NoIndependentSourceCal;
@@ -628,10 +640,25 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.CalAllReset();
 
-            // Set Channels and Ports for each channel
-            foreach (CalibrateAllSelectedChannels cal in _CalAllSelectedChannels)
+            if (AutoSelectChannels)
             {
-                PNAX.CalAllSelectPorts(cal.Channel, cal.Ports);
+                // Set Channels and Ports according to values on the instrument
+                // Query channels
+                List<int> Channels = PNAX.GetActiveChannels();
+
+                // for each channel query its type
+                foreach (int ch in Channels)
+                {
+                    PNAX.CalAllSelectPorts(ch, CalChannels);
+                }
+            }
+            else
+            {
+                // Set Channels and Ports for each channel using List provided by user
+                foreach (CalibrateAllSelectedChannels cal in _CalAllSelectedChannels)
+                {
+                    PNAX.CalAllSelectPorts(cal.Channel, cal.Ports);
+                }
             }
 
             // Set Properties according to the selected Channel types
