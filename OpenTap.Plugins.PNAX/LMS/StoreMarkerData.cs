@@ -28,7 +28,8 @@ namespace OpenTap.Plugins.PNAX
 
         public StoreMarkerData()
         {
-            channels = new List<int> { };
+            channels = new List<int>() { 1 };
+            AutoSelectChannels = true;
             MetaData = new List<(string, object)>();
         }
 
@@ -36,6 +37,7 @@ namespace OpenTap.Plugins.PNAX
         {
             MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
+            AutoSelectChannelsAvailableOnInstrument();
 
             // Supported child steps will provide MetaData to be added to the publish table
             RunChildSteps();

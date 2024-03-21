@@ -29,6 +29,7 @@ namespace OpenTap.Plugins.PNAX
         public MODGetData()
         {
             channels = new List<int>() { 1 };
+            AutoSelectChannels = true;
             AllData = true;
             paramName = "Carrier In1 dBm";
         }
@@ -37,6 +38,7 @@ namespace OpenTap.Plugins.PNAX
         {
             MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
+            AutoSelectChannelsAvailableOnInstrument();
 
             RunChildSteps(); //If the step supports child steps.
 

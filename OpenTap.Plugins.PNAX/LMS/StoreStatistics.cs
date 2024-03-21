@@ -19,8 +19,8 @@ namespace OpenTap.Plugins.PNAX
     {
         #region Settings
 
-        [Display("MNum", Groups: new[] { "Trace" }, Order: 20)]
-        public int mnum { get; set; }
+        //[Display("MNum", Groups: new[] { "Trace" }, Order: 20)]
+        //public int mnum { get; set; }
 
         [Display("All Statistics", Group: "Settings", Order: 30)]
         public bool AllData { get; set; }
@@ -34,6 +34,7 @@ namespace OpenTap.Plugins.PNAX
         public StoreStatistics()
         {
             channels = new List<int>() { 1 };
+            AutoSelectChannels = true;
             AllData = true;
             MathStatisticType = MathStatisticTypeEnum.Ptp;
         }
@@ -42,6 +43,7 @@ namespace OpenTap.Plugins.PNAX
         {
             MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
+            AutoSelectChannelsAvailableOnInstrument();
 
             RunChildSteps(); //If the step supports child steps.
 
@@ -57,64 +59,76 @@ namespace OpenTap.Plugins.PNAX
                 List<string> ResultNames = new List<string>();
                 List<IConvertible> ResultValues = new List<IConvertible>();
 
-                if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Ptp))
+                // Get all measurements for current channel
+                List<int> measurements = PNAX.GetChannelMeasurements(Channel);
+                foreach (int mnum in measurements)
                 {
-                    PNAX.MathExecuteStatistics(Channel, mnum);
-                    PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Ptp);
-                    result = PNAX.MathData(Channel, mnum);
-                    Log.Info($"Peak to Peak: {result}");
-                    ResultNames.Add(MathStatisticTypeEnum.Ptp.ToString());
-                    ResultValues.Add((IConvertible)result);
-                }
-                if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Std))
-                {
-                    PNAX.MathExecuteStatistics(Channel, mnum);
-                    PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Std);
-                    result = PNAX.MathData(Channel, mnum);
-                    Log.Info($"Std dev: {result}");
-                    ResultNames.Add(MathStatisticTypeEnum.Std.ToString());
-                    ResultValues.Add((IConvertible)result);
-                }
-                if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Mean))
-                {
-                    PNAX.MathExecuteStatistics(Channel, mnum);
-                    PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Mean);
-                    result = PNAX.MathData(Channel, mnum);
-                    Log.Info($"Mean: {result}");
-                    ResultNames.Add(MathStatisticTypeEnum.Mean.ToString());
-                    ResultValues.Add((IConvertible)result);
-                }
-                if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Min))
-                {
-                    PNAX.MathExecuteStatistics(Channel, mnum);
-                    PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Min);
-                    result = PNAX.MathData(Channel, mnum);
-                    Log.Info($"Min: {result}");
-                    ResultNames.Add(MathStatisticTypeEnum.Min.ToString());
-                    ResultValues.Add((IConvertible)result);
-                }
-                if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Max))
-                {
-                    PNAX.MathExecuteStatistics(Channel, mnum);
-                    PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Max);
-                    result = PNAX.MathData(Channel, mnum);
-                    Log.Info($"Max: {result}");
-                    ResultNames.Add(MathStatisticTypeEnum.Max.ToString());
-                    ResultValues.Add((IConvertible)result);
-                }
-
-                //if MetaData available
-                if ((MetaData != null) && (MetaData.Count > 0))
-                {
-                    // for every item in metadata
-                    for (int i = 0; i < MetaData.Count; i++)
+                    if (PNAX.MathStatistics(Channel, mnum))
                     {
-                        ResultNames.Add(MetaData[i].Item1);
-                        ResultValues.Add((IConvertible)MetaData[i].Item2);
+                        if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Ptp))
+                        {
+                            PNAX.MathExecuteStatistics(Channel, mnum);
+                            PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Ptp);
+                            result = PNAX.MathData(Channel, mnum);
+                            Log.Info($"Peak to Peak: {result}");
+                            ResultNames.Add(MathStatisticTypeEnum.Ptp.ToString());
+                            ResultValues.Add((IConvertible)result);
+                        }
+                        if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Std))
+                        {
+                            PNAX.MathExecuteStatistics(Channel, mnum);
+                            PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Std);
+                            result = PNAX.MathData(Channel, mnum);
+                            Log.Info($"Std dev: {result}");
+                            ResultNames.Add(MathStatisticTypeEnum.Std.ToString());
+                            ResultValues.Add((IConvertible)result);
+                        }
+                        if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Mean))
+                        {
+                            PNAX.MathExecuteStatistics(Channel, mnum);
+                            PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Mean);
+                            result = PNAX.MathData(Channel, mnum);
+                            Log.Info($"Mean: {result}");
+                            ResultNames.Add(MathStatisticTypeEnum.Mean.ToString());
+                            ResultValues.Add((IConvertible)result);
+                        }
+                        if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Min))
+                        {
+                            PNAX.MathExecuteStatistics(Channel, mnum);
+                            PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Min);
+                            result = PNAX.MathData(Channel, mnum);
+                            Log.Info($"Min: {result}");
+                            ResultNames.Add(MathStatisticTypeEnum.Min.ToString());
+                            ResultValues.Add((IConvertible)result);
+                        }
+                        if (MathStatisticType.HasFlag(MathStatisticTypeEnum.Max))
+                        {
+                            PNAX.MathExecuteStatistics(Channel, mnum);
+                            PNAX.MathType(Channel, mnum, MathStatisticTypeEnum.Max);
+                            result = PNAX.MathData(Channel, mnum);
+                            Log.Info($"Max: {result}");
+                            ResultNames.Add(MathStatisticTypeEnum.Max.ToString());
+                            ResultValues.Add((IConvertible)result);
+                        }
+
+                        //if MetaData available
+                        if ((MetaData != null) && (MetaData.Count > 0))
+                        {
+                            // for every item in metadata
+                            for (int i = 0; i < MetaData.Count; i++)
+                            {
+                                ResultNames.Add(MetaData[i].Item1);
+                                ResultValues.Add((IConvertible)MetaData[i].Item2);
+                            }
+                        }
                     }
                 }
 
-                Results.Publish($"Statistics_Data_Channel_{Channel.ToString()}", ResultNames, ResultValues.ToArray());
+                // If at least one measurement has statistics enabled, then publish
+                if (ResultNames.Count > 0)
+                {
+                    Results.Publish($"Statistics_Data_Channel_{Channel.ToString()}", ResultNames, ResultValues.ToArray());
+                }
             }
 
             UpgradeVerdict(Verdict.Pass);

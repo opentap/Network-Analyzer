@@ -201,6 +201,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:STATistics:STATe {stateValue}");
         }
 
+        public bool MathStatistics(int Channel, int mnum)
+        {
+            return ScpiQuery<bool>($"CALCulate{Channel}:MEASure{mnum}:FUNCtion:STATistics:STATe?");
+        }
+
         public void MathType(int Channel, int mnum, MathStatisticTypeEnum mathStatisticType)
         {
             string StatisticType = Scpi.Format("{0}", mathStatisticType);
