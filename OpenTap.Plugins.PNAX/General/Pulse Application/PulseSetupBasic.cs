@@ -143,7 +143,8 @@ namespace OpenTap.Plugins.PNAX
                     break;
             }
             PNAX.PulseGeneratorSyncADCs(Channel, SynchADCUsingPulseTrigger);
-            PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
+            // Setting Pulse 0 on Basic Pulse setup affects the Trigger on the instrument
+            //PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
 
             RunChildSteps(); //If the step supports child steps.
 
