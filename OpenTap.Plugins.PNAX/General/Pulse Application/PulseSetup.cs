@@ -92,6 +92,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Autoselect IF Path Gain and Loss", Groups: new[] { "Properties"}, Order: 44)]
         public bool IfPathGainAndLossAuto { get; set; }
 
+        // TODO implement IFPath dialog
         [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
         [Display("IF Path...", Groups: new[] { "Properties" }, Order: 44.1)]
         public List<IFPathDefinition> IFPathList { get; set; }

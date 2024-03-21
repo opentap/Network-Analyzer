@@ -91,8 +91,8 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [Display("ADC trigger delay", Groups: new[] { "Pulse Trigger" }, Order: 63)]
-        public double ADCTriggerDelay { get; set; }
+        //[Display("ADC trigger delay", Groups: new[] { "Pulse Trigger" }, Order: 63)]
+        //public double ADCTriggerDelay { get; set; }
 
         #endregion
 
@@ -107,7 +107,7 @@ namespace OpenTap.Plugins.PNAX
             PulseTriggerType = PulseTriggerEnumtype.Internal;
             pulseTriggerLevelEdge = PulseTriggerLevelEdgeEnumtype.HighLevel;
             SynchADCUsingPulseTrigger = false;
-            ADCTriggerDelay = 250e-3;
+            //ADCTriggerDelay = 250e-3;
 
         }
 
@@ -149,6 +149,29 @@ namespace OpenTap.Plugins.PNAX
             RunChildSteps(); //If the step supports child steps.
 
             UpgradeVerdict(Verdict.Pass);
+        }
+
+        [Browsable(false)]
+        public override List<(string, object)> GetMetaData()
+        {
+            UpdateMetaData();
+            List<(string, object)> retVal = new List<(string, object)>();
+
+            retVal.Add(($"PulseMode", PulseMode));
+            retVal.Add(($"PulseWidthPrimary", PulseWidthPrimary));
+            retVal.Add(($"PulsePeriodPrimary", PulsePeriodPrimary));
+            retVal.Add(($"PulseFrequencyPrimary", PulseFrequencyPrimary));
+
+            retVal.Add(($"PulseTriggerType", PulseTriggerType));
+            retVal.Add(($"pulseTriggerLevelEdge", pulseTriggerLevelEdge));
+            retVal.Add(($"SynchADCUsingPulseTrigger", SynchADCUsingPulseTrigger));
+
+            foreach (var a in MetaData)
+            {
+                retVal.Add(a);
+            }
+
+            return retVal;
         }
     }
 }
