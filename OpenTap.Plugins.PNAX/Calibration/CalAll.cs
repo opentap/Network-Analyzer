@@ -624,17 +624,18 @@ namespace OpenTap.Plugins.PNAX
                         if (selectedKit.Contains("ECal"))
                         {
                             // We selecte a valid ECal calkit
+                            Log.Info($"Valid ECal found for Port 1: {selectedKit}");
                         }
                         else
                         {
+                            // Fail
+                            Log.Info($"Could not find ECal for Port 1 connector type: {Port1}");
+                            return Verdict.Fail;
+
                             // Looks like we don't have a valid ECAL
                             // Ask the user to provide a valid port
                             var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
                             UserInput.Request(dialogError);
-
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 1 connector type: {Port1}");
-                            return Verdict.Fail;
 
                             // next iteration
                             continue;
@@ -658,17 +659,18 @@ namespace OpenTap.Plugins.PNAX
                         if (selectedKit.Contains("ECal"))
                         {
                             // We selecte a valid ECal calkit
+                            Log.Info($"Valid ECal found for Port 2: {selectedKit}");
                         }
                         else
                         {
+                            // Fail
+                            Log.Info($"Could not find ECal for Port 2 connector type: {Port2}");
+                            return Verdict.Fail;
+
                             // Looks like we don't have a valid ECAL
                             // Ask the user to provide a valid port
                             var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
                             UserInput.Request(dialogError);
-
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 2 connector type: {Port2}");
-                            return Verdict.Fail;
 
                             // next iteration
                             continue;
@@ -692,17 +694,18 @@ namespace OpenTap.Plugins.PNAX
                         if (selectedKit.Contains("ECal"))
                         {
                             // We selecte a valid ECal calkit
+                            Log.Info($"Valid ECal found for Port 3: {selectedKit}");
                         }
                         else
                         {
+                            // Fail
+                            Log.Info($"Could not find ECal for Port 3 connector type: {Port3}");
+                            return Verdict.Fail;
+
                             // Looks like we don't have a valid ECAL
                             // Ask the user to provide a valid port
                             var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
                             UserInput.Request(dialogError);
-
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 3 connector type: {Port3}");
-                            return Verdict.Fail;
 
                             // next iteration
                             continue;
@@ -726,17 +729,18 @@ namespace OpenTap.Plugins.PNAX
                         if (selectedKit.Contains("ECal"))
                         {
                             // We selecte a valid ECal calkit
+                            Log.Info($"Valid ECal found for Port 4: {selectedKit}");
                         }
                         else
                         {
+                            // Fail
+                            Log.Info($"Could not find ECal for Port 4 connector type: {Port4}");
+                            return Verdict.Fail;
+
                             // Looks like we don't have a valid ECAL
                             // Ask the user to provide a valid port
                             var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
                             UserInput.Request(dialogError);
-
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 4 connector type: {Port4}");
-                            return Verdict.Fail;
 
                             // next iteration
                             continue;
