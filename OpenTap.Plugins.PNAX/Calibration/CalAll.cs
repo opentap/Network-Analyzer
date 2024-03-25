@@ -584,53 +584,162 @@ namespace OpenTap.Plugins.PNAX
 
         private void DoHeadlessModeTasks()
         {
+            int nRetry = 0;
+
             if (HeadlessMode)
             {
-                // query the connected calkit and add it automatically
-                const string defaultKit = "85032F";
-                if (IsPort1CalKitEnabled)
+                do
                 {
-                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
-                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                    Port1CalKit = selectedKit;
-                    Log.Debug($"Port1 calkit set to: {selectedKit}");
-                }
-                if (IsPort2CalKitEnabled)
-                {
-                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
-                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                    Port2CalKit = selectedKit;
-                    Log.Debug($"Port2 calkit set to: {selectedKit}");
-                }
-                if (IsPort3CalKitEnabled)
-                {
-                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
-                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                    Port3CalKit = selectedKit;
-                    Log.Debug($"Port4 calkit set to: {selectedKit}");
-                }
-                if (IsPort4CalKitEnabled)
-                {
-                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
-                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                    Port4CalKit = selectedKit;
-                    Log.Debug($"Port4 calkit set to: {selectedKit}");
-                }
+                    // Ask user for connector types
+                    var dialog = new SelectConnectorTypeDialog(Port1, Port2, Port3, Port4);
+                    UserInput.Request(dialog);
 
-                // enable Power Calibration if appropriate
-                if (IsPowerCalEnabled)
-                {
-                    PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
-                    Log.Debug($"Power calibration set");
-                }
+                    // Response from the user.
+                    if (dialog.Response == WaitForInputResult.Cancel)
+                    {
+                        Log.Info("Select cal kit aborted!");
+                    }
+                    Log.Info("Selected Port1: " + dialog.Port1);
+                    Log.Info("Selected Port2: " + dialog.Port2);
+                    Log.Info("Selected Port3: " + dialog.Port3);
+                    Log.Info("Selected Port4: " + dialog.Port4);
+
+                    // query the calkit for this type of connector and add it automatically
+                    const string defaultKit = "85032F";
+                    if (IsPort1CalKitEnabled)
+                    {
+                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
+
+                        // Select Connector Type
+                        String strDutPort1 = Scpi.Format("{0}", Port1);
+                        PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
+
+                        // Get Kits
+                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
+                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                        Port1CalKit = selectedKit;
+                        Log.Debug($"Port1 calkit set to: {selectedKit}");
+
+                        if (selectedKit.Contains("ECal"))
+                        {
+                            // We selecte a valid ECal calkit
+                        }
+                        else
+                        {
+                            // Looks like we don't have a valid ECAL
+                            // Ask the user to provide a valid port
+                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            UserInput.Request(dialogError);
+
+                            // next iteration
+                            continue;
+                        }
+                    }
+                    if (IsPort2CalKitEnabled)
+                    {
+                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
+
+                        // Select Connector Type
+                        String strDutPort2 = Scpi.Format("{0}", Port2);
+                        PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
+
+                        // Get Kits
+                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
+                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                        Port2CalKit = selectedKit;
+                        Log.Debug($"Port2 calkit set to: {selectedKit}");
+
+                        if (selectedKit.Contains("ECal"))
+                        {
+                            // We selecte a valid ECal calkit
+                        }
+                        else
+                        {
+                            // Looks like we don't have a valid ECAL
+                            // Ask the user to provide a valid port
+                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            UserInput.Request(dialogError);
+
+                            // next iteration
+                            continue;
+                        }
+                    }
+                    if (IsPort3CalKitEnabled)
+                    {
+                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
+
+                        // Select Connector Type
+                        String strDutPort3 = Scpi.Format("{0}", Port3);
+                        PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+
+                        // Get Kits
+                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
+                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                        Port3CalKit = selectedKit;
+                        Log.Debug($"Port4 calkit set to: {selectedKit}");
+                        
+                        if (selectedKit.Contains("ECal"))
+                        {
+                            // We selecte a valid ECal calkit
+                        }
+                        else
+                        {
+                            // Looks like we don't have a valid ECAL
+                            // Ask the user to provide a valid port
+                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            UserInput.Request(dialogError);
+
+                            // next iteration
+                            continue;
+                        }
+                    }
+                    if (IsPort4CalKitEnabled)
+                    {
+                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
+
+                        // Select Connector Type
+                        String strDutPort4 = Scpi.Format("{0}", Port4);
+                        PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
+
+                        // Get Kits
+                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
+                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                        Port4CalKit = selectedKit;
+                        Log.Debug($"Port4 calkit set to: {selectedKit}");
+
+                        if (selectedKit.Contains("ECal"))
+                        {
+                            // We selecte a valid ECal calkit
+                        }
+                        else
+                        {
+                            // Looks like we don't have a valid ECAL
+                            // Ask the user to provide a valid port
+                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            UserInput.Request(dialogError);
+
+                            // next iteration
+                            continue;
+                        }
+                    }
+
+                    // enable Power Calibration if appropriate
+                    if (IsPowerCalEnabled)
+                    {
+                        PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
+                        Log.Debug($"Power calibration set");
+                    }
+                    return;
+                } while (nRetry++ < 2);
+
+                var dialogError2 = new CalStepErrorMessageDialog("Could not find a valid CalKit after 3 tries!");
+                UserInput.Request(dialogError2);
+
+                throw new Exception("Could not find a valid CalKit after 3 tries!");
             }
         }
         
@@ -879,6 +988,78 @@ namespace OpenTap.Plugins.PNAX
         [AvailableValues(nameof(CalKits))]
         public string SelectedValue { get; set; }
 
+
+        [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
+        [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
+        public WaitForInputResult Response { get; set; }
+
+        string IDisplayAnnotation.Description => string.Empty;
+
+        string[] IDisplayAnnotation.Group => Array.Empty<string>();
+
+        double IDisplayAnnotation.Order => -10000;
+
+        bool IDisplayAnnotation.Collapsed => false;
+    }
+
+    class SelectConnectorTypeDialog : IDisplayAnnotation
+    {
+        public SelectConnectorTypeDialog(DUTConnectorsEnum Port1Input, DUTConnectorsEnum Port2Input, DUTConnectorsEnum Port3Input, DUTConnectorsEnum Port4Input )
+        {
+            Port1 = Port1Input;
+            Port2 = Port2Input;
+            Port3 = Port3Input;
+            Port4 = Port4Input;
+        }
+
+
+        public string Name { get { return "Select Connector Types"; } }
+
+
+
+        [Display("Port 1 Connector", "Select the connector type for Port 1")]
+        public DUTConnectorsEnum Port1  { get; set; }
+
+        [Display("Port 2 Connector", "Select the connector type for Port 2")]
+        public DUTConnectorsEnum Port2 { get; set; }
+        
+        [Display("Port 3 Connector", "Select the connector type for Port 3")]
+        public DUTConnectorsEnum Port3 { get; set; }
+        
+        [Display("Port 4 Connector", "Select the connector type for Port 4")]
+        public DUTConnectorsEnum Port4 { get; set; }
+
+
+        [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
+        [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
+        public WaitForInputResult Response { get; set; }
+
+        string IDisplayAnnotation.Description => string.Empty;
+
+        string[] IDisplayAnnotation.Group => Array.Empty<string>();
+
+        double IDisplayAnnotation.Order => -10000;
+
+        bool IDisplayAnnotation.Collapsed => false;
+    }
+
+    class CalStepErrorMessageDialog : IDisplayAnnotation
+    {
+        public CalStepErrorMessageDialog(String stepDescription)
+        {
+            StepDescription = stepDescription;
+        }
+
+        [Browsable(false)]
+        public String StepDescription { get; set; }
+
+        // Name is handled specially to create the title of the dialog window.
+        public string Name { get { return "Error selecting Connector Type and Calkit"; } }
+
+        [Layout(LayoutMode.FullRow, rowHeight: 2)]
+        [Browsable(true)] // Show it event though it is read-only.
+        [Display("Message", Order: 1)]
+        public string Message { get { return StepDescription; } }
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
         [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
