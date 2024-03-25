@@ -20,7 +20,11 @@ namespace OpenTap.Plugins.PNAX
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        [Display("Channels", Description: "Choose which channels to trigger.", "Measurements")]
+        [Display("Auto Select All Channels", Group: "Measurements", Order: 1)]
+        public bool AutoSelectChannels { get; set; }
+
+        [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
+        [Display("Channels", Description: "Choose which channels to trigger.", "Measurements", Order: 2)]
         public List<int> channels { get; set; }
         // ToDo: Add property here for each parameter the end user should be able to change
 
@@ -30,14 +34,24 @@ namespace OpenTap.Plugins.PNAX
 
         public Measure()
         {
-            channels = new List<int> { };
+            channels = new List<int>() { 1 };
+            AutoSelectChannels = true;
             sweepMode = SweepModeEnumType.SING;
             // ToDo: Set default values for properties / settings.
+        }
+
+        public void AutoSelectChannelsAvailableOnInstrument()
+        {
+            if (AutoSelectChannels)
+            {
+                channels = PNAX.GetActiveChannels();
+            }
         }
 
         public override void Run()
         {
             UpgradeVerdict(Verdict.NotSet);
+            AutoSelectChannelsAvailableOnInstrument();
 
             try
             {

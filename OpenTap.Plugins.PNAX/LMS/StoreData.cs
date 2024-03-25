@@ -30,7 +30,8 @@ namespace OpenTap.Plugins.PNAX
 
         public StoreData()
         {
-            channels = new List<int> { };
+            channels = new List<int>() { 1 };
+            AutoSelectChannels = true;
             // ToDo: Set default values for properties / settings.
             Rules.Add(IsFileValid, "Must be a valid file", "LimitsFile");
             EnableLimits = false;
@@ -44,6 +45,7 @@ namespace OpenTap.Plugins.PNAX
         {
             MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
+            AutoSelectChannelsAvailableOnInstrument();
 
             // Supported child steps will provide MetaData to be added to the publish table
             RunChildSteps();

@@ -21,7 +21,11 @@ namespace OpenTap.Plugins.PNAX
         public PNAX PNAX { get; set; }
 
 
-        [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10)]
+        [Display("Auto Select All Channels", Group: "Measurements", Order: 10)]
+        public bool AutoSelectChannels { get; set; }
+
+        [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
+        [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10.1)]
         public List<int> channels { get; set; }
 
         [Browsable(false)]
@@ -31,6 +35,14 @@ namespace OpenTap.Plugins.PNAX
         public override void Run()
         {
             throw new NotImplementedException();
+        }
+
+        public void AutoSelectChannelsAvailableOnInstrument()
+        {
+            if (AutoSelectChannels)
+            {
+                channels = PNAX.GetActiveChannels();
+            }
         }
     }
 }

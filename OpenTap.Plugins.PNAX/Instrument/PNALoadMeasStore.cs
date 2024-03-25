@@ -29,6 +29,16 @@ namespace OpenTap.Plugins.PNAX
             return activeChannels;
         }
 
+        public List<int> GetChannelMeasurements(int Channel)
+        {
+            var measurements = ScpiQuery($"SYSTem:MEASure:CATalog? {Channel}");
+
+            // Clean channel string
+            char[] charsToTrim = { '"', '\n' };
+            var activeMeasurements = measurements.Trim(charsToTrim).Split(',').Select(int.Parse).ToList();
+            return activeMeasurements;
+        }
+
         /// <summary>
         /// Checks test step paramater against list of active channels
         /// </summary>
