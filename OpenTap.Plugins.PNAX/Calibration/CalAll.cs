@@ -19,12 +19,14 @@ namespace OpenTap.Plugins.PNAX
         public Picture Picture { get; } = new Picture();
 
         [FilePath(FilePathAttribute.BehaviorChoice.Open)]
+        [Display("Picture Source", "File path for picture to be displayed.")]
         public string PictureSource
         {
             get => Picture.Source;
             set => Picture.Source = value;
         }
 
+        [Display("Picture Description", "Description of the picture to be displayed.")]
         public string PictureDescription
         {
             get => Picture.Description;
