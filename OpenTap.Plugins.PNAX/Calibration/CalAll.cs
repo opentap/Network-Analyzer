@@ -584,25 +584,25 @@ namespace OpenTap.Plugins.PNAX
 
         private Verdict DoHeadlessModeTasks()
         {
-            int nRetry = 0;
+            //int nRetry = 0;
 
             if (HeadlessMode)
             {
-                do
-                {
-                    // Ask user for connector types
-                    var dialog = new SelectConnectorTypeDialog(Port1, Port2, Port3, Port4);
-                    UserInput.Request(dialog);
+                //do
+                //{
+                    //// Ask user for connector types
+                    //var dialog = new SelectConnectorTypeDialog(Port1, Port2, Port3, Port4);
+                    //UserInput.Request(dialog);
 
-                    // Response from the user.
-                    if (dialog.Response == WaitForInputResult.Cancel)
-                    {
-                        Log.Info("Select cal kit aborted!");
-                    }
-                    Log.Info("Selected Port1: " + dialog.Port1);
-                    Log.Info("Selected Port2: " + dialog.Port2);
-                    Log.Info("Selected Port3: " + dialog.Port3);
-                    Log.Info("Selected Port4: " + dialog.Port4);
+                    //// Response from the user.
+                    //if (dialog.Response == WaitForInputResult.Cancel)
+                    //{
+                    //    Log.Info("Select cal kit aborted!");
+                    //}
+                    //Log.Info("Selected Port1: " + dialog.Port1);
+                    //Log.Info("Selected Port2: " + dialog.Port2);
+                    //Log.Info("Selected Port3: " + dialog.Port3);
+                    //Log.Info("Selected Port4: " + dialog.Port4);
 
                     // query the calkit for this type of connector and add it automatically
                     const string defaultKit = "85032F";
@@ -632,13 +632,13 @@ namespace OpenTap.Plugins.PNAX
                             Log.Info($"Could not find ECal for Port 1 connector type: {Port1}");
                             return Verdict.Fail;
 
-                            // Looks like we don't have a valid ECAL
-                            // Ask the user to provide a valid port
-                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            UserInput.Request(dialogError);
+                            //// Looks like we don't have a valid ECAL
+                            //// Ask the user to provide a valid port
+                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            //UserInput.Request(dialogError);
 
-                            // next iteration
-                            continue;
+                            //// next iteration
+                            //continue;
                         }
                     }
                     if (IsPort2CalKitEnabled)
@@ -667,13 +667,13 @@ namespace OpenTap.Plugins.PNAX
                             Log.Info($"Could not find ECal for Port 2 connector type: {Port2}");
                             return Verdict.Fail;
 
-                            // Looks like we don't have a valid ECAL
-                            // Ask the user to provide a valid port
-                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            UserInput.Request(dialogError);
+                            //// Looks like we don't have a valid ECAL
+                            //// Ask the user to provide a valid port
+                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            //UserInput.Request(dialogError);
 
-                            // next iteration
-                            continue;
+                            //// next iteration
+                            //continue;
                         }
                     }
                     if (IsPort3CalKitEnabled)
@@ -702,13 +702,13 @@ namespace OpenTap.Plugins.PNAX
                             Log.Info($"Could not find ECal for Port 3 connector type: {Port3}");
                             return Verdict.Fail;
 
-                            // Looks like we don't have a valid ECAL
-                            // Ask the user to provide a valid port
-                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            UserInput.Request(dialogError);
+                            //// Looks like we don't have a valid ECAL
+                            //// Ask the user to provide a valid port
+                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            //UserInput.Request(dialogError);
 
-                            // next iteration
-                            continue;
+                            //// next iteration
+                            //continue;
                         }
                     }
                     if (IsPort4CalKitEnabled)
@@ -737,13 +737,13 @@ namespace OpenTap.Plugins.PNAX
                             Log.Info($"Could not find ECal for Port 4 connector type: {Port4}");
                             return Verdict.Fail;
 
-                            // Looks like we don't have a valid ECAL
-                            // Ask the user to provide a valid port
-                            var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            UserInput.Request(dialogError);
+                            //// Looks like we don't have a valid ECAL
+                            //// Ask the user to provide a valid port
+                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
+                            //UserInput.Request(dialogError);
 
-                            // next iteration
-                            continue;
+                            //// next iteration
+                            //continue;
                         }
                     }
 
@@ -754,13 +754,13 @@ namespace OpenTap.Plugins.PNAX
                         Log.Debug($"Power calibration set");
                     }
                     return Verdict.Pass;
-                } while (nRetry++ < 2);
+                //} while (nRetry++ < 2);
 
-                var dialogError2 = new CalStepErrorMessageDialog("Could not find a valid CalKit after 3 tries!");
-                UserInput.Request(dialogError2);
+                //var dialogError2 = new CalStepErrorMessageDialog("Could not find a valid CalKit after 3 tries!");
+                //UserInput.Request(dialogError2);
 
-                throw new Exception("Could not find a valid CalKit after 3 tries!");
-                return Verdict.Fail;
+                //throw new Exception("Could not find a valid CalKit after 3 tries!");
+                //return Verdict.Fail;
             }
             return Verdict.Pass;
         }
