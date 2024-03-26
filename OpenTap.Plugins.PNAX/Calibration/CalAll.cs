@@ -249,7 +249,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Port4 = value;
-                if (_Port1 == DUTConnectorsEnum.Notused)
+                if (_Port4 == DUTConnectorsEnum.Notused)
                 {
                     IsPort4CalKitEnabled = false;
                 }
