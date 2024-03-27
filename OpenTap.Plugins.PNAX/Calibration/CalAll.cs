@@ -130,6 +130,23 @@ namespace OpenTap.Plugins.PNAX
         [Display("Independent Calibration Channels", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 22)]
         public List<int> IndependentCalibrationChannels { get; set; }
 
+        [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
+        [Display("Power Meter Settling Tolerance", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 23)]
+        [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.000")]
+        public double PowerMeterSettlingTolerance { get; set; }
+
+        [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
+        [Display("Power Meter Max Readings", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 24)]
+        public int PowerMeterSettlingReadings { get; set; }
+
+        [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
+        [Display("Power Meter Power Level", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 25)]
+        [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0")]
+        public double PowerMeterPowerLevel { get; set; }
+
+
+
+
         [EnabledIf("IsSplitCalEnabled", true, HideIfDisabled = true)]
         [Display("Split Cal", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 23)]
         public bool SplitCal { get; set; }
@@ -515,6 +532,10 @@ namespace OpenTap.Plugins.PNAX
             SplitCal = false;
             IncludePowerCalibration = false;
 
+            PowerMeterSettlingTolerance = 0.050;
+            PowerMeterSettlingReadings = 3;
+            PowerMeterPowerLevel = 0;
+
             EnablePhaseCorrection = false;
 
             MaxProductOrder = 3;
@@ -800,14 +821,22 @@ namespace OpenTap.Plugins.PNAX
             }
 
             // Set Properties according to the selected Channel types
+            String ExtraPowerCalsString = "";
             if (IsAnyCalEnabled)
             {
                 // Misc
                 PNAX.CalAllSetProperty("Use Smart Cal Order", UserSmartCalOrder.ToString());
-                String ExtraPowerCalsString = ExtraPowerCalsToString(ExtraPowerCals);
+                ExtraPowerCalsString = ExtraPowerCalsToString(ExtraPowerCals);
                 if (ExtraPowerCalsString != "")
                 {
                     PNAX.CalAllSetProperty("Enable Extra Power Cals", ExtraPowerCalsString);
+
+                    string psen = PNAX.ReadConnectedSensor();
+                    PNAX.SetPowerSensor(PNAPowerMeterEnumtype.Usb, psen);
+
+                    PNAX.PowerMeterSettlingTolerance(PowerMeterSettlingTolerance);
+                    PNAX.PowerMeterSettlingMaxReadings(PowerMeterSettlingReadings);
+
                 }
                 String IndependentCalibrationChannelsString = String.Join(",", IndependentCalibrationChannels);
                 if (IndependentCalibrationChannelsString != "")
@@ -865,6 +894,15 @@ namespace OpenTap.Plugins.PNAX
             if (strDutPort2 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 2, Port2CalKit);
             if (strDutPort3 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 3, Port3CalKit);
             if (strDutPort4 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 4, Port4CalKit);
+
+            if (IsAnyCalEnabled)
+            {
+                if (ExtraPowerCalsString != "")
+                {
+                    PNAX.PowerMeterPowerLevel(CalChannel, 1, PowerMeterPowerLevel);
+                    PNAX.PowerMeterSensorEnable(CalChannel, 1, true);
+                }
+            }
 
             PNAX.CalAllInit(CalChannel, CalSetName);
 
