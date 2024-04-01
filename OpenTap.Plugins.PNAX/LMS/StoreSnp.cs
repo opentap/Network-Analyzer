@@ -76,16 +76,18 @@ namespace OpenTap.Plugins.PNAX.LMS
                 Log.Info("MNUMs for channel: " + string.Join<int>(",", measurements));
 
                 string dir = "";
+                // Port Count to Update file extension s<n>p
+                int PortCount = Ports.Count;
 
                 MacroString macroString = new MacroString(this) { Text = filename.Text + "_CH" + channel };
                 if (IsCustomPath)
                 {
-                    dir = Path.Combine(CustomPath.Expand(PlanRun), macroString.Expand(PlanRun) + ".s2p"); ;
+                    dir = Path.Combine(CustomPath.Expand(PlanRun), macroString.Expand(PlanRun) + $".s{PortCount}p"); ;
                 }
                 else
                 {
                     string assemblyDir = AssemblyDirectory();
-                    dir = Path.Combine(assemblyDir, "Results", macroString.Expand(PlanRun) + ".s2p");
+                    dir = Path.Combine(assemblyDir, "Results", macroString.Expand(PlanRun) + $".s{PortCount}p");
                 }
 
                 // Saving to file:
