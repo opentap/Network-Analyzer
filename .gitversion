@@ -3,7 +3,7 @@
 
 # This is the version number that will be used. Prerelease numbers are calculated by 
 # counting git commits since the last change in this value.
-version = 0.5.14
+version = 0.6.0
 
 # A version is determined to be a "beta" prerelease if it originates from the default branch
 # The default branch is the first branch that matches the following regular expession.
@@ -25,4 +25,4 @@ release branch = release[0-9x]*
 # specified in this file), if it originates from a commit that has an annotated tag that matches
 # the following regular expression. (Note that the actual value of the tag is not used).
 # Uncomment to change the default.
-release tag = v\d+\.\d+
+release tag = v\d+\.\d+\.d+
