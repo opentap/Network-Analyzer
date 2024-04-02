@@ -607,183 +607,126 @@ namespace OpenTap.Plugins.PNAX
 
         private Verdict DoHeadlessModeTasks()
         {
-            //int nRetry = 0;
-
             if (HeadlessMode)
             {
-                //do
-                //{
-                    //// Ask user for connector types
-                    //var dialog = new SelectConnectorTypeDialog(Port1, Port2, Port3, Port4);
-                    //UserInput.Request(dialog);
+                // query the calkit for this type of connector and add it automatically
+                const string defaultKit = "85032F";
+                if (IsPort1CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
 
-                    //// Response from the user.
-                    //if (dialog.Response == WaitForInputResult.Cancel)
-                    //{
-                    //    Log.Info("Select cal kit aborted!");
-                    //}
-                    //Log.Info("Selected Port1: " + dialog.Port1);
-                    //Log.Info("Selected Port2: " + dialog.Port2);
-                    //Log.Info("Selected Port3: " + dialog.Port3);
-                    //Log.Info("Selected Port4: " + dialog.Port4);
+                    // Select Connector Type
+                    String strDutPort1 = Scpi.Format("{0}", Port1);
+                    PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
 
-                    // query the calkit for this type of connector and add it automatically
-                    const string defaultKit = "85032F";
-                    if (IsPort1CalKitEnabled)
+                    // Get Kits
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port1CalKit = selectedKit;
+                    Log.Debug($"Port1 calkit set to: {selectedKit}");
+
+                    if (selectedKit.Contains("ECal"))
                     {
-                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
-
-                        // Select Connector Type
-                        String strDutPort1 = Scpi.Format("{0}", Port1);
-                        PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
-
-                        // Get Kits
-                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
-                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                        Port1CalKit = selectedKit;
-                        Log.Debug($"Port1 calkit set to: {selectedKit}");
-
-                        if (selectedKit.Contains("ECal"))
-                        {
-                            // We selecte a valid ECal calkit
-                            Log.Info($"Valid ECal found for Port 1: {selectedKit}");
-                        }
-                        else
-                        {
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 1 connector type: {Port1}");
-                            return Verdict.Fail;
-
-                            //// Looks like we don't have a valid ECAL
-                            //// Ask the user to provide a valid port
-                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            //UserInput.Request(dialogError);
-
-                            //// next iteration
-                            //continue;
-                        }
+                        // We selecte a valid ECal calkit
+                        Log.Info($"Valid ECal found for Port 1: {selectedKit}");
                     }
-                    if (IsPort2CalKitEnabled)
+                    else
                     {
-                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
-
-                        // Select Connector Type
-                        String strDutPort2 = Scpi.Format("{0}", Port2);
-                        PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
-
-                        // Get Kits
-                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
-                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                        Port2CalKit = selectedKit;
-                        Log.Debug($"Port2 calkit set to: {selectedKit}");
-
-                        if (selectedKit.Contains("ECal"))
-                        {
-                            // We selecte a valid ECal calkit
-                            Log.Info($"Valid ECal found for Port 2: {selectedKit}");
-                        }
-                        else
-                        {
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 2 connector type: {Port2}");
-                            return Verdict.Fail;
-
-                            //// Looks like we don't have a valid ECAL
-                            //// Ask the user to provide a valid port
-                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            //UserInput.Request(dialogError);
-
-                            //// next iteration
-                            //continue;
-                        }
+                        // Looks like we don't have a valid ECAL for Port 1 - Fail 
+                        Log.Info($"Could not find ECal for Port 1 connector type: {Port1}");
+                        return Verdict.Fail;
                     }
-                    if (IsPort3CalKitEnabled)
+                }
+                if (IsPort2CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
+
+                    // Select Connector Type
+                    String strDutPort2 = Scpi.Format("{0}", Port2);
+                    PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
+
+                    // Get Kits
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port2CalKit = selectedKit;
+                    Log.Debug($"Port2 calkit set to: {selectedKit}");
+
+                    if (selectedKit.Contains("ECal"))
                     {
-                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
-
-                        // Select Connector Type
-                        String strDutPort3 = Scpi.Format("{0}", Port3);
-                        PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
-
-                        // Get Kits
-                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
-                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                        Port3CalKit = selectedKit;
-                        Log.Debug($"Port4 calkit set to: {selectedKit}");
-                        
-                        if (selectedKit.Contains("ECal"))
-                        {
-                            // We selecte a valid ECal calkit
-                            Log.Info($"Valid ECal found for Port 3: {selectedKit}");
-                        }
-                        else
-                        {
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 3 connector type: {Port3}");
-                            return Verdict.Fail;
-
-                            //// Looks like we don't have a valid ECAL
-                            //// Ask the user to provide a valid port
-                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            //UserInput.Request(dialogError);
-
-                            //// next iteration
-                            //continue;
-                        }
+                        // We selecte a valid ECal calkit
+                        Log.Info($"Valid ECal found for Port 2: {selectedKit}");
                     }
-                    if (IsPort4CalKitEnabled)
+                    else
                     {
-                        int CalChannel = PNAX.CalAllGuidedChannelNumber();
-
-                        // Select Connector Type
-                        String strDutPort4 = Scpi.Format("{0}", Port4);
-                        PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
-
-                        // Get Kits
-                        string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
-                        string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
-                        selectedKit = selectedKit == "" ? defaultKit : selectedKit;
-                        Port4CalKit = selectedKit;
-                        Log.Debug($"Port4 calkit set to: {selectedKit}");
-
-                        if (selectedKit.Contains("ECal"))
-                        {
-                            // We selecte a valid ECal calkit
-                            Log.Info($"Valid ECal found for Port 4: {selectedKit}");
-                        }
-                        else
-                        {
-                            // Fail
-                            Log.Info($"Could not find ECal for Port 4 connector type: {Port4}");
-                            return Verdict.Fail;
-
-                            //// Looks like we don't have a valid ECAL
-                            //// Ask the user to provide a valid port
-                            //var dialogError = new CalStepErrorMessageDialog("Please select a valid Connector Type");
-                            //UserInput.Request(dialogError);
-
-                            //// next iteration
-                            //continue;
-                        }
+                        // Looks like we don't have a valid ECAL for Port 2 - Fail 
+                        Log.Info($"Could not find ECal for Port 2 connector type: {Port2}");
+                        return Verdict.Fail;
                     }
+                }
+                if (IsPort3CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
 
-                    // enable Power Calibration if appropriate
-                    if (IsPowerCalEnabled)
+                    // Select Connector Type
+                    String strDutPort3 = Scpi.Format("{0}", Port3);
+                    PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+
+                    // Get Kits
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port3CalKit = selectedKit;
+                    Log.Debug($"Port3 calkit set to: {selectedKit}");
+
+                    if (selectedKit.Contains("ECal"))
                     {
-                        PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
-                        Log.Debug($"Power calibration set");
+                        // We selecte a valid ECal calkit
+                        Log.Info($"Valid ECal found for Port 3: {selectedKit}");
                     }
-                    return Verdict.Pass;
-                //} while (nRetry++ < 2);
+                    else
+                    {
+                        // Looks like we don't have a valid ECAL for Port 3 - Fail 
+                        Log.Info($"Could not find ECal for Port 3 connector type: {Port3}");
+                        return Verdict.Fail;
+                    }
+                }
+                if (IsPort4CalKitEnabled)
+                {
+                    int CalChannel = PNAX.CalAllGuidedChannelNumber();
 
-                //var dialogError2 = new CalStepErrorMessageDialog("Could not find a valid CalKit after 3 tries!");
-                //UserInput.Request(dialogError2);
+                    // Select Connector Type
+                    String strDutPort4 = Scpi.Format("{0}", Port4);
+                    PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
 
-                //throw new Exception("Could not find a valid CalKit after 3 tries!");
-                //return Verdict.Fail;
+                    // Get Kits
+                    string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
+                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    selectedKit = selectedKit == "" ? defaultKit : selectedKit;
+                    Port4CalKit = selectedKit;
+                    Log.Debug($"Port4 calkit set to: {selectedKit}");
+
+                    if (selectedKit.Contains("ECal"))
+                    {
+                        // We selecte a valid ECal calkit
+                        Log.Info($"Valid ECal found for Port 4: {selectedKit}");
+                    }
+                    else
+                    {
+                        // Looks like we don't have a valid ECAL for Port 4 - Fail 
+                        Log.Info($"Could not find ECal for Port 4 connector type: {Port4}");
+                        return Verdict.Fail;
+                    }
+                }
+
+                // enable Power Calibration if appropriate
+                if (IsPowerCalEnabled)
+                {
+                    PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
+                    Log.Debug($"Power calibration set");
+                }
+                return Verdict.Pass;
             }
             return Verdict.Pass;
         }

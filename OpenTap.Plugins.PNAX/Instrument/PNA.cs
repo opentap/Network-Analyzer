@@ -125,8 +125,8 @@ namespace OpenTap.Plugins.PNAX
         [Display("Reference Out", "Set Reference out frequency", Group: "Reference", Order: 12)]
         public VNAReferenceFreqEnumtype VNAReferenceOut { get; set; }
 
-        [Display("Store SNP Black List", "Measurement Classes for which SNP can't be stored", Group: "Store SNP Settings", Order: 31, Collapsed: true)]
-        public List<String> StoreSnpBlackList { get; set; }
+        [Display("Store SNP Block List", "Measurement Classes for which SNP can't be stored", Group: "Store SNP Settings", Order: 31, Collapsed: true)]
+        public List<String> StoreSnpBlockList { get; set; }
         #endregion
 
         public StandardChannelValues DefaultStandardChannelValues;
@@ -160,7 +160,7 @@ namespace OpenTap.Plugins.PNAX
             VNAReferenceIn = VNAReferenceInEnumtype.Internal;
             VNAReferenceOut = VNAReferenceFreqEnumtype.Ten;
 
-            StoreSnpBlackList = new List<string>() { "Differential I/Q", "Differential IQ" };
+            StoreSnpBlockList = new List<string>() { "Differential I/Q", "Differential IQ" };
         }
 
         /// <summary>

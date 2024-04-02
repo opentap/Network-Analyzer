@@ -29,9 +29,6 @@ namespace OpenTap.Plugins.PNAX.LMS
         [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
         public List<int> channels { get; set; }
 
-        //[Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
-        //public int mnum { get; set; }
-
         [Display("Ports", Groups: new[] { "Trace" }, Order: 22)]
         public List<int> Ports { get; set; }
 
@@ -50,9 +47,8 @@ namespace OpenTap.Plugins.PNAX.LMS
         public StoreSnp()
         {
             channels = new List<int>() { 1 };
-            //mnum = 1;
             Ports = new List<int>() { 1, 2 };
-            filename = new MacroString(this) { Text = "<PartId>" };
+            filename = new MacroString(this) { Text = "MySnP" };
             IsCustomPath = false;
             CustomPath = new MacroString(this) { Text = @"C:\" };
         }

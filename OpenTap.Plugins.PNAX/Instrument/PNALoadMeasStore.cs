@@ -480,9 +480,9 @@ namespace OpenTap.Plugins.PNAX
                     ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
                 }
             }
-            else if (StoreSnpBlackList.Any(s => s.Equals(measName)))
+            else if (StoreSnpBlockList.Any(s => s.Equals(measName)))
             {
-                // if meas name is in BlackList
+                // if meas name is in BlockList
                 Log.Info($"Can't store SNP for Channel '{Channel}' with Measurement Class '{measName}'");
                 return;
             }

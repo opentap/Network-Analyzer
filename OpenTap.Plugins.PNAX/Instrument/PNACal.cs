@@ -526,7 +526,6 @@ namespace OpenTap.Plugins.PNAX
 
         public void PowerMeterPowerLevel(int Channel, int port, double level)
         {
-            //ScpiCommand($"SOURce<ch>:POWer<port>:CORRection:LEVel[:AMPLitude] <num>[,src]");
             ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:POWer:LEVel {level}");
         }
 
