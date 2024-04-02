@@ -465,18 +465,33 @@ namespace OpenTap.Plugins.PNAX
 
             ChangeFolder(InstrumentFolderName);
 
-            // Save screenshot to local folder on instrument: <documents>\<mode>\screen
-            //string opc = MyVNA.ScpiQuery("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','C:\\Program Files\\Keysight\\Test Automation\\Results\\Traces\\MyData1.s2p';*OPC?");
-            // TODO PNA-L vs ENA
-            //ScpiCommand("CALC:MEAS:DATA:SNP:PORTs:Save '1,2','" + InstrumentFileName + "'");
-            if (IsModelA)
+            // Find Class Name
+            String measName = GetChannelType(Channel);
+
+            // if Standard
+            if (measName.Equals("Standard"))
             {
-                ScpiCommand($"CALCulate{Channel}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+                if (IsModelA)
+                {
+                    ScpiCommand($"CALCulate{Channel}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+                }
+                else
+                {
+                    ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+                }
+            }
+            else if (StoreSnpBlockList.Any(s => s.Equals(measName)))
+            {
+                // if meas name is in BlockList
+                Log.Info($"Can't store SNP for Channel '{Channel}' with Measurement Class '{measName}'");
+                return;
             }
             else
             {
-                ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+                // use MMEM:STOR
+                ScpiCommand($"MMEM:STORe '{InstrumentFileName}'");
             }
+
 
             // Make sure folder exists on local PC
             bool exists = System.IO.Directory.Exists(FilePath);

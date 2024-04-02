@@ -22,11 +22,12 @@ namespace OpenTap.Plugins.PNAX.LMS
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
-        public int Channel { get; set; }
+        [Display("Auto Select All Channels", Group: "Measurements", Order: 10)]
+        public bool AutoSelectChannels { get; set; }
 
-        [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
-        public int mnum { get; set; }
+        [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
+        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
+        public List<int> channels { get; set; }
 
         [Display("Ports", Groups: new[] { "Trace" }, Order: 22)]
         public List<int> Ports { get; set; }
@@ -45,33 +46,51 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public StoreSnp()
         {
-            Channel = 1;
-            mnum = 1;
+            channels = new List<int>() { 1 };
             Ports = new List<int>() { 1, 2 };
-            filename = new MacroString(this) { Text = "CH1" };
+            filename = new MacroString(this) { Text = "MySnP" };
             IsCustomPath = false;
             CustomPath = new MacroString(this) { Text = @"C:\" };
         }
 
         public override void Run()
         {
-            Log.Info("Channel from trace: " + Channel);
-            Log.Info("MNUM from trace: " + mnum);
-
             UpgradeVerdict(Verdict.NotSet);
 
-            string dir = "";
-            if (IsCustomPath)
+            if (AutoSelectChannels)
             {
-                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".s2p"); ;
-            }
-            else
-            {
-                string assemblyDir = AssemblyDirectory();
-                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".s2p");
+                channels = PNAX.GetActiveChannels();
             }
 
-            PNAX.SaveSnP(Channel, mnum, Ports, dir);
+            foreach (int channel in channels)
+            {
+                Log.Info("Storing SNP for Channel : " + channel);
+
+                // Get all measurements for current channel
+                List<int> measurements = PNAX.GetChannelMeasurements(channel);
+
+                Log.Info("MNUMs for channel: " + string.Join<int>(",", measurements));
+
+                string dir = "";
+                // Port Count to Update file extension s<n>p
+                int PortCount = Ports.Count;
+
+                MacroString macroString = new MacroString(this) { Text = filename.Text + "_CH" + channel };
+                if (IsCustomPath)
+                {
+                    dir = Path.Combine(CustomPath.Expand(PlanRun), macroString.Expand(PlanRun) + $".s{PortCount}p"); ;
+                }
+                else
+                {
+                    string assemblyDir = AssemblyDirectory();
+                    dir = Path.Combine(assemblyDir, "Results", macroString.Expand(PlanRun) + $".s{PortCount}p");
+                }
+
+                // Saving to file:
+                Log.Info("Storing SNP to file: " + dir);
+
+                PNAX.SaveSnP(channel, measurements[0], Ports, dir);
+            }
 
             UpgradeVerdict(Verdict.Pass);
         }

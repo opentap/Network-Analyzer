@@ -71,14 +71,17 @@ namespace OpenTap.Plugins.PNAX.LMS
             UpgradeVerdict(Verdict.NotSet);
 
             string dir = "";
+            // Port Count to Update file extension s<n>p
+            int PortCount = Ports.Count;
+
             if (IsCustomPath)
             {
-                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".s2p"); ;
+                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + $".s{PortCount}p"); ;
             }
             else
             {
                 String assemblyDir = AssemblyDirectory();
-                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".s2p");
+                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + $".s{PortCount}p");
             }
 
             PNAX.SaveSnP(Channel.Value, mnum.Value, Ports, dir);

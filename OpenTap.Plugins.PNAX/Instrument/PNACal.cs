@@ -40,6 +40,24 @@ namespace OpenTap.Plugins.PNAX
         NoiseFigureConverters
     }
 
+
+    public enum PNAPowerMeterEnumtype
+    {
+        [Display("GPIB")]
+        [Scpi("GPIB")]
+        Gpib,
+        [Display("USB")]
+        [Scpi("USB")]
+        Usb,
+        [Display("LAN")]
+        [Scpi("LAN")]
+        Lan,
+        [Display("ANY")]
+        [Scpi("ANY")]
+        Any
+    }
+
+
     public class CalibrateAllSelectedChannels
     {
         public int Channel { get; set; }
@@ -482,6 +500,42 @@ namespace OpenTap.Plugins.PNAX
             int mode = ScpiQuery<int>("SYST:ACT:SIMulator?");
             return mode;
         }
+
+        public void SetPowerSensor(PNAPowerMeterEnumtype powerMeterType, string powerSensorString)
+        {
+            string pmType = Scpi.Format("{0}", powerMeterType);
+            ScpiCommand($"SYSTem:COMMunicate:PSENsor {pmType}, \"{powerSensorString}\"");
+        }
+
+        public string ReadConnectedSensor()
+        {
+            String str = ScpiQuery("SYSTem:COMMunicate:USB:PMETer:CATalog? OFF");
+            string selectedPowerSensor = str.Split(';').FirstOrDefault().Trim(' ', '"');
+            return selectedPowerSensor;
+        }
+
+        public void PowerMeterSettlingTolerance(double tolerance)
+        {
+            ScpiCommand($"SOURce:POWer:CORRection:COLLect:AVERage:NTOLerance {tolerance}");
+        }
+
+        public void PowerMeterSettlingMaxReadings(int readings)
+        {
+            ScpiCommand($"SOURce:POWer:CORRection:COLLect:AVERage:COUNt {readings}");
+        }
+
+        public void PowerMeterPowerLevel(int Channel, int port, double level)
+        {
+            ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:POWer:LEVel {level}");
+        }
+
+        public void PowerMeterSensorEnable(int Channel, int port, bool state)
+        {
+            string stateValue = state ? "ON" : "OFF";
+            ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:STATe {stateValue}");
+        }
+
+
 
     }
 }
