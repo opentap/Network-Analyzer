@@ -10,9 +10,24 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap.Plugins.BasicSteps;
 
 namespace OpenTap.Plugins.PNAX
 {
+    [AllowChildrenOfType(typeof(DelayStep))]
+    [AllowChildrenOfType(typeof(DialogStep))]
+    [AllowChildrenOfType(typeof(LogStep))]
+    [AllowChildrenOfType(typeof(ProcessStep))]
+    [AllowChildrenOfType(typeof(SCPIRegexStep))]
+    [AllowChildrenOfType(typeof(TimeGuardStep))]
+    [AllowChildrenOfType(typeof(IfStep))]
+    [AllowChildrenOfType(typeof(LockStep))]
+    [AllowChildrenOfType(typeof(ParallelStep))]
+    [AllowChildrenOfType(typeof(RepeatStep))]
+    [AllowChildrenOfType(typeof(SequenceStep))]
+    [AllowChildrenOfType(typeof(SweepParameterStep))]
+    [AllowChildrenOfType(typeof(SweepParameterRangeStep))]
+    [AllowChildrenOfType(typeof(TestPlanReference))]
     [Browsable(false)]
     public class PNABaseStep : TestStep
     {
