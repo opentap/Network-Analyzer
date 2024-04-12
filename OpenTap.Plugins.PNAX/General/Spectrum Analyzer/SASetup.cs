@@ -80,21 +80,28 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             }
         }
 
+        [Display("Type", Group: "Sweep Properties", Order: 20.0)]
+        public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
+
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
         [EnabledIf("SASweepType", SASweepTypeEnum.LinearFrequency, HideIfDisabled = true)]
-        [Display("Start", Group: "Sweep Properties", Order: 20)]
+        [Display("Start", Group: "Sweep Properties", Order: 20.1)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SweepPropertiesStart { get; set; }
 
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.StartStop, HideIfDisabled = true)]
         [EnabledIf("SASweepType", SASweepTypeEnum.LinearFrequency, HideIfDisabled = true)]
         [Display("Stop", Group: "Sweep Properties", Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesStop { get; set; }
 
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [EnabledIf("SASweepType", SASweepTypeEnum.LinearFrequency, HideIfDisabled = true)]
         [Display("Center", Group: "Sweep Properties", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SweepPropertiesCenter { get; set; }
 
+        [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [EnabledIf("SASweepType", SASweepTypeEnum.LinearFrequency, HideIfDisabled = true)]
         [Display("Span", Group: "Sweep Properties", Order: 23)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
@@ -208,8 +215,16 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             {
                 case SASweepTypeEnum.LinearFrequency:
                     PNAX.SetSASweepType(Channel, SASweepType);
-                    PNAX.SetStart(Channel, SweepPropertiesStart);
-                    PNAX.SetStop(Channel, SweepPropertiesStop);
+                    if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+                    {
+                        PNAX.SetStart(Channel, SweepPropertiesStart);
+                        PNAX.SetStop(Channel, SweepPropertiesStop);
+                    }
+                    else
+                    {
+                        PNAX.SetCenter(Channel, SweepPropertiesCenter);
+                        PNAX.SetSpan(Channel, SweepPropertiesSpan);
+                    }
                     PNAX.SetPoints(Channel, SweepPropertiesPoints);
                     break;
                 case SASweepTypeEnum.SegmentSweep:

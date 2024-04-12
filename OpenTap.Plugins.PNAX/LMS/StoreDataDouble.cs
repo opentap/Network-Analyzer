@@ -41,23 +41,4 @@ namespace OpenTap.Plugins.PNAX.LMS
         }
     }
 
-    [Display("Set Double", Groups: new[] { "Basic Steps" }, Description: "Sets a value of type double.")]
-    public class SetDouble: TestStep
-    {
-        #region Settings
-        [Output]
-        public double DoubleValue { get; set; }
-        #endregion
-
-        public SetDouble()
-        {
-            DoubleValue = 14.0;
-        }
-
-        public override void Run()
-        {
-            Log.Info($"Value set to {DoubleValue}");
-            UpgradeVerdict(Verdict.Pass);
-        }
-    }
 }
