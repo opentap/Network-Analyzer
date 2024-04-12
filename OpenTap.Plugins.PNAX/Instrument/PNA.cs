@@ -148,6 +148,8 @@ namespace OpenTap.Plugins.PNAX
 
         private bool IsModelA = false;
 
+        public bool OptionS93088;
+
         public PNAX()
         {
             Name = "PNA-X";
@@ -161,6 +163,8 @@ namespace OpenTap.Plugins.PNAX
             VNAReferenceOut = VNAReferenceFreqEnumtype.Ten;
 
             StoreSnpBlockList = new List<string>() { "Differential I/Q", "Differential IQ" };
+
+            OptionS93088 = true;
         }
 
         /// <summary>
@@ -203,6 +207,13 @@ namespace OpenTap.Plugins.PNAX
             if (isAlwaysPreset)
             {
                 Preset();
+            }
+
+            string[] OPTValues = ScpiQuery("*OPT?").Split(',');
+            OptionS93088 = OPTValues.Any(s => s.Equals("088"));
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not available, SOURce:PHASe commands will be skipped");
             }
 
             if (EnableReferenceOscillatorSettings)

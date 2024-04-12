@@ -141,6 +141,11 @@ namespace OpenTap.Plugins.PNAX
 
         public void DIQSourceExternalPort(int Channel, string source, int port)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:EXTernal:PORT {port},\"{source}\"");
+                return;
+            }
             ScpiCommand($"SOURce{Channel}:PHASe:EXTernal:PORT {port},\"{source}\"");
         }
         #endregion
@@ -214,11 +219,21 @@ namespace OpenTap.Plugins.PNAX
 
         public void DIQSourcePhaseTolerance(int Channel, string source, double value)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:CONTrol:TOLerance {value},\"{source}\"");
+                return;
+            }
             ScpiCommand($"SOURce{Channel}:PHASe:CONTrol:TOLerance {value},\"{source}\"");
         }
 
         public void DIQSourcePhaseIterations(int Channel, string source, double value)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:CONTrol:ITERation {value},\"{source}\"");
+                return;
+            }
             ScpiCommand($"SOURce{Channel}:PHASe:CONTrol:ITERation {value},\"{source}\"");
         }
         #endregion
