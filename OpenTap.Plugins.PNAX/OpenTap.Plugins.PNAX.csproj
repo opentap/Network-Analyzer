@@ -30,12 +30,6 @@
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="OpenTap.Plugins.BasicSteps">
-			<HintPath>$(OutDir)Packages\OpenTap\OpenTap.Plugins.BasicSteps.dll</HintPath>
-		</Reference>
-	</ItemGroup>   
-
   <ItemGroup>
     <None Update="Examples\Cal-Image.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

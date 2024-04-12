@@ -1,4 +1,4 @@
-﻿// Author: MyName
+﻿// Author: CMontes
 // Copyright:   Copyright 2023 Keysight Technologies
 //              You have a royalty-free right to use, modify, reproduce and distribute
 //              the sample application files (and/or any modified version) in any way
@@ -10,24 +10,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using OpenTap.Plugins.BasicSteps;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowChildrenOfType(typeof(DelayStep))]
-    [AllowChildrenOfType(typeof(DialogStep))]
-    [AllowChildrenOfType(typeof(LogStep))]
-    [AllowChildrenOfType(typeof(ProcessStep))]
-    [AllowChildrenOfType(typeof(SCPIRegexStep))]
-    [AllowChildrenOfType(typeof(TimeGuardStep))]
-    [AllowChildrenOfType(typeof(IfStep))]
-    [AllowChildrenOfType(typeof(LockStep))]
-    [AllowChildrenOfType(typeof(ParallelStep))]
-    [AllowChildrenOfType(typeof(RepeatStep))]
-    [AllowChildrenOfType(typeof(SequenceStep))]
-    [AllowChildrenOfType(typeof(SweepParameterStep))]
-    [AllowChildrenOfType(typeof(SweepParameterRangeStep))]
-    [AllowChildrenOfType(typeof(TestPlanReference))]
+    [AllowAnyChild]
     [Browsable(false)]
     public class PNABaseStep : TestStep
     {
