@@ -33,7 +33,16 @@
    
 
   <ItemGroup>
+    <None Update="Examples\AE6962A-HFM-Plug.s2p">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\ApplyAdapter.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Cal-Image.TapPlan">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\FixtureGenerator.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\FOM.TapPlan">

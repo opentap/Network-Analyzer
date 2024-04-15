@@ -433,7 +433,7 @@ namespace OpenTap.Plugins.PNAX
                 throw new Exception("selected Cal set does not exist!");
             }
 
-            ScpiCommand($"SENSe{Channel}:CORRection:CSET:ACTivate \"{calset}, {StateStr}");
+            ScpiCommand($"SENSe{Channel}:CORRection:CSET:ACTivate \"{calset}\", {StateStr}");
         }
 
         public void SetVNAReferenceOscillator(VNAReferenceOscillatorEnumtype referenceOscillator)

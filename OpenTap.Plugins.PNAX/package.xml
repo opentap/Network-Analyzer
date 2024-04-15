@@ -23,6 +23,9 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/GCX 20 MHz - 45 GHz 2 stage.TapPlan" SourcePath="Examples/GCX 20 MHz - 45 GHz 2 stage.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard with limits.TapPlan" SourcePath="Examples/Standard with limits.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/SA Segment Sweep.TapPlan" SourcePath="Examples/SA Segment Sweep.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/FixtureGenerator.TapPlan" SourcePath="Examples/FixtureGenerator.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/ApplyAdapter.TapPlan" SourcePath="Examples/ApplyAdapter.TapPlan" ></File>
+	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/AE6962A-HFM-Plug.s2p" SourcePath="Examples/AE6962A-HFM-Plug.s2p" ></File>
 
 	<!--<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Cal-Image.TapPlan" SourcePath="Examples/Cal-Image.TapPlan" ></File>-->
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Images/Sample Image 1.png" SourcePath="Examples/Images/Sample Image 1.png" ></File>
