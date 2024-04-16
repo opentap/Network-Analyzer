@@ -427,31 +427,61 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetSAPhaseStart(int Channel, string src)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STARt? \"{src}\"");
+                return double.NaN;
+            }
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STARt? \"{src}\"");
         }
 
         public void SetSAPhaseStart(int Channel, string src, double freq)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STARt { freq },\"{src}\"");
+                return;
+            }
             ScpiCommand($"SOURce{ Channel }:PHASe:STARt { freq },\"{src}\"");
         }
 
         public double GetSAPhaseStop(int Channel, string src)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STOP? \"{src}\"");
+                return double.NaN;
+            }
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STOP? \"{src}\""); ;
         }
 
         public void SetSAPhaseStop(int Channel, string src, double freq)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STOP { freq },\"{src}\"");
+                return;
+            }
             ScpiCommand($"SOURce{ Channel }:PHASe:STOP { freq },\"{src}\"");
         }
 
         public double GetSAPhaseLevel(int Channel, string src)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:FIXed? \"{src}\"");
+                return double.NaN;
+            }
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:FIXed? \"{src}\"");
         }
 
         public void SetSAPhaseLevel(int Channel, string src, double freq)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:FIXed { freq },\"{src}\"");
+                return;
+            }
             ScpiCommand($"SOURce{ Channel }:PHASe:FIXed { freq },\"{src}\"");
         }
 

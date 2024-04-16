@@ -158,21 +158,41 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetPhaseStart(int Channel)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STARt?");
+                return double.NaN;
+            }
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STARt?"); ;
         }
 
         public void SetPhaseStart(int Channel, double phase)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STARt { phase }");
+                return;
+            }
             ScpiCommand($"SOURce{ Channel }:PHASe:STARt { phase }");
         }
 
         public double GetPhaseStop(int Channel)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STOP?");
+                return double.NaN;
+            }
             return ScpiQuery<double>($"SOURce{ Channel }:PHASe:STOP?"); ;
         }
 
         public void SetPhaseStop(int Channel, double phase)
         {
+            if (!OptionS93088)
+            {
+                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{ Channel }:PHASe:STOP { phase }");
+                return;
+            }
             ScpiCommand($"SOURce{ Channel }:PHASe:STOP { phase }");
         }
         #endregion
