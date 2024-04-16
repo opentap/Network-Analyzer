@@ -41,24 +41,4 @@ namespace OpenTap.Plugins.PNAX.LMS
         }
     }
 
-    [Display("Set Integer", Groups: new[] { "Basic Steps" }, Description: "Sets a value of type int.")]
-    public class SetInt : TestStep
-    {
-        #region Settings
-        [Output]
-        public int  IntegerValue { get; set; }
-        #endregion
-
-        public SetInt()
-        {
-            IntegerValue = 14;
-        }
-
-        public override void Run()
-        {
-            Log.Info($"Value set to {IntegerValue}");
-            UpgradeVerdict(Verdict.Pass);
-        }
-    }
-
 }
