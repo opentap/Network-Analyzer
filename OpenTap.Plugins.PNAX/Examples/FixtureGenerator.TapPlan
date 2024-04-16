@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="OpenTap.Plugins.PNAX.StandardChannel" Id="0952e221-2505-404e-a48f-da65b86e4d55">
+      <IsControlledByParent>false</IsControlledByParent>
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>1</Channel>
+      <IsConverter>false</IsConverter>
+      <IsConverterEditable>false</IsConverterEditable>
+      <ConverterStages>_1</ConverterStages>
+      <DoubleStage>false</DoubleStage>
+      <MetaData>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+      </MetaData>
+      <Name Metadata="Step Name">Standard Channel</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.SweepType" Id="3bfc19d2-35d9-49e2-bb27-243d65ae1024">
+          <StandardSweepType>LinearFrequency</StandardSweepType>
+          <SweepPropertiesStart>10000000</SweepPropertiesStart>
+          <SweepPropertiesStop>50000000000</SweepPropertiesStop>
+          <SweepPropertiesStartPower>-10</SweepPropertiesStartPower>
+          <SweepPropertiesStopPower>0</SweepPropertiesStopPower>
+          <SweepPropertiesStartPhase>0</SweepPropertiesStartPhase>
+          <SweepPropertiesStopPhase>0</SweepPropertiesStopPhase>
+          <SweepPropertiesCWFreq>1000000000</SweepPropertiesCWFreq>
+          <SweepPropertiesPower>-15</SweepPropertiesPower>
+          <SweepPropertiesPoints>201</SweepPropertiesPoints>
+          <SweepPropertiesIFBandwidth>100000</SweepPropertiesIFBandwidth>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <SegmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </SegmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <Window>1</Window>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <IsConverter>false</IsConverter>
+          <IsConverterEditable>false</IsConverterEditable>
+          <ConverterStages>_1</ConverterStages>
+          <DoubleStage>false</DoubleStage>
+          <MetaData />
+          <Name Metadata="Step Name">Sweep Type</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.Timing" Id="5ffcf94e-273a-4179-93d6-e8d07b95f231">
+          <SweepTime>0.016884</SweepTime>
+          <DwellTime>0</DwellTime>
+          <SweepDelay>0</SweepDelay>
+          <AutoSweepTime>true</AutoSweepTime>
+          <FastSweep>false</FastSweep>
+          <StandardChannelSweepMode>Auto</StandardChannelSweepMode>
+          <StandardChannelSweepSequence>Standard</StandardChannelSweepSequence>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <IsConverter>false</IsConverter>
+          <IsConverterEditable>false</IsConverterEditable>
+          <ConverterStages>_1</ConverterStages>
+          <DoubleStage>false</DoubleStage>
+          <MetaData />
+          <Name Metadata="Step Name">Timing</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.StandardNewTrace" Id="6f54a608-51b4-45f9-bbd4-e5f5dac9c370">
+          <Meas>S11</Meas>
+          <EnableButton>true</EnableButton>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace>1</Trace>
+          <CustomTraceMeas>false</CustomTraceMeas>
+          <CustomMeas>Device0_AM1</CustomMeas>
+          <Expression />
+          <Window>1</Window>
+          <Sheet>1</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>1</Channel>
+          <IsConverter>false</IsConverter>
+          <IsConverterEditable>false</IsConverterEditable>
+          <ConverterStages>_1</ConverterStages>
+          <DoubleStage>false</DoubleStage>
+          <MetaData />
+          <Name Metadata="Step Name">Standard New Trace</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="e4fb6c92-8b87-400c-a661-1cd2fd37ce3f">
+              <Meas>S11</Meas>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_S11</Trace>
+              <CustomTraceMeas>false</CustomTraceMeas>
+              <CustomMeas>Device0_AM1</CustomMeas>
+              <Expression />
+              <Window>1</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>1</tnum>
+              <mnum>1</mnum>
+              <MeasName>CH1_S11_1</MeasName>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>1</Channel>
+              <IsConverter>false</IsConverter>
+              <IsConverterEditable>false</IsConverterEditable>
+              <ConverterStages>_1</ConverterStages>
+              <DoubleStage>false</DoubleStage>
+              <MetaData />
+              <Name Metadata="Step Name">CH1_S11</Name>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.StandardChannel" Id="7d2dde43-012f-44af-b482-02ae5c59665a">
+      <IsControlledByParent>false</IsControlledByParent>
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <Channel>2</Channel>
+      <IsConverter>false</IsConverter>
+      <IsConverterEditable>false</IsConverterEditable>
+      <ConverterStages>_1</ConverterStages>
+      <DoubleStage>false</DoubleStage>
+      <MetaData>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+        <ValueTupleOfString>(, )</ValueTupleOfString>
+      </MetaData>
+      <Name Metadata="Step Name">Standard Channel</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.PNAX.SweepType" Id="0e736bbc-d61f-4c3e-9d73-b9ac54b27e90">
+          <StandardSweepType>LinearFrequency</StandardSweepType>
+          <SweepPropertiesStart>10000000</SweepPropertiesStart>
+          <SweepPropertiesStop>50000000000</SweepPropertiesStop>
+          <SweepPropertiesStartPower>-10</SweepPropertiesStartPower>
+          <SweepPropertiesStopPower>0</SweepPropertiesStopPower>
+          <SweepPropertiesStartPhase>0</SweepPropertiesStartPhase>
+          <SweepPropertiesStopPhase>0</SweepPropertiesStopPhase>
+          <SweepPropertiesCWFreq>1000000000</SweepPropertiesCWFreq>
+          <SweepPropertiesPower>-15</SweepPropertiesPower>
+          <SweepPropertiesPoints>201</SweepPropertiesPoints>
+          <SweepPropertiesIFBandwidth>100000</SweepPropertiesIFBandwidth>
+          <EnableSegmentSweepSettings>false</EnableSegmentSweepSettings>
+          <SegmentDefinitionType>List</SegmentDefinitionType>
+          <SegmentTable />
+          <SegmentDefinitions>
+            <SegmentDefinition>
+              <state>true</state>
+              <NumberOfPoints>21</NumberOfPoints>
+              <StartFrequency>10500000</StartFrequency>
+              <StopFrequency>1000000000</StopFrequency>
+            </SegmentDefinition>
+          </SegmentDefinitions>
+          <ShowTable>false</ShowTable>
+          <Window>1</Window>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>2</Channel>
+          <IsConverter>false</IsConverter>
+          <IsConverterEditable>false</IsConverterEditable>
+          <ConverterStages>_1</ConverterStages>
+          <DoubleStage>false</DoubleStage>
+          <MetaData />
+          <Name Metadata="Step Name">Sweep Type</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.Timing" Id="600dc276-6b4a-4db9-88f3-ce9194212bbe">
+          <SweepTime>0.016884</SweepTime>
+          <DwellTime>0</DwellTime>
+          <SweepDelay>0</SweepDelay>
+          <AutoSweepTime>true</AutoSweepTime>
+          <FastSweep>false</FastSweep>
+          <StandardChannelSweepMode>Auto</StandardChannelSweepMode>
+          <StandardChannelSweepSequence>Standard</StandardChannelSweepSequence>
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>2</Channel>
+          <IsConverter>false</IsConverter>
+          <IsConverterEditable>false</IsConverterEditable>
+          <ConverterStages>_1</ConverterStages>
+          <DoubleStage>false</DoubleStage>
+          <MetaData />
+          <Name Metadata="Step Name">Timing</Name>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.PNAX.StandardNewTrace" Id="5cfde299-ec02-4ffc-8c31-08ba4388a9da" OpenTap.Visibility="Visible">
+          <Meas>S11</Meas>
+          <EnableButton>true</EnableButton>
+          <EnableTraceSettings>false</EnableTraceSettings>
+          <Trace>1</Trace>
+          <CustomTraceMeas>false</CustomTraceMeas>
+          <CustomMeas>Device0_AM1</CustomMeas>
+          <Expression />
+          <Window>1</Window>
+          <Sheet>1</Sheet>
+          <IsPropertyEnabled>false</IsPropertyEnabled>
+          <tnum>0</tnum>
+          <mnum>0</mnum>
+          <MeasName />
+          <IsControlledByParent>true</IsControlledByParent>
+          <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+          <Channel>2</Channel>
+          <IsConverter>false</IsConverter>
+          <IsConverterEditable>false</IsConverterEditable>
+          <ConverterStages>_1</ConverterStages>
+          <DoubleStage>false</DoubleStage>
+          <MetaData />
+          <Name Metadata="Step Name">Standard New Trace</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.PNAX.StandardSingleTrace" Id="3cc9e90b-9e29-45fd-b02d-beb6524234b0">
+              <Meas>S11</Meas>
+              <EnableTraceSettings>true</EnableTraceSettings>
+              <Trace>CH1_S11</Trace>
+              <CustomTraceMeas>false</CustomTraceMeas>
+              <CustomMeas>Device0_AM1</CustomMeas>
+              <Expression />
+              <Window>2</Window>
+              <Sheet>1</Sheet>
+              <IsPropertyEnabled>false</IsPropertyEnabled>
+              <tnum>1</tnum>
+              <mnum>2</mnum>
+              <MeasName>CH1_S11_2</MeasName>
+              <IsControlledByParent>true</IsControlledByParent>
+              <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+              <Channel>2</Channel>
+              <IsConverter>false</IsConverter>
+              <IsConverterEditable>false</IsConverterEditable>
+              <ConverterStages>_1</ConverterStages>
+              <DoubleStage>false</DoubleStage>
+              <MetaData />
+              <Name Metadata="Step Name">CH2_S11</Name>
+            </TestStep>
+          </ChildTestSteps>
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.PNAX.FixtureGeneratorStep" Id="375131a1-2d67-4a3c-b254-cdbc1760fb27">
+      <PNAX Source="OpenTap.InstrumentSettings">PNA-X</PNAX>
+      <AutoSelectChannels>true</AutoSelectChannels>
+      <channels>1, 2</channels>
+      <ApplyFixtures>true</ApplyFixtures>
+      <Port>1</Port>
+      <EnableBlock>true</EnableBlock>
+      <EmbedType>Deembed</EmbedType>
+      <FixtureAdapterSnP>C:\Program Files\Keysight\Test Automation\Packages\OpenTap.Plugins.PNAX\Examples\AE6962A-HFM-Plug.s2p</FixtureAdapterSnP>
+      <CompPwr>true</CompPwr>
+      <Extrapolation>true</Extrapolation>
+      <Name Metadata="Step Name">Fixture Generator</Name>
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.19.4+7959a308" />
+  </Package.Dependencies>
+</TestPlan>

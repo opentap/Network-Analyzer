@@ -58,6 +58,25 @@ namespace OpenTap.Plugins.PNAX
     }
 
 
+    public enum FSimCalsetOverwriteCreateEnumtype
+    {
+        [Display("Over-write selected Calsets")]
+        Overwrite,
+        [Display("Create New Calsets")]
+        New
+    }
+
+    public enum FSimEmbedTypeEnumtype
+    {
+        [Display("Embed")]
+        [Scpi("EMB")]
+        Embed,
+        [Display("De-embed")]
+        [Scpi("DEEM")]
+        Deembed,
+    }
+
+
     public class CalibrateAllSelectedChannels
     {
         public int Channel { get; set; }
@@ -535,7 +554,104 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:STATe {stateValue}");
         }
 
+        #region Fixtures
 
+        public void CalPlaneManagerApplyAdapterFixtureDeembed(string cs1, string cs2, string s2p, int port, bool powerCorrection, bool extrapolation = false)
+        {
+            string compPwr = powerCorrection ? "ON" : "OFF";
+            string extrap = extrapolation ? "ON" : "OFF";
+            ScpiCommand($"CSET:FIXTure:DEEMbed \"{cs1}\",\"{cs2}\",\"{s2p}\",{port},{compPwr},{extrap}");
+        }
+
+        public void CalPlaneManagerApplyAdapterFixtureEmbed(string cs1, string cs2, string s2p, int port, bool powerCorrection, bool extrapolation = false)
+        {
+            string compPwr = powerCorrection ? "ON" : "OFF";
+            string extrap = extrapolation ? "ON" : "OFF";
+            ScpiCommand($"CSET:FIXTure:EMBed \"{cs1}\",\"{cs2}\",\"{s2p}\",{port},{compPwr},{extrap}");
+        }
+
+        public void CalSetActivate(int cnum, string cset, bool UseCalsetStim)
+        {
+            string stim = UseCalsetStim ? "ON" : "OFF";
+            ScpiCommand($"SENSe{cnum}:CORRection:CSET:ACTivate {cset}, {stim}");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cnum"></param>
+        /// <param name="order">Order of operations, where:
+        /// 0 - Port Extension operation
+        /// 1 - 2-Port DeEmbedding operation
+        /// 2 - Port Matching operation
+        /// 3 - Arbitrary Impedance operation
+        /// </param>
+        public void FSimSingleEndedOrder(int cnum, string order = "0,1,2,3")
+        {
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:SENDed:OORDer {order}");
+        }
+
+        public void FSimCircuitReset(int cnum)
+        {
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit:RESet");
+        }
+
+        public int FSimCircuitNext(int cnum)
+        {
+            return ScpiQuery<int>($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit:NEXT?");
+        }
+
+        public void FSimCircuitAddFile(int cnum, int circN, int fixtportcount = 2)
+        {
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:ADD FILE, {fixtportcount}");
+        }
+
+        public void FSimCircuitSetPort(int cnum, int circN, int port)
+        {
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:VNA:PORTs {port}");
+        }
+
+        public void FSimCircuitSetFileName(int cnum, int circN, string filename)
+        {
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:FILE \"{filename}\"");
+        }
+
+        public void FSimCircuitState(int cnum, int circN, bool state)
+        {
+            string strState = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:STATe {strState}");
+        }
+
+        public void FSimCircuitEmbedType(int cnum, int circN, FSimEmbedTypeEnumtype type)
+        {
+            string strType = Scpi.Format("{0}", type);
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:EMBED:TYPE {strType}");
+        }
+
+        public void FSimCircuitExtrapolation(int cnum, int circN, bool state)
+        {
+            string strState = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:FILE:EXTRapolate {strState}");
+        }
+
+        public void FSimCircuitPowerCompensate(int cnum, int pnum, bool state)
+        {
+            string strState = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:POWer:PORT{pnum}:COMPensate:STATe {strState}");
+        }
+
+
+        public void FSimApply(int cnum)
+        {
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:APPLy");
+        }
+
+        public void FSimState(int cnum, bool state)
+        {
+            string strState = state ? "ON" : "OFF";
+            ScpiCommand($"CALCulate{cnum}:FSIMulator:STATe {strState}");
+        }
+        #endregion
 
     }
 }
