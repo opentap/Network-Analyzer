@@ -30,8 +30,6 @@
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 
-   
-
   <ItemGroup>
     <None Update="Examples\Cal-Image.TapPlan">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

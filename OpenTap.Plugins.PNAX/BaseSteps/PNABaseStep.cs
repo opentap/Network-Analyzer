@@ -1,5 +1,5 @@
-﻿// Author: MyName
-// Copyright:   Copyright 2023 Keysight Technologies
+﻿// Author: CMontes
+// Copyright:   Copyright 2023-2024 Keysight Technologies
 //              You have a royalty-free right to use, modify, reproduce and distribute
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
@@ -13,6 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
+    [AllowAnyChild]
     [Browsable(false)]
     public class PNABaseStep : TestStep
     {
