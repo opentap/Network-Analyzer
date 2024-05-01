@@ -510,6 +510,38 @@ namespace OpenTap.Plugins.PNAX
             QueryErrors();
         }
 
+        public void TransferFile(string source, string destination, bool deleteSource = false)
+        {
+            string FileName = Path.GetFileName(destination);
+            string FilePath = Path.GetDirectoryName(destination);
+            string InstrumentFileName = "";
+            string InstrumentFolderName = "";
+
+            InstrumentFileName = @"C:\Users\Public\Documents\Network Analyzer\" + source;
+            InstrumentFolderName = @"C:\Users\Public\Documents\Network Analyzer\";
+
+            ChangeFolder(InstrumentFolderName);
+
+            // Make sure folder exists on local PC
+            bool exists = System.IO.Directory.Exists(FilePath);
+            if (!exists)
+                System.IO.Directory.CreateDirectory(FilePath);
+
+            // Copy from instrument to local PC
+            byte[] filedata = ScpiQueryBlock(string.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName));
+
+            // Write file at local PC
+            File.WriteAllBytes(destination, filedata);
+
+            // Delete File from instrument
+            if (deleteSource)
+            {
+                ScpiCommand(string.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
+            }
+
+            QueryErrors();
+        }
+
         public void SaveDispState(string FullFileName)
         {
             string FileName = Path.GetFileName(FullFileName);
