@@ -22,7 +22,7 @@ namespace OpenTap.Plugins.PNAX
         public PNAX PNAX { get; set; }
 
         [Display("State Filename", "Specfiy path and filename for csa file to be saved", "Save File")]
-        [FilePath]
+        [FilePath(FilePathAttribute.BehaviorChoice.Save, "csa")]
         public string StateFileName { get; set; }
         #endregion
 
@@ -30,6 +30,7 @@ namespace OpenTap.Plugins.PNAX
         {
             // ToDo: Set default values for properties / settings.
             StateFileName = "";
+            Rules.Add(() => ((StateFileName.Equals("") == false)), "Must be a valid file", "StateFileName");
         }
 
         public override void Run()
