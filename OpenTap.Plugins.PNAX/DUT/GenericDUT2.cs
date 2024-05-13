@@ -14,28 +14,28 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("GenericDUT", Group: "OpenTap.Plugins.PNAX", Description: "Add a description here")]
-    public class GenericDUT : Dut
+    [Display("Generic DUT2", Group: "OpenTap.Plugins.PNAX", Description: "Generic DUT that includes Serial Number and Temperature for metadata")]
+    public class GenericDUT2 : Dut
     {
         #region Settings
         [MetaData(true)]
-        [Display("Wafer ID", Order: 1)]
-        public String WaferID { get; set; }
+        [Display("Serial Number", Order: 1)]
+        public String SerialNumber { get; set; }
 
         [MetaData(true)]
-        [Display("Chip ID", Order: 1)]
-        public String ChipID { get; set; }
+        [Display("Temperature", Order: 2)]
+        public int Temperature { get; set; }
         #endregion
 
         /// <summary>
         /// Initializes a new instance of this DUT class.
         /// </summary>
-        public GenericDUT()
+        public GenericDUT2()
         {
-            Name = "Simple DUT";
+            Name = "Generic DUT";
 
-            WaferID = "WAF0001";
-            ChipID = "CHIP0001";
+            SerialNumber = "0001";
+            Temperature = 25;
         }
 
         /// <summary>
