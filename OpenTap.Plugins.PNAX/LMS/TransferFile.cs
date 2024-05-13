@@ -8,6 +8,7 @@ using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -23,7 +24,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Source Filename", "Specfiy name of the source file on instrument", "Save File", Order: 20)]
         public string SourceFileName { get; set; }
 
-        [Display("State Filename", "Specfiy path and filename for csa file to be saved", "Save File", Order: 21)]
+        [Display("Destination Filename", "Specfiy path and filename for csa file to be saved", "Save File", Order: 21)]
         [FilePath(FilePathAttribute.BehaviorChoice.Save, "csa")]
         public string DestinationFileName { get; set; }
 
@@ -43,7 +44,12 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.TransferFile(SourceFileName, DestinationFileName, DeleteSource);
+            Log.Debug("Source File Name: " + SourceFileName);
+            Log.Debug("Destination File Name: " + DestinationFileName);
+            string absolutePath = Path.GetFullPath(DestinationFileName);
+            Log.Debug("Destination File Name (absolute path): " + absolutePath);
+
+            PNAX.TransferFile(SourceFileName, absolutePath, DeleteSource);
 
             UpgradeVerdict(Verdict.Pass);
         }
