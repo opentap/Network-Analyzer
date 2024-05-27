@@ -32,6 +32,17 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Use Trace Title as Column Name", Groups: new[] { "Publish Results" }, Order: 23)]
         public bool UseTraceTitle { get; set; }
+
+        [Display("Output Trace Data", Groups: new[] { "Publish Results" }, Order: 30)]
+        public bool OutputTraceData { get; set; }
+
+        [EnabledIf("OutputTraceData", true, HideIfDisabled = true)]
+        [Display("Frequency Output", Groups: new[] { "Publish Results" }, Order: 31)]
+        public List<Double> FrequencyOutput { get; set; }
+
+        [EnabledIf("OutputTraceData", true, HideIfDisabled = true)]
+        [Display("Trace Output", Groups: new[] { "Publish Results" }, Order: 32)]
+        public List<Double> TraceOutput { get; set; }
         #endregion
 
         public StoreSingleTrace()
@@ -40,6 +51,7 @@ namespace OpenTap.Plugins.PNAX
             mnum = 1;
             filename = "MyTrace";
             UseTraceTitle = false;
+            OutputTraceData = false;
         }
 
         public override void Run()
@@ -75,6 +87,12 @@ namespace OpenTap.Plugins.PNAX
                 // one data per frequency point
                 ResultColumn resultColumn2 = new ResultColumn($"{MeasName}", yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
                 resultColumns.Add(resultColumn2);
+
+                if (OutputTraceData)
+                {
+                    FrequencyOutput = resultColumn.Data.OfType<double>().ToList();
+                    TraceOutput = resultColumn2.Data.OfType<double>().ToList();
+                }
             }
             else
             {
@@ -99,6 +117,7 @@ namespace OpenTap.Plugins.PNAX
             ResultTable resultTable = new ResultTable($"{filename}", resultColumns.ToArray());
             Results.PublishTable(resultTable);
 
+            
             UpgradeVerdict(Verdict.Pass);
 
         }
