@@ -165,6 +165,8 @@ namespace OpenTap.Plugins.PNAX
             StoreSnpBlockList = new List<string>() { "Differential I/Q", "Differential IQ" };
 
             OptionS93088 = true;
+
+            IoTimeout = 10000;
         }
 
         /// <summary>
