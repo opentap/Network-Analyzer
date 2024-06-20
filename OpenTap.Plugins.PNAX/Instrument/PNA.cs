@@ -146,7 +146,7 @@ namespace OpenTap.Plugins.PNAX
 
         public GeneralGainCompressionPowerValues DefaultGeneralGainCompressionPowerValues;
 
-        private bool IsModelA = false;
+        protected bool IsModelA = false;
 
         public bool OptionS93088;
 
@@ -222,6 +222,30 @@ namespace OpenTap.Plugins.PNAX
             {
                 SetReferenceIn(VNAReferenceIn);
                 SetVNAOutputReferenceOscillatorFrequency(VNAReferenceOut);
+            }
+        }
+
+        public void Open(bool InitSSAX)
+        {
+            if (InitSSAX)
+            {
+                base.Open();
+                IsModelA = false;
+                OptionS93088 = false;
+
+                if (isAlwaysPreset)
+                {
+                    Preset();
+                }
+                if (EnableReferenceOscillatorSettings)
+                {
+                    SetReferenceIn(VNAReferenceIn);
+                    SetVNAOutputReferenceOscillatorFrequency(VNAReferenceOut);
+                }
+            }
+            else
+            {
+                Open();
             }
         }
 
