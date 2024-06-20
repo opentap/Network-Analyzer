@@ -38,10 +38,12 @@ namespace OpenTap.Plugins.PNAX
 
         [EnabledIf("OutputTraceData", true, HideIfDisabled = true)]
         [Display("Frequency Output", Groups: new[] { "Publish Results" }, Order: 31)]
+        [Output]
         public List<Double> FrequencyOutput { get; set; }
 
         [EnabledIf("OutputTraceData", true, HideIfDisabled = true)]
         [Display("Trace Output", Groups: new[] { "Publish Results" }, Order: 32)]
+        [Output]
         public List<Double> TraceOutput { get; set; }
         #endregion
 
