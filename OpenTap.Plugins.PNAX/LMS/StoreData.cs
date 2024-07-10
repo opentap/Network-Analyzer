@@ -26,6 +26,19 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Use Trace Title as Column Name", Groups: new[] { "Publish Results" }, Order: 50)]
         public bool UseTraceTitle { get; set; }
+
+        [Display("Round X axis values", Groups: new[] { "Publish Results" }, Order: 60)]
+        public bool RoundXValues { get; set; }
+
+        [Display("Round X Digits", Groups: new[] { "Publish Results" }, Order: 60.1)]
+        public int RoundXNumberDigits { get; set; }
+
+        [Display("Round Y axis values", Groups: new[] { "Publish Results" }, Order: 61)]
+        public bool RoundYValues { get; set; }
+
+        [Display("Round Y Digits", Groups: new[] { "Publish Results" }, Order: 61.1)]
+        public int RoundYNumberDigits { get; set; }
+
         #endregion
 
         public StoreData()
@@ -39,6 +52,12 @@ namespace OpenTap.Plugins.PNAX
 
             MetaData = new List<(string, object)>();
             UseTraceTitle = false;
+            RoundXValues = false;
+            RoundXNumberDigits = 2;
+            RoundYValues = false;
+            RoundYNumberDigits = 2;
+            Rules.Add(() => ((RoundXNumberDigits >= 0) && (RoundXNumberDigits <= 16)), "The value of the digits argument can range from 0 to 15. The maximum number of integral and fractional digits supported by the Double type is 15.", nameof(RoundXNumberDigits));
+            Rules.Add(() => ((RoundYNumberDigits >= 0) && (RoundYNumberDigits <= 16)), "The value of the digits argument can range from 0 to 15. The maximum number of integral and fractional digits supported by the Double type is 15.", nameof(RoundYNumberDigits));
         }
 
         public override void Run()
@@ -97,7 +116,15 @@ namespace OpenTap.Plugins.PNAX
                             if (i == 0)
                             {
                                 freqLength = xResult[i].Count;
-                                ResultColumn resultColumn = new ResultColumn("Frequency (Hz)", xResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                ResultColumn resultColumn;
+                                if (RoundXValues)
+                                {
+                                    resultColumn = new ResultColumn("Frequency (Hz)", xResult[i].Select(double.Parse).Select(x => Math.Round(x, RoundXNumberDigits)).ToArray());
+                                }
+                                else
+                                {
+                                    resultColumn = new ResultColumn("Frequency (Hz)", xResult[i].Select(double.Parse).ToArray());
+                                }
                                 resultColumns.Add(resultColumn);
                             }
 
@@ -112,13 +139,25 @@ namespace OpenTap.Plugins.PNAX
                             if (xResult[i].Count == yResult[i].Count)
                             {
                                 // one data per frequency point
-                                ResultColumn resultColumn = new ResultColumn($"{TraceName}", yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
+                                ResultColumn resultColumn;
+                                if (RoundYValues)
+                                {
+                                    resultColumn = new ResultColumn($"{TraceName}", yResult[i].Select(double.Parse).Select(x => Math.Round(x, RoundYNumberDigits)).ToArray());
+                                }
+                                else
+                                {
+                                    resultColumn = new ResultColumn($"{TraceName}", yResult[i].Select(double.Parse).ToArray());
+                                }
                                 resultColumns.Add(resultColumn);
                             }
                             else
                             {
                                 // most likely we have complex data, i.e. two numbers per data point
-                                var twoPoints = yResult[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();
+                                var twoPoints = yResult[i].Select(double.Parse).ToArray();
+                                if (RoundYValues)
+                                {
+                                    twoPoints = yResult[i].Select(double.Parse).Select(x => Math.Round(x, RoundYNumberDigits)).ToArray();
+                                }
                                 double[] point1 = new double[freqLength];
                                 double[] point2 = new double[freqLength];
                                 int j = 0;
