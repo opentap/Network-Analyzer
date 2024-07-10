@@ -1,12 +1,11 @@
 ﻿using OpenTap;
-using OpenTap.Plugins.PNAX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Signal_Source_Analyzer
+namespace OpenTap.Plugins.PNAX
 {
     [Display("Auto Scale", Groups: new[] { "Network Analyzer" }, Description: "Auto scale window")]
     public class AutoScale : TestStep
