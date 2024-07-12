@@ -19,7 +19,6 @@
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <!-- Developer's System is needed to debug in 'Editor' -->
     <AdditionalOpenTapPackage Include="Developer's System" Version="9.19.0" />
-	  <AdditionalOpenTapPackage Include="OpenTAP" Version="9.19.4" />
 	  <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
   </ItemGroup>
 
