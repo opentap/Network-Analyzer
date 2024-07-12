@@ -24,6 +24,7 @@ jobs:
         run: |
              cd OpenTap.Plugins.PNAX
              dotnet publish --output bin/Release/Packages/OpenTap --verbosity d --force
+             find
              dotnet build -c Release --verbosity d --force
       - name: Upload binaries
         uses: actions/upload-artifact@v3
