@@ -32,7 +32,7 @@
 
 	<ItemGroup>
 		<Reference Include="OpenTap.Plugins.BasicSteps">
-			<HintPath>bin/Release/Packages/OpenTap/OpenTap.Plugins.BasicSteps.dll</HintPath>
+			<HintPath>bin/packages/opentap/9.19.4/build/payload/Packages/OpenTAP/OpenTap.Plugins.BasicSteps.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 	
