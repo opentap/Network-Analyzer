@@ -23,10 +23,10 @@ namespace OpenTap.Plugins.PNAX
         OPENloop
     }
 
-    [AllowAsChildIn(typeof(GainCompressionChannel))]
-    [AllowAsChildIn(typeof(SweptIMDChannel))]
-    [AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [AllowAsChildIn(typeof(ScalarMixerChannel))]
+    //[AllowAsChildIn(typeof(GainCompressionChannel))]
+    //[AllowAsChildIn(typeof(SweptIMDChannel))]
+    //[AllowAsChildIn(typeof(NoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Power", Groups: new[] { "Network Analyzer", "Converters" }, Description: "Insert a description here", Order: 2)]
     public class MixerPowerTestStep : PNABaseStep
     {

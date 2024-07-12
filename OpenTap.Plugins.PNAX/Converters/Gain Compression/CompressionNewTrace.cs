@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(GainCompressionChannel))]
-    [AllowChildrenOfType(typeof(CompressionSingleTrace))]
+    //[AllowAsChildIn(typeof(GainCompressionChannel))]
+    //[AllowChildrenOfType(typeof(CompressionSingleTrace))]
     [Display("Compression Traces", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
     public class GainCompressionNewTrace : AddNewTraceBaseStep
     {

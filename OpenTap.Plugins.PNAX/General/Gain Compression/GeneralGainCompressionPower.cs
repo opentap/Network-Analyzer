@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
     [Display("Power", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompressionPower : PowerBaseStep
     {

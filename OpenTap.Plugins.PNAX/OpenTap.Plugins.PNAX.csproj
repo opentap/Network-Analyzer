@@ -31,12 +31,6 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="OpenTap.Plugins.BasicSteps">
-			<HintPath>bin/packages/opentap/9.19.4/build/payload/Packages/OpenTAP/OpenTap.Plugins.BasicSteps.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-	
-	<ItemGroup>
     <None Update="Examples\AE6962A-HFM-Plug.s2p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

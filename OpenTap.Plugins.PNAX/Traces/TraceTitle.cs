@@ -14,7 +14,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(SingleTraceBaseStep))]
+    //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("TraceTitle", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Insert a description here")]
     public class TraceTitle : PNABaseStep
     {

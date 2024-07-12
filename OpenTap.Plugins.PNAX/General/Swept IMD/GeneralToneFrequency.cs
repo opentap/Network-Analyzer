@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
 
-    [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
+    //[AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
     [Display("Tone Frequency", Groups: new[] { "Network Analyzer", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
     public class GeneralToneFrequency : ToneFrequencyBaseStep
     {

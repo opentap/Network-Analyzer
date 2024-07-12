@@ -48,8 +48,8 @@ namespace OpenTap.Plugins.PNAX
         DUTOUT
     }
 
-    [AllowAsChildIn(typeof(SweptIMDChannel))]
-    [AllowChildrenOfType(typeof(SweptIMDSingleTrace))]
+    //[AllowAsChildIn(typeof(SweptIMDChannel))]
+    //[AllowChildrenOfType(typeof(SweptIMDSingleTrace))]
     [Display("Swept IMD Traces", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
     public class SweptIMDNewTrace : AddNewTraceBaseStep
     {

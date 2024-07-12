@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.General
 {
-    [AllowAsChildIn(typeof(ReceiverLeveling))]
+    //[AllowAsChildIn(typeof(ReceiverLeveling))]
     [Display("Controlled Source", Groups: new[] { "Network Analyzer", "General" },
         Description: "Controlled Source\nCan be added as a child to the following Channels:\n\tReceiver Leveling")]
     public class ReceiverLevelingSource : PNABaseStep

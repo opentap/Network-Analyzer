@@ -14,7 +14,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(SingleTraceBaseStep))]
+    //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("Trace Limits", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Set Limits for a trace")]
     public class TraceLimits : PNABaseStep
     {

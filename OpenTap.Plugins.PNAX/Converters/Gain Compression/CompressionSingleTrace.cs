@@ -34,8 +34,7 @@ namespace OpenTap.Plugins.PNAX
         RevOPwr
     }
 
-    [AllowAsChildIn(typeof(GainCompressionChannel))]
-    [AllowAsChildIn(typeof(GainCompressionNewTrace))]
+    //[AllowAsChildIn(typeof(GainCompressionNewTrace))]
     [Display("Compression Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
     public class CompressionSingleTrace : SingleTraceBaseStep
     {

@@ -255,8 +255,8 @@ namespace OpenTap.Plugins.PNAX
         IMDX
     }
 
-    [AllowAsChildIn(typeof(SweptIMDChannel))]
-    [AllowAsChildIn(typeof(SweptIMDNewTrace))]
+    //[AllowAsChildIn(typeof(SweptIMDChannel))]
+    //[AllowAsChildIn(typeof(SweptIMDNewTrace))]
     [Display("Swept IMD Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
     public class SweptIMDSingleTrace : SingleTraceBaseStep
     {

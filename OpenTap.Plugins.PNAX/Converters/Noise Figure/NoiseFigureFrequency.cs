@@ -21,7 +21,7 @@ namespace OpenTap.Plugins.PNAX
         Input
     }
 
-    [AllowAsChildIn(typeof(NoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(NoiseFigureChannel))]
     [Display("Noise Figure Frequency", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
     public class NoiseFigureFrequency : FrequencyBaseStep
     {

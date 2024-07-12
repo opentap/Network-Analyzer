@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(MODChannel))]
-    [AllowChildrenOfType(typeof(MODSingleTrace))]
+    //[AllowAsChildIn(typeof(MODChannel))]
+    //[AllowChildrenOfType(typeof(MODSingleTrace))]
     [Display("Modulation Distortion New Trace", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
     public class MODNewTrace : AddNewTraceBaseStep
     {

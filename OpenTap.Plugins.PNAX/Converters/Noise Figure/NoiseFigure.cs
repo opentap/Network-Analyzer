@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX
 
 
 
-    [AllowAsChildIn(typeof(NoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(NoiseFigureChannel))]
     [Display("Noise Figure", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
     public class NoiseFigure : NoiseFigureBaseStep
     {

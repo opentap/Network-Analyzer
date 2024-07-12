@@ -15,8 +15,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(TestPlan))]
-    [AllowAsChildIn(typeof(MODChannel))]
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(MODChannel))]
     [Display("MOD Save Distortion Table", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Specifies the file path to save a modulation distortion table file")]
     public class MODSaveDistortionTable : PNABaseStep
     {

@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
         CenterSpan
     }
 
-    [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Noise Figure Frequency", Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
     public class GeneralNoiseFigureFrequency : FrequencyBaseStep
     {

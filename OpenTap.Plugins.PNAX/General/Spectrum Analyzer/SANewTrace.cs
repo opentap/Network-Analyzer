@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
-    [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [AllowChildrenOfType(typeof(SASingleTrace))]
+    //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
+    //[AllowChildrenOfType(typeof(SASingleTrace))]
     [Display("SA New Trace", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SANewTrace : AddNewTraceBaseStep
     {
