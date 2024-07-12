@@ -23,6 +23,7 @@ jobs:
       - name: Build plugin
         run: |
              cd OpenTap.Plugins.PNAX
+             dotnet add package OpenTap -v 9.19.4
              find
              dotnet build -c Release 
       - name: Upload binaries
