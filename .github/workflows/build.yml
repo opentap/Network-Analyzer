@@ -23,7 +23,7 @@ jobs:
       - name: Build plugin
         run: |
              cd OpenTap.Plugins.PNAX
-             donet publish --output bin/Release/Packages/OpenTap
+             dotnet publish --output bin/Release/Packages/OpenTap
              dotnet build -c Release --verbosity d --force
       - name: Upload binaries
         uses: actions/upload-artifact@v3
