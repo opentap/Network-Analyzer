@@ -30,7 +30,13 @@
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<Reference Include="OpenTap.Plugins.BasicSteps">
+			<HintPath>$(OutDir)Packages\OpenTap\OpenTap.Plugins.BasicSteps.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	
+	<ItemGroup>
     <None Update="Examples\AE6962A-HFM-Plug.s2p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
