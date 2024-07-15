@@ -14,12 +14,12 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.General
 {
     // not available in channels: DIQ, NF, NFX, SA
-    [AllowAsChildIn(typeof(StandardChannel))]
-    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
-    [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [AllowAsChildIn(typeof(GainCompressionChannel))]
-    [AllowAsChildIn(typeof(SweptIMDChannel))]
+    //[AllowAsChildIn(typeof(StandardChannel))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    //[AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
+    //[AllowAsChildIn(typeof(ScalarMixerChannel))]
+    //[AllowAsChildIn(typeof(GainCompressionChannel))]
+    //[AllowAsChildIn(typeof(SweptIMDChannel))]
     [Display("Receiver Leveling", Groups: new[] { "Network Analyzer", "General" },
         Description: "Receiver Leveling\nCan be added as a child to the following Channels:\n\tStandard\n\tGain Compression\n\tSwept IMD\n\t\n\tSMC\n\tGCX\n\tIMDX")]
     public class ReceiverLeveling : PNABaseStep

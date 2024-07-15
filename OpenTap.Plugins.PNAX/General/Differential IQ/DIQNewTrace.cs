@@ -20,8 +20,8 @@ namespace OpenTap.Plugins.PNAX
         GainF1,
     }
 
-    [AllowAsChildIn(typeof(DIQChannel))]
-    [AllowChildrenOfType(typeof(DIQSingleTrace))]
+    //[AllowAsChildIn(typeof(DIQChannel))]
+    //[AllowChildrenOfType(typeof(DIQSingleTrace))]
     [Display("DIQ New Trace", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
     public class DIQNewTrace : AddNewTraceBaseStep
     {

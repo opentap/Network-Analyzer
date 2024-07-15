@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(PulseGenerators))]
+    //[AllowAsChildIn(typeof(PulseGenerators))]
     [Display("Generator Setup", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
     public class Generator : PNABaseStep
     {

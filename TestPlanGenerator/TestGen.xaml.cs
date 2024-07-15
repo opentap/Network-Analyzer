@@ -30,10 +30,12 @@ namespace TestPlanGenerator
         public TestGen()
         {
             string finalFileName = System.IO.Directory.GetCurrentDirectory() + "\\" + @"\Input.xlsx";
+            string dialogFileName = System.IO.Directory.GetCurrentDirectory() + "\\" + @"\DialogTemplates.csv";
 
             InitializeComponent();
             DataContext = new TestGenModel();
             (DataContext as TestGenModel).TestPlanInputFileName = finalFileName;
+            (DataContext as TestGenModel).TestPlanDialogInputFileName = dialogFileName;
             (DataContext as TestGenModel).TestPlanOutputFileName = @"C:\Data\Output.TapPlan";
         }
 
@@ -93,6 +95,28 @@ namespace TestPlanGenerator
 
         }
 
+        private void GenerateDialogPlanButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.traceSource.Info("TestPlanInputFileName: " + (DataContext as TestGenModel).TestPlanDialogInputFileName);
+
+            // Dialog Test Plan
+            TestPlan testPlan = (DataContext as TestGenModel).GenerateDialogTestPlan();
+            SetTestPlan(testPlan);
+        }
+
+        private void BrowseDialogInputFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".csv";
+            dlg.Filter = "Comma Separated|*.csv|Excel|*.xlsx";
+
+            if (dlg.ShowDialog() == true)
+            {
+                (DataContext as TestGenModel).TestPlanInputFileName = dlg.FileName;
+            }
+
+        }
 
 
         private void SetTestPlan(TestPlan testPlan)

@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
 
 
-    [AllowAsChildIn(typeof(ScalarMixerChannel))]
+    //[AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Scalar Mixer Sweep", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
     public class ScalarMixerSweep : PNABaseStep
     {

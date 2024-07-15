@@ -55,7 +55,7 @@ namespace OpenTap.Plugins.PNAX
         PhaseSweep
     }
 
-    [AllowAsChildIn(typeof(StandardChannel))]
+    //[AllowAsChildIn(typeof(StandardChannel))]
     [Display("Sweep Type", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class SweepType : PNABaseStep
     {

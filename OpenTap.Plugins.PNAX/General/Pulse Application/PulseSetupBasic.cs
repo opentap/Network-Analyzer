@@ -14,16 +14,16 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
-    [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
-    [AllowAsChildIn(typeof(MODChannel))]
-    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [AllowAsChildIn(typeof(DIQChannel))]
-    [AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [AllowAsChildIn(typeof(MODXChannel))]
-    [AllowAsChildIn(typeof(GainCompressionChannel))]
+    //[AllowAsChildIn(typeof(GeneralSweptIMDChannel))]
+    //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
+    //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(MODChannel))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    //[AllowAsChildIn(typeof(DIQChannel))]
+    //[AllowAsChildIn(typeof(ScalarMixerChannel))]
+    //[AllowAsChildIn(typeof(NoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(MODXChannel))]
+    //[AllowAsChildIn(typeof(GainCompressionChannel))]
     [Display("Pulse Setup Basic", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
     public class PulseSetupBasic : PNABaseStep
     {

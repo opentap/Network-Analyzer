@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(DIQChannel))]
-    [AllowChildrenOfType(typeof(DIQRange))]
+    //[AllowAsChildIn(typeof(DIQChannel))]
+    //[AllowChildrenOfType(typeof(DIQRange))]
     [Display("DIQ Frequency Range", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
     public class DIQFrequencyRange : PNABaseStep
     {

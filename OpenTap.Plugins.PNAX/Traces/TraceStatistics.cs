@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(TestPlan))]
-    [AllowAsChildIn(typeof(SingleTraceBaseStep))]
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("Statistics", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Set Statistics for a trace")]
     public class TraceStatistics : PNABaseStep
     {

@@ -56,7 +56,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         VideoBandwidth = 8
     }
 
-    [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
+    //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Setup", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASetup : PNABaseStep
     {

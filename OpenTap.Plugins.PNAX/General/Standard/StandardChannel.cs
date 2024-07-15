@@ -34,6 +34,7 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(sweepType);
             this.ChildTestSteps.Add(timing);
             this.ChildTestSteps.Add(standardNewTrace);
+            ChildItemVisibility.SetVisibility(this, ChildItemVisibility.Visibility.Visible);
         }
 
         // Overloaded Constructor for Test Plan Generator

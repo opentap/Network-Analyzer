@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Noise Figure New Trace", Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
     public class GeneralNoiseFigureNewTrace : AddNewTraceBaseStep
     {

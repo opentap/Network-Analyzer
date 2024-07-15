@@ -90,7 +90,7 @@ namespace OpenTap.Plugins.PNAX
         AuxLn21
     }
 
-    [AllowAsChildIn(typeof(StandardNewTrace))]
+    //[AllowAsChildIn(typeof(StandardNewTrace))]
     [Display("Standard Single Trace", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class StandardSingleTrace : SingleTraceBaseStep
     {

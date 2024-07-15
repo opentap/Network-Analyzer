@@ -34,7 +34,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
 
-    [AllowAsChildIn(typeof(MODNewTrace))]
+    //[AllowAsChildIn(typeof(MODNewTrace))]
     [Display("Modulation Distortion Single Trace", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
     public class MODSingleTrace : SingleTraceBaseStep
     {

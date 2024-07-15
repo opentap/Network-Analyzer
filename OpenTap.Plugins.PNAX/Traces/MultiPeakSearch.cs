@@ -14,7 +14,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(SingleTraceBaseStep))]
+    //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
     [Display("Multi Peak Search", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Insert a description here")]
     public class MultiPeakSearch : PNABaseStep
     {

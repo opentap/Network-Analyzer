@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(DIQNewTrace))]
+    //[AllowAsChildIn(typeof(DIQNewTrace))]
     [Display("DIQ Single Trace", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
     public class DIQSingleTrace : SingleTraceBaseStep
     {

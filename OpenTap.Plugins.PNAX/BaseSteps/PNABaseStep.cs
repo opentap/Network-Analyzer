@@ -10,9 +10,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+//using OpenTap.Plugins.BasicSteps;
 
 namespace OpenTap.Plugins.PNAX
 {
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(SequenceStep))]
     [AllowAnyChild]
     [Browsable(false)]
     public class PNABaseStep : TestStep

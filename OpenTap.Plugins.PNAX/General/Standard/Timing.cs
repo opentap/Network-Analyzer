@@ -25,7 +25,7 @@ namespace OpenTap.Plugins.PNAX
         PointSweep
     }
 
-    [AllowAsChildIn(typeof(StandardChannel))]
+    //[AllowAsChildIn(typeof(StandardChannel))]
     [Display("Timing", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class Timing : PNABaseStep
     {

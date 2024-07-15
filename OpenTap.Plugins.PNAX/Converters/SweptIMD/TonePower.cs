@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
 
 
-    [AllowAsChildIn(typeof(SweptIMDChannel))]
+    //[AllowAsChildIn(typeof(SweptIMDChannel))]
     [Display("Tone Power", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
     public class TonePower : TonePowerBaseStep
     {

@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
-    [AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
+    //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     [Display("SA Source", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
     public class SASource : PNABaseStep
     {

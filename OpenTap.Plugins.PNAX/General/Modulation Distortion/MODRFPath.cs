@@ -13,9 +13,9 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(TestPlan))]
-    [AllowAsChildIn(typeof(MODChannel))]
-    [AllowAsChildIn(typeof(MODXChannel))]
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(MODChannel))]
+    //[AllowAsChildIn(typeof(MODXChannel))]
     [Display("MOD RF Path", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
     public class MODRFPath : PNABaseStep
     {

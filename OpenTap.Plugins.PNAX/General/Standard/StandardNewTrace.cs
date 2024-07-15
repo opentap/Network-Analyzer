@@ -23,8 +23,8 @@ namespace OpenTap.Plugins.PNAX
         public string Title { get; set; }
     }
 
-    [AllowAsChildIn(typeof(StandardChannel))]
-    [AllowChildrenOfType(typeof(StandardSingleTrace))]
+    //[AllowAsChildIn(typeof(StandardChannel))]
+    //[AllowChildrenOfType(typeof(StandardSingleTrace))]
     [Display("Standard New Trace", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
     public class StandardNewTrace : AddNewTraceBaseStep
     {

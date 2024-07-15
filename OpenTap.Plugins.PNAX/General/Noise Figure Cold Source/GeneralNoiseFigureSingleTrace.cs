@@ -70,8 +70,8 @@ namespace OpenTap.Plugins.PNAX
         NCorr_22
     }
 
-    [AllowAsChildIn(typeof(GeneralNoiseFigureNewTrace))]
-    [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(GeneralNoiseFigureNewTrace))]
+    //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Noise Figure Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
     public class GeneralNoiseFigureSingleTrace : SingleTraceBaseStep
     {

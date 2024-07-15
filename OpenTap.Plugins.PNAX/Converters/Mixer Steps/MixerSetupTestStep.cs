@@ -53,10 +53,10 @@ namespace OpenTap.Plugins.PNAX
         AbsolutePhase
     }
 
-    [AllowAsChildIn(typeof(GainCompressionChannel))]
-    [AllowAsChildIn(typeof(SweptIMDChannel))]
-    [AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [AllowAsChildIn(typeof(ScalarMixerChannel))]
+    //[AllowAsChildIn(typeof(GainCompressionChannel))]
+    //[AllowAsChildIn(typeof(SweptIMDChannel))]
+    //[AllowAsChildIn(typeof(NoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(ScalarMixerChannel))]
     [Display("Mixer Setup", Groups: new[] { "Network Analyzer", "Converters" }, Description: "Insert description here", Order: 1)]
     public class MixerSetupTestStep : PNABaseStep
     {

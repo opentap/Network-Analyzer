@@ -31,8 +31,8 @@ namespace OpenTap.Plugins.PNAX
         CompAI2,
     }
 
-    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [AllowAsChildIn(typeof(GeneralGainCompressionNewTrace))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionNewTrace))]
     [Display("Compression Single Trace", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompressionSingleTrace : SingleTraceBaseStep
     {

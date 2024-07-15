@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(TestPlan))]
-    [AllowAsChildIn(typeof(DIQSources))]
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(DIQSources))]
     [Display("DIQ Source", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
     public class DIQSource : PNABaseStep
     {

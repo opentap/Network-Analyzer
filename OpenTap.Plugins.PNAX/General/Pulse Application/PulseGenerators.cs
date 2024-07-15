@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(PulseSetup))]
+    //[AllowAsChildIn(typeof(PulseSetup))]
     [Display("Pulse Generators Setup", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
     public class PulseGenerators : PNABaseStep
     {

@@ -30,9 +30,9 @@ namespace OpenTap.Plugins.PNAX
         Source3
     }
 
-    [AllowAsChildIn(typeof(StandardChannel))]
-    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
+    //[AllowAsChildIn(typeof(StandardChannel))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
     [Display("Frequency Offset", Groups: new[] { "Network Analyzer", "General" }, 
         Description: "Frequency Offset Mode\nCan be added as a child to the following Channels:\n\tStandard\n\tGain Compression\n\tNoise Figure Cold Source")]
     public class FrequencyOffset : PNABaseStep

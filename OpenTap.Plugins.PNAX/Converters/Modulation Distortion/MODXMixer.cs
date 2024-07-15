@@ -13,8 +13,8 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(TestPlan))]
-    [AllowAsChildIn(typeof(MODXChannel))]
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(MODXChannel))]
     [Display("Mixer", Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" }, Description: "Insert a description here")]
     public class MODXMixer : PNABaseStep
     {

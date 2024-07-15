@@ -19,7 +19,7 @@
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <!-- Developer's System is needed to debug in 'Editor' -->
     <AdditionalOpenTapPackage Include="Developer's System" Version="9.19.0" />
-    <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
+	  <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +30,7 @@
     <PackageReference Include="OpenTAP" Version="9.19.4" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <None Update="Examples\AE6962A-HFM-Plug.s2p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

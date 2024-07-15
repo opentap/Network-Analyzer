@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
         SegmentSweep
     }
 
-    [AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
+    //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
     [Display("Gain Compression Frequency", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
     public class GeneralGainCompressionFrequency : FrequencyBaseStep
     {
