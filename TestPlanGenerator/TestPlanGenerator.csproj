@@ -45,13 +45,19 @@
 	<Reference Include="Keysight.OpenTap.Wpf">
 		<HintPath>$(OutDir)Packages\WPF Controls\Keysight.OpenTap.Wpf.dll</HintPath>
 	</Reference>
-	<Reference Include="PresentationCore" />
+	<Reference Include="OpenTap.Plugins.BasicSteps">
+		<HintPath>$(OutDir)Packages\OpenTap\OpenTap.Plugins.BasicSteps.dll</HintPath>
+	</Reference>
+    <Reference Include="PresentationCore" />
 	<Reference Include="PresentationFramework" />
 	<Reference Include="System.Xaml" />
 	<Reference Include="WindowsBase" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DialogTemplates.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Input.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,0 +1,33 @@
+Type,Message ID,Dialog to Show,Buttons,Show Picture,Source,VerdictIfYesOk,VerdictIfNoCancel
+Dialog,1.1,"""Ensure you are using the latest VNA template.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,1.2,"""Check Marki Microwave website for template updates.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,2.1,"""Select VNA01 for testing.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,3.1,"""Use the 2.92 connectors for ECAL.""",OK/Cancel,TRUE,https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/migrated/scene7/products/wn/PROD-3026299-01.png,Pass,Fail
+Dialog,3.2,"""Match connectors with VNA cables.""",OK/Cancel,TRUE,https://cc.sj-cdn.net/instructor/1jsla535c202r-keysight-technologies/courses/3ojfjfcj3t9k6/promo-image.1539368961.PNG,Pass,Fail
+Dialog,4.1,"""Connect the 10dB attenuator to port#4 for calibration.""",OK/Cancel,TRUE,https://www.researchgate.net/publication/369779585/figure/fig2/AS:11431281137423009@1680644285711/Measurement-setup-used-for-the-VNA-measurements.jpg,Pass,Fail
+Dialog,5.1,"""Select ports 1 and 4 for calibration.""",OK/Cancel,TRUE,https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/prd/scopes-analyzers-meters/networkanalyzer/pna/pna/N5225B_3_401-417-419_1600x900.png,Pass,Fail
+Dialog,5.2,"""Set 'Include Power Calibration' to true.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,5.3,"""Choose the correct calibration standard.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,6.1,"""Connect port#1 to power sensor; then click measure.""",OK/Cancel,TRUE,https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/migrated/scene7/products/wn/PROD-3026299-01.png,Pass,Fail
+Dialog,6.2,"""Repeat measurement for port#4.""",OK/Cancel,TRUE,https://cc.sj-cdn.net/instructor/1jsla535c202r-keysight-technologies/courses/3ojfjfcj3t9k6/promo-image.1539368961.PNG,Pass,Fail
+Dialog,7.1,"""Dismiss any cable delay messages.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,8.1,"""Connect red cables to positive current outlet of power supply.""",OK/Cancel,TRUE,https://www.keysight.com/blogs/en/tech/bench/2021/12/12/media_1d2c85a4eb57a5d2b7a90cebdeff30ed475427798.png,Pass,Fail
+Dialog,8.2,"""Connect black cables to positive current outlet of power supply.""",OK/Cancel,TRUE,https://www.keysight.com/blogs/en/tech/bench/2021/12/12/media_1d2c85a4eb57a5d2b7a90cebdeff30ed475427798.png,Pass,Fail
+Dialog,8.3,"""Ground the power supply outlets.""",OK/Cancel,TRUE,https://www.keysight.com/blogs/en/tech/bench/2021/12/12/media_1d2c85a4eb57a5d2b7a90cebdeff30ed475427798.png,Pass,Fail
+Dialog,9.1,"""Set power supply Vset Ch1 to 5V; Ch2 to 5V.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,9.2,"""Set power supply Iset Ch1 to 0.200Am; Ch2 to 0.010Am.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,10.1,"""Create a new folder in the specified directory.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,10.2,"""Name the folder according to the given convention.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,11.1,"""Run one-click save program.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,11.2,"""Select .csv and .png options for pre-test; add .s*p for final test.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,12.1,"""Connect VNA port#1 to the unit's input port.""",OK/Cancel,TRUE,https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/migrated/scene7/products/wn/PROD-3026299-01.png,Pass,Fail
+Dialog,12.2,"""Connect VNA port#4 to the unit's output port.""",OK/Cancel,TRUE,https://cc.sj-cdn.net/instructor/1jsla535c202r-keysight-technologies/courses/3ojfjfcj3t9k6/promo-image.1539368961.PNG,Pass,Fail
+Dialog,13.1,"""Tighten unit and cables with the VNA torque wrench.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,14.1,"""Clip red cables to Vd's of the unit.""",OK/Cancel,TRUE,https://www.keysight.com/blogs/en/tech/bench/2021/12/12/media_1d2c85a4eb57a5d2b7a90cebdeff30ed475427798.png,Pass,Fail
+Dialog,14.2,"""Clip black cables to Vg's of the unit.""",OK/Cancel,TRUE,https://www.keysight.com/blogs/en/tech/bench/2021/12/12/media_1d2c85a4eb57a5d2b7a90cebdeff30ed475427798.png,Pass,Fail
+Dialog,14.3,"""Ground the unit using the green cable.""",OK/Cancel,TRUE,https://www.keysight.com/blogs/en/tech/bench/2021/12/12/media_1d2c85a4eb57a5d2b7a90cebdeff30ed475427798.png,Pass,Fail
+Dialog,15.1,"""Turn on the power supply.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,16.1,"""Press space bar to save data.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,16.2,"""Label each unit with a number corresponding to its data number.""",OK/Cancel,TRUE,https://m.media-amazon.com/images/I/41jQyzEj2jL.__AC_SX300_SY300_QL70_FMwebp_.jpg,Pass,Fail
+Dialog,17.1,"""Turn off the power supply before proceeding to the next unit.""",OK/Cancel,FALSE,,Pass,Fail
+Dialog,18.1,"""Do you wish to save the data?""",Yes/No,FALSE,,Pass,Fail
