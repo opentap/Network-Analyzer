@@ -15,7 +15,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - DUT Meta Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends DUT Meta data to publish table")]
-    //[AllowAsChildIn(typeof(StoreDataBase))]
+    [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDutMetaData : TestStep
     {
         #region Settings
