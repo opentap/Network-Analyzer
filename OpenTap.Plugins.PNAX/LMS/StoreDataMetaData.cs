@@ -14,7 +14,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - Meta Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends Meta data to trace.")]
-    //[AllowAsChildIn(typeof(StoreDataBase))]
+    [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDataMetaData : TestStep
     {
         #region Settings
