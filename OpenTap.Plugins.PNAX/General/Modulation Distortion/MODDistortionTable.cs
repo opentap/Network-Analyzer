@@ -54,7 +54,7 @@ namespace OpenTap.Plugins.PNAX
         {
             RunChildSteps(); //If the step supports child steps.
 
-            PNAX.MODShowTable(Channel, ShowTable);
+            PNAX.MODShowTable(Window, ShowTable);
             PNAX.MODTableAddParameter(Channel, MODTableSetupCarrier);
             PNAX.MODTableAddParameter(Channel, MODTableSetupEVM);
             PNAX.MODTableAddParameter(Channel, MODTableSetupNPR);
