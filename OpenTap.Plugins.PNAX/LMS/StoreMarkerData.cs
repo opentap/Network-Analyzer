@@ -24,6 +24,13 @@ namespace OpenTap.Plugins.PNAX
     public class StoreMarkerData : StoreDataBase
     {
         #region Settings
+        [Output]
+        [Display("Marker Xs", Group: "Results", Order: 30)]
+        public List<double> ListXs { get; set; }
+
+        [Output]
+        [Display("Marker Ys", Group: "Results", Order: 31)]
+        public List<double> ListYs { get; set; }
         #endregion
 
         public StoreMarkerData()
@@ -31,6 +38,8 @@ namespace OpenTap.Plugins.PNAX
             channels = new List<int>() { 1 };
             AutoSelectChannels = true;
             MetaData = new List<(string, object)>();
+            ListXs = new List<double>();
+            ListYs = new List<double>();
         }
 
         public override void Run()
@@ -120,9 +129,11 @@ namespace OpenTap.Plugins.PNAX
 
                             ResultNames.Add("Frequency (Hz)");
                             ResultValues.Add(mrkrX);
+                            ListXs.Add(mrkrX);
 
                             ResultNames.Add(tracename);
                             ResultValues.Add(mrkrY);
+                            ListYs.Add(mrkrY);
 
                             //if MetaData available
                             if ((MetaData != null) && (MetaData.Count > 0))
