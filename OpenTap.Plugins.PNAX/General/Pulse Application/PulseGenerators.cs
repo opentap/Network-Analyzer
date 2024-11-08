@@ -160,6 +160,8 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
+            RunChildSteps(); // Pulse Generators
+
             // Pulsed Sources
             PNAX.PulseGeneratorSource1EnableModulator(Channel, Source1EnableModulator);
             PNAX.PulseGeneratorALCOpenLoop(Channel, ALCOpenLoop);
@@ -175,9 +177,6 @@ namespace OpenTap.Plugins.PNAX
             PNAX.PulseGeneratorADCDelay(Channel, OffsetPulsesUsingADCDelay);
             PNAX.PulseGeneratorModulatorDelay(Channel, RFModulatorDelay);
             OffsetPulseADCDelay = PNAX.PulseGeneratorFixedADCDelay(Channel);
-
-
-            RunChildSteps(); // Pulse Generators
 
             UpgradeVerdict(Verdict.Pass);
         }

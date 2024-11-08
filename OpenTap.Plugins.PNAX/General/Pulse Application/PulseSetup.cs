@@ -242,8 +242,6 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            RunChildSteps(); // Pulse Generators
-
             // Pulse Measurement
             PNAX.PulseMode(Channel, PulseMode);
 
@@ -306,6 +304,7 @@ namespace OpenTap.Plugins.PNAX
             SweepTime = PNAX.PulseSweepTimeQ(Channel);
             // Update Measurement Timing on UI
 
+            RunChildSteps(); // Pulse Generators
 
             UpgradeVerdict(Verdict.Pass);
         }
