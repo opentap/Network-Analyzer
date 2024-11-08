@@ -59,5 +59,40 @@ namespace OpenTap.Plugins.PNAX
             string scpi = Scpi.Format("{0}", value);
             ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:POLarity {scpi}");
         }
+
+        public void SetMarkersOff(int Channel, int mnum)
+        {
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer:AOFF");
+        }
+
+        public void CalculateMeasureMarkerFunctionPeak(int Channel, int mnum, int mkr)
+        {
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:FUNCtion:EXECute PEAK");
+            WaitForOperationComplete();
+        }
+
+        public void CalculateMeasureMarkerSetCenter(int Channel, int mnum, int mkr)
+        {
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:SET CENTer");
+        }
+
+        public double CalculateMeasureMarkerY(int Channel, int mnum, int mkr)
+        {
+            // get the Y value:  (Value,0)
+            string yString = ScpiQuery($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:Y?");
+            var y = yString.Split(',').Select(double.Parse).ToList();
+            double mrkrY = y[0];
+            return mrkrY;
+        }
+
+        public double CalculateMeasureMarkerX(int Channel, int mnum, int mkr)
+        {
+            return ScpiQuery<double>($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:X?");
+        }
+
+        public bool CalculateMeasureMarkerState(int Channel, int mnum, int mkr)
+        {
+            return ScpiQuery<bool>($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:STATe?");
+        }
     }
 }
