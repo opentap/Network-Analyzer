@@ -189,13 +189,14 @@ namespace OpenTap.Plugins.PNAX
             int _tnum = 0;
             int _mnum = 0;
             string _MeasName = "";
+            UpdateTestStepName();
             //if (CustomTraceMeas)
             //{
             //    PNAX.AddNewTrace(Channel, Window, Trace, measClass, CustomMeas, ref _tnum, ref _mnum, ref _MeasName);
             //}
             //else
             //{
-                PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
+            PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
             //}
             tnum = _tnum;
             mnum = _mnum;

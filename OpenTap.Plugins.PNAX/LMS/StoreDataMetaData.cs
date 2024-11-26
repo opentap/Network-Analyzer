@@ -32,8 +32,10 @@ namespace OpenTap.Plugins.PNAX.LMS
         {
             List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
 
+            
+
             // if MetaData available
-            if ((MetaData.Property != null) && (MetaData.Value.Count > 0))
+            if ((MetaData.Property != null) && (MetaData.Value.Count > 1))
             {
                 // for every item in metadata
                 foreach (var i in MetaData.Value)
@@ -42,6 +44,21 @@ namespace OpenTap.Plugins.PNAX.LMS
                     _parentsMetaData.Add(i);
                 }
             }
+            else
+            {
+                // Looks like the input step does not have metadata available,
+                // lets get it and add it
+                PNABaseStep x = (MetaData.Step as PNABaseStep);
+                Log.Info("Get MetaData: ");
+                List<(string, object)> ret = x.GetMetaData();
+                foreach (var it in ret)
+                {
+                    _parentsMetaData.Add(it);
+                    Log.Info("Adding metadata: " + x.GetMetaData());
+                }
+            }
+
+
 
             UpgradeVerdict(Verdict.Pass);
         }
