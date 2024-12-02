@@ -432,6 +432,9 @@ namespace OpenTap.Plugins.PNAX
 
             ChangeFolder(InstrumentFolderName);
 
+            // Ensure VNA window is on top
+            BringVNAToFrontWithMacro();
+
             // Save screenshot to local folder on instrument: <documents>\<mode>\screen
             ScpiCommand(":MMEM:STOR:SSCR '" + InstrumentFileName + "'");
 
@@ -450,6 +453,81 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand(string.Format("MMEM:DEL \"{0}\"", InstrumentFileName));
 
             QueryErrors();
+        }
+
+        private int bringToFrontMacro = -1;
+        public void BringVNAToFrontWithMacro()
+        {
+            // setup macro the first time
+            if (bringToFrontMacro == -1)
+            {
+                // create macro file
+                const string DEFAULT_FOLDER = @"C:\Users\Public\Documents\Network Analyzer\";
+                const string BRING_TO_FRONT_SCRIPT_NAME = "BringVNAToFront.vbs";
+                const string BRING_TO_FRONT_TITLE = "BringVNAToFront";
+                ScpiCommand($@"MMEM:CDIR ""{DEFAULT_FOLDER}""");
+                const string VBA_PROGRAM = """
+                    ' Create a WMI object
+                    Set objWMIService = GetObject("winmgmts:\\.\root\cimv2")
+
+                    ' Function to bring a window to the front by process name
+                    Sub BringWindowToFrontByProcessName(processName)
+                        Dim colProcesses, objProcess, hWnd
+                        Set colProcesses = objWMIService.ExecQuery("Select * from Win32_Process Where Name = '" & processName & "'")
+                        
+                        For Each objProcess In colProcesses
+                            hWnd = objProcess.Handle
+                            If hWnd <> 0 Then
+                                Set objShell = CreateObject("WScript.Shell")
+                                objShell.AppActivate objProcess.ProcessId
+                                Exit For
+                            End If
+                        Next
+                    End Sub
+
+                    ' Example usage
+                    BringWindowToFrontByProcessName "835x.exe"
+                    """;
+                ScpiIEEEBlockCommand(
+                    $@"MMEM:TRAN ""{BRING_TO_FRONT_SCRIPT_NAME}"",",
+                    ASCIIEncoding.ASCII.GetBytes(VBA_PROGRAM));
+
+                // find the macro slot
+                int emptySlot = -1;
+                for (int macroSlot = 24; macroSlot > 0; macroSlot--)
+                {
+                    string title = ScpiQuery($"SYST:SHOR{macroSlot}:TITLE?", true).Trim('\n', '"');
+                    string path = ScpiQuery($"SYST:SHOR{macroSlot}:PATH?", true).Trim('\n', '"');
+
+                    if (title == BRING_TO_FRONT_TITLE && path != string.Empty)
+                    {
+                        bringToFrontMacro = macroSlot;
+                        break;
+                    }
+                    else if (emptySlot == -1 && title == string.Empty && path == string.Empty)
+                    {
+                        emptySlot = macroSlot;
+                    }
+                }
+
+                // create the macro
+                if (bringToFrontMacro == -1)
+                {
+                    if (emptySlot != -1)
+                    {
+                        ScpiCommand($@"SYST:SHOR{emptySlot}:TITLE ""{BRING_TO_FRONT_TITLE}""");
+                        ScpiCommand($@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + BRING_TO_FRONT_SCRIPT_NAME}""");
+                        bringToFrontMacro = emptySlot;
+                    }
+                    else
+                    {
+                        throw new Exception("No empty slots for BringVNAToFront macro! Clear a slot and try again.");
+                    }
+                }
+            }
+
+            // call the macro
+            ScpiCommand($"SYST:SHOR{bringToFrontMacro}:EXEC");
         }
 
         public void SaveSnP(int Channel, int mnum, List<int> ports, string FullFileName)
