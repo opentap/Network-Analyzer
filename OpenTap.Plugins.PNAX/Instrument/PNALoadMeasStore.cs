@@ -487,10 +487,6 @@ namespace OpenTap.Plugins.PNAX
                     "\r\n" + 
                     "BringWindowToFrontByProcessName \"835x.exe\"";
 
-                    ScpiIEEEBlockCommand(
-                    $@"MMEM:TRAN ""{BRING_TO_FRONT_SCRIPT_NAME}"",",
-                    ASCIIEncoding.ASCII.GetBytes(VBA_PROGRAM));
-
                 // find the macro slot
                 int emptySlot = -1;
                 for (int macroSlot = 24; macroSlot > 0; macroSlot--)
@@ -517,6 +513,10 @@ namespace OpenTap.Plugins.PNAX
                         ScpiCommand($@"SYST:SHOR{emptySlot}:TITLE ""{BRING_TO_FRONT_TITLE}""");
                         ScpiCommand($@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + BRING_TO_FRONT_SCRIPT_NAME}""");
                         bringToFrontMacro = emptySlot;
+
+                        ScpiIEEEBlockCommand(
+                            $@"MMEM:TRAN ""{BRING_TO_FRONT_SCRIPT_NAME}"",",
+                            ASCIIEncoding.ASCII.GetBytes(VBA_PROGRAM));
                     }
                     else
                     {
