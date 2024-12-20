@@ -33,11 +33,11 @@ namespace OpenTap.Plugins.PNAX.LMS
         [Display("Custom Path", Groups: new[] { "File Name Details" }, Order: 32)]
         public MacroString CustomPath { get; set; }
 
-        [Display("Force screen to front", "Ensures the app screen is on top", "Advanced", 1, true)]
+        [Display("Force screen to front", "Ensures the app screen is on top", "Advanced", 41, true)]
         public bool ForceToFront { get; set; }
 
         [EnabledIf("ForceToFront", true, HideIfDisabled = true)]
-        [Display("Delay before screenshot", "Milliseconds to delay before taking the screenshot", "Advanced", 2, true)]
+        [Display("Delay before screenshot", "Milliseconds to delay before taking the screenshot", "Advanced", 42, true)]
         public int DelayBeforeScreenshot { get; set; }
         
         #endregion
