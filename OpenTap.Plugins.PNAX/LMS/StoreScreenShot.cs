@@ -32,6 +32,14 @@ namespace OpenTap.Plugins.PNAX.LMS
         [DirectoryPath]
         [Display("Custom Path", Groups: new[] { "File Name Details" }, Order: 32)]
         public MacroString CustomPath { get; set; }
+
+        [Display("Force screen to front", "Ensures the app screen is on top", "Advanced", 1, true)]
+        public bool ForceToFront { get; set; }
+
+        [EnabledIf("ForceToFront", true, HideIfDisabled = true)]
+        [Display("Delay before screenshot", "Milliseconds to delay before taking the screenshot", "Advanced", 2, true)]
+        public int DelayBeforeScreenshot { get; set; }
+        
         #endregion
 
         public StoreScreenShot()
@@ -39,6 +47,8 @@ namespace OpenTap.Plugins.PNAX.LMS
             filename = new MacroString(this) { Text = "Screen_1" };
             IsCustomPath = false;
             CustomPath = new MacroString(this) { Text = @"C:\" };
+            ForceToFront = false;
+            DelayBeforeScreenshot = 0;
         }
 
         public override void Run()
@@ -56,7 +66,7 @@ namespace OpenTap.Plugins.PNAX.LMS
                 dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".bmp");
             }
 
-            PNAX.SaveScreen(dir);
+            PNAX.SaveScreen(dir, ForceToFront, DelayBeforeScreenshot);
 
             UpgradeVerdict(Verdict.Pass);
         }

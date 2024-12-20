@@ -420,7 +420,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public void SaveScreen(string FullFileName)
+        public void SaveScreen(string FullFileName, bool bringToFront=false, int delay=0)
         {
             string FileName = Path.GetFileName(FullFileName);
             string FilePath = Path.GetDirectoryName(FullFileName);
@@ -432,8 +432,14 @@ namespace OpenTap.Plugins.PNAX
 
             ChangeFolder(InstrumentFolderName);
 
-            // Ensure VNA window is on top
-            BringVNAToFrontWithMacro();
+            if (bringToFront)
+            {
+                BringVNAToFrontWithMacro();
+                if (delay > 0)
+                {
+                    TapThread.Sleep(delay);
+                }
+            }
 
             // Save screenshot to local folder on instrument: <documents>\<mode>\screen
             ScpiCommand(":MMEM:STOR:SSCR '" + InstrumentFileName + "'");
@@ -526,7 +532,7 @@ namespace OpenTap.Plugins.PNAX
             }
 
             // call the macro
-            ScpiCommand($"SYST:SHOR{bringToFrontMacro}:EXEC");
+            ScpiQuery($"SYST:SHOR{bringToFrontMacro}:EXEC;*OPC?");
         }
 
         public void SaveSnP(int Channel, int mnum, List<int> ports, string FullFileName)
