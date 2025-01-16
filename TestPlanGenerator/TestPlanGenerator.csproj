@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
-    <PackageReference Include="OpenTAP" Version="9.26.1" />
+    <PackageReference Include="OpenTAP" Version="9.27.0" />
   </ItemGroup>
 
   <ItemGroup>

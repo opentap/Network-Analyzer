@@ -96,7 +96,15 @@ namespace OpenTap.Plugins.PNAX
         PXIBackplane
     }
 
-
+    public enum VNAWindowSize
+    {
+        [Display("Normal")]
+        [Scpi("NORM")]
+        NORM,
+        [Display("MAX")]
+        [Scpi("MAX")]
+        MAX,
+    }
 
     [Display("PNA-X", Group: "Network Analyzer", Description: "Insert a description here")]
     public partial class PNAX : ScpiInstrument
@@ -258,6 +266,40 @@ namespace OpenTap.Plugins.PNAX
             }
             WaitForOperationComplete();
             mnum = 1;
+        }
+
+        public void SystemPreset()
+        {
+            ScpiCommand("SYSTem:PRESet");
+            WaitForOperationComplete();
+            mnum = 1;
+        }
+
+        public void UserPreset()
+        {
+            ScpiCommand("SYSTem:UPRESet");
+            WaitForOperationComplete();
+            mnum = 1;
+        }
+
+        public void UserPresetState(bool State)
+        {
+            string state = "OFF";
+            if (State)
+            {
+                state = "ON";
+            }
+            ScpiCommand($"SYSTem:UPReset:FPANel:STATe {state}");
+        }
+
+        public void UserPresetLoadFile(string file)
+        {
+            ScpiCommand($"SYSTem:UPReset:LOAD:FILE \"{file}\"");
+        }
+
+        public void UserPresetSaveState()
+        {
+            ScpiCommand($"SYSTem:UPReset:SAVE:STATe");
         }
 
         /// <summary>
@@ -535,5 +577,21 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"DISPlay:WINDow{wnum}:Y:AUTO");
         }
 
+        public void DisplayWindowSize(int wnum, VNAWindowSize windowSize)
+        {
+            string size = Scpi.Format("{0}", windowSize);
+
+            ScpiCommand($"DISPlay:WINDow{wnum}:SIZE {size}");
+        }
+
+        public void EnableExternalSource(string name, bool State)
+        {
+            string state = "OFF";
+            if (State)
+            {
+                state = "ON";
+            }
+            ScpiCommand($"SYSTem:CONFigure:EDEVice:STATe \"{name}\",{state}");
+        }
     }
 }

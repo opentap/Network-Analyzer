@@ -16,11 +16,17 @@ using OpenTap.Plugins.PNAX.LMS;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [AllowAsChildIn(typeof(TestPlan))]
-    [AllowAsChildIn(typeof(StoreData))]
-    [AllowAsChildIn(typeof(StoreDispTraceData))]
-    [AllowAsChildIn(typeof(StoreMultiPeakSearch))]
-    [Display("Store Marker Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
+    //[AllowAsChildIn(typeof(TestPlan))]
+    //[AllowAsChildIn(typeof(StoreData))]
+    //[AllowAsChildIn(typeof(StoreDispTraceData))]
+    //[AllowAsChildIn(typeof(StoreMultiPeakSearch))]
+    [Display("Store Marker Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.\n" +
+        "This test should be placed as a child of:" +
+        "\n\tStore Trace Data" +
+        "\n\tStore Displayed Trace Data" +
+        "\n\tStore Multi Peak Search" +
+        "\n\tTest Plan" +
+        "\n\tSequence")]
     public class StoreMarkerData : StoreDataBase
     {
         #region Settings
@@ -31,6 +37,12 @@ namespace OpenTap.Plugins.PNAX
         [Output]
         [Display("Marker Ys", Group: "Results", Order: 31)]
         public List<double> ListYs { get; set; }
+
+        [Display("Result File Name", Group: "Publish Results", Order: 40)]
+        public MacroString FileName { get; set; }
+
+        [Display("Split Results By Channel", Group: "Publish Results", Order: 41)]
+        public bool SplitByChannel { get; set; }
         #endregion
 
         public StoreMarkerData()
@@ -40,10 +52,14 @@ namespace OpenTap.Plugins.PNAX
             MetaData = new List<(string, object)>();
             ListXs = new List<double>();
             ListYs = new List<double>();
+            FileName = new MacroString(this) { Text = "Channel_Markers" };
+            SplitByChannel = true;
         }
 
         public override void Run()
         {
+            ListXs = new List<double>();
+            ListYs = new List<double>();
             MetaData = new List<(string, object)>();
             UpgradeVerdict(Verdict.NotSet);
             AutoSelectChannelsAvailableOnInstrument();
@@ -160,7 +176,13 @@ namespace OpenTap.Plugins.PNAX
                                     }
                                 }
                             }
-                            Results.Publish($"Channel_Markers_{channel.ToString()}", ResultNames, ResultValues.ToArray());
+
+                            string publishFileName = FileName.Expand(PlanRun);
+                            if (SplitByChannel)
+                            {
+                                publishFileName = $"{FileName}_{channel.ToString()}";
+                            }
+                            Results.Publish(publishFileName, ResultNames, ResultValues.ToArray());
 
                         }
 

@@ -260,8 +260,16 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             switch (SASweepType)
             {
                 case SASweepTypeEnum.LinearFrequency:
-                    retVal.Add(("SA Start", SweepPropertiesStart));
-                    retVal.Add(("SA Stop", SweepPropertiesStop));
+                    if (IsStartStopCenterSpan == SweepSSCSTypeEnum.StartStop)
+                    {
+                        retVal.Add(("SA Start", SweepPropertiesStart));
+                        retVal.Add(("SA Stop", SweepPropertiesStop));
+                    }
+                    else
+                    {
+                        retVal.Add(("SA Center", SweepPropertiesCenter));
+                        retVal.Add(("SA Span", SweepPropertiesSpan));
+                    }
                     retVal.Add(("SA Points", SweepPropertiesPoints));
                     break;
                 case SASweepTypeEnum.SegmentSweep:
