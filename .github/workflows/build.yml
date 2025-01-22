@@ -1,63 +1,116 @@
-name: Build Plugin .TapPackage
+# Configure the name of this CI unit. This is the name that appears in the GitHub Actions tab
+name: CI
+# Configure what events trigger this action.
+on: [push]
 
-on: [push, pull_request]
+# Configure environment variables that are global to the action defined by this file
+env:
+  #OPENTAP_COLOR: auto # github messes with the "auto" color detection (i.e. it has no effect), and the "always" option breaks a lot of things
+  OPENTAP_ANSI_COLORS: true
+  OPENTAP_NO_UPDATE_CHECK: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_CONSOLE_ANSI_COLOR: true
 
 jobs:
-  build-ubuntu:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-20.04]
+  GetVersion:
+    runs-on:
+       group: OpenTAP-SpokeVPC
+       labels:  [Linux, X64]
+    container: ghcr.io/opentap/oci-images/build-dotnet:latest
+    outputs:
+      ShortVersion: ${{ steps.gitversion.outputs.ShortVersion }}
+      GitVersion: ${{ steps.gitversion.outputs.GitVersion }}
     steps:
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 6.0.x
+      # The get-gitversion action installs OpenTAP and fetches with fetch-depth: 0
+      - name: GitVersion
+        id: gitversion
+        uses: opentap/get-gitversion@main
+
+  Build:
+    runs-on:
+       group: OpenTAP-SpokeVPC
+       labels:  [Linux, X64]
+    container: ghcr.io/opentap/oci-images/build-dotnet:latest
+    needs: GetVersion
+    env:
+      ShortVersion: ${{ needs.GetVersion.outputs.ShortVersion }}
+      GitVersion: ${{ needs.GetVersion.outputs.GitVersion }}
+    steps:
+      # Check out the files in this repository. 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # 'tap sdk gitversion' can fail if the version history is incomplete. 
+          # A fetch-depth of 0 ensures we get a complete history.
+          fetch-depth: 0 
+      # Fixes an issue with actions/checkout@v3. See https://github.com/actions/checkout/issues/290
+      
       - name: Fix tags
         if: startsWith(github.ref, 'refs/tags/v')
         run: git fetch -f origin ${{ github.ref }}:${{ github.ref }} 
-      - name: Build plugin
-        run: |
-             cd OpenTap.Plugins.PNAX
-             dotnet build -c Release
-      - name: Upload binaries
-        uses: actions/upload-artifact@v3
-        with:
-          name: TapPackage
-          retention-days: 14
-          path: |
-            OpenTap.Plugins.PNAX/bin/Release/*.TapPackage
 
-  Publish:
-    # Only publish on the main branch, the release branch, or if the commit is tagged.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build
+        run: |
+          echo "${{ secrets.SIGN_SERVER_CERT }}" > $TAP_SIGN_CERT
+          dotnet build -c Release ./OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.csproj
+        env:
+          TAP_SIGN_ADDRESS: ${{ secrets.TAP_SIGN_ADDRESS_INTERNAL }}
+          TAP_SIGN_AUTH: ${{ secrets.TAP_SIGN_AUTH }}
+          TAP_SIGN_CERT: ${{ github.workspace }}/sign.cer
+          KS8500_REPO_TOKEN: ${{ secrets.KS8500TOKEN }}
+          SIGN_VERSION: "1.5.0-beta.7+8118ecec"
+      # Upload the package so it can be downloaded from GitHub, 
+      # and consumed by other steps in this workflow
+      
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: tap-package
+          retention-days: 5
+          path: |
+            **/bin/Release/*.TapPackage
+
+  # UnitTests:
+  #   runs-on:
+  #      group: OpenTAP-SpokeVPC
+  #      labels:  [Linux, X64]
+  #   container: ghcr.io/opentap/oci-images/build-dotnet:latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: 6.0.x
+
+  #     - name: Build
+  #       run: dotnet test
+
+
+  publish:
     if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
-    environment: packages.opentap.io
-    runs-on: ubuntu-20.04
-    # This step depends on the build step
-    needs:
-      - build-ubuntu
+    runs-on:
+       group: OpenTAP-SpokeVPC
+       labels:  [Linux, X64]
+    container: ghcr.io/opentap/oci-images/build-dotnet:latest
+    needs: Build
     steps:
-      # Download the tap-package artifact from the Build step
-      - name: Download TapPackage Arfifact
-        uses: actions/download-artifact@v3
+      - name: Download binaries
+        uses: actions/download-artifact@v4
         with:
-          name: TapPackage
-          path: ./
-      # Setup OpenTAP with the PackagePublish package in order to publish the newly created package
+          name: tap-package
+
       - name: Setup OpenTAP
-        uses: opentap/setup-opentap@v1.0
+        uses: opentap/setup-opentap@main
         with:
-          version: 9.19.5
-      - name: Install PackagePublish
-        run: tap package install -f PackagePublish --version beta
-      - name: Install Repository Client
-        run: tap package install -v -f "Repository Client"
-      - name: Display Package Installed
-        run: tap package list -i
-      # Publish the package. This requires the package management key to be configured in the 'PUBLIC_REPO_PASS' environment variable.
-      - name: Publish
-        run: tap repo upload -t ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} "*.TapPackage"
+          version: 9.25.1
+          packages: 'Repository Client:1.0.3-beta.2+a72735c4'
+      
+      - name: Publish Packages
+        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} "$(find . -name "*.TapPackage")"

@@ -22,6 +22,10 @@
 	  <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <OpenTapPackageReference Include="Sign" Version="$(SIGN_VERSION)" Reference="False" Repository="https://test-automation.pw.keysight.com/api/packages" Token="$(KS8500_REPO_TOKEN)" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="General\GeneralFrequencyBaseStep.cs" />
   </ItemGroup>
