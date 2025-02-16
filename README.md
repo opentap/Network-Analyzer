@@ -1,6 +1,7 @@
 # Network Analyzer Plugin
 
 ![Branch badge](https://eoygaj44xckigdg.m.pipedream.net/badge2.svg)
+[Latest link](https://eoygaj44xckigdg.m.pipedream.net/latest)
 
 ## Overview
 
