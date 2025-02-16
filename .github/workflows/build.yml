@@ -95,4 +95,4 @@ jobs:
           packages: 'Repository Client:1.0.3-beta.2+a72735c4'
       
       - name: Publish Packages
-        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.PUBLIC_REPO_TOKEN }} *.TapPackage "$(find . -name '*.TapPackage')"
+        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} *.TapPackage "$(find . -name '*.TapPackage')"
