@@ -57,7 +57,7 @@ jobs:
       - name: Build
         run: |
           echo "${{ secrets.SIGN_SERVER_CERT }}" > $TAP_SIGN_CERT
-          dotnet build -c Release "$(find . -name '*.sln')"
+          dotnet build -c Release OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.csproj
         env:
           TAP_SIGN_ADDRESS: ${{ secrets.TAP_SIGN_ADDRESS_INTERNAL }}
           TAP_SIGN_AUTH: ${{ secrets.TAP_SIGN_AUTH }}
