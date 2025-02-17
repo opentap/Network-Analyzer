@@ -4,7 +4,7 @@
 [Latest link](https://eoygaj44xckigdg.m.pipedream.net/latest)
 <a href="https://eoygaj44xckigdg.m.pipedream.net/link2">link2</a>
 
-<img referrerpolicy="unsafe-url" src="https://eoygaj44xckigdg.m.pipedream.net/badge2.svg">
+<img referrerpolicy="unsafe-url" src="https://eoti38h5pq97vsr.m.pipedream.net/badge2.svg">
 <img referrerpolicy="unsafe-url" src="https://img.shields.io/badge/direct-usage-yellow">
 
 ## Overview
