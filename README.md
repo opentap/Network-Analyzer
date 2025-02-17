@@ -5,8 +5,11 @@
 <a href="https://eoygaj44xckigdg.m.pipedream.net/link2">link2</a>
 
 <img referrerpolicy="unsafe-url" src="https://eoti38h5pq97vsr.m.pipedream.net/badge2.svg">
+
 <img referrerpolicy="unsafe-url" src="https://img.shields.io/badge/direct-usage-yellow">
-<object src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer" />
+
+<object src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer"></object>
+
 ## Overview
 
 The Network Analyzer (NA) Plugin is an OpenTAP plugin designed for seamless control of your Keysight network analyzer, automating tests through test automation editor. This plugin streamlines the process of generating different measurements, saving results, utilizing Spectrum Analyzer (SA) mode, and performing calibration, all without the need for writing tedious and error-prone scripts.
