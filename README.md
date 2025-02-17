@@ -2,6 +2,7 @@
 
 ![Branch badge](https://eoygaj44xckigdg.m.pipedream.net/badge2.svg)
 [Latest link](https://eoygaj44xckigdg.m.pipedream.net/latest)
+<a href="https://eoygaj44xckigdg.m.pipedream.net/link2"><img referrerpolicy="unsafe-url" src="https://eoygaj44xckigdg.m.pipedream.net/badge2.svg"></a>
 
 ## Overview
 
