@@ -1,18 +1,9 @@
 # Network Analyzer Plugin
 
-![Branch badge](https://eoygaj44xckigdg.m.pipedream.net/badge2.svg)
-[Latest link](https://eoygaj44xckigdg.m.pipedream.net/latest)
-<a href="https://eoygaj44xckigdg.m.pipedream.net/link2">link2</a>
-
-<img referrerpolicy="unsafe-url" src="https://eoti38h5pq97vsr.m.pipedream.net/badge2.svg">
-
-<img referrerpolicy="unsafe-url" src="https://img.shields.io/badge/direct-usage-yellow">
-
-<object src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer"></object>
-
-<img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release%20Image&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer">
-
-<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyMDAiPgogIDxmb3JlaWduT2JqZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIj4KICAgIDxib2R5IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KICAgICAgPGEgaHJlZj0iaHR0cHM6Ly9wYWNrYWdlcy5vcGVudGFwLmlvLyNuYW1lPSUyRlBhY2thZ2VzJTJGTmV0d29yaytBbmFseXplciI+CiAgICAgICAgPGltZyBzcmM9Imh0dHBzOi8vc2hpZWxkcy5pby9naXRodWIvdi90YWcvb3BlbnRhcC9OZXR3b3JrLUFuYWx5emVyP2xhYmVsPUxhdGVzdCUyMFJlbGVhc2UlMjBJbWFnZSZsaW5rPWh0dHBzJTNBJTJGJTJGcGFja2FnZXMub3BlbnRhcC5pbyUyRiUyM25hbWUlM0QlMjUyRlBhY2thZ2VzJTI1MkZOZXR3b3JrJTJCQW5hbHl6ZXIiIGFsdD0iTGF0ZXN0IFJlbGVhc2UgSW1hZ2UiPgogICAgICA8L2E+CiAgICA8L2JvZHk+CiAgPC9mb3JlaWduT2JqZWN0Pgo8L3N2Zz4=" alt="Latest Release Image">
+<img src="https://img.shields.io/badge/packages.opentap.io-Network%20Analyzer>
+<object data="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=packages.opentap.io%3ANetwork%20Analyzer&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer" type="image/svg" width="400" height="300">
+    <img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=packages.opentap.io%3ANetwork%20Analyzer&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer" alt="fallback image">
+</object>
 
 ## Overview
 
