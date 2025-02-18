@@ -1,8 +1,7 @@
 # Network Analyzer Plugin
 
-<img src="https://img.shields.io/badge/packages.opentap.io-Network%20Analyzer>
-<object data="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=packages.opentap.io%3ANetwork%20Analyzer&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer" type="image/svg" width="400" height="300">
-    <img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=packages.opentap.io%3ANetwork%20Analyzer&link=https%3A%2F%2Fpackages.opentap.io%2F%23name%3D%252FPackages%252FNetwork%2BAnalyzer" alt="fallback image">
+<img src="https://img.shields.io/badge/packages.opentap.io-Network%20Analyzer">
+<object data="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release" type="image/svg">
 </object>
 
 ## Overview
