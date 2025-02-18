@@ -3,6 +3,8 @@
 <img src="https://img.shields.io/badge/packages.opentap.io-Network%20Analyzer-blue">
 <img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release" type="image/svg">
 [<img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release">](https://packages.opentap.io/#name=%2FPackages%2FNetwork+Analyzer)
+![Latest Release](https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release)
+[![Latest Release](https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release)](https://packages.opentap.io/#name=%2FPackages%2FNetwork+Analyzer)
 
 ## Overview
 
