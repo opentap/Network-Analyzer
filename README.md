@@ -1,7 +1,7 @@
 # Network Analyzer Plugin
 
-<img src="https://img.shields.io/badge/packages.opentap.io"> [Network Analyzer](https://packages.opentap.io/#name=%2FPackages%2FNetwork+Analyzer)
-<img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release">
+<img src="https://img.shields.io/badge/packages.opentap.io-grey" type="image/svg"> [Network Analyzer](https://packages.opentap.io/#name=%2FPackages%2FNetwork+Analyzer)
+<img src="https://shields.io/github/v/tag/opentap/Network-Analyzer?label=Latest%20Release" type="image/svg">
 
 ## Overview
 
