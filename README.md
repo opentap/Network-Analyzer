@@ -2,8 +2,6 @@
 
 # Network Analyzer Plugin
 
-## Overview
-
 The Network Analyzer (NA) Plugin is an OpenTAP plugin designed for seamless control of your Keysight network analyzer, automating tests through test automation editor. This plugin streamlines the process of generating different measurements, saving results, utilizing Spectrum Analyzer (SA) mode, and performing calibration, all without the need for writing tedious and error-prone scripts.
 
 ##  Download 
