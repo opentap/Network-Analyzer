@@ -96,7 +96,10 @@ namespace OpenTap.Plugins.PNAX
 
         protected string measClass;
         protected string measEnumName;
-        protected string finalMeasEnumName;
+
+        [EnabledIf("IsPropertyEnabled", true, HideIfDisabled = true)]
+        [Browsable(true)]
+        public string finalMeasEnumName { get; private set; }
 
         public SingleTraceBaseStep()
         {
@@ -172,7 +175,7 @@ namespace OpenTap.Plugins.PNAX
             }
 
             Trace = $"CH{Channel}_{finalMeasEnumName}";
-            Name = $"CH{Channel}_{finalMeasEnumName}";
+            Name = "CH{Channel}_{finalMeasEnumName}";
         }
 
         public override void Run()
@@ -189,13 +192,14 @@ namespace OpenTap.Plugins.PNAX
             int _tnum = 0;
             int _mnum = 0;
             string _MeasName = "";
+            UpdateTestStepName();
             //if (CustomTraceMeas)
             //{
             //    PNAX.AddNewTrace(Channel, Window, Trace, measClass, CustomMeas, ref _tnum, ref _mnum, ref _MeasName);
             //}
             //else
             //{
-                PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
+            PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
             //}
             tnum = _tnum;
             mnum = _mnum;
