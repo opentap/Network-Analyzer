@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTAP" Version="9.26.1" />
+    <PackageReference Include="OpenTAP" Version="9.27.1" />
 	  <OpenTapPackageReference Include="OpenTAP" />
   </ItemGroup>
 

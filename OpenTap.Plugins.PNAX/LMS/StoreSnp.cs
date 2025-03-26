@@ -90,6 +90,7 @@ namespace OpenTap.Plugins.PNAX.LMS
                 Log.Info("Storing SNP to file: " + dir);
 
                 PNAX.SaveSnP(channel, measurements[0], Ports, dir);
+                StepRun.PublishArtifact(dir);
             }
 
             UpgradeVerdict(Verdict.Pass);
