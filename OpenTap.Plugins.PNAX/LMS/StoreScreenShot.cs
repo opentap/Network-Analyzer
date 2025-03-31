@@ -57,6 +57,7 @@ namespace OpenTap.Plugins.PNAX.LMS
             }
 
             PNAX.SaveScreen(dir);
+            StepRun.PublishArtifact(dir);
 
             UpgradeVerdict(Verdict.Pass);
         }

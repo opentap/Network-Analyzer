@@ -14,6 +14,7 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <!-- We are setting TargetFramework in debug configuration, otherwise Visual Studio tries to attach a .NET Core debugger. That will not work, because the program we open is a .NET Framework executable -->
     <TargetFramework>net472</TargetFramework>
+    <CreateOpenTapPackage>false</CreateOpenTapPackage>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
@@ -22,12 +23,20 @@
 	  <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <CreateOpenTapPackage>true</CreateOpenTapPackage>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(KS8500_REPO_TOKEN)' != ''">
+    <OpenTapPackageReference Include="Sign" Version="$(SIGN_VERSION)" Reference="False" Repository="https://test-automation.pw.keysight.com/api/packages" Token="$(KS8500_REPO_TOKEN)" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="General\GeneralFrequencyBaseStep.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTAP" Version="9.27.0" />
+    <PackageReference Include="OpenTAP" Version="9.27.1" />
 	  <OpenTapPackageReference Include="OpenTAP" />
   </ItemGroup>
 

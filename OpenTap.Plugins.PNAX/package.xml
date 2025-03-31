@@ -16,7 +16,11 @@ $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.
   <Files>
     <File Path="Packages/OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.dll" SourcePath="OpenTap.Plugins.PNAX.dll">
       <SetAssemblyInfo Attributes="Version"/>
-      <!--ObfuscateWithDotfuscator/-->
+	  <Sign Certificate="Keysight Technologies, Inc" Condition="$(KS8500_REPO_TOKEN)"/>
+	  <IgnoreDependency>netstandard</IgnoreDependency>
+	  <IgnoreDependency>System</IgnoreDependency>
+	  <IgnoreDependency>System.CodeDom</IgnoreDependency>
+	  <!--ObfuscateWithDotfuscator/-->
     </File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/Standard - CalAll - Trigger - Meas.TapPlan" SourcePath="Examples/Standard - CalAll - Trigger - Meas.TapPlan" ></File>
 	<File Path="Packages/OpenTap.Plugins.PNAX/Examples/FOM.TapPlan" SourcePath="Examples/FOM.TapPlan" ></File>
