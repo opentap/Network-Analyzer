@@ -68,7 +68,7 @@ namespace OpenTap.Plugins.PNAX
             // Grab trace names
             char[] charsToTrim = { '"', '\n' };
             var traces = ScpiQuery($"CALC{channel}:PAR:CAT:EXT?");
-            traces = traces.Replace("B,", "B_");
+            //traces = traces.Replace("B,", "B_");
             var tracesList = traces.Trim(charsToTrim).Split(',');
             return tracesList;
         }

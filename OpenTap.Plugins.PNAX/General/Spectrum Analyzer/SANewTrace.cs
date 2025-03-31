@@ -43,23 +43,9 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             return retVal;
         }
 
-        public override void PrePlanRun()
+        protected override void DeleteDummyTrace()
         {
-            base.PrePlanRun();
-
-            // Delete dummy trace defined during channel setup
-            // DISPlay:MEASure<mnum>:DELete?
-            // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
-        }
-
-        public override void Run()
-        {
-            RunChildSteps(); //If the step supports child steps.
-
-            // If no verdict is used, the verdict will default to NotSet.
-            // You can change the verdict using UpgradeVerdict() as shown below.
-            UpgradeVerdict(Verdict.Pass);
+            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_B_1\'");
         }
     }
 }
