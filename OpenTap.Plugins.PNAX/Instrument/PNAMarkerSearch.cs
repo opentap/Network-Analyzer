@@ -71,6 +71,22 @@ namespace OpenTap.Plugins.PNAX
             WaitForOperationComplete();
         }
 
+        public void CalculateMeasureMarkerFunctionPeakThreshold(int Channel, int mnum, int mkr, double value)
+        {
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:FUNCtion:PEAK:THReshold {value}");
+        }
+
+        public void CalculateMeasureMarkerFunctionPeakExcursion(int Channel, int mnum, int mkr, double value)
+        {
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:FUNCtion:PEAK:EXCursion {value}");
+        }
+
+        public void CalculateMeasureMarkerFunctionPeakPolarity(int Channel, int mnum, int mkr, SAMultiPeakSearchPolarityEnumType value)
+        {
+            string scpi = Scpi.Format("{0}", value);
+            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:FUNCtion:PEAK:POLarity {scpi}");
+        }
+
         public void CalculateMeasureMarkerSetCenter(int Channel, int mnum, int mkr)
         {
             ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:SET CENTer");
