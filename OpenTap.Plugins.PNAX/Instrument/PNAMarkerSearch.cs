@@ -110,5 +110,13 @@ namespace OpenTap.Plugins.PNAX
         {
             return ScpiQuery<bool>($"CALCulate{Channel}:MEASure{mnum}:MARKer{mkr}:STATe?");
         }
+
+        public string GetMeasurementName(int mnum)
+        {
+            string retStr = ScpiQuery($"SYSTem:MEASure{mnum}:NAME?");
+            retStr = retStr.Replace("\"", "");
+            return retStr;
+        }
+
     }
 }
