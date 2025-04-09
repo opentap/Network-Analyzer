@@ -72,7 +72,7 @@ namespace OpenTap.Plugins.PNAX
 
         public PeakSearch()
         {
-            UseTraceOutput = false;
+            UseTraceOutput = true;
 
             mnum = new Input<int>();
 
