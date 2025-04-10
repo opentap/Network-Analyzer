@@ -22,9 +22,6 @@ namespace OpenTap.Plugins.PNAX
         public PNAX PNAX { get; set; }
 
 
-        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
-        public Input<int> Channel { get; set; }
-
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
         public Input<int> mnum { get; set; }
 
@@ -34,36 +31,38 @@ namespace OpenTap.Plugins.PNAX
 
         public StoreSingleTraceAdvanced()
         {
-            Channel = new Input<int>();
             mnum = new Input<int>();
             UseTraceTitle = false;
         }
 
         public override void Run()
         {
-            Log.Info("Channel from trace: " + Channel);
             Log.Info("MNUM from trace: " + mnum);
 
             SingleTraceBaseStep x = (mnum.Step as SingleTraceBaseStep);
 
             Log.Info("trace Window: " );
+            Log.Info("trace Channel: " + x.Channel);
             Log.Info("trace Window: " + x.Window);
             Log.Info("trace Sheet: " + x.Sheet);
             Log.Info("trace tnum: " + x.tnum);
             Log.Info("trace mnum: " + x.mnum);
             Log.Info("trace MeasName: " + x.MeasName);
 
+            int Channel = x.Channel;
+            int mnumValue = x.mnum;
+
             UpgradeVerdict(Verdict.NotSet);
 
             RunChildSteps(); //If the step supports child steps.
 
-            List<List<string>> results = PNAX.StoreTraceData(Channel.Value, mnum.Value);
+            List<List<string>> results = PNAX.StoreTraceData(Channel, mnumValue);
             PNAX.WaitForOperationComplete();
             string MeasName = x.MeasName;
 
             if (UseTraceTitle)
             {
-                MeasName = PNAX.GetTraceTitle(Channel.Value, mnum.Value, MeasName);
+                MeasName = PNAX.GetTraceTitle(Channel, mnumValue, MeasName);
             }
 
             var xResult = results.Where((item, index) => index % 2 == 0).ToList();

@@ -107,6 +107,7 @@ namespace OpenTap.Plugins.PNAX
                 SingleTraceBaseStep x = (mnum.Step as SingleTraceBaseStep);
 
                 Log.Info("trace Window: ");
+                Log.Info("trace Channel: " + x.Channel);
                 Log.Info("trace Window: " + x.Window);
                 Log.Info("trace Sheet: " + x.Sheet);
                 Log.Info("trace tnum: " + x.tnum);
