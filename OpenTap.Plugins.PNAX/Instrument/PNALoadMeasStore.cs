@@ -260,6 +260,19 @@ namespace OpenTap.Plugins.PNAX
             return resultsList;
         }
 
+        public string GetPF(int Channel, int mnum)
+        {
+            // now query PF
+            string strPF = IsModelA ? ScpiQuery($"CALC{Channel}:LIMit:FAIL?") : ScpiQuery($"CALC{Channel}:MEAS{mnum}:LIMit:FAIL?");
+            return strPF;
+        }
+
+        public string GetLimits(int Channel, int mnum)
+        {
+            string limitReportAllStr = IsModelA ? "" : ScpiQuery($"CALC{Channel}:Meas{mnum}:LIMit:REPort:ALL?");
+            return limitReportAllStr;
+        }
+
         public List<List<string>> StoreTraceData(int Channel, int mnum)
         {
             ScpiCommand(":FORM:DATA ASCii, 0");
