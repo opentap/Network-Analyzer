@@ -89,7 +89,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tap-package
-
+          path: artifact
+      - name: Display structure of downloaded artifact
+        run: ls -R artifact
       - name: Setup OpenTAP
         uses: opentap/setup-opentap@main
         with:
@@ -97,4 +99,4 @@ jobs:
           packages: 'Repository Client:1.0.3-beta.2+a72735c4'
       
       - name: Publish Packages
-        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} *.TapPackage
+        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} ./artifact/*.TapPackage
