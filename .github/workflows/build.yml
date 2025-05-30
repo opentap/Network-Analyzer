@@ -55,9 +55,11 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build
+        id: build
         run: |
           echo "${{ secrets.SIGN_SERVER_CERT }}" > $TAP_SIGN_CERT
           dotnet build -c Release OpenTap.Plugins.PNAX/OpenTap.Plugins.PNAX.csproj
+          echo output_dir="$(dirname "$(find . -name '*.TapPackage' -print -quit)")" >> $GITHUB_OUTPUT
         env:
           TAP_SIGN_ADDRESS: ${{ secrets.TAP_SIGN_ADDRESS_INTERNAL }}
           TAP_SIGN_AUTH: ${{ secrets.TAP_SIGN_AUTH }}
@@ -73,7 +75,7 @@ jobs:
           name: tap-package
           retention-days: 5
           path: |
-            **/bin/Release/*.TapPackage
+            ${{ steps.build.outputs.output_dir }}/*.TapPackage
 
   publish:
     # if: github.ref == 'refs/heads/main' || contains(github.ref, 'refs/heads/release') || contains(github.ref, 'refs/tags/v')
@@ -95,4 +97,4 @@ jobs:
           packages: 'Repository Client:1.0.3-beta.2+a72735c4'
       
       - name: Publish Packages
-        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} *.TapPackage "$(find . -name '*.TapPackage')"
+        run: tap repo upload --repository https://packages.opentap.io --token ${{ secrets.NETWORKANALYZERPUBLISHTOKEN }} *.TapPackage
