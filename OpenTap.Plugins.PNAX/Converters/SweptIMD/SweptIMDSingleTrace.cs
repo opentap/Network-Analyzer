@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -245,23 +245,28 @@ namespace OpenTap.Plugins.PNAX
         AI2,
         AIG,
         AOS1,
-        AOS2
+        AOS2,
     }
 
     public enum TraceManagerChannelClassEnum
     {
         GCX,
         STD,
-        IMDX
+        IMDX,
     }
 
     //[AllowAsChildIn(typeof(SweptIMDChannel))]
     //[AllowAsChildIn(typeof(SweptIMDNewTrace))]
-    [Display("Swept IMD Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Swept IMD Single Trace",
+        Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" },
+        Description: "Insert a description here"
+    )]
     public class SweptIMDSingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private SweptIMDTraceEnum _Meas;
+
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public SweptIMDTraceEnum Meas
         {
@@ -278,7 +283,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Class", Groups: new[] { "Trace" }, Order: 12)]
         public TraceManagerChannelClassEnum Class { get; set; }
 
-
         #endregion
 
         public SweptIMDSingleTrace()
@@ -288,6 +292,4 @@ namespace OpenTap.Plugins.PNAX
             measClass = "Swept IMD Converters";
         }
     }
-
-
 }

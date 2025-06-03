@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(MODXChannel))]
-    [Display("Mixer", Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "Mixer",
+        Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODXMixer : PNABaseStep
     {
         #region Settings
@@ -27,7 +31,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Port", Groups: new[] { "Mixer Setup", "Input" }, Order: 10.1)]
         public MODDutPortEnum InputPort { get; set; }
 
-
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("IF", Groups: new[] { "Mixer Setup", "IF" }, Order: 11)]
         public SidebandTypeEnum IFMixerFrequency { get; set; }
@@ -38,24 +41,37 @@ namespace OpenTap.Plugins.PNAX
         [Display("Port", Groups: new[] { "Mixer Setup", "Output" }, Order: 13)]
         public MODDutPortEnum OutputPort { get; set; }
 
-
-
-        [Display("LO1 Fractional Multiplier Numerator", Groups: new[] { "Mixer Setup", "LO1" }, Order: 20)]
+        [Display(
+            "LO1 Fractional Multiplier Numerator",
+            Groups: new[] { "Mixer Setup", "LO1" },
+            Order: 20
+        )]
         public int LO1FractionalMultiplierNumerator { get; set; }
 
-        [Display("LO1 Fractional Multiplier Denominator", Groups: new[] { "Mixer Setup", "LO1" }, Order: 21)]
+        [Display(
+            "LO1 Fractional Multiplier Denominator",
+            Groups: new[] { "Mixer Setup", "LO1" },
+            Order: 21
+        )]
         public int LO1FractionalMultiplierDenominator { get; set; }
 
         [Display("LO1", Groups: new[] { "Mixer Setup", "LO1" }, Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.0")]
         public double LO1MixerFrequency { get; set; }
 
-
-        [Display("LO2 Fractional Multiplier Numerator", Groups: new[] { "Mixer Setup", "LO2" }, Order: 30)]
+        [Display(
+            "LO2 Fractional Multiplier Numerator",
+            Groups: new[] { "Mixer Setup", "LO2" },
+            Order: 30
+        )]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public int LO2FractionalMultiplierNumerator { get; set; }
 
-        [Display("LO2 Fractional Multiplier Denominator", Groups: new[] { "Mixer Setup", "LO2" }, Order: 31)]
+        [Display(
+            "LO2 Fractional Multiplier Denominator",
+            Groups: new[] { "Mixer Setup", "LO2" },
+            Order: 31
+        )]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public int LO2FractionalMultiplierDenominator { get; set; }
 
@@ -63,9 +79,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("LO2", Groups: new[] { "Mixer Setup", "LO2" }, Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.0")]
         public double LO2MixerFrequency { get; set; }
-
-
-
 
         [Display("Enable Embedded LO", Groups: new[] { "Mixer Setup", "Embedded LO" }, Order: 40)]
         public bool EnableEmbeddedLO { get; set; }
@@ -102,9 +115,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double LOFrequencyDelta { get; set; }
 
-
-
-
         [Display("LO1 Source", Groups: new[] { "Power", "LO1" }, Order: 50)]
         public string LO1Source { get; set; }
 
@@ -118,9 +128,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("LO1 Attenuator", Groups: new[] { "Power", "LO1" }, Order: 53)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
         public double LO1Attenuator { get; set; }
-
-
-
 
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [EnabledIf("ConverterStages", ConverterStagesEnum._2, HideIfDisabled = true)]
@@ -199,7 +206,9 @@ namespace OpenTap.Plugins.PNAX
             {
                 retVal.Add(("IFMixerFrequency", IFMixerFrequency));
                 retVal.Add(("LO2FractionalMultiplierNumerator", LO2FractionalMultiplierNumerator));
-                retVal.Add(("LO2FractionalMultiplierDenominator", LO2FractionalMultiplierDenominator));
+                retVal.Add(
+                    ("LO2FractionalMultiplierDenominator", LO2FractionalMultiplierDenominator)
+                );
                 retVal.Add(("LO2MixerFrequency", LO2MixerFrequency));
             }
 
@@ -242,14 +251,26 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetFrequencyOutputSideband(Channel, OutputMixerFrequency);
 
             PNAX.SetLOFractionalMultiplierNumerator(Channel, 1, LO1FractionalMultiplierNumerator);
-            PNAX.SetLOFractionalMultiplierDenominator(Channel, 1, LO1FractionalMultiplierDenominator);
+            PNAX.SetLOFractionalMultiplierDenominator(
+                Channel,
+                1,
+                LO1FractionalMultiplierDenominator
+            );
             PNAX.SetFrequencyLOFixed(Channel, 1, LO1MixerFrequency);
             if (ConverterStages == ConverterStagesEnum._2)
             {
                 PNAX.SetFrequencyIFSideband(Channel, IFMixerFrequency);
 
-                PNAX.SetLOFractionalMultiplierNumerator(Channel, 2, LO2FractionalMultiplierNumerator);
-                PNAX.SetLOFractionalMultiplierDenominator(Channel, 2, LO2FractionalMultiplierDenominator);
+                PNAX.SetLOFractionalMultiplierNumerator(
+                    Channel,
+                    2,
+                    LO2FractionalMultiplierNumerator
+                );
+                PNAX.SetLOFractionalMultiplierDenominator(
+                    Channel,
+                    2,
+                    LO2FractionalMultiplierDenominator
+                );
                 PNAX.SetFrequencyLOFixed(Channel, 2, LO2MixerFrequency);
                 PNAX.MixerCalc(Channel);
             }
@@ -268,7 +289,6 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.SetLOFrequencyDelta(Channel, LOFrequencyDelta);
             }
             PNAX.MixerApply(Channel);
-
 
             // Power
             PNAX.SetPortLO(Channel, 1, LO1Source);

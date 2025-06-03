@@ -4,29 +4,33 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     public enum StandardChannelSweepModeEnum
     {
         Auto,
-        Stepped
+        Stepped,
     }
 
     public enum StandardChannelSweepSequenceEnum
     {
         Standard,
-        PointSweep
+        PointSweep,
     }
 
     //[AllowAsChildIn(typeof(StandardChannel))]
-    [Display("Timing", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
+    [Display(
+        "Timing",
+        Groups: new[] { "Network Analyzer", "General", "Standard" },
+        Description: "Insert a description here"
+    )]
     public class Timing : PNABaseStep
     {
         #region Settings
@@ -53,13 +57,11 @@ namespace OpenTap.Plugins.PNAX
         private double _SweepTimeAuto;
         private double _SweepTimeStepped;
         private StandardChannelSweepModeEnum _StandardChannelSweepMode;
+
         [Display("Sweep Mode", Group: "Sweep Mode", Order: 20)]
         public StandardChannelSweepModeEnum StandardChannelSweepMode
         {
-            get
-            {
-                return _StandardChannelSweepMode;
-            }
+            get { return _StandardChannelSweepMode; }
             set
             {
                 _StandardChannelSweepMode = value;
@@ -102,7 +104,7 @@ namespace OpenTap.Plugins.PNAX
         {
             List<(string, object)> retVal = new List<(string, object)>
             {
-                ("Auto Sweep Time", AutoSweepTime)
+                ("Auto Sweep Time", AutoSweepTime),
             };
             if (AutoSweepTime == false)
             {

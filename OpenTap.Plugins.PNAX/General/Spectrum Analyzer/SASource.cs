@@ -4,17 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [Display("SA Source", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display(
+        "SA Source",
+        Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" },
+        Description: "Insert a description here"
+    )]
     public class SASource : PNABaseStep
     {
         #region Settings
@@ -23,6 +27,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         [Browsable(false)]
         private bool _portPowersCoupled;
+
         [Display("Port Powers Coupled", Group: "Power", Order: 21)]
         public bool PortPowersCoupled
         {
@@ -57,12 +62,42 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             SourceSweepOrder = SASourceSweepOrderTypeEnum.FrequencyPower;
 
-            SASourceCell port1 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 1" };
-            SASourceCell port2 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 2" };
-            SASourceCell port3 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 3" };
-            SASourceCell port4 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 4" };
-            SASourceCell port1src2 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 1 Src2" };
-            SASourceCell source3 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Source3" };
+            SASourceCell port1 = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Port 1",
+            };
+            SASourceCell port2 = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Port 2",
+            };
+            SASourceCell port3 = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Port 3",
+            };
+            SASourceCell port4 = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Port 4",
+            };
+            SASourceCell port1src2 = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Port 1 Src2",
+            };
+            SASourceCell source3 = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Source3",
+            };
 
             this.ChildTestSteps.Add(port1);
             this.ChildTestSteps.Add(port2);
@@ -70,14 +105,18 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             this.ChildTestSteps.Add(port4);
             this.ChildTestSteps.Add(port1src2);
             this.ChildTestSteps.Add(source3);
-
         }
 
         [Browsable(true)]
         [Display("Add Source Cell", Group: "Source Cells", Order: 40)]
         public void AddSourceCell()
         {
-            SASourceCell newSource = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Device0" };
+            SASourceCell newSource = new SASourceCell
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                CellName = "Device0",
+            };
             this.ChildTestSteps.Add(newSource);
         }
 
@@ -101,7 +140,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             {
                 ("SA Power On All Channels", PowerOnAllChannels),
                 ("SA Port Powers Coupled", PortPowersCoupled),
-                ("SA Source Sweep Order", SourceSweepOrder)
+                ("SA Source Sweep Order", SourceSweepOrder),
             };
 
             foreach (var a in MetaData)
@@ -127,6 +166,5 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
                 }
             }
         }
-
     }
 }

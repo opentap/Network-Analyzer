@@ -5,16 +5,20 @@
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files..
 
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Generic DUT2", Group: "OpenTap.Plugins.PNAX", Description: "Generic DUT that includes Serial Number and Temperature for metadata")]
+    [Display(
+        "Generic DUT2",
+        Group: "OpenTap.Plugins.PNAX",
+        Description: "Generic DUT that includes Serial Number and Temperature for metadata"
+    )]
     public class GenericDUT2 : Dut
     {
         #region Settings

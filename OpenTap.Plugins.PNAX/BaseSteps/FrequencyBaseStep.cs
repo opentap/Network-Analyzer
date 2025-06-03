@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum SweepTypeEnum
     {
         [Scpi("LIN")]
         [Display("Linear Sweep")]
         LinearSweep,
+
         [Scpi("CW")]
         [Display("CW Frequency")]
-        CWFrequency
+        CWFrequency,
     }
 
     public enum DataAcquisitionModeEnum
@@ -23,12 +23,14 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("SMAR")]
         [Display("SMART Sweep")]
         SMARTSweep,
+
         [Scpi("PFREQ")]
         [Display("Sweep Power Per Frequency 2D")]
         SweepPowerPerFrequency2D,
+
         [Scpi("FPOW")]
         [Display("Sweep Frequency Per Power 2D")]
-        SweepFrequencyPerPower2D
+        SweepFrequencyPerPower2D,
     }
 
     [Browsable(false)]
@@ -44,6 +46,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool LinearSweepEnabled { get; set; }
+
         [EnabledIf("LinearSweepEnabled", true, HideIfDisabled = true)]
         [Display("Type", Group: "Sweep Settings", Order: 11.9)]
         public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
@@ -74,6 +77,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool CWFrequencyEnabled { get; set; }
+
         [EnabledIf("CWFrequencyEnabled", true, HideIfDisabled = true)]
         [Display("Fixed", Group: "Sweep Settings", Order: 16)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
@@ -140,7 +144,12 @@ namespace OpenTap.Plugins.PNAX
             }
             else if (EnableSegmentSweepSettings)
             {
-                PNAX.SetSegmentValues(SegmentDefinitionType, Channel, SegmentDefinitions, ShowTable);
+                PNAX.SetSegmentValues(
+                    SegmentDefinitionType,
+                    Channel,
+                    SegmentDefinitions,
+                    ShowTable
+                );
             }
             else
             {
@@ -174,7 +183,13 @@ namespace OpenTap.Plugins.PNAX
             SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
             SegmentDefinitions = new List<SegmentDefinition>
             {
-                new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 }
+                new SegmentDefinition
+                {
+                    state = true,
+                    NumberOfPoints = 21,
+                    StartFrequency = 10.5e6,
+                    StopFrequency = 1e9,
+                },
             };
             ShowTable = false;
             Window = 1;
@@ -192,6 +207,5 @@ namespace OpenTap.Plugins.PNAX
             SweepSettingsFixed = DefaultValues.SweepSettingsFixed;
             IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }
-
     }
 }

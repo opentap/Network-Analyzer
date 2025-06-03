@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -17,11 +17,14 @@ namespace OpenTap.Plugins.PNAX
     {
         [Display("State", Order: 1)]
         public bool state { get; set; }
+
         [Display("Number of Points", Order: 2)]
         public int NumberOfPoints { get; set; }
+
         [Display("Start Frequency", Order: 3)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double StartFrequency { get; set; }
+
         [Display("Stop Frequency", Order: 4)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double StopFrequency { get; set; }
@@ -30,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
     public enum SegmentDefinitionTypeEnum
     {
         File,
-        List
+        List,
     }
 
     public enum StandardSweepTypeEnum
@@ -38,37 +41,44 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("LINear")]
         [Display("Linear Frequency")]
         LinearFrequency,
+
         [Scpi("LOGarithmic")]
         [Display("Log Frequency")]
         LogFrequency,
+
         [Scpi("POWer")]
         [Display("Power Sweep")]
         PowerSweep,
+
         [Scpi("CW")]
         [Display("CW Time")]
         CWTime,
+
         [Scpi("SEGMent")]
         [Display("Segment Sweep")]
         SegmentSweep,
+
         [Scpi("PHASe")]
         [Display("Phase Sweep")]
-        PhaseSweep
+        PhaseSweep,
     }
 
     //[AllowAsChildIn(typeof(StandardChannel))]
-    [Display("Sweep Type", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
+    [Display(
+        "Sweep Type",
+        Groups: new[] { "Network Analyzer", "General", "Standard" },
+        Description: "Insert a description here"
+    )]
     public class SweepType : PNABaseStep
     {
         #region Settings
 
         private StandardSweepTypeEnum _StandardSweepType;
+
         [Display("Data Acquisition Mode", Order: 10)]
         public StandardSweepTypeEnum StandardSweepType
         {
-            get
-            {
-                return _StandardSweepType;
-            }
+            get { return _StandardSweepType; }
             set
             {
                 _StandardSweepType = value;
@@ -76,12 +86,22 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf(
+            "StandardSweepType",
+            StandardSweepTypeEnum.LinearFrequency,
+            StandardSweepTypeEnum.LogFrequency,
+            HideIfDisabled = true
+        )]
         [Display("Start", Group: "Sweep Properties", Order: 20)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SweepPropertiesStart { get; set; }
 
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
+        [EnabledIf(
+            "StandardSweepType",
+            StandardSweepTypeEnum.LinearFrequency,
+            StandardSweepTypeEnum.LogFrequency,
+            HideIfDisabled = true
+        )]
         [Display("Stop", Group: "Sweep Properties", Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesStop { get; set; }
@@ -106,21 +126,49 @@ namespace OpenTap.Plugins.PNAX
         [Unit("°", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesStopPhase { get; set; }
 
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
+        [EnabledIf(
+            "StandardSweepType",
+            StandardSweepTypeEnum.PhaseSweep,
+            StandardSweepTypeEnum.CWTime,
+            StandardSweepTypeEnum.PowerSweep,
+            HideIfDisabled = true
+        )]
         [Display("CW Freq", Group: "Sweep Properties", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double SweepPropertiesCWFreq { get; set; }
 
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, StandardSweepTypeEnum.CWTime, HideIfDisabled = true)]
+        [EnabledIf(
+            "StandardSweepType",
+            StandardSweepTypeEnum.LinearFrequency,
+            StandardSweepTypeEnum.LogFrequency,
+            StandardSweepTypeEnum.CWTime,
+            HideIfDisabled = true
+        )]
         [Display("Power", Group: "Sweep Properties", Order: 22)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double SweepPropertiesPower { get; set; }
 
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
+        [EnabledIf(
+            "StandardSweepType",
+            StandardSweepTypeEnum.LinearFrequency,
+            StandardSweepTypeEnum.LogFrequency,
+            StandardSweepTypeEnum.CWTime,
+            StandardSweepTypeEnum.PhaseSweep,
+            StandardSweepTypeEnum.PowerSweep,
+            HideIfDisabled = true
+        )]
         [Display("Points", Group: "Sweep Properties", Order: 23)]
         public int SweepPropertiesPoints { get; set; }
 
-        [EnabledIf("StandardSweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, StandardSweepTypeEnum.CWTime, StandardSweepTypeEnum.PhaseSweep, StandardSweepTypeEnum.PowerSweep, HideIfDisabled = true)]
+        [EnabledIf(
+            "StandardSweepType",
+            StandardSweepTypeEnum.LinearFrequency,
+            StandardSweepTypeEnum.LogFrequency,
+            StandardSweepTypeEnum.CWTime,
+            StandardSweepTypeEnum.PhaseSweep,
+            StandardSweepTypeEnum.PowerSweep,
+            HideIfDisabled = true
+        )]
         [Display("IF Bandwidth", Group: "Sweep Properties", Order: 24)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepPropertiesIFBandwidth { get; set; }
@@ -175,7 +223,15 @@ namespace OpenTap.Plugins.PNAX
 
             SegmentDefinitionType = SegmentDefinitionTypeEnum.List;
             SegmentDefinitions = new List<SegmentDefinition>();
-            SegmentDefinitions.Add(new SegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9 });
+            SegmentDefinitions.Add(
+                new SegmentDefinition
+                {
+                    state = true,
+                    NumberOfPoints = 21,
+                    StartFrequency = 10.5e6,
+                    StopFrequency = 1e9,
+                }
+            );
             ShowTable = false;
         }
 
@@ -184,7 +240,7 @@ namespace OpenTap.Plugins.PNAX
         {
             List<(string, object)> retVal = new List<(string, object)>
             {
-                ("Data Acquisition Mode", StandardSweepType)
+                ("Data Acquisition Mode", StandardSweepType),
             };
 
             switch (StandardSweepType)
@@ -223,7 +279,6 @@ namespace OpenTap.Plugins.PNAX
             return retVal;
         }
 
-
         public override void Run()
         {
             RunChildSteps(); //If the step supports child steps.
@@ -253,7 +308,12 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.SetIFBandwidth(Channel, SweepPropertiesIFBandwidth);
                     break;
                 case StandardSweepTypeEnum.SegmentSweep:
-                    PNAX.SetSegmentValues(SegmentDefinitionType, Channel, SegmentDefinitions, ShowTable);
+                    PNAX.SetSegmentValues(
+                        SegmentDefinitionType,
+                        Channel,
+                        SegmentDefinitions,
+                        ShowTable
+                    );
                     break;
                 case StandardSweepTypeEnum.PhaseSweep:
                     PNAX.SetPhaseStart(Channel, SweepPropertiesStartPhase);
@@ -266,6 +326,5 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
-
     }
 }

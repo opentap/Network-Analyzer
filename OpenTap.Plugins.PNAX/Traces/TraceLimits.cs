@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
-using OpenTap.Plugins.PNAX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
+using OpenTap.Plugins.PNAX;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
-    [Display("Trace Limits", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Set Limits for a trace")]
+    [Display(
+        "Trace Limits",
+        Groups: new[] { "Network Analyzer", "Trace" },
+        Description: "Set Limits for a trace"
+    )]
     public class TraceLimits : PNABaseStep
     {
         #region Settings
@@ -54,7 +58,16 @@ namespace OpenTap.Plugins.PNAX
             PositionY = 0.0;
 
             limitSegments = new List<LimitSegmentDefinition>();
-            limitSegments.Add(new LimitSegmentDefinition { LimitType = LimitType.Off, BeginStim = 0, EndStim = 0, BeginResp = 0, EndResp = 0 });
+            limitSegments.Add(
+                new LimitSegmentDefinition
+                {
+                    LimitType = LimitType.Off,
+                    BeginStim = 0,
+                    EndStim = 0,
+                    BeginResp = 0,
+                    EndResp = 0,
+                }
+            );
 
             GlobalPassFail = false;
         }

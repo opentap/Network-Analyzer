@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -18,12 +18,14 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("EXT")]
         [Display("External")]
         EXT,
+
         [Scpi("IMM")]
         [Display("Internal")]
         IMM,
+
         [Scpi("MAN")]
         [Display("Manual")]
-        MAN
+        MAN,
     }
 
     public enum TriggerModeEnumType
@@ -31,15 +33,18 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("CHAN")]
         [Display("Channel")]
         CHAN,
+
         [Scpi("SWE")]
         [Display("Sweep")]
         SWE,
+
         [Scpi("POIN")]
         [Display("Point")]
         POIN,
+
         [Scpi("TRAC")]
         [Display("Trace")]
-        TRAC
+        TRAC,
     }
 
     public enum SweepModeEnumType
@@ -47,53 +52,59 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("HOLD")]
         [Display("Hold")]
         HOLD,
+
         [Scpi("CONT")]
         [Display("Continuous")]
         CONT,
+
         [Scpi("GRO")]
         [Display("Groups")]
         GRO,
+
         [Scpi("SING")]
         [Display("Single")]
-        SING
+        SING,
     }
-
 
     public enum VNAReferenceOscillatorEnumtype
     {
         [Display("Internal")]
         [Scpi("INT")]
         Internal,
+
         [Display("External")]
         [Scpi("EXT")]
         External,
+
         [Display("PXI Backplane")]
         [Scpi("PXI")]
-        PXI
+        PXI,
     }
-
 
     public enum VNAReferenceFreqEnumtype
     {
         [Display("10 MHz")]
         [Scpi("1E7")]
         Ten,
+
         [Display("100 MHz")]
         [Scpi("1E8")]
         Hundred,
     }
 
-
     public enum VNAReferenceInEnumtype
     {
         [Display("Internal")]
         Internal,
+
         [Display("External 10 MHz")]
         External10,
+
         [Display("External 100 MHz")]
         External100,
+
         [Display("PXI Backplane")]
-        PXIBackplane
+        PXIBackplane,
     }
 
     public enum VNAWindowSize
@@ -101,6 +112,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Normal")]
         [Scpi("NORM")]
         NORM,
+
         [Display("MAX")]
         [Scpi("MAX")]
         MAX,
@@ -110,30 +122,61 @@ namespace OpenTap.Plugins.PNAX
     public partial class PNAX : ScpiInstrument
     {
         #region Settings
-        [Display("Always Preset VNA", "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.", Group: "Instrument Settings", Order: 3)]
+        [Display(
+            "Always Preset VNA",
+            "When enbaled, the instrument driver will send SYST:FPR at the start of every test run.",
+            Group: "Instrument Settings",
+            Order: 3
+        )]
         public bool isAlwaysPreset { get; set; }
 
-        [Display("External Devices Policy", "Set and return whether External Devices remain activated or are de-activated when the VNA is Preset or when a Instrument State is recalled.\nOFF (0)  External devices remain active when the VNA is Preset or when a Instrument State is recalled.\nON (1)  External devices are de-activated (SYST:CONF:EDEV:STAT to OFF) when the VNA is Preset or when a Instrument State is recalled.", Group: "Instrument Settings", Order: 2)]
+        [Display(
+            "External Devices Policy",
+            "Set and return whether External Devices remain activated or are de-activated when the VNA is Preset or when a Instrument State is recalled.\nOFF (0)  External devices remain active when the VNA is Preset or when a Instrument State is recalled.\nON (1)  External devices are de-activated (SYST:CONF:EDEV:STAT to OFF) when the VNA is Preset or when a Instrument State is recalled.",
+            Group: "Instrument Settings",
+            Order: 2
+        )]
         public bool ExternalDevices { get; set; }
 
-        [Display("Query for Errors", "Send SYST:ERR after every command. Useful for debugging", Group: "Instrument Settings", Order: 3)]
+        [Display(
+            "Query for Errors",
+            "Send SYST:ERR after every command. Useful for debugging",
+            Group: "Instrument Settings",
+            Order: 3
+        )]
         public bool IsQueryForErrors { get; set; }
 
-        [Display("Query for OPC", "Send OPC? after every command. Useful for debugging", Group: "Instrument Settings", Order: 4)]
+        [Display(
+            "Query for OPC",
+            "Send OPC? after every command. Useful for debugging",
+            Group: "Instrument Settings",
+            Order: 4
+        )]
         public bool IsWaitForOpc { get; set; }
 
         [Display("Enable Reference Oscillator Settings", Group: "Reference", Order: 10)]
         public bool EnableReferenceOscillatorSettings { get; set; }
 
         [EnabledIf("EnableReferenceOscillatorSettings", true, HideIfDisabled = true)]
-        [Display("Reference In", "Set the frequency reference of the instrument", Group: "Reference", Order: 11)]
+        [Display(
+            "Reference In",
+            "Set the frequency reference of the instrument",
+            Group: "Reference",
+            Order: 11
+        )]
         public VNAReferenceInEnumtype VNAReferenceIn { get; set; }
 
         [EnabledIf("EnableReferenceOscillatorSettings", true, HideIfDisabled = true)]
         [Display("Reference Out", "Set Reference out frequency", Group: "Reference", Order: 12)]
         public VNAReferenceFreqEnumtype VNAReferenceOut { get; set; }
 
-        [Display("Store SNP Block List", "Measurement Classes for which SNP can't be stored", Group: "Store SNP Settings", Order: 31, Collapsed: true)]
+        [Display(
+            "Store SNP Block List",
+            "Measurement Classes for which SNP can't be stored",
+            Group: "Store SNP Settings",
+            Order: 31,
+            Collapsed: true
+        )]
         public List<String> StoreSnpBlockList { get; set; }
         #endregion
 
@@ -178,9 +221,9 @@ namespace OpenTap.Plugins.PNAX
         }
 
         /// <summary>
-        /// MNUM: The Tr# that appears on the VNA screen is the third and most visible way to refer to a trace. 
-        /// Since we already have a "Trace Number", we call this the Measurement Number in the VNA Help file. 
-        /// This number is issued sequentially by the VNA regardless of channel and window. 
+        /// MNUM: The Tr# that appears on the VNA screen is the third and most visible way to refer to a trace.
+        /// Since we already have a "Trace Number", we call this the Measurement Number in the VNA Help file.
+        /// This number is issued sequentially by the VNA regardless of channel and window.
         /// It is therefore unique among all traces
         /// </summary>
         protected int mnum = 1;
@@ -190,7 +233,6 @@ namespace OpenTap.Plugins.PNAX
         /// </summary>
         public override void Open()
         {
-
             base.Open();
 
             this.QueryErrorAfterCommand = false;
@@ -223,7 +265,9 @@ namespace OpenTap.Plugins.PNAX
             OptionS93088 = OPTValues.Any(s => s.Equals("088"));
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not available, SOURce:PHASe commands will be skipped");
+                Log.Warning(
+                    "Option S93088A/B not available, SOURce:PHASe commands will be skipped"
+                );
             }
 
             if (EnableReferenceOscillatorSettings)
@@ -394,9 +438,6 @@ namespace OpenTap.Plugins.PNAX
                     TraceCount = listCount + 1;
                 }
             }
-
-
-
 
             return TraceCount++;
         }

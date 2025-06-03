@@ -4,16 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Swept IMD Channel", Groups: new[] { "Network Analyzer", "General", "Swept IMD" }, Description: "Insert a description here", Order: 4)]
+    [Display(
+        "Swept IMD Channel",
+        Groups: new[] { "Network Analyzer", "General", "Swept IMD" },
+        Description: "Insert a description here",
+        Order: 4
+    )]
     public class GeneralSweptIMDChannel : PNABaseStep
     {
         #region Settings
@@ -36,14 +41,31 @@ namespace OpenTap.Plugins.PNAX
         {
             IsControlledByParent = false;
             // Add child steps in the order that is required
-            GeneralSweptIMDConfigure configure = new GeneralSweptIMDConfigure { IsControlledByParent = true, Channel = this.Channel };
+            GeneralSweptIMDConfigure configure = new GeneralSweptIMDConfigure
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
             // Tone Power
-            GeneralTonePower power = new GeneralTonePower { IsControlledByParent = true, Channel = this.Channel, ToneFrequencySweepType = this.ChannelSweepType };
+            GeneralTonePower power = new GeneralTonePower
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ToneFrequencySweepType = this.ChannelSweepType,
+            };
             // Tone Frequency
-            GeneralToneFrequency frequency = new GeneralToneFrequency { IsControlledByParent = true, Channel = this.Channel };
+            GeneralToneFrequency frequency = new GeneralToneFrequency
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
 
             // Traces
-            GeneralSweptIMDNewTrace sweptIMDNewTrace = new GeneralSweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            GeneralSweptIMDNewTrace sweptIMDNewTrace = new GeneralSweptIMDNewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
 
             this.ChildTestSteps.Add(configure);
             this.ChildTestSteps.Add(power);
@@ -60,7 +82,9 @@ namespace OpenTap.Plugins.PNAX
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_PwrMain_1\',\'Swept IMD\',\'PwrMain\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_PwrMain_1\',\'Swept IMD\',\'PwrMain\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,7 +18,12 @@ namespace OpenTap.Plugins.PNAX
         public bool AutoSelectWindows { get; set; }
 
         [EnabledIf("AutoSelectWindows", false, HideIfDisabled = true)]
-        [Display("Windows", Description: "Choose which channels to trigger.", "Measurements", Order: 2)]
+        [Display(
+            "Windows",
+            Description: "Choose which channels to trigger.",
+            "Measurements",
+            Order: 2
+        )]
         public List<int> windows { get; set; }
         #endregion
 

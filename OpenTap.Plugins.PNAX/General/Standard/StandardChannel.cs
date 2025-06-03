@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Standard Channel", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
+    [Display(
+        "Standard Channel",
+        Groups: new[] { "Network Analyzer", "General", "Standard" },
+        Description: "Insert a description here"
+    )]
     public class StandardChannel : PNABaseStep
     {
         #region Settings
@@ -25,11 +29,19 @@ namespace OpenTap.Plugins.PNAX
             Channel = 1;
 
             // Sweep Type
-            SweepType sweepType = new SweepType { IsControlledByParent = true, Channel = this.Channel };
+            SweepType sweepType = new SweepType
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
             // Timing
             Timing timing = new Timing { IsControlledByParent = true, Channel = this.Channel };
             // Traces
-            StandardNewTrace standardNewTrace = new StandardNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            StandardNewTrace standardNewTrace = new StandardNewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
 
             this.ChildTestSteps.Add(sweepType);
             this.ChildTestSteps.Add(timing);
@@ -38,7 +50,17 @@ namespace OpenTap.Plugins.PNAX
         }
 
         // Overloaded Constructor for Test Plan Generator
-        public StandardChannel(int Ch, StandardSweepTypeEnum sweeptype, double Start, double Stop, double Power, double CW, int Points, double IFBW, List<StandardTrace> standardTraces)
+        public StandardChannel(
+            int Ch,
+            StandardSweepTypeEnum sweeptype,
+            double Start,
+            double Stop,
+            double Power,
+            double CW,
+            int Points,
+            double IFBW,
+            List<StandardTrace> standardTraces
+        )
         {
             Channel = Ch;
 
@@ -48,11 +70,14 @@ namespace OpenTap.Plugins.PNAX
                 IsControlledByParent = true,
                 Channel = this.Channel,
                 SweepPropertiesPoints = Points,
-                SweepPropertiesIFBandwidth = IFBW
+                SweepPropertiesIFBandwidth = IFBW,
             };
 
             sweepTypeChildStep.StandardSweepType = sweeptype;
-            if (sweeptype == StandardSweepTypeEnum.LinearFrequency || sweeptype == StandardSweepTypeEnum.LogFrequency)
+            if (
+                sweeptype == StandardSweepTypeEnum.LinearFrequency
+                || sweeptype == StandardSweepTypeEnum.LogFrequency
+            )
             {
                 sweepTypeChildStep.SweepPropertiesStart = Start;
                 sweepTypeChildStep.SweepPropertiesStop = Stop;
@@ -79,7 +104,11 @@ namespace OpenTap.Plugins.PNAX
             // Timing
             Timing timing = new Timing { IsControlledByParent = true, Channel = this.Channel };
             // Traces
-            StandardNewTrace standardNewTrace = new StandardNewTrace(standardTraces) { IsControlledByParent = true, Channel = this.Channel };
+            StandardNewTrace standardNewTrace = new StandardNewTrace(standardTraces)
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
 
             this.ChildTestSteps.Add(sweepTypeChildStep);
             this.ChildTestSteps.Add(timing);
@@ -91,7 +120,9 @@ namespace OpenTap.Plugins.PNAX
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Standard\',\'S11\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Standard\',\'S11\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

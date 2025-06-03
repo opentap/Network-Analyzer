@@ -4,27 +4,41 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Transfer File", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Transfer file from instrument to controlling PC")]
+    [Display(
+        "Transfer File",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Transfer file from instrument to controlling PC"
+    )]
     public class TransferFile : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        [Display("Source Filename", "Specfiy name of the source file on instrument", "Save File", Order: 20)]
+        [Display(
+            "Source Filename",
+            "Specfiy name of the source file on instrument",
+            "Save File",
+            Order: 20
+        )]
         public string SourceFileName { get; set; }
 
-        [Display("Destination Filename", "Specfiy path and filename for csa file to be saved", "Save File", Order: 21)]
+        [Display(
+            "Destination Filename",
+            "Specfiy path and filename for csa file to be saved",
+            "Save File",
+            Order: 21
+        )]
         [FilePath(FilePathAttribute.BehaviorChoice.Save, "csa")]
         public string DestinationFileName { get; set; }
 
@@ -38,8 +52,16 @@ namespace OpenTap.Plugins.PNAX
             DestinationFileName = "";
             DeleteSource = false;
 
-            Rules.Add(() => ((SourceFileName.Equals("") == false)), "Must be a valid state file", "SourceFileName");
-            Rules.Add(() => ((DestinationFileName.Equals("") == false)), "Must be a valid state file", "DestinationFileName");
+            Rules.Add(
+                () => ((SourceFileName.Equals("") == false)),
+                "Must be a valid state file",
+                "SourceFileName"
+            );
+            Rules.Add(
+                () => ((DestinationFileName.Equals("") == false)),
+                "Must be a valid state file",
+                "DestinationFileName"
+            );
         }
 
         public override void Run()

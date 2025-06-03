@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -73,6 +73,7 @@ namespace OpenTap.Plugins.PNAX
             string stateValue = mode ? "1" : "0";
             ScpiCommand($"SENSe{Channel}:NOISe:NARRowband:STATe {stateValue}");
         }
+
         public NoiseReceiver GetNFNoiseReceiver(int Channel)
         {
             string retString = ScpiQuery($"SENSe{Channel}:NOISe:RECeiver?");
@@ -160,6 +161,7 @@ namespace OpenTap.Plugins.PNAX
             string retStr = ScpiQuery($"SENSe{Channel}:NOISe:PULL?");
             return !retStr.Equals("0");
         }
+
         public void SetNFEnableSourcePulling(int Channel, bool mode)
         {
             string stateValue = mode ? "1" : "0";
@@ -187,8 +189,6 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{Channel}:NOISe:TUNer:FILE:NAME \"{tunerfile}\"");
         }
-
-
 
         #endregion
 
@@ -235,18 +235,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SOURce{Channel}:POWer{p} {power}");
         }
 
-
-
-
-
-
         #endregion
 
         #region Frequency
         // Same commands used in Gain Compression Converters
         // PNAConvertersCompression.cs
-
-
 
         #endregion
     }

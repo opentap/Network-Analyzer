@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -79,7 +79,8 @@ namespace OpenTap.Plugins.PNAX
 
         public int GetLOFractionalMultiplierDenominator(int Channel, int Stage)
         {
-            return ScpiQuery<int>($"SENSe{Channel}:MIXer:LO{Stage}:FREQuency:DENominator?"); ;
+            return ScpiQuery<int>($"SENSe{Channel}:MIXer:LO{Stage}:FREQuency:DENominator?");
+            ;
         }
 
         public void SetLOFractionalMultiplierDenominator(int Channel, int Stage, int value)
@@ -90,7 +91,8 @@ namespace OpenTap.Plugins.PNAX
         // SENSe<ch>:MIXer:LO<n>:NAME?
         public string GetPortLO(int Channel, int Stage)
         {
-            return ScpiQuery($"SENSe{Channel}:MIXer:LO{Stage}:NAME?"); ;
+            return ScpiQuery($"SENSe{Channel}:MIXer:LO{Stage}:NAME?");
+            ;
         }
 
         public void SetPortLO(int Channel, int Stage, LOEnum value)
@@ -293,14 +295,22 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SOURce{Channel}:POWer:ALC:MODE {mode},\"{strPort}\"");
         }
 
-        public void SetSourceLevelingMode(int Channel, PortsEnum port, InputSourceLevelingModeEnum mode)
+        public void SetSourceLevelingMode(
+            int Channel,
+            PortsEnum port,
+            InputSourceLevelingModeEnum mode
+        )
         {
             string strPort = Scpi.Format("{0}", port);
             string strMode = Scpi.Format("{0}", mode);
             ScpiCommand($"SOURce{Channel}:POWer{strPort}:ALC:MODE {strMode}");
         }
 
-        public void SetSourceLevelingMode(int Channel, PortsEnum port, OutputSourceLevelingModeEnum mode)
+        public void SetSourceLevelingMode(
+            int Channel,
+            PortsEnum port,
+            OutputSourceLevelingModeEnum mode
+        )
         {
             string strPort = Scpi.Format("{0}", port);
             string strMode = Scpi.Format("{0}", mode);
@@ -408,7 +418,10 @@ namespace OpenTap.Plugins.PNAX
         {
             string retString = GetMixerFrequencyInputMode(Channel);
 
-            if (!retString.ToUpper().Equals(mode)) throw new Exception($"Mixer Frequency Input Mode Mismatch\nTest Step Setting: {mode}\nInstrument value: {retString}");
+            if (!retString.ToUpper().Equals(mode))
+                throw new Exception(
+                    $"Mixer Frequency Input Mode Mismatch\nTest Step Setting: {mode}\nInstrument value: {retString}"
+                );
         }
 
         public double GetFrequencyInputStart(int Channel)
@@ -424,7 +437,10 @@ namespace OpenTap.Plugins.PNAX
         public void ValidateFrequencyInputStart(int Channel, double value)
         {
             double d = GetFrequencyInputStart(Channel);
-            if (d != value) throw new Exception($"ValidateFrequencyInputStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+            if (d != value)
+                throw new Exception(
+                    $"ValidateFrequencyInputStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyInputStop(int Channel)
@@ -440,7 +456,10 @@ namespace OpenTap.Plugins.PNAX
         public void ValidateFrequencyInputStop(int Channel, double value)
         {
             double d = GetFrequencyInputStop(Channel);
-            if (d != value) throw new Exception($"ValidateFrequencyInputStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+            if (d != value)
+                throw new Exception(
+                    $"ValidateFrequencyInputStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyInputFixed(int Channel)
@@ -456,7 +475,10 @@ namespace OpenTap.Plugins.PNAX
         public void ValidateFrequencyInputFixed(int Channel, double value)
         {
             double d = GetFrequencyInputFixed(Channel);
-            if (d != value) throw new Exception($"ValidateFrequencyInputFixed Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+            if (d != value)
+                throw new Exception(
+                    $"ValidateFrequencyInputFixed Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public string GetMixerFrequencyLOMode(int Channel, int stage)
@@ -469,12 +491,15 @@ namespace OpenTap.Plugins.PNAX
             string modeScpi = Scpi.Format("{0}", mode);
             ScpiCommand($"SENSe{Channel}:MIXer:LO{stage}:FREQuency:MODE {modeScpi}");
         }
+
         public void ValidateMixerFrequencyLOMode(int Channel, int stage, string mode)
         {
             string retString = GetMixerFrequencyLOMode(Channel, stage);
 
             if (!retString.ToUpper().Equals(mode))
-                throw new Exception($"ValidateMixerFrequencyLOMode Mismatch\nTest Step Setting: {mode}\nInstrument value: {retString}");
+                throw new Exception(
+                    $"ValidateMixerFrequencyLOMode Mismatch\nTest Step Setting: {mode}\nInstrument value: {retString}"
+                );
         }
 
         public double GetFrequencyLOStart(int Channel, int stage)
@@ -491,7 +516,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyLOStart(Channel, stage);
             if (d != value)
-                throw new Exception($"ValidateFrequencyLOStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyLOStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyLOStop(int Channel, int stage)
@@ -508,7 +535,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyLOStop(Channel, stage);
             if (d != value)
-                throw new Exception($"ValidateFrequencyLOStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyLOStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyLOFixed(int Channel, int stage)
@@ -525,7 +554,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyLOFixed(Channel, stage);
             if (d != value)
-                throw new Exception($"ValidateFrequencyLOFixed Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyLOFixed Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public bool GetLOILTI(int Channel, int stage)
@@ -542,7 +573,9 @@ namespace OpenTap.Plugins.PNAX
         {
             bool b = GetLOILTI(Channel, stage);
             if (b != value)
-                throw new Exception($"ValidateLOILTI Mismatch\nTest Step Setting: {value}\nInstrument value: {b}");
+                throw new Exception(
+                    $"ValidateLOILTI Mismatch\nTest Step Setting: {value}\nInstrument value: {b}"
+                );
         }
 
         public double GetFrequencyIFStart(int Channel)
@@ -559,7 +592,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyIFStart(Channel);
             if (d != value)
-                throw new Exception($"ValidateFrequencyIFStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyIFStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyIFStop(int Channel)
@@ -576,7 +611,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyIFStop(Channel);
             if (d != value)
-                throw new Exception($"ValidateFrequencyIFStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyIFStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         // TODO
@@ -632,7 +669,9 @@ namespace OpenTap.Plugins.PNAX
         {
             SidebandTypeEnum value = GetFrequencyIFSideband(Channel);
             if (sideband != value)
-                throw new Exception($"ValidateFrequencyIFSideband Mismatch\nTest Step Setting: {value}\nInstrument value: {sideband}");
+                throw new Exception(
+                    $"ValidateFrequencyIFSideband Mismatch\nTest Step Setting: {value}\nInstrument value: {sideband}"
+                );
         }
 
         public string GetMixerFrequencyOutputMode(int Channel)
@@ -660,7 +699,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyOutputStart(Channel);
             if (d != value)
-                throw new Exception($"ValidateFrequencyOutputStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyOutputStart Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyOutputStop(int Channel)
@@ -677,7 +718,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyOutputStop(Channel);
             if (d != value)
-                throw new Exception($"ValidateFrequencyOutputStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyOutputStop Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public double GetFrequencyOutputFixed(int Channel)
@@ -694,7 +737,9 @@ namespace OpenTap.Plugins.PNAX
         {
             double d = GetFrequencyOutputFixed(Channel);
             if (d != value)
-                throw new Exception($"ValidateFrequencyOutputFixed Mismatch\nTest Step Setting: {value}\nInstrument value: {d}");
+                throw new Exception(
+                    $"ValidateFrequencyOutputFixed Mismatch\nTest Step Setting: {value}\nInstrument value: {d}"
+                );
         }
 
         public SidebandTypeEnum GetFrequencyOutputSideband(int Channel)
@@ -734,7 +779,9 @@ namespace OpenTap.Plugins.PNAX
         {
             SidebandTypeEnum value = GetFrequencyOutputSideband(Channel);
             if (sideband != value)
-                throw new Exception($"ValidateFrequencyOutputSideband Mismatch\nTest Step Setting: {value}\nInstrument value: {sideband}");
+                throw new Exception(
+                    $"ValidateFrequencyOutputSideband Mismatch\nTest Step Setting: {value}\nInstrument value: {sideband}"
+                );
         }
 
         #endregion

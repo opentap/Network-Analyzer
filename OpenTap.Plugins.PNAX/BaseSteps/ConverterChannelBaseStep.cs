@@ -4,22 +4,27 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
     [AllowAnyChild]
-    [Display("Converter Channel", Groups: new[] { "Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Converter Channel",
+        Groups: new[] { "Converters" },
+        Description: "Insert a description here"
+    )]
     public class ConverterChannelBaseStep : PNABaseStep
     {
         #region SettingsIsConverterEditable
         private LOEnum _portLO1;
+
         [Browsable(false)]
         public LOEnum PortLO1
         {
@@ -31,6 +36,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
         private LOEnum _portLO2;
+
         [Browsable(false)]
         public LOEnum PortLO2
         {
@@ -45,6 +51,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsSweepPointEditable { get; set; }
         private int _SweepPoints;
+
         [EnabledIf("IsSweepPointEditable", HideIfDisabled = false)]
         [Display("Sweep Points", Order: 20)]
         public int SweepPoints

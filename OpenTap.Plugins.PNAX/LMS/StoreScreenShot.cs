@@ -4,7 +4,6 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,10 +11,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Screen Shot", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Store screen shot")]
+    [Display(
+        "Store Screen Shot",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Store screen shot"
+    )]
     public class StoreScreenShot : TestStep
     {
         #region Settings
@@ -25,7 +29,12 @@ namespace OpenTap.Plugins.PNAX.LMS
         [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
         public MacroString filename { get; set; }
 
-        [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
+        [Display(
+            "Enable Custom Path",
+            Groups: new[] { "File Name Details" },
+            Order: 31,
+            Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results"
+        )]
         public bool IsCustomPath { get; set; }
 
         [EnabledIf("IsCustomPath", true, HideIfDisabled = true)]
@@ -48,7 +57,8 @@ namespace OpenTap.Plugins.PNAX.LMS
             string dir;
             if (IsCustomPath)
             {
-                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".bmp"); ;
+                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".bmp");
+                ;
             }
             else
             {

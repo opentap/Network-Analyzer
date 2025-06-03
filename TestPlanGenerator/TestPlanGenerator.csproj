@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <!-- We are debugging using NET Framework, but builds to Netstandard in release mode to ensure cross platform compatibility -->
@@ -9,51 +8,42 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OpenTapPackageDefinitionPath>package.xml</OpenTapPackageDefinitionPath>
-	<UseWPF>true</UseWPF>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <!-- We are setting TargetFramework in debug configuration, otherwise Visual Studio tries to attach a .NET Core debugger. That will not work, because the program we open is a .NET Framework executable -->
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Step.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-
   <ItemGroup>
     <!-- Developer's System is needed to debug in 'Editor' -->
     <AdditionalOpenTapPackage Include="Developer's System" Version="9" />
-
     <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
     <PackageReference Include="OpenTAP" Version="9.27.1" />
   </ItemGroup>
-
   <ItemGroup>
-	<ProjectReference Include="..\OpenTap.Plugins.PNAX\OpenTap.Plugins.PNAX.csproj" />
+    <ProjectReference Include="..\OpenTap.Plugins.PNAX\OpenTap.Plugins.PNAX.csproj" />
   </ItemGroup>
-
   <ItemGroup>
-	<Reference Include="Keysight.OpenTap.Wpf">
-		<HintPath>$(OutDir)Packages\WPF Controls\Keysight.OpenTap.Wpf.dll</HintPath>
-	</Reference>
-	<Reference Include="OpenTap.Plugins.BasicSteps">
-		<HintPath>$(OutDir)Packages\OpenTap\OpenTap.Plugins.BasicSteps.dll</HintPath>
-	</Reference>
+    <Reference Include="Keysight.OpenTap.Wpf">
+      <HintPath>$(OutDir)Packages\WPF Controls\Keysight.OpenTap.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTap.Plugins.BasicSteps">
+      <HintPath>$(OutDir)Packages\OpenTap\OpenTap.Plugins.BasicSteps.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
-	<Reference Include="PresentationFramework" />
-	<Reference Include="System.Xaml" />
-	<Reference Include="WindowsBase" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="DialogTemplates.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -62,5 +52,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

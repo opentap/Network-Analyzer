@@ -4,13 +4,13 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -32,10 +32,13 @@ namespace OpenTap.Plugins.PNAX
             get => Picture.Description;
             set => Picture.Description = value;
         }
-
     }
 
-    [Display("Cal All", Groups: new[] { "Network Analyzer", "Calibration" }, Description: "Insert a description here")]
+    [Display(
+        "Cal All",
+        Groups: new[] { "Network Analyzer", "Calibration" },
+        Description: "Insert a description here"
+    )]
     public class CalAll : TestStep
     {
         #region Settings
@@ -48,7 +51,9 @@ namespace OpenTap.Plugins.PNAX
         [Display("Auto Select Channels", Group: "Cal All", Order: 1)]
         public bool AutoSelectChannels { get; set; }
 
-        private List<CalibrateAllSelectedChannels> _CalAllSelectedChannels = new List<CalibrateAllSelectedChannels>();
+        private List<CalibrateAllSelectedChannels> _CalAllSelectedChannels =
+            new List<CalibrateAllSelectedChannels>();
+
         [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
         [Display("Calibrate All Selected Channels", Group: "Cal All", Order: 1.1)]
         public List<CalibrateAllSelectedChannels> CalAllSelectedChannels
@@ -100,7 +105,6 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsPhaseEnabled { get; set; }
 
-
         // Only enabled if:
         // Standard Channel is the only channel enabled
         [Browsable(false)]
@@ -119,85 +123,147 @@ namespace OpenTap.Plugins.PNAX
         public bool IsNoiseEnabled { get; set; }
 
         [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
-        [Display("Use Smart Cal Order", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 20)]
+        [Display(
+            "Use Smart Cal Order",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 20
+        )]
         public bool UserSmartCalOrder { get; set; }
 
         [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
-        [Display("Enable Extra Power Cals", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 21)]
+        [Display(
+            "Enable Extra Power Cals",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 21
+        )]
         public ExtraPowerCalsEnum ExtraPowerCals { get; set; }
 
         [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
-        [Display("Independent Calibration Channels", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 22)]
+        [Display(
+            "Independent Calibration Channels",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 22
+        )]
         public List<int> IndependentCalibrationChannels { get; set; }
 
         [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
-        [Display("Power Meter Settling Tolerance", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 23)]
+        [Display(
+            "Power Meter Settling Tolerance",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 23
+        )]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double PowerMeterSettlingTolerance { get; set; }
 
         [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
-        [Display("Power Meter Max Readings", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 24)]
+        [Display(
+            "Power Meter Max Readings",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 24
+        )]
         public int PowerMeterSettlingReadings { get; set; }
 
         [EnabledIf("IsAnyCalEnabled", true, HideIfDisabled = true)]
-        [Display("Power Meter Power Level", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 25)]
+        [Display(
+            "Power Meter Power Level",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 25
+        )]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0")]
         public double PowerMeterPowerLevel { get; set; }
 
-
-
-
         [EnabledIf("IsSplitCalEnabled", true, HideIfDisabled = true)]
-        [Display("Split Cal", Groups: new[] { "Measurement Class Calibration", "Miscellaneous" }, Order: 23)]
+        [Display(
+            "Split Cal",
+            Groups: new[] { "Measurement Class Calibration", "Miscellaneous" },
+            Order: 23
+        )]
         public bool SplitCal { get; set; }
 
         [EnabledIf("IsPhaseEnabled", true, HideIfDisabled = true)]
-        [Display("Enable Phase Correction", Groups: new[] { "Measurement Class Calibration", "Phase" }, Order: 30)]
+        [Display(
+            "Enable Phase Correction",
+            Groups: new[] { "Measurement Class Calibration", "Phase" },
+            Order: 30
+        )]
         public bool EnablePhaseCorrection { get; set; }
 
         [EnabledIf("IsPowerCalEnabled", true, HideIfDisabled = true)]
-        [Display("Include Power Calibration", Groups: new[] { "Measurement Class Calibration", "Power Cal" }, Order: 40)]
+        [Display(
+            "Include Power Calibration",
+            Groups: new[] { "Measurement Class Calibration", "Power Cal" },
+            Order: 40
+        )]
         public bool IncludePowerCalibration { get; set; }
 
         [EnabledIf("IsIMDEnabled", true, HideIfDisabled = true)]
-        [Display("Max Product Order", Groups: new[] { "Measurement Class Calibration", "IMD" }, Order: 50)]
+        [Display(
+            "Max Product Order",
+            Groups: new[] { "Measurement Class Calibration", "IMD" },
+            Order: 50
+        )]
         public int MaxProductOrder { get; set; }
 
         [EnabledIf("IsIMDEnabled", true, HideIfDisabled = true)]
-        [Display("Include 2nd Order", Groups: new[] { "Measurement Class Calibration", "IMD" }, Order: 51)]
+        [Display(
+            "Include 2nd Order",
+            Groups: new[] { "Measurement Class Calibration", "IMD" },
+            Order: 51
+        )]
         public bool Include2ndOrder { get; set; }
 
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
-        [Display("Noise Cal Method", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 60)]
+        [Display(
+            "Noise Cal Method",
+            Groups: new[] { "Measurement Class Calibration", "Noise" },
+            Order: 60
+        )]
         public NoiseCalMethodEnum NoiseCalMethod { get; set; }
 
         // AutoOrient Tuner
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
         [EnabledIf("NoiseCalMethod", NoiseCalMethodEnum.Vector, HideIfDisabled = true)]
-        [Display("Noise Tuner", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 61)]
+        [Display(
+            "Noise Tuner",
+            Groups: new[] { "Measurement Class Calibration", "Noise" },
+            Order: 61
+        )]
         public NoiseTunerEnum NoiseTuner { get; set; }
 
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
-        [Display("Receiver Characterization Method", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 62)]
+        [Display(
+            "Receiver Characterization Method",
+            Groups: new[] { "Measurement Class Calibration", "Noise" },
+            Order: 62
+        )]
         public ReceiverCharacterizationMethodEnum ReceiverCharacterizationMethod { get; set; }
 
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
-        [Display("Force Thru Adapter De-embed", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 63)]
+        [Display(
+            "Force Thru Adapter De-embed",
+            Groups: new[] { "Measurement Class Calibration", "Noise" },
+            Order: 63
+        )]
         public bool ForceThruAdapter { get; set; }
 
         [EnabledIf("IsNoiseEnabled", true, HideIfDisabled = true)]
-        [Display("Force Power Sensor Adapter De-embed", Groups: new[] { "Measurement Class Calibration", "Noise" }, Order: 64)]
+        [Display(
+            "Force Power Sensor Adapter De-embed",
+            Groups: new[] { "Measurement Class Calibration", "Noise" },
+            Order: 64
+        )]
         public bool ForcePowerSensor { get; set; }
 
-
         private DUTConnectorsEnum _Port1;
-        [Display("Port 1", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 100)]
+
+        [Display(
+            "Port 1",
+            Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" },
+            Order: 100
+        )]
         public DUTConnectorsEnum Port1
         {
-            get
-            {
-                return _Port1;
-            }
+            get { return _Port1; }
             set
             {
                 _Port1 = value;
@@ -213,13 +279,15 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private DUTConnectorsEnum _Port2;
-        [Display("Port 2", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 101)]
+
+        [Display(
+            "Port 2",
+            Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" },
+            Order: 101
+        )]
         public DUTConnectorsEnum Port2
         {
-            get
-            {
-                return _Port2;
-            }
+            get { return _Port2; }
             set
             {
                 _Port2 = value;
@@ -234,15 +302,16 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         private DUTConnectorsEnum _Port3;
-        [Display("Port 3", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 102)]
+
+        [Display(
+            "Port 3",
+            Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" },
+            Order: 102
+        )]
         public DUTConnectorsEnum Port3
         {
-            get
-            {
-                return _Port3;
-            }
+            get { return _Port3; }
             set
             {
                 _Port3 = value;
@@ -258,13 +327,15 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private DUTConnectorsEnum _Port4;
-        [Display("Port 4", Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" }, Order: 103)]
+
+        [Display(
+            "Port 4",
+            Groups: new[] { "DUT Connectors and Cal Kits", "DUT Connectors" },
+            Order: 103
+        )]
         public DUTConnectorsEnum Port4
         {
-            get
-            {
-                return _Port4;
-            }
+            get { return _Port4; }
             set
             {
                 _Port4 = value;
@@ -281,10 +352,13 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool IsPort1CalKitEnabled { get; set; }
+
         [Browsable(false)]
         public bool IsPort2CalKitEnabled { get; set; }
+
         [Browsable(false)]
         public bool IsPort3CalKitEnabled { get; set; }
+
         [Browsable(false)]
         public bool IsPort4CalKitEnabled { get; set; }
 
@@ -294,7 +368,11 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(true)]
         [EnabledIf("IsPort1CalKitEnabled", true, HideIfDisabled = true)]
-        [Display("Query Port 1 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 110.1)]
+        [Display(
+            "Query Port 1 Cal Kits",
+            Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" },
+            Order: 110.1
+        )]
         public void QueryCalKitsPort1()
         {
             if (PNAX.IsConnected)
@@ -309,14 +387,17 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         [EnabledIf("IsPort2CalKitEnabled", true, HideIfDisabled = true)]
         [Display("Port 2", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 111)]
         public String Port2CalKit { get; set; }
 
         [Browsable(true)]
         [EnabledIf("IsPort2CalKitEnabled", true, HideIfDisabled = true)]
-        [Display("Query Port 2 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 111.1)]
+        [Display(
+            "Query Port 2 Cal Kits",
+            Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" },
+            Order: 111.1
+        )]
         public void QueryCalKitsPort2()
         {
             if (PNAX.IsConnected)
@@ -337,7 +418,11 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(true)]
         [EnabledIf("IsPort3CalKitEnabled", true, HideIfDisabled = true)]
-        [Display("Query Port 3 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 112.1)]
+        [Display(
+            "Query Port 3 Cal Kits",
+            Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" },
+            Order: 112.1
+        )]
         public void QueryCalKitsPort3()
         {
             if (PNAX.IsConnected)
@@ -358,7 +443,11 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(true)]
         [EnabledIf("IsPort4CalKitEnabled", true, HideIfDisabled = true)]
-        [Display("Query Port 4 Cal Kits", Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" }, Order: 113.1)]
+        [Display(
+            "Query Port 4 Cal Kits",
+            Groups: new[] { "DUT Connectors and Cal Kits", "Cal Kits" },
+            Order: 113.1
+        )]
         public void QueryCalKitsPort4()
         {
             if (PNAX.IsConnected)
@@ -373,18 +462,39 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
-        [Display("Show Pictures", Groups: new[] { "Picture" }, Description: "The dialog will include a picture if the environment supports it.", Order: 120, Collapsed: true)]
+        [Display(
+            "Show Pictures",
+            Groups: new[] { "Picture" },
+            Description: "The dialog will include a picture if the environment supports it.",
+            Order: 120,
+            Collapsed: true
+        )]
         public bool ShowPicture { get; set; }
 
-
-        [Display("Pictures", Groups: new[] { "Picture" }, Description: "List of Picture Source and Description", Order: 121, Collapsed: false)]
+        [Display(
+            "Pictures",
+            Groups: new[] { "Picture" },
+            Description: "List of Picture Source and Description",
+            Order: 121,
+            Collapsed: false
+        )]
         [EnabledIf(nameof(ShowPicture), HideIfDisabled = true)]
         public List<PictureDefinition> PictureList { get; set; }
 
         private bool _headlessMode = false;
-        [Display("Headless Mode", Groups: new[] { "Headless Mode" }, Description: "Settings to use in headless mode", Order: 122, Collapsed: false)]
-        public bool HeadlessMode { get => _headlessMode; set => _headlessMode = value; }
+
+        [Display(
+            "Headless Mode",
+            Groups: new[] { "Headless Mode" },
+            Description: "Settings to use in headless mode",
+            Order: 122,
+            Collapsed: false
+        )]
+        public bool HeadlessMode
+        {
+            get => _headlessMode;
+            set => _headlessMode = value;
+        }
 
         [Display("Automatically select Cal Kit", Groups: new[] { "Headless Mode" }, Order: 127)]
         [EnabledIf(nameof(HeadlessMode), HideIfDisabled = true)]
@@ -444,8 +554,10 @@ namespace OpenTap.Plugins.PNAX
             {
                 IsAnyCalEnabled = true;
 
-                if ((cal.ChannelType == ChannelTypeEnum.ScalarMixerConverter) ||
-                    (cal.ChannelType == ChannelTypeEnum.GainCompressionConverters))
+                if (
+                    (cal.ChannelType == ChannelTypeEnum.ScalarMixerConverter)
+                    || (cal.ChannelType == ChannelTypeEnum.GainCompressionConverters)
+                )
                 {
                     IsSplitCalEnabled = true;
                 }
@@ -453,13 +565,17 @@ namespace OpenTap.Plugins.PNAX
                 {
                     IsPhaseEnabled = true;
                 }
-                else if ((cal.ChannelType == ChannelTypeEnum.SweptIMD) ||
-                    (cal.ChannelType == ChannelTypeEnum.SweptIMDConverters))
+                else if (
+                    (cal.ChannelType == ChannelTypeEnum.SweptIMD)
+                    || (cal.ChannelType == ChannelTypeEnum.SweptIMDConverters)
+                )
                 {
                     IsIMDEnabled = true;
                 }
-                else if ((cal.ChannelType == ChannelTypeEnum.NoiseFigureColdSource) ||
-                    (cal.ChannelType == ChannelTypeEnum.NoiseFigureConverters))
+                else if (
+                    (cal.ChannelType == ChannelTypeEnum.NoiseFigureColdSource)
+                    || (cal.ChannelType == ChannelTypeEnum.NoiseFigureConverters)
+                )
                 {
                     IsNoiseEnabled = true;
                 }
@@ -488,7 +604,8 @@ namespace OpenTap.Plugins.PNAX
             {
                 PNAX.Open();
                 Log.Info("Querying Channels from Instrument");
-                List<CalibrateAllSelectedChannels> channelsFromInstrument = new List<CalibrateAllSelectedChannels>();
+                List<CalibrateAllSelectedChannels> channelsFromInstrument =
+                    new List<CalibrateAllSelectedChannels>();
 
                 // Query channels
                 List<int> Channels = PNAX.GetActiveChannels();
@@ -499,9 +616,12 @@ namespace OpenTap.Plugins.PNAX
                     String measName = PNAX.GetChannelType(ch);
 
                     // now build the list
-                    CalibrateAllSelectedChannels selectedChannel = new CalibrateAllSelectedChannels();
+                    CalibrateAllSelectedChannels selectedChannel =
+                        new CalibrateAllSelectedChannels();
                     selectedChannel.Channel = ch;
-                    selectedChannel.ChannelType = PNAX.ConvertStringToEnum<ChannelTypeEnum>(measName);
+                    selectedChannel.ChannelType = PNAX.ConvertStringToEnum<ChannelTypeEnum>(
+                        measName
+                    );
                     selectedChannel.Ports = new List<int>() { 1, 2 };
                     channelsFromInstrument.Add(selectedChannel);
                 }
@@ -519,7 +639,6 @@ namespace OpenTap.Plugins.PNAX
                 Log.Error("Cannot query channels!");
                 return;
             }
-
         }
 
         public CalAll()
@@ -621,7 +740,9 @@ namespace OpenTap.Plugins.PNAX
 
                     // Get Kits
                     string kits = PNAX.CalAllGetCalKits(CalChannel, Port1);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    string selectedKit = kits.Split(',')
+                        .FirstOrDefault(x => !x.Contains(defaultKit))
+                        .Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port1CalKit = selectedKit;
                     Log.Debug($"Port1 calkit set to: {selectedKit}");
@@ -633,7 +754,7 @@ namespace OpenTap.Plugins.PNAX
                     }
                     else
                     {
-                        // Looks like we don't have a valid ECAL for Port 1 - Fail 
+                        // Looks like we don't have a valid ECAL for Port 1 - Fail
                         Log.Info($"Could not find ECal for Port 1 connector type: {Port1}");
                         return Verdict.Fail;
                     }
@@ -648,7 +769,9 @@ namespace OpenTap.Plugins.PNAX
 
                     // Get Kits
                     string kits = PNAX.CalAllGetCalKits(CalChannel, Port2);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    string selectedKit = kits.Split(',')
+                        .FirstOrDefault(x => !x.Contains(defaultKit))
+                        .Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port2CalKit = selectedKit;
                     Log.Debug($"Port2 calkit set to: {selectedKit}");
@@ -660,7 +783,7 @@ namespace OpenTap.Plugins.PNAX
                     }
                     else
                     {
-                        // Looks like we don't have a valid ECAL for Port 2 - Fail 
+                        // Looks like we don't have a valid ECAL for Port 2 - Fail
                         Log.Info($"Could not find ECal for Port 2 connector type: {Port2}");
                         return Verdict.Fail;
                     }
@@ -675,7 +798,9 @@ namespace OpenTap.Plugins.PNAX
 
                     // Get Kits
                     string kits = PNAX.CalAllGetCalKits(CalChannel, Port3);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    string selectedKit = kits.Split(',')
+                        .FirstOrDefault(x => !x.Contains(defaultKit))
+                        .Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port3CalKit = selectedKit;
                     Log.Debug($"Port3 calkit set to: {selectedKit}");
@@ -687,7 +812,7 @@ namespace OpenTap.Plugins.PNAX
                     }
                     else
                     {
-                        // Looks like we don't have a valid ECAL for Port 3 - Fail 
+                        // Looks like we don't have a valid ECAL for Port 3 - Fail
                         Log.Info($"Could not find ECal for Port 3 connector type: {Port3}");
                         return Verdict.Fail;
                     }
@@ -702,7 +827,9 @@ namespace OpenTap.Plugins.PNAX
 
                     // Get Kits
                     string kits = PNAX.CalAllGetCalKits(CalChannel, Port4);
-                    string selectedKit = kits.Split(',').FirstOrDefault(x => !x.Contains(defaultKit)).Trim(' ', '"');
+                    string selectedKit = kits.Split(',')
+                        .FirstOrDefault(x => !x.Contains(defaultKit))
+                        .Trim(' ', '"');
                     selectedKit = selectedKit == "" ? defaultKit : selectedKit;
                     Port4CalKit = selectedKit;
                     Log.Debug($"Port4 calkit set to: {selectedKit}");
@@ -714,7 +841,7 @@ namespace OpenTap.Plugins.PNAX
                     }
                     else
                     {
-                        // Looks like we don't have a valid ECAL for Port 4 - Fail 
+                        // Looks like we don't have a valid ECAL for Port 4 - Fail
                         Log.Info($"Could not find ECal for Port 4 connector type: {Port4}");
                         return Verdict.Fail;
                     }
@@ -723,7 +850,10 @@ namespace OpenTap.Plugins.PNAX
                 // enable Power Calibration if appropriate
                 if (IsPowerCalEnabled)
                 {
-                    PNAX.CalAllSetProperty("Include Power Calibration", HeadlessPowerCalibration.ToString());
+                    PNAX.CalAllSetProperty(
+                        "Include Power Calibration",
+                        HeadlessPowerCalibration.ToString()
+                    );
                     Log.Debug($"Power calibration set");
                 }
                 return Verdict.Pass;
@@ -779,12 +909,17 @@ namespace OpenTap.Plugins.PNAX
 
                     PNAX.PowerMeterSettlingTolerance(PowerMeterSettlingTolerance);
                     PNAX.PowerMeterSettlingMaxReadings(PowerMeterSettlingReadings);
-
                 }
-                String IndependentCalibrationChannelsString = String.Join(",", IndependentCalibrationChannels);
+                String IndependentCalibrationChannelsString = String.Join(
+                    ",",
+                    IndependentCalibrationChannels
+                );
                 if (IndependentCalibrationChannelsString != "")
                 {
-                    PNAX.CalAllSetProperty("Independent Calibration Channels", IndependentCalibrationChannelsString);
+                    PNAX.CalAllSetProperty(
+                        "Independent Calibration Channels",
+                        IndependentCalibrationChannelsString
+                    );
                 }
             }
             if (IsSplitCalEnabled)
@@ -815,7 +950,10 @@ namespace OpenTap.Plugins.PNAX
                 String charMethodScpi = Scpi.Format("{0}", EnablePhaseCorrection);
                 PNAX.CalAllSetProperty("Receiver Characterization Method", charMethodScpi);
                 PNAX.CalAllSetProperty("Force Thru Adapter De-embed", ForceThruAdapter.ToString());
-                PNAX.CalAllSetProperty("Force Power Sensor Adapter De-embed", ForcePowerSensor.ToString());
+                PNAX.CalAllSetProperty(
+                    "Force Power Sensor Adapter De-embed",
+                    ForcePowerSensor.ToString()
+                );
             }
 
             int CalChannel = PNAX.CalAllGuidedChannelNumber();
@@ -826,17 +964,23 @@ namespace OpenTap.Plugins.PNAX
             String strDutPort4 = Scpi.Format("{0}", Port4);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 1, strDutPort1);
             PNAX.CalAllSelectDutConnectorType(CalChannel, 2, strDutPort2);
-            if (strDutPort3 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
-            if (strDutPort4 != "Not used") PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
+            if (strDutPort3 != "Not used")
+                PNAX.CalAllSelectDutConnectorType(CalChannel, 3, strDutPort3);
+            if (strDutPort4 != "Not used")
+                PNAX.CalAllSelectDutConnectorType(CalChannel, 4, strDutPort4);
 
             String strPort1CalKit = Scpi.Format("{0}", Port1CalKit);
             String strPort2CalKit = Scpi.Format("{0}", Port2CalKit);
             String strPort3CalKit = Scpi.Format("{0}", Port3CalKit);
             String strPort4CalKit = Scpi.Format("{0}", Port4CalKit);
-            if (strDutPort1 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 1, Port1CalKit);
-            if (strDutPort2 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 2, Port2CalKit);
-            if (strDutPort3 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 3, Port3CalKit);
-            if (strDutPort4 != "Not used") PNAX.CalAllSelectCalKit(CalChannel, 4, Port4CalKit);
+            if (strDutPort1 != "Not used")
+                PNAX.CalAllSelectCalKit(CalChannel, 1, Port1CalKit);
+            if (strDutPort2 != "Not used")
+                PNAX.CalAllSelectCalKit(CalChannel, 2, Port2CalKit);
+            if (strDutPort3 != "Not used")
+                PNAX.CalAllSelectCalKit(CalChannel, 3, Port3CalKit);
+            if (strDutPort4 != "Not used")
+                PNAX.CalAllSelectCalKit(CalChannel, 4, Port4CalKit);
 
             if (IsAnyCalEnabled)
             {
@@ -859,7 +1003,9 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PictureList.Count != CalSteps)
                 {
-                    Log.Error("The number of defined images do not match the number of steps in calibration, make sure the images match the requested calibration");
+                    Log.Error(
+                        "The number of defined images do not match the number of steps in calibration, make sure the images match the requested calibration"
+                    );
                     UpgradeVerdict(Verdict.Error);
                     return;
                 }
@@ -871,7 +1017,10 @@ namespace OpenTap.Plugins.PNAX
 
                 Log.Info($"Step {CalStep}: {StepDescription}");
 
-                CalStepDialog dialog = new CalStepDialog(CalStep, CalSteps, StepDescription) { Picture = null };
+                CalStepDialog dialog = new CalStepDialog(CalStep, CalSteps, StepDescription)
+                {
+                    Picture = null,
+                };
 
                 if (ShowPicture)
                 {
@@ -911,7 +1060,8 @@ namespace OpenTap.Plugins.PNAX
     public enum WaitForInputResult
     {
         // The number assigned, determines the order in which the buttons are shown in the dialog.
-        Cancel = 2, Ok = 1
+        Cancel = 2,
+        Ok = 1,
     }
 
     class CalStepDialog : IDisplayAnnotation
@@ -925,8 +1075,10 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public int StepNumber { get; set; }
+
         [Browsable(false)]
         public int TotalSteps { get; set; }
+
         [Browsable(false)]
         public String StepDescription { get; set; }
 
@@ -939,12 +1091,18 @@ namespace OpenTap.Plugins.PNAX
         public Picture Picture { get; set; }
 
         // Name is handled specially to create the title of the dialog window.
-        public string Name { get { return "Step " + StepNumber + " of " + TotalSteps; } }
+        public string Name
+        {
+            get { return "Step " + StepNumber + " of " + TotalSteps; }
+        }
 
         [Layout(LayoutMode.FullRow, rowHeight: 2)]
         [Browsable(true)] // Show it event though it is read-only.
         [Display("Message", Order: 1)]
-        public string Message { get { return StepDescription; } }
+        public string Message
+        {
+            get { return StepDescription; }
+        }
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
         [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
@@ -974,19 +1132,19 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public String _AvailableKits { get; set; }
 
-        public string Name { get { return "Select Cal Kit"; } }
-
+        public string Name
+        {
+            get { return "Select Cal Kit"; }
+        }
 
         //Collection of ports
         private ReadOnlyCollection<String> _CalKits;
+
         [Layout(LayoutMode.FullRow)] // Set the layout of the property to fill the entire row.
         [Browsable(false)] // Show it event though it is read-only.
         public ReadOnlyCollection<String> CalKits
         {
-            get
-            {
-                return _CalKits;
-            }
+            get { return _CalKits; }
             set
             {
                 _CalKits = value;
@@ -997,7 +1155,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Selected Value", "Select the cal kit from the list of available values")]
         [AvailableValues(nameof(CalKits))]
         public string SelectedValue { get; set; }
-
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
         [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
@@ -1014,7 +1171,12 @@ namespace OpenTap.Plugins.PNAX
 
     class SelectConnectorTypeDialog : IDisplayAnnotation
     {
-        public SelectConnectorTypeDialog(DUTConnectorsEnum Port1Input, DUTConnectorsEnum Port2Input, DUTConnectorsEnum Port3Input, DUTConnectorsEnum Port4Input)
+        public SelectConnectorTypeDialog(
+            DUTConnectorsEnum Port1Input,
+            DUTConnectorsEnum Port2Input,
+            DUTConnectorsEnum Port3Input,
+            DUTConnectorsEnum Port4Input
+        )
         {
             Port1 = Port1Input;
             Port2 = Port2Input;
@@ -1022,10 +1184,10 @@ namespace OpenTap.Plugins.PNAX
             Port4 = Port4Input;
         }
 
-
-        public string Name { get { return "Select Connector Types"; } }
-
-
+        public string Name
+        {
+            get { return "Select Connector Types"; }
+        }
 
         [Display("Port 1 Connector", "Select the connector type for Port 1")]
         public DUTConnectorsEnum Port1 { get; set; }
@@ -1038,7 +1200,6 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Port 4 Connector", "Select the connector type for Port 4")]
         public DUTConnectorsEnum Port4 { get; set; }
-
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
         [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.
@@ -1064,12 +1225,18 @@ namespace OpenTap.Plugins.PNAX
         public String StepDescription { get; set; }
 
         // Name is handled specially to create the title of the dialog window.
-        public string Name { get { return "Error selecting Connector Type and Calkit"; } }
+        public string Name
+        {
+            get { return "Error selecting Connector Type and Calkit"; }
+        }
 
         [Layout(LayoutMode.FullRow, rowHeight: 2)]
         [Browsable(true)] // Show it event though it is read-only.
         [Display("Message", Order: 1)]
-        public string Message { get { return StepDescription; } }
+        public string Message
+        {
+            get { return StepDescription; }
+        }
 
         [Layout(LayoutMode.FloatBottom | LayoutMode.FullRow)] // Show the button selection at the bottom of the window.
         [Submit] // When the button is clicked the result is 'submitted', so the dialog is closed.

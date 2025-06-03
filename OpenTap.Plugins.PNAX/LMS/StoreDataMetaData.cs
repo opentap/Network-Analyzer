@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Trace Data - Meta Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends Meta data to trace.")]
+    [Display(
+        "Store Trace Data - Meta Data",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Appends Meta data to trace."
+    )]
     [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDataMetaData : TestStep
     {
@@ -31,8 +35,6 @@ namespace OpenTap.Plugins.PNAX.LMS
         public override void Run()
         {
             List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
-
-
 
             // if MetaData available
             if ((MetaData.Property != null) && (MetaData.Value.Count > 1))
@@ -57,8 +59,6 @@ namespace OpenTap.Plugins.PNAX.LMS
                     Log.Info("Adding metadata: " + x.GetMetaData());
                 }
             }
-
-
 
             UpgradeVerdict(Verdict.Pass);
         }

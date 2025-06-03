@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <!-- We are debugging using NET Framework, but builds to Netstandard in release mode to ensure cross platform compatibility -->
@@ -10,37 +9,36 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OpenTapPackageDefinitionPath>package.xml</OpenTapPackageDefinitionPath>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <!-- We are setting TargetFramework in debug configuration, otherwise Visual Studio tries to attach a .NET Core debugger. That will not work, because the program we open is a .NET Framework executable -->
     <TargetFramework>net472</TargetFramework>
     <CreateOpenTapPackage>false</CreateOpenTapPackage>
   </PropertyGroup>
-
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <!-- Developer's System is needed to debug in 'Editor' -->
     <AdditionalOpenTapPackage Include="Developer's System" Version="9" />
-	  <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
+    <!--<AdditionalOpenTapPackage Include="Developer's System CE" />-->
   </ItemGroup>
-
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <CreateOpenTapPackage>true</CreateOpenTapPackage>
   </PropertyGroup>
-
   <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(KS8500_REPO_TOKEN)' != ''">
-    <OpenTapPackageReference Include="Sign" Version="$(SIGN_VERSION)" Reference="False" Repository="https://test-automation.pw.keysight.com/api/packages" Token="$(KS8500_REPO_TOKEN)" />
+    <OpenTapPackageReference
+      Include="Sign"
+      Version="$(SIGN_VERSION)"
+      Reference="False"
+      Repository="https://test-automation.pw.keysight.com/api/packages"
+      Token="$(KS8500_REPO_TOKEN)"
+    />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="General\GeneralFrequencyBaseStep.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="OpenTAP" Version="9.27.1" />
-	  <OpenTapPackageReference Include="OpenTAP" />
+    <OpenTapPackageReference Include="OpenTAP" />
   </ItemGroup>
-
-	<ItemGroup>
+  <ItemGroup>
     <None Update="Examples\AE6962A-HFM-Plug.s2p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -117,11 +115,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="General\Differential IQ\" />
     <Folder Include="General\Noise Figure Cold Source\" />
     <Folder Include="Acquisition\" />
   </ItemGroup>
-
 </Project>

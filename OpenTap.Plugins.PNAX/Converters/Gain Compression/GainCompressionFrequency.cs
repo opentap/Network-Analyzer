@@ -4,21 +4,26 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
-    [Display("Gain Compression Frequency", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Gain Compression Frequency",
+        Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" },
+        Description: "Insert a description here"
+    )]
     public class GainCompressionFrequency : FrequencyBaseStep
     {
         #region Settings
         private SweepTypeEnum _sweepType;
+
         [Display("Sweep Type", Order: 1)]
         public SweepTypeEnum SweepType
         {
@@ -36,13 +41,11 @@ namespace OpenTap.Plugins.PNAX
         public DataAcquisitionModeEnum DataAcquisitionMode { get; set; }
 
         private int _SweepSettingsNumberOfPoints;
+
         [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
         public override int SweepSettingsNumberOfPoints
         {
-            get
-            {
-                return _SweepSettingsNumberOfPoints;
-            }
+            get { return _SweepSettingsNumberOfPoints; }
             set
             {
                 _SweepSettingsNumberOfPoints = value;
@@ -60,7 +63,6 @@ namespace OpenTap.Plugins.PNAX
                 {
                     Log.Debug("can't find parent yet! ex: " + ex.Message);
                 }
-
             }
         }
 

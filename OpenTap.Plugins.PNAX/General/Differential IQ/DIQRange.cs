@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(DIQFrequencyRange))]
-    [Display("DIQ Range", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
+    [Display(
+        "DIQ Range",
+        Groups: new[] { "Network Analyzer", "General", "Differential I/Q" },
+        Description: "Insert a description here"
+    )]
     public class DIQRange : PNABaseStep
     {
         #region Settings
@@ -30,6 +34,7 @@ namespace OpenTap.Plugins.PNAX
         public string RangeName { get; set; }
 
         private int _Range;
+
         [Display("Range", Group: "Settings", Order: 21)]
         public int Range
         {
@@ -47,10 +52,7 @@ namespace OpenTap.Plugins.PNAX
                     IsCouplingSectionEnabled = false;
                 }
             }
-            get
-            {
-                return _Range;
-            }
+            get { return _Range; }
         }
 
         [EnabledIf("Couple", false, HideIfDisabled = false)]

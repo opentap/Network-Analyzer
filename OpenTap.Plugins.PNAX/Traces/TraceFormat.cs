@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
-using OpenTap.Plugins.PNAX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
+using OpenTap.Plugins.PNAX;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
-    [Display("TraceFormat", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Insert a description here")]
+    [Display(
+        "TraceFormat",
+        Groups: new[] { "Network Analyzer", "Trace" },
+        Description: "Insert a description here"
+    )]
     public class TraceFormat : PNABaseStep
     {
         #region Settings

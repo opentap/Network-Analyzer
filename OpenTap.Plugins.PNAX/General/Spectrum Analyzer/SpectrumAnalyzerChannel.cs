@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
-    [Display("Spectrum Analyzer Channel", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display(
+        "Spectrum Analyzer Channel",
+        Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" },
+        Description: "Insert a description here"
+    )]
     public class SpectrumAnalyzerChannel : PNABaseStep
     {
         #region Settings
@@ -26,20 +30,32 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             // SA Setup
             SASetup saSetup = new SASetup { IsControlledByParent = true, Channel = this.Channel };
-            SASource saSource = new SASource { IsControlledByParent = true, Channel = this.Channel };
-            SANewTrace saNewTrace = new SANewTrace { IsControlledByParent = true, Channel = this.Channel };
+            SASource saSource = new SASource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            SANewTrace saNewTrace = new SANewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
 
             this.ChildTestSteps.Add(saSetup);
             this.ChildTestSteps.Add(saSource);
             this.ChildTestSteps.Add(saNewTrace);
-
         }
 
         [Browsable(true)]
         [Display("Add Advanced Data", Groups: new[] { "Advanced" }, Order: 30)]
         public void AddAdvancedData()
         {
-            SAData sAData = new SAData() { IsControlledByParent = true, Channel = this.Channel, PNAX = this.PNAX };
+            SAData sAData = new SAData()
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                PNAX = this.PNAX,
+            };
             this.ChildTestSteps.Add(sAData);
         }
 
@@ -53,7 +69,9 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_B_1\',\'Spectrum Analyzer\',\'B\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_B_1\',\'Spectrum Analyzer\',\'B\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

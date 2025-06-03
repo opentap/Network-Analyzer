@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -40,9 +40,11 @@ namespace OpenTap.Plugins.PNAX
         Scs21,
         Scd22,
         Scc22,
+
         [Display("Sds21/Scs21")]
         [Scpi("Sds21/Scs21")]
         Sds21Scs21,
+
         [Display("Ssd12/Ssc12")]
         [Scpi("Ssd12/Ssc12")]
         Ssd12Ssc12,
@@ -87,29 +89,29 @@ namespace OpenTap.Plugins.PNAX
         b43,
         b44,
         AuxLn11,
-        AuxLn21
+        AuxLn21,
     }
 
     //[AllowAsChildIn(typeof(StandardNewTrace))]
-    [Display("Standard Single Trace", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
+    [Display(
+        "Standard Single Trace",
+        Groups: new[] { "Network Analyzer", "General", "Standard" },
+        Description: "Insert a description here"
+    )]
     public class StandardSingleTrace : SingleTraceBaseStep
     {
-
         private StandardTraceEnum _Meas;
 
         [EnabledIf(nameof(CustomTraceMeas), false, HideIfDisabled = true)]
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11.1)]
         public StandardTraceEnum Meas
         {
-            get
-            {
-                return _Meas;
-            }
+            get { return _Meas; }
             set
             {
                 _Meas = value;
                 string scpi = Scpi.Format("{0}", value);
-                measEnumName = scpi;    // value.ToString();
+                measEnumName = scpi; // value.ToString();
                 UpdateTestStepName();
             }
         }
@@ -133,6 +135,5 @@ namespace OpenTap.Plugins.PNAX
             trTitle.Title = title;
             this.ChildTestSteps.Add(trTitle);
         }
-
     }
 }

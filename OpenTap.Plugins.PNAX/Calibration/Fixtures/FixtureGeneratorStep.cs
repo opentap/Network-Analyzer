@@ -4,17 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Fixture Generator", Groups: new[] { "Network Analyzer", "Calibration", "Fixtures" }, Description: "This feature allow you to mathematically add (embed) or remove (de-embed) circuits to, or from, your measurements.")]
+    [Display(
+        "Fixture Generator",
+        Groups: new[] { "Network Analyzer", "Calibration", "Fixtures" },
+        Description: "This feature allow you to mathematically add (embed) or remove (de-embed) circuits to, or from, your measurements."
+    )]
     public class FixtureGeneratorStep : TestStep
     {
         #region Settings
@@ -25,7 +29,12 @@ namespace OpenTap.Plugins.PNAX
         public bool AutoSelectChannels { get; set; }
 
         [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
-        [Display("Channel", Group: "Instrument", Description: "Choose which channel to grab data from.", Order: 10)]
+        [Display(
+            "Channel",
+            Group: "Instrument",
+            Description: "Choose which channel to grab data from.",
+            Order: 10
+        )]
         public List<int> channels { get; set; }
 
         [Display("Apply Fixtures", Group: "User Block", Order: 20)]
@@ -44,7 +53,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("Fixture/Adapter SnP File", Group: "User Block", Order: 24)]
         public string FixtureAdapterSnP { get; set; }
 
-        [Display("Power Compensation", Group: "User Block", Order: 25, Description: "When the Cal Set contains a power correction array for the fixture port, that array will be compensated for the fixture loss.")]
+        [Display(
+            "Power Compensation",
+            Group: "User Block",
+            Order: 25,
+            Description: "When the Cal Set contains a power correction array for the fixture port, that array will be compensated for the fixture loss."
+        )]
         public bool CompPwr { get; set; }
 
         [Display("Enable Extrapolation", Group: "User Block", Order: 26)]
@@ -65,12 +79,12 @@ namespace OpenTap.Plugins.PNAX
             Extrapolation = false;
 
             Rules.Add(IsFileValid, "Must be a valid file", "FixtureAdapterSnP");
-
         }
 
         private bool IsFileValid()
         {
-            if (string.IsNullOrEmpty(FixtureAdapterSnP)) return false;
+            if (string.IsNullOrEmpty(FixtureAdapterSnP))
+                return false;
 
             return File.Exists(FixtureAdapterSnP);
         }

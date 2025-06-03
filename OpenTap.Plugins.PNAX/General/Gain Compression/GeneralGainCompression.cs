@@ -4,20 +4,23 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [Display("Compression", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
+    [Display(
+        "Compression",
+        Groups: new[] { "Network Analyzer", "General", "Gain Compression" },
+        Description: "Insert a description here"
+    )]
     public class GeneralGainCompression : CompressionBaseStep
     {
-
         #region Settings
 
         [EnabledIf("SMARTSweepSafeMode", true, HideIfDisabled = true)]
@@ -44,6 +47,5 @@ namespace OpenTap.Plugins.PNAX
             // Max DC Power
             PNAX.SetSMARTSweepSafeModeMaxDCPower(Channel, SMARTSweepMaxDCPower);
         }
-
     }
 }

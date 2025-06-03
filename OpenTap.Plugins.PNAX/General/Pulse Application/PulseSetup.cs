@@ -4,24 +4,27 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(StandardChannel))]
-    [Display("Pulse Setup", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
+    [Display(
+        "Pulse Setup",
+        Groups: new[] { "Network Analyzer", "General" },
+        Description: "Insert a description here"
+    )]
     public class PulseSetup : PNABaseStep
     {
         #region Settings
         [Browsable(false)]
         public bool IsSettingReadOnly { get; set; } = false;
-
 
         [Display("Pulse Mode", Group: "Pulse Measurement", Order: 21)]
         public PulseModeEnumtype PulseMode { get; set; }
@@ -31,14 +34,12 @@ namespace OpenTap.Plugins.PNAX
         public double PulseWidthPrimary { get; set; }
 
         private double _PulsePeriodPrimary;
+
         [Display("Pulse Period", Group: "Pulse Timing", Order: 31)]
         [Unit("sec", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double PulsePeriodPrimary
         {
-            get
-            {
-                return _PulsePeriodPrimary;
-            }
+            get { return _PulsePeriodPrimary; }
             set
             {
                 _PulsePeriodPrimary = value;
@@ -52,16 +53,13 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         private double _PulseFrequencyPrimary;
+
         [Display("Pulse Frequency", Group: "Pulse Timing", Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double PulseFrequencyPrimary
         {
-            get
-            {
-                return _PulseFrequencyPrimary;
-            }
+            get { return _PulseFrequencyPrimary; }
             set
             {
                 _PulseFrequencyPrimary = value;
@@ -75,17 +73,27 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
-
-        [Display("Autoselect Pulse Detection Method", Groups: new[] { "Properties", "Pulse Detection Method" }, Order: 41)]
+        [Display(
+            "Autoselect Pulse Detection Method",
+            Groups: new[] { "Properties", "Pulse Detection Method" },
+            Order: 41
+        )]
         public bool PulseDetectionMethodAuto { get; set; }
 
         [EnabledIf("PulseDetectionMethodAuto", false, HideIfDisabled = false)]
-        [Display("Autoselect Pulse Detection Method", Groups: new[] { "Properties", "Pulse Detection Method" }, Order: 42)]
+        [Display(
+            "Autoselect Pulse Detection Method",
+            Groups: new[] { "Properties", "Pulse Detection Method" },
+            Order: 42
+        )]
         public PulseDetectionMethodEnumtype PulseDetectionMethod { get; set; }
 
         [EnabledIf("PulseDetectionMethodAuto", false, HideIfDisabled = false)]
-        [EnabledIf("PulseDetectionMethod", PulseDetectionMethodEnumtype.Narrowband, HideIfDisabled = false)]
+        [EnabledIf(
+            "PulseDetectionMethod",
+            PulseDetectionMethodEnumtype.Narrowband,
+            HideIfDisabled = false
+        )]
         [Display("SW Gating", Groups: new[] { "Properties", "Pulse Detection Method" }, Order: 43)]
         public bool PulseDetectionMethodSWGating { get; set; }
 
@@ -97,9 +105,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("IF Path...", Groups: new[] { "Properties" }, Order: 44.1)]
         public List<IFPathDefinition> IFPathList { get; set; }
 
-
         [EnabledIf("PulseDetectionMethodAuto", false, HideIfDisabled = false)]
-        [EnabledIf("PulseDetectionMethod", PulseDetectionMethodEnumtype.Narrowband, HideIfDisabled = false)]
+        [EnabledIf(
+            "PulseDetectionMethod",
+            PulseDetectionMethodEnumtype.Narrowband,
+            HideIfDisabled = false
+        )]
         [Display("Optimize Pulse Frequency", Groups: new[] { "Properties" }, Order: 45)]
         public bool OptimizePulseFrequency { get; set; }
 
@@ -130,13 +141,11 @@ namespace OpenTap.Plugins.PNAX
         public bool PulseGeneratorsAuto { get; set; }
 
         private PulseTriggerEnumtype _PulseTriggerType;
+
         [Display("Trigger Source", Groups: new[] { "Pulse Trigger" }, Order: 60)]
         public PulseTriggerEnumtype PulseTriggerType
         {
-            get
-            {
-                return _PulseTriggerType;
-            }
+            get { return _PulseTriggerType; }
             set
             {
                 _PulseTriggerType = value;
@@ -150,19 +159,20 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         [EnabledIf("PulseTriggerType", PulseTriggerEnumtype.External, HideIfDisabled = false)]
         [Display("Trigger Level/Edge", Groups: new[] { "Pulse Trigger" }, Order: 61)]
         public PulseTriggerLevelEdgeEnumtype pulseTriggerLevelEdge { get; set; }
 
         private bool _SynchADCUsingPulseTrigger;
-        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulse Trigger" }, Order: 62)]
+
+        [Display(
+            "Synchronize ADCs Using Pulse Trigger",
+            Groups: new[] { "Pulse Trigger" },
+            Order: 62
+        )]
         public bool SynchADCUsingPulseTrigger
         {
-            get
-            {
-                return _SynchADCUsingPulseTrigger;
-            }
+            get { return _SynchADCUsingPulseTrigger; }
             set
             {
                 _SynchADCUsingPulseTrigger = value;
@@ -181,7 +191,14 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
         private List<string> _IFPathListOfAvailableValues;
-        [Display("IF Path Values", "Editable list for Pulse Gen values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+
+        [Display(
+            "IF Path Values",
+            "Editable list for Pulse Gen values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 101,
+            Collapsed: true
+        )]
         public List<string> IFPathListOfAvailableValues
         {
             get { return _IFPathListOfAvailableValues; }
@@ -193,7 +210,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private static List<string> _IFInputListOfAvailableValues;
-        [Display("IF Input Values", "Editable list for Pulse Gen values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+
+        [Display(
+            "IF Input Values",
+            "Editable list for Pulse Gen values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 101,
+            Collapsed: true
+        )]
         public static List<string> IFInputListOfAvailableValues
         {
             get { return _IFInputListOfAvailableValues; }
@@ -204,13 +228,26 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         public PulseSetup()
         {
-            _IFPathListOfAvailableValues = new List<string> { "A", "B", "C", "D", "R1", "R2", "R3", "R4" };
+            _IFPathListOfAvailableValues = new List<string>
+            {
+                "A",
+                "B",
+                "C",
+                "D",
+                "R1",
+                "R2",
+                "R3",
+                "R4",
+            };
             _IFInputListOfAvailableValues = new List<string> { "Internal", "External" };
 
-            PulseGenerators pulseGenerators = new PulseGenerators { IsControlledByParent = true, Channel = this.Channel };
+            PulseGenerators pulseGenerators = new PulseGenerators
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
             this.ChildTestSteps.Add(pulseGenerators);
 
             PulseMode = PulseModeEnumtype.Off;
@@ -237,7 +274,6 @@ namespace OpenTap.Plugins.PNAX
             pulseTriggerLevelEdge = PulseTriggerLevelEdgeEnumtype.HighLevel;
             SynchADCUsingPulseTrigger = false;
             ADCTriggerDelay = 250e-3;
-
         }
 
         public override void Run()
@@ -297,9 +333,6 @@ namespace OpenTap.Plugins.PNAX
             PNAX.PulseGeneratorSyncADCs(Channel, SynchADCUsingPulseTrigger);
             PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
 
-
-
-
             // Update Sweep Time on UI
             SweepTime = PNAX.PulseSweepTimeQ(Channel);
             // Update Measurement Timing on UI
@@ -328,7 +361,6 @@ namespace OpenTap.Plugins.PNAX
                     retVal.Add(($"PulseDetectionMethodSWGating", PulseDetectionMethodSWGating));
                 }
                 retVal.Add(($"OptimizePulseFrequency", OptimizePulseFrequency));
-
             }
             retVal.Add(($"IfPathGainAndLossAuto", IfPathGainAndLossAuto));
             retVal.Add(($"ProfileSweepTimeAuto", ProfileSweepTimeAuto));
@@ -341,7 +373,6 @@ namespace OpenTap.Plugins.PNAX
             retVal.Add(($"SynchADCUsingPulseTrigger", SynchADCUsingPulseTrigger));
             retVal.Add(($"Pulse0GeneratorDelay", ADCTriggerDelay));
             retVal.Add(($"SweepTime", SweepTime));
-
 
             foreach (var a in MetaData)
             {
@@ -366,7 +397,6 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
-
     }
 
     public class IFPathDefinition
@@ -380,11 +410,11 @@ namespace OpenTap.Plugins.PNAX
         public String IFInput { get; set; }
 
         public List<string> IFInputValues = PulseSetup.IFInputListOfAvailableValues;
+
         public IFPathDefinition()
         {
             PathName = "A";
             IFInput = "Internal";
         }
     }
-
 }

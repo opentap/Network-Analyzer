@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(DIQChannel))]
     //[AllowChildrenOfType(typeof(DIQSource))]
-    [Display("DIQ Sources", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
+    [Display(
+        "DIQ Sources",
+        Groups: new[] { "Network Analyzer", "General", "Differential I/Q" },
+        Description: "Insert a description here"
+    )]
     public class DIQSources : PNABaseStep
     {
         #region Settings
@@ -23,6 +27,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsRangesVisible { get; set; } = false;
 
         private int _NumberOfRanges;
+
         [EnabledIf("IsRangesVisible", true, HideIfDisabled = true)]
         public int NumberOfRanges
         {
@@ -31,10 +36,7 @@ namespace OpenTap.Plugins.PNAX
                 _NumberOfRanges = value;
                 UpdateChildStepRanges();
             }
-            get
-            {
-                return _NumberOfRanges;
-            }
+            get { return _NumberOfRanges; }
         }
 
         [Display("Power On (All Channels)", Group: "Power", Order: 20)]
@@ -45,7 +47,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Source", Group: "Sources", Order: 40)]
         public void AddSource()
         {
-            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Source" };
+            DIQSource newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Source",
+            };
             this.ChildTestSteps.Add(newSource);
         }
 
@@ -65,10 +72,20 @@ namespace OpenTap.Plugins.PNAX
             PowerOnAllChannels = true;
 
             // Add Default Sources
-            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 1" };
+            DIQSource newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Port 1",
+            };
             newSource.SourceState = DIQPortStateEnumtype.Auto;
             this.ChildTestSteps.Add(newSource);
-            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 2" };
+            newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Port 2",
+            };
             newSource.SourceState = DIQPortStateEnumtype.Off;
             newSource.ReferencedTo = "Port 4";
             newSource.rCont = "a2";
@@ -76,7 +93,12 @@ namespace OpenTap.Plugins.PNAX
             newSource.TRec = "b2";
             newSource.RRec = "a2";
             this.ChildTestSteps.Add(newSource);
-            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 3" };
+            newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Port 3",
+            };
             newSource.SourceState = DIQPortStateEnumtype.Off;
             newSource.ReferencedTo = "Port 1";
             newSource.rCont = "a3";
@@ -84,7 +106,12 @@ namespace OpenTap.Plugins.PNAX
             newSource.TRec = "b3";
             newSource.RRec = "a3";
             this.ChildTestSteps.Add(newSource);
-            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 4" };
+            newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Port 4",
+            };
             newSource.SourceState = DIQPortStateEnumtype.Off;
             newSource.ReferencedTo = "Port 2";
             newSource.rCont = "a4";
@@ -92,7 +119,12 @@ namespace OpenTap.Plugins.PNAX
             newSource.TRec = "b4";
             newSource.RRec = "a4";
             this.ChildTestSteps.Add(newSource);
-            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Port 1 Src2" };
+            newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Port 1 Src2",
+            };
             newSource.SourceState = DIQPortStateEnumtype.Off;
             newSource.ReferencedTo = "Source3";
             newSource.rCont = "a1";
@@ -100,7 +132,12 @@ namespace OpenTap.Plugins.PNAX
             newSource.TRec = "b1";
             newSource.RRec = "a1";
             this.ChildTestSteps.Add(newSource);
-            newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Source3" };
+            newSource = new DIQSource
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                SourceName = "Source3",
+            };
             newSource.SourceState = DIQPortStateEnumtype.Off;
             newSource.ReferencedTo = "Port 4";
             newSource.rCont = "a1";
@@ -108,7 +145,6 @@ namespace OpenTap.Plugins.PNAX
             newSource.TRec = "b4";
             newSource.RRec = "a4";
             this.ChildTestSteps.Add(newSource);
-
         }
 
         public override void Run()

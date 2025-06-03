@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -213,8 +213,6 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:GCSetup:SAFE:DC:MLIMit {level}");
         }
 
-
-
         public bool Get2DSweepCompressionPointInterpolation(int Channel)
         {
             string retStr = ScpiQuery($"SENSe{Channel}:GCSetup:COMPression:INTerpolate?");
@@ -248,7 +246,10 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        public void SetCompressionEndOfSweepCondition(int Channel, EndOfSweepConditionEnum condition)
+        public void SetCompressionEndOfSweepCondition(
+            int Channel,
+            EndOfSweepConditionEnum condition
+        )
         {
             string cond = Scpi.Format("{0}", condition);
             ScpiCommand($"SENSe{Channel}:GCSetup:EOSoperation {cond}");
@@ -351,7 +352,6 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{Channel}:GCSetup:SWEep:POWer:POINts {power}");
         }
-
 
         #endregion
 

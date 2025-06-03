@@ -4,8 +4,6 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
-using OpenTap.Plugins.PNAX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,17 +11,28 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenTap;
+using OpenTap.Plugins.PNAX;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store SNP", Groups: new[] { "Network Analyzer", "Acquisition" }, Description: "Store SNP File")]
+    [Display(
+        "Store SNP",
+        Groups: new[] { "Network Analyzer", "Acquisition" },
+        Description: "Store SNP File"
+    )]
     public class StoreSnpAdvanced : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
+        [Display(
+            "Channel",
+            Description: "Choose which channel to grab data from.",
+            "Measurements",
+            Order: 10
+        )]
         public Input<int> Channel { get; set; }
 
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
@@ -35,7 +44,12 @@ namespace OpenTap.Plugins.PNAX.LMS
         [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
         public MacroString filename { get; set; }
 
-        [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
+        [Display(
+            "Enable Custom Path",
+            Groups: new[] { "File Name Details" },
+            Order: 31,
+            Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results"
+        )]
         public bool IsCustomPath { get; set; }
 
         [EnabledIf("IsCustomPath", true, HideIfDisabled = true)]
@@ -76,12 +90,20 @@ namespace OpenTap.Plugins.PNAX.LMS
 
             if (IsCustomPath)
             {
-                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + $".s{PortCount}p"); ;
+                dir = Path.Combine(
+                    CustomPath.Expand(PlanRun),
+                    filename.Expand(PlanRun) + $".s{PortCount}p"
+                );
+                ;
             }
             else
             {
                 String assemblyDir = AssemblyDirectory();
-                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + $".s{PortCount}p");
+                dir = Path.Combine(
+                    assemblyDir,
+                    "Results",
+                    filename.Expand(PlanRun) + $".s{PortCount}p"
+                );
             }
 
             PNAX.SaveSnP(Channel.Value, mnum.Value, Ports, dir);

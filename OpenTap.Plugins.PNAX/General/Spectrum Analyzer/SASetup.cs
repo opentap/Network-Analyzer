@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
@@ -17,11 +17,14 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
     {
         [Display("State", Order: 1)]
         public bool state { get; set; }
+
         [Display("Number of Points", Order: 2)]
         public int NumberOfPoints { get; set; }
+
         [Display("Start Frequency", Order: 3)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double StartFrequency { get; set; }
+
         [Display("Stop Frequency", Order: 4)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double StopFrequency { get; set; }
@@ -46,29 +49,35 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
     public enum SASegmentAttributes
     {
         None = 0,
+
         [Display("MT Ref")]
         MultiToneRef = 1,
+
         [Display("Vect Avg")]
         VectorAverage = 2,
+
         [Display("D. Threshold")]
         DataThreshold = 4,
+
         [Display("Video BW")]
-        VideoBandwidth = 8
+        VideoBandwidth = 8,
     }
 
     //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [Display("SA Setup", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display(
+        "SA Setup",
+        Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" },
+        Description: "Insert a description here"
+    )]
     public class SASetup : PNABaseStep
     {
         #region Settings
         private SASweepTypeEnum _SASweepType;
+
         [Display("Data Acquisition Mode", Order: 10)]
         public SASweepTypeEnum SASweepType
         {
-            get
-            {
-                return _SASweepType;
-            }
+            get { return _SASweepType; }
             set
             {
                 _SASweepType = value;
@@ -136,7 +145,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Display("Video Average Type", Group: "Processing", Order: 35)]
         public SAVideoAverageTypeEnum VideoAverageType { get; set; }
 
-
         [Display("A", Group: "Attenuators", Order: 40)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
         public double RcvrAAttenuator { get; set; }
@@ -161,23 +169,39 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         public SegmentDefinitionTypeEnum SASegmentDefinitionType { get; set; }
 
         [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
-        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.File, HideIfDisabled = false)]
+        [EnabledIf(
+            "SASegmentDefinitionType",
+            SegmentDefinitionTypeEnum.File,
+            HideIfDisabled = false
+        )]
         [Display("Segment Table File Name", Group: "Sweep Properties", Order: 31)]
         [FilePath]
         public string SASegmentTable { get; set; }
 
         [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
-        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [EnabledIf(
+            "SASegmentDefinitionType",
+            SegmentDefinitionTypeEnum.List,
+            HideIfDisabled = false
+        )]
         [Display("Segment Table", Group: "Sweep Properties", Order: 32)]
         public List<SASegmentDefinition> SAsegmentDefinitions { get; set; }
 
         [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
-        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [EnabledIf(
+            "SASegmentDefinitionType",
+            SegmentDefinitionTypeEnum.List,
+            HideIfDisabled = false
+        )]
         [Display("Show Table", Group: "Sweep Properties", Order: 33)]
         public bool SAShowTable { get; set; }
 
         [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
-        [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
+        [EnabledIf(
+            "SASegmentDefinitionType",
+            SegmentDefinitionTypeEnum.List,
+            HideIfDisabled = false
+        )]
         [Display("Segment Attributes", Group: "Sweep Properties", Order: 34)]
         public SASegmentAttributes SASegmentAttributes { get; set; }
 
@@ -202,7 +226,17 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             SASegmentDefinitionType = SegmentDefinitionTypeEnum.List;
             SAsegmentDefinitions = new List<SASegmentDefinition>
             {
-                new SASegmentDefinition { state = true, NumberOfPoints = 21, StartFrequency = 10.5e6, StopFrequency = 1e9, MTRef = 0.0, VectAvg = 1, VBW = 1e6, DThreshold = -60.0 }
+                new SASegmentDefinition
+                {
+                    state = true,
+                    NumberOfPoints = 21,
+                    StartFrequency = 10.5e6,
+                    StopFrequency = 1e9,
+                    MTRef = 0.0,
+                    VectAvg = 1,
+                    VBW = 1e6,
+                    DThreshold = -60.0,
+                },
             };
             SAShowTable = false;
         }
@@ -254,7 +288,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         {
             List<(string, object)> retVal = new List<(string, object)>
             {
-                ("SA Data Acquisition Mode", SASweepType)
+                ("SA Data Acquisition Mode", SASweepType),
             };
 
             switch (SASweepType)
@@ -334,8 +368,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
                     PNAX.SetSegmentTableShow(Channel, true, 1);
                 }
             }
-
         }
-
     }
 }

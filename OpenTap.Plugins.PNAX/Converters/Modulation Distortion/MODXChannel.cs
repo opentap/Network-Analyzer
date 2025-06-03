@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Modulation Distortion Converters Channel", Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "Modulation Distortion Converters Channel",
+        Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODXChannel : PNABaseStep
     {
         #region Settings
@@ -29,13 +33,41 @@ namespace OpenTap.Plugins.PNAX
             sweepMode = SweepModeEnumType.SING;
 
             // Traces
-            MODXNewTrace modNewTrace = new MODXNewTrace { IsControlledByParent = true, Channel = this.Channel };
-            MODModulate modModulate = new MODModulate { IsControlledByParent = true, Channel = this.Channel };
-            MODSourceCorrection modSourceCorrection = new MODSourceCorrection { IsControlledByParent = true, Channel = this.Channel };
-            MODSweep modSweep = new MODSweep { IsControlledByParent = true, Channel = this.Channel };
-            MODRFPath modRFPath = new MODRFPath { IsControlledByParent = true, Channel = this.Channel };
-            MODXMixer modxMixer = new MODXMixer { IsControlledByParent = true, Channel = this.Channel };
-            MODMeasure modMeasure = new MODMeasure { IsControlledByParent = true, Channel = this.Channel };
+            MODXNewTrace modNewTrace = new MODXNewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            MODModulate modModulate = new MODModulate
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            MODSourceCorrection modSourceCorrection = new MODSourceCorrection
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            MODSweep modSweep = new MODSweep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            MODRFPath modRFPath = new MODRFPath
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            MODXMixer modxMixer = new MODXMixer
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
+            MODMeasure modMeasure = new MODMeasure
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+            };
 
             this.ChildTestSteps.Add(modNewTrace);
             this.ChildTestSteps.Add(modSweep);
@@ -51,7 +83,9 @@ namespace OpenTap.Plugins.PNAX
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Modulation Distortion Converters\',\'PIn1\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Modulation Distortion Converters\',\'PIn1\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

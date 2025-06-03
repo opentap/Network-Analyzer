@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -31,15 +31,20 @@ namespace OpenTap.Plugins.PNAX
         IPwr,
         OPwr,
         RevIPwr,
-        RevOPwr
+        RevOPwr,
     }
 
     //[AllowAsChildIn(typeof(GainCompressionNewTrace))]
-    [Display("Compression Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Compression Single Trace",
+        Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" },
+        Description: "Insert a description here"
+    )]
     public class CompressionSingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private CompressionTraceEnum _Meas;
+
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public CompressionTraceEnum Meas
         {

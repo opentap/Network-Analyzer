@@ -4,17 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(PulseGenerators))]
-    [Display("Generator Setup", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
+    [Display(
+        "Generator Setup",
+        Groups: new[] { "Network Analyzer", "General" },
+        Description: "Insert a description here"
+    )]
     public class Generator : PNABaseStep
     {
         #region Settings
@@ -24,10 +28,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Pulse Name", Group: "Generator Setup", Order: 20)]
         public string PulseName
         {
-            get
-            {
-                return this.Name;
-            }
+            get { return this.Name; }
             set
             {
                 IsInvertEnabled = true;
@@ -68,7 +69,8 @@ namespace OpenTap.Plugins.PNAX
         {
             PNAX.PulseGeneratorWidth(Channel, PulseName, PulseWidth);
             PNAX.PulseGeneratorDelay(Channel, PulseName, PulseDelay);
-            if (IsInvertEnabled) PNAX.PulseGeneratorInvert(Channel, PulseName, PulseInvert);
+            if (IsInvertEnabled)
+                PNAX.PulseGeneratorInvert(Channel, PulseName, PulseInvert);
             PNAX.PulseGeneratorEnable(Channel, PulseName, PulseEnable);
 
             UpgradeVerdict(Verdict.Pass);
@@ -87,6 +89,5 @@ namespace OpenTap.Plugins.PNAX
             retVal.Add(($"{PulseName} PulseEnable", PulseEnable));
             return retVal;
         }
-
     }
 }

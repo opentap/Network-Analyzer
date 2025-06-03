@@ -1,10 +1,10 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -35,7 +35,11 @@ namespace OpenTap.Plugins.PNAX
 
             // Clean channel string
             char[] charsToTrim = { '"', '\n' };
-            var activeMeasurements = measurements.Trim(charsToTrim).Split(',').Select(int.Parse).ToList();
+            var activeMeasurements = measurements
+                .Trim(charsToTrim)
+                .Split(',')
+                .Select(int.Parse)
+                .ToList();
             return activeMeasurements;
         }
 
@@ -72,6 +76,7 @@ namespace OpenTap.Plugins.PNAX
             var tracesList = traces.Trim(charsToTrim).Split(',');
             return tracesList;
         }
+
         /// <summary>
         /// Load state file into Network Analyzer
         /// </summary>
@@ -131,7 +136,6 @@ namespace OpenTap.Plugins.PNAX
                         throw new Exception("Error while copying file to instrument!");
                     }
                 }
-
             }
             ScpiCommand($":MMEM:LOAD:FILE \"{FileName}\"");
             TapThread.Sleep(750);
@@ -139,7 +143,6 @@ namespace OpenTap.Plugins.PNAX
 
             if (errorList.Count > 0)
                 throw new FileNotFoundException();
-
         }
 
         /// <summary>
@@ -205,17 +208,23 @@ namespace OpenTap.Plugins.PNAX
                     var xList = xString.Split(',').ToList();
                     int XCount = xList.Count;
 
-                    var yString = IsModelA ? ScpiQuery($"CALC{channel}:DATA? FDATA") : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
+                    var yString = IsModelA
+                        ? ScpiQuery($"CALC{channel}:DATA? FDATA")
+                        : ScpiQuery($"CALC{channel}:MEAS{trace}:DATA:FDATA?");
                     var yList = yString.Split(',').ToList();
 
                     resultsList.Add(xList);
                     resultsList.Add(yList);
 
                     // now query PF
-                    string strPF = IsModelA ? ScpiQuery($"CALC{channel}:LIMit:FAIL?") : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
+                    string strPF = IsModelA
+                        ? ScpiQuery($"CALC{channel}:LIMit:FAIL?")
+                        : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
                     List<string> GlobalPF = new List<string>();
                     // Create a list of n values all equal to strPF
-                    string verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
+                    string verdict = strPF.Equals("0")
+                        ? Verdict.Pass.ToString()
+                        : Verdict.Fail.ToString();
                     for (int pfIndex = 0; pfIndex < XCount; pfIndex++)
                     {
                         GlobalPF.Add(verdict);
@@ -223,18 +232,35 @@ namespace OpenTap.Plugins.PNAX
 
                     // query results
                     // TODO: Find alternative, currently LIM:REP:ALL? not supported on A models
-                    var limitReportAllStr = IsModelA ? "" : ScpiQuery($"CALC{channel}:Meas{trace}:LIMit:REPort:ALL?");
+                    var limitReportAllStr = IsModelA
+                        ? ""
+                        : ScpiQuery($"CALC{channel}:Meas{trace}:LIMit:REPort:ALL?");
                     var limitReportAll = limitReportAllStr.Split(',').ToList();
                     //List<double> XAxisValues = new List<double>();
                     //List<Verdict> PassFail = new List<Verdict>();
                     //List<double> UpperLimit = new List<double>();
                     //List<double> LowerLimit = new List<double>();
 
-
-                    var x1 = limitReportAll.Where((item, index) => ((index == 0) || ((index >= 4) && (index % 4 == 0)))).ToList();
-                    var x2 = limitReportAll.Where((item, index) => ((index == 1) || ((index >= 5) && (index % 4 == 1)))).ToList();
-                    var x3 = limitReportAll.Where((item, index) => ((index == 2) || ((index >= 6) && (index % 4 == 2)))).ToList();
-                    var x4 = limitReportAll.Where((item, index) => ((index == 3) || ((index >= 7) && (index % 4 == 3)))).ToList();
+                    var x1 = limitReportAll
+                        .Where(
+                            (item, index) => ((index == 0) || ((index >= 4) && (index % 4 == 0)))
+                        )
+                        .ToList();
+                    var x2 = limitReportAll
+                        .Where(
+                            (item, index) => ((index == 1) || ((index >= 5) && (index % 4 == 1)))
+                        )
+                        .ToList();
+                    var x3 = limitReportAll
+                        .Where(
+                            (item, index) => ((index == 2) || ((index >= 6) && (index % 4 == 2)))
+                        )
+                        .ToList();
+                    var x4 = limitReportAll
+                        .Where(
+                            (item, index) => ((index == 3) || ((index >= 7) && (index % 4 == 3)))
+                        )
+                        .ToList();
 
                     //for (int limitIndex = 0; limitIndex < ((limitReportAll.Count())/4); limitIndex++)
                     //{
@@ -272,7 +298,9 @@ namespace OpenTap.Plugins.PNAX
             var xString = ScpiQuery($"CALC{Channel}:X:VAL?");
             var xList = xString.Split(',').ToList();
 
-            var yString = IsModelA ? ScpiQuery($"CALC{Channel}:DATA? FDATA") : ScpiQuery($"CALC{Channel}:MEAS{mnum}:DATA:FDATA?");
+            var yString = IsModelA
+                ? ScpiQuery($"CALC{Channel}:DATA? FDATA")
+                : ScpiQuery($"CALC{Channel}:MEAS{mnum}:DATA:FDATA?");
             var yList = yString.Split(',').ToList();
 
             resultsList.Add(xList);
@@ -302,7 +330,6 @@ namespace OpenTap.Plugins.PNAX
                 //    traceTitles.Add(tracesList[i]);
                 //}
             }
-
 
             return retVal;
         }
@@ -350,7 +377,6 @@ namespace OpenTap.Plugins.PNAX
                     var min = ScpiQuery($":CALC{channel}:MARK:Y?").Split(',')[0].Trim();
                     Log.Info($"Trace {trace} Min Value:" + min);
                     minMaxList.Add(min);
-
                 }
             }
 
@@ -444,7 +470,9 @@ namespace OpenTap.Plugins.PNAX
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(
+                string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName)
+            );
 
             // Write file at local PC
             File.WriteAllBytes(FullFileName, filedata);
@@ -456,6 +484,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private int bringToFrontMacro = -1;
+
         public void BringVNAToFrontWithMacro()
         {
             // setup macro the first time
@@ -467,25 +496,25 @@ namespace OpenTap.Plugins.PNAX
                 const string BRING_TO_FRONT_TITLE = "BringVNAToFront";
                 ScpiCommand($@"MMEM:CDIR ""{DEFAULT_FOLDER}""");
                 const string VBA_PROGRAM =
-                    "\' Create a WMI object\r\n" +
-                    "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\r\n" +
-                    "\r\n" +
-                    "\' Function to bring a window to the front by process name\r\n" +
-                    "Sub BringWindowToFrontByProcessName(processName)\r\n" +
-                    "    Dim colProcesses, objProcess, hWnd\r\n" +
-                    "    Set colProcesses = objWMIService.ExecQuery(\"Select * from Win32_Process Where Name = \'\" & processName & \"\'\")\r\n" +
-                    "    \r\n" +
-                    "    For Each objProcess In colProcesses\r\n" +
-                    "        hWnd = objProcess.Handle\r\n" +
-                    "        If hWnd <> 0 Then\r\n" +
-                    "            Set objShell = CreateObject(\"WScript.Shell\")\r\n" +
-                    "            objShell.AppActivate objProcess.ProcessId\r\n" +
-                    "            Exit For\r\n" +
-                    "        End If\r\n" +
-                    "    Next\r\n" +
-                    "End Sub\r\n" +
-                    "\r\n" +
-                    "BringWindowToFrontByProcessName \"835x.exe\"";
+                    "\' Create a WMI object\r\n"
+                    + "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\r\n"
+                    + "\r\n"
+                    + "\' Function to bring a window to the front by process name\r\n"
+                    + "Sub BringWindowToFrontByProcessName(processName)\r\n"
+                    + "    Dim colProcesses, objProcess, hWnd\r\n"
+                    + "    Set colProcesses = objWMIService.ExecQuery(\"Select * from Win32_Process Where Name = \'\" & processName & \"\'\")\r\n"
+                    + "    \r\n"
+                    + "    For Each objProcess In colProcesses\r\n"
+                    + "        hWnd = objProcess.Handle\r\n"
+                    + "        If hWnd <> 0 Then\r\n"
+                    + "            Set objShell = CreateObject(\"WScript.Shell\")\r\n"
+                    + "            objShell.AppActivate objProcess.ProcessId\r\n"
+                    + "            Exit For\r\n"
+                    + "        End If\r\n"
+                    + "    Next\r\n"
+                    + "End Sub\r\n"
+                    + "\r\n"
+                    + "BringWindowToFrontByProcessName \"835x.exe\"";
 
                 // find the macro slot
                 int emptySlot = -1;
@@ -511,16 +540,21 @@ namespace OpenTap.Plugins.PNAX
                     if (emptySlot != -1)
                     {
                         ScpiCommand($@"SYST:SHOR{emptySlot}:TITLE ""{BRING_TO_FRONT_TITLE}""");
-                        ScpiCommand($@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + BRING_TO_FRONT_SCRIPT_NAME}""");
+                        ScpiCommand(
+                            $@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + BRING_TO_FRONT_SCRIPT_NAME}"""
+                        );
                         bringToFrontMacro = emptySlot;
 
                         ScpiIEEEBlockCommand(
                             $@"MMEM:TRAN ""{BRING_TO_FRONT_SCRIPT_NAME}"",",
-                            ASCIIEncoding.ASCII.GetBytes(VBA_PROGRAM));
+                            ASCIIEncoding.ASCII.GetBytes(VBA_PROGRAM)
+                        );
                     }
                     else
                     {
-                        throw new Exception("No empty slots for BringVNAToFront macro! Clear a slot and try again.");
+                        throw new Exception(
+                            "No empty slots for BringVNAToFront macro! Clear a slot and try again."
+                        );
                     }
                 }
             }
@@ -550,17 +584,27 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (IsModelA)
                 {
-                    ScpiCommand($"CALCulate{Channel}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+                    ScpiCommand(
+                        $"CALCulate{Channel}:DATA:SNP:PORTs:SAVE '{strPorts}','"
+                            + InstrumentFileName
+                            + "'"
+                    );
                 }
                 else
                 {
-                    ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','" + InstrumentFileName + "'");
+                    ScpiCommand(
+                        $"CALCulate{Channel}:MEASure{mnum}:DATA:SNP:PORTs:SAVE '{strPorts}','"
+                            + InstrumentFileName
+                            + "'"
+                    );
                 }
             }
             else if (StoreSnpBlockList.Any(s => s.Equals(measName)))
             {
                 // if meas name is in BlockList
-                Log.Info($"Can't store SNP for Channel '{Channel}' with Measurement Class '{measName}'");
+                Log.Info(
+                    $"Can't store SNP for Channel '{Channel}' with Measurement Class '{measName}'"
+                );
                 return;
             }
             else
@@ -569,14 +613,15 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand($"MMEM:STORe '{InstrumentFileName}'");
             }
 
-
             // Make sure folder exists on local PC
             bool exists = System.IO.Directory.Exists(FilePath);
             if (!exists)
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(string.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(
+                string.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName)
+            );
 
             // Write file at local PC
             File.WriteAllBytes(FullFileName, filedata);
@@ -605,7 +650,9 @@ namespace OpenTap.Plugins.PNAX
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(string.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(
+                string.Format("MMEM:TRAN? \"{0}\"", InstrumentFileName)
+            );
 
             // Write file at local PC
             File.WriteAllBytes(destination, filedata);
@@ -632,7 +679,9 @@ namespace OpenTap.Plugins.PNAX
             ChangeFolder(InstrumentFolderName);
 
             // Save csv data to local folder on instrument: <documents>\<mode>\screen
-            ScpiCommand($":MMEM:STOR:DATA '{InstrumentFileName}','CSV Formatted Data','Displayed','Displayed',-1");
+            ScpiCommand(
+                $":MMEM:STOR:DATA '{InstrumentFileName}','CSV Formatted Data','Displayed','Displayed',-1"
+            );
 
             // Make sure folder exists on local PC
             bool exists = System.IO.Directory.Exists(FilePath);
@@ -640,7 +689,9 @@ namespace OpenTap.Plugins.PNAX
                 System.IO.Directory.CreateDirectory(FilePath);
 
             // Copy from instrument to local PC
-            byte[] filedata = ScpiQueryBlock(string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName));
+            byte[] filedata = ScpiQueryBlock(
+                string.Format(":MMEM:TRAN? \"{0}\"", InstrumentFileName)
+            );
 
             // Write file at local PC
             File.WriteAllBytes(FullFileName, filedata);
@@ -650,7 +701,6 @@ namespace OpenTap.Plugins.PNAX
 
             QueryErrors();
         }
-
 
         private void ChangeFolder(string folder)
         {
@@ -696,7 +746,9 @@ namespace OpenTap.Plugins.PNAX
                     // Throw excpetion if can't change to folder
                     if (ListErrors.Count > 0)
                     {
-                        throw new Exception("Error while creating folder " + folder + " " + ListErrors[0].Message);
+                        throw new Exception(
+                            "Error while creating folder " + folder + " " + ListErrors[0].Message
+                        );
                     }
                     else
                     {
@@ -710,7 +762,6 @@ namespace OpenTap.Plugins.PNAX
             {
                 throw ex;
             }
-
         }
     }
 }

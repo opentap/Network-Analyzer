@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(MODXChannel))]
     //[AllowChildrenOfType(typeof(MODXSingleTrace))]
-    [Display("Modulation Distortion New Trace", Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "Modulation Distortion New Trace",
+        Groups: new[] { "Network Analyzer", "Converters", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODXNewTrace : AddNewTraceBaseStep
     {
         #region Settings
@@ -26,7 +30,16 @@ namespace OpenTap.Plugins.PNAX
         public MODXNewTrace()
         {
             Meas = MODTraceEnum.PIn1;
-            ChildTestSteps.Add(new MODXSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new MODXSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
 
         [Browsable(false)]
@@ -44,7 +57,16 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new MODXSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new MODXSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
     }
 }

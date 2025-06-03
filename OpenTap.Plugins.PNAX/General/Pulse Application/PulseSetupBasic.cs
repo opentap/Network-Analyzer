@@ -4,13 +4,13 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
-using OpenTap.Plugins.PNAX.General.Spectrum_Analyzer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
+using OpenTap.Plugins.PNAX.General.Spectrum_Analyzer;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -24,7 +24,11 @@ namespace OpenTap.Plugins.PNAX
     //[AllowAsChildIn(typeof(NoiseFigureChannel))]
     //[AllowAsChildIn(typeof(MODXChannel))]
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
-    [Display("Pulse Setup Basic", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
+    [Display(
+        "Pulse Setup Basic",
+        Groups: new[] { "Network Analyzer", "General" },
+        Description: "Insert a description here"
+    )]
     public class PulseSetupBasic : PNABaseStep
     {
         #region Settings
@@ -43,15 +47,12 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double PulseFrequencyPrimary { get; set; }
 
-
         private PulseTriggerEnumtype _PulseTriggerType;
+
         [Display("Trigger Source", Groups: new[] { "Pulse Trigger" }, Order: 60)]
         public PulseTriggerEnumtype PulseTriggerType
         {
-            get
-            {
-                return _PulseTriggerType;
-            }
+            get { return _PulseTriggerType; }
             set
             {
                 _PulseTriggerType = value;
@@ -65,19 +66,20 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         [EnabledIf("PulseTriggerType", PulseTriggerEnumtype.External, HideIfDisabled = false)]
         [Display("Trigger Level/Edge", Groups: new[] { "Pulse Trigger" }, Order: 61)]
         public PulseTriggerLevelEdgeEnumtype pulseTriggerLevelEdge { get; set; }
 
         private bool _SynchADCUsingPulseTrigger;
-        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulse Trigger" }, Order: 62)]
+
+        [Display(
+            "Synchronize ADCs Using Pulse Trigger",
+            Groups: new[] { "Pulse Trigger" },
+            Order: 62
+        )]
         public bool SynchADCUsingPulseTrigger
         {
-            get
-            {
-                return _SynchADCUsingPulseTrigger;
-            }
+            get { return _SynchADCUsingPulseTrigger; }
             set
             {
                 _SynchADCUsingPulseTrigger = value;
@@ -108,7 +110,6 @@ namespace OpenTap.Plugins.PNAX
             pulseTriggerLevelEdge = PulseTriggerLevelEdgeEnumtype.HighLevel;
             SynchADCUsingPulseTrigger = false;
             //ADCTriggerDelay = 250e-3;
-
         }
 
         public override void Run()

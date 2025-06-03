@@ -1,10 +1,10 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -17,53 +17,62 @@ namespace OpenTap.Plugins.PNAX
     public enum CalModeEnum
     {
         SYNC,
-        ASYN
+        ASYN,
     }
 
     public enum ChannelTypeEnum
     {
         [Display("Standard")]
         Standard,
+
         [Display("Gain Compression")]
         GainCompression,
+
         [Display("Swept IMD")]
         SweptIMD,
+
         [Display("Noise Figure Cold Source")]
         NoiseFigureColdSource,
+
         [Display("Scalar Mixer/Converter")]
         ScalarMixerConverter,
+
         [Display("Gain Compression Converters")]
         GainCompressionConverters,
+
         [Display("Swept IMD Converters")]
         SweptIMDConverters,
-        [Display("Noise Figure Converters")]
-        NoiseFigureConverters
-    }
 
+        [Display("Noise Figure Converters")]
+        NoiseFigureConverters,
+    }
 
     public enum PNAPowerMeterEnumtype
     {
         [Display("GPIB")]
         [Scpi("GPIB")]
         Gpib,
+
         [Display("USB")]
         [Scpi("USB")]
         Usb,
+
         [Display("LAN")]
         [Scpi("LAN")]
         Lan,
+
         [Display("ANY")]
         [Scpi("ANY")]
-        Any
+        Any,
     }
-
 
     public enum FSimCalsetOverwriteCreateEnumtype
     {
         [Display("Over-write selected Calsets")]
         Overwrite,
+
         [Display("Create New Calsets")]
-        New
+        New,
     }
 
     public enum FSimEmbedTypeEnumtype
@@ -71,11 +80,11 @@ namespace OpenTap.Plugins.PNAX
         [Display("Embed")]
         [Scpi("EMB")]
         Embed,
+
         [Display("De-embed")]
         [Scpi("DEEM")]
         Deembed,
     }
-
 
     public class CalibrateAllSelectedChannels
     {
@@ -94,31 +103,37 @@ namespace OpenTap.Plugins.PNAX
     {
         [Display("No Independent Source Cal")]
         NoIndependentSourceCal = 0,
+
         [Display("Port 1")]
         Port1 = 1,
+
         [Display("Port 2")]
         Port2 = 2,
+
         [Display("Port 3")]
         Port3 = 4,
+
         [Display("Port 4")]
         Port4 = 8,
+
         [Display("Port 1 Src2")]
         Port1Src2 = 16,
+
         [Display("Source3")]
-        Source3 = 32
+        Source3 = 32,
     }
 
     public enum NoiseCalMethodEnum
     {
         Scalar,
-        Vector
+        Vector,
     }
 
     public enum NoiseTunerEnum
     {
         [Display("internal")]
         [Scpi("internal")]
-        _internal
+        _internal,
     }
 
     public enum ReceiverCharacterizationMethodEnum
@@ -126,9 +141,10 @@ namespace OpenTap.Plugins.PNAX
         [Display("Use Power Meter")]
         [Scpi("Use Power Meter")]
         UsePowerMeter,
+
         [Display("Use Noise Source")]
         [Scpi("Use Noise Source")]
-        UseNoiseSource
+        UseNoiseSource,
     }
 
     public enum DUTConnectorsEnum
@@ -136,96 +152,126 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("Type N (50) male")]
         [Display("Type N (50) male")]
         TypeN50male,
+
         [Scpi("Type N (50) female")]
         [Display("Type N (50) female")]
         TypeN50female,
+
         [Scpi("Type N (75) male")]
         [Display("Type N (75) male")]
         TypeN75male,
+
         [Scpi("Type N (75) female")]
         [Display("Type N (75) female")]
         TypeN75female,
+
         [Scpi("Type F (75) male")]
         [Display("Type F (75) male")]
         TypeF75male,
+
         [Scpi("Type F (75) female")]
         [Display("Type F (75) female")]
         TypeF75female,
+
         [Scpi("APC 3.5 male")]
         [Display("APC 3.5 male")]
         APC35male,
+
         [Scpi("APC 3.5 female")]
         [Display("APC 3.5 female")]
         APC35female,
+
         [Scpi("APC 2.4 male")]
         [Display("APC 2.4 male")]
         APC24male,
+
         [Scpi("APC 2.4 female")]
         [Display("APC 2.4 female")]
         APC24female,
+
         [Scpi("2.92 mm male")]
         [Display("2.92 mm male")]
         _292mmmale,
+
         [Scpi("2.92 mm female")]
         [Display("2.92 mm female")]
         _292mmfemale,
+
         [Scpi("1.85 mm female")]
         [Display("1.85 mm female")]
         _185mmfemale,
+
         [Scpi("1.85 mm male")]
         [Display("1.85 mm male")]
         _185mmmale,
+
         [Scpi("1.00 mm female")]
         [Display("1.00 mm female")]
         _100mmfemale,
+
         [Scpi("1.00 mm male")]
         [Display("1.00 mm male")]
         _100mmmale,
+
         [Scpi("7-16 male")]
         [Display("7-16 male")]
         _716male,
+
         [Scpi("7-16 female")]
         [Display("7-16 female")]
         _716female,
+
         [Scpi("APC 7")]
         [Display("APC 7")]
         APC7,
+
         [Scpi("X-band waveguide")]
         [Display("X-band waveguide")]
         Xbandwaveguide,
+
         [Scpi("P-band waveguide")]
         [Display("P-band waveguide")]
         Pbandwaveguide,
+
         [Scpi("K-band waveguide")]
         [Display("K-band waveguide")]
         Kbandwaveguide,
+
         [Scpi("Q-band waveguide")]
         [Display("Q-band waveguide")]
         Qbandwaveguide,
+
         [Scpi("R-band waveguide")]
         [Display("R-band waveguide")]
         Rbandwaveguide,
+
         [Scpi("U-band waveguide")]
         [Display("U-band waveguide")]
         Ubandwaveguide,
+
         [Scpi("V-band waveguide")]
         [Display("V-band waveguide")]
         Vbandwaveguide,
+
         [Scpi("W-band waveguide")]
         [Display("W-band waveguide")]
         Wbandwaveguide,
+
         [Scpi("Type A (50) male")]
         [Display("Type A (50) male")]
         TypeA50male,
+
         [Scpi("Type A (50) female")]
         [Display("Type A (50) female")]
         TypeA50female,
+
         [Scpi("Type B")]
         [Display("Type B")]
         TypeB,
+
         [Scpi("Not used")]
         [Display("Not used")]
-        Notused
+        Notused,
     }
 
     public enum CalKitEnum
@@ -233,15 +279,18 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("85032F")]
         [Display("85032F")]
         _85032F,
+
         [Scpi("85032B/E")]
         [Display("85032B/E")]
         _85032BE,
+
         [Scpi("85054B")]
         [Display("85054B")]
         _85054B,
+
         [Scpi("85054D")]
         [Display("85054D")]
-        _85054D
+        _85054D,
     }
 
     public partial class PNAX : ScpiInstrument
@@ -289,6 +338,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private int calAllMacro = -1;
+
         public void CalAllStartRemotelyWithMacro()
         {
             // setup macro the first time
@@ -301,7 +351,10 @@ namespace OpenTap.Plugins.PNAX
                 ScpiCommand($@"MMEM:CDIR ""{DEFAULT_FOLDER}""");
                 ScpiIEEEBlockCommand(
                     @"MMEM:TRAN ""CalibrateAll.vbs"",",
-                    ASCIIEncoding.ASCII.GetBytes(@"Call CreateObject(""AgilentPNA835x.Application"").LaunchDialog(""CalibrateAll"")"));
+                    ASCIIEncoding.ASCII.GetBytes(
+                        @"Call CreateObject(""AgilentPNA835x.Application"").LaunchDialog(""CalibrateAll"")"
+                    )
+                );
 
                 // find the macro slot
                 int emptySlot = -1;
@@ -327,12 +380,16 @@ namespace OpenTap.Plugins.PNAX
                     if (emptySlot != -1)
                     {
                         ScpiCommand($@"SYST:SHOR{emptySlot}:TITLE ""{CAL_ALL_TITLE}""");
-                        ScpiCommand($@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + CAL_ALL_SCRIPT_NAME}""");
+                        ScpiCommand(
+                            $@"SYST:SHOR{emptySlot}:PATH ""{DEFAULT_FOLDER + CAL_ALL_SCRIPT_NAME}"""
+                        );
                         calAllMacro = emptySlot;
                     }
                     else
                     {
-                        throw new Exception("No empty slots for CalAll macro! Clear a slot and try again.");
+                        throw new Exception(
+                            "No empty slots for CalAll macro! Clear a slot and try again."
+                        );
                     }
                 }
             }
@@ -409,7 +466,6 @@ namespace OpenTap.Plugins.PNAX
                 {
                     throw ex;
                 }
-
             }
             //if (prop.Equals("Use Smart Cal Order") && IsModelA)
             //{
@@ -420,18 +476,24 @@ namespace OpenTap.Plugins.PNAX
 
         public void CalAllSelectDutConnectorType(int Channel, int Port, string ConnectorType)
         {
-            ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CONNector:PORT{Port}:SELect \"{ConnectorType}\"");
+            ScpiCommand(
+                $"SENSe{Channel}:CORRection:COLLect:GUIDed:CONNector:PORT{Port}:SELect \"{ConnectorType}\""
+            );
         }
 
         public void CalAllSelectCalKit(int Channel, int Port, string CalKit)
         {
             if (IsModelA)
             {
-                ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port} \"{CalKit}\"");
+                ScpiCommand(
+                    $"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port} \"{CalKit}\""
+                );
             }
             else
             {
-                ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port}:SELect \"{CalKit}\"");
+                ScpiCommand(
+                    $"SENSe{Channel}:CORRection:COLLect:GUIDed:CKIT:PORT{Port}:SELect \"{CalKit}\""
+                );
             }
         }
 
@@ -448,10 +510,14 @@ namespace OpenTap.Plugins.PNAX
                 return ScpiQuery<int>($"SYSTem:CALibrate:ALL:GUIDed:CHANnel?");
             }
             return ScpiQuery<int>($"SYSTem:CALibrate:ALL:GUIDed:CHANnel:VALue?");
-
         }
 
-        public void CalAllInit(int CalChannel, string CalSetName = "", bool MatchCalSettings = false, CalModeEnum calMode = CalModeEnum.ASYN)
+        public void CalAllInit(
+            int CalChannel,
+            string CalSetName = "",
+            bool MatchCalSettings = false,
+            CalModeEnum calMode = CalModeEnum.ASYN
+        )
         {
             int MatchCalSettingsInt = 0;
             if (MatchCalSettings)
@@ -481,7 +547,9 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
 
-            ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:INITiate:IMMediate \"{CalSetName}\", {MatchCalSettingsInt}, {calMode}");
+            ScpiCommand(
+                $"SENSe{CalChannel}:CORRection:COLLect:GUIDed:INITiate:IMMediate \"{CalSetName}\", {MatchCalSettingsInt}, {calMode}"
+            );
             //ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:INITiate:IMMediate");
         }
 
@@ -503,7 +571,9 @@ namespace OpenTap.Plugins.PNAX
             }
             else
             {
-                ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:ACQuire STAN{CalStep},{calMode}");
+                ScpiCommand(
+                    $"SENSe{CalChannel}:CORRection:COLLect:GUIDed:ACQuire STAN{CalStep},{calMode}"
+                );
             }
         }
 
@@ -514,7 +584,8 @@ namespace OpenTap.Plugins.PNAX
 
         public int SimulatorMode()
         {
-            if (IsModelA) return 0;
+            if (IsModelA)
+                return 0;
 
             int mode = ScpiQuery<int>("SYST:ACT:SIMulator?");
             return mode;
@@ -545,29 +616,51 @@ namespace OpenTap.Plugins.PNAX
 
         public void PowerMeterPowerLevel(int Channel, int port, double level)
         {
-            ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:POWer:LEVel {level}");
+            ScpiCommand(
+                $"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:POWer:LEVel {level}"
+            );
         }
 
         public void PowerMeterSensorEnable(int Channel, int port, bool state)
         {
             string stateValue = state ? "ON" : "OFF";
-            ScpiCommand($"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:STATe {stateValue}");
+            ScpiCommand(
+                $"SENSe{Channel}:CORRection:COLLect:GUIDed:PSENsor{port}:STATe {stateValue}"
+            );
         }
 
         #region Fixtures
 
-        public void CalPlaneManagerApplyAdapterFixtureDeembed(string cs1, string cs2, string s2p, int port, bool powerCorrection, bool extrapolation = false)
+        public void CalPlaneManagerApplyAdapterFixtureDeembed(
+            string cs1,
+            string cs2,
+            string s2p,
+            int port,
+            bool powerCorrection,
+            bool extrapolation = false
+        )
         {
             string compPwr = powerCorrection ? "ON" : "OFF";
             string extrap = extrapolation ? "ON" : "OFF";
-            ScpiCommand($"CSET:FIXTure:DEEMbed \"{cs1}\",\"{cs2}\",\"{s2p}\",{port},{compPwr},{extrap}");
+            ScpiCommand(
+                $"CSET:FIXTure:DEEMbed \"{cs1}\",\"{cs2}\",\"{s2p}\",{port},{compPwr},{extrap}"
+            );
         }
 
-        public void CalPlaneManagerApplyAdapterFixtureEmbed(string cs1, string cs2, string s2p, int port, bool powerCorrection, bool extrapolation = false)
+        public void CalPlaneManagerApplyAdapterFixtureEmbed(
+            string cs1,
+            string cs2,
+            string s2p,
+            int port,
+            bool powerCorrection,
+            bool extrapolation = false
+        )
         {
             string compPwr = powerCorrection ? "ON" : "OFF";
             string extrap = extrapolation ? "ON" : "OFF";
-            ScpiCommand($"CSET:FIXTure:EMBed \"{cs1}\",\"{cs2}\",\"{s2p}\",{port},{compPwr},{extrap}");
+            ScpiCommand(
+                $"CSET:FIXTure:EMBed \"{cs1}\",\"{cs2}\",\"{s2p}\",{port},{compPwr},{extrap}"
+            );
         }
 
         public void CalSetActivate(int cnum, string cset, bool UseCalsetStim)
@@ -577,7 +670,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="cnum"></param>
         /// <param name="order">Order of operations, where:
@@ -603,7 +696,9 @@ namespace OpenTap.Plugins.PNAX
 
         public void FSimCircuitAddFile(int cnum, int circN, int fixtportcount = 2)
         {
-            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:ADD FILE, {fixtportcount}");
+            ScpiCommand(
+                $"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:ADD FILE, {fixtportcount}"
+            );
         }
 
         public void FSimCircuitSetPort(int cnum, int circN, int port)
@@ -631,7 +726,9 @@ namespace OpenTap.Plugins.PNAX
         public void FSimCircuitExtrapolation(int cnum, int circN, bool state)
         {
             string strState = state ? "ON" : "OFF";
-            ScpiCommand($"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:FILE:EXTRapolate {strState}");
+            ScpiCommand(
+                $"CALCulate{cnum}:FSIMulator:DRAFt:CIRCuit{circN}:FILE:EXTRapolate {strState}"
+            );
         }
 
         public void FSimCircuitPowerCompensate(int cnum, int pnum, bool state)
@@ -639,7 +736,6 @@ namespace OpenTap.Plugins.PNAX
             string strState = state ? "ON" : "OFF";
             ScpiCommand($"CALCulate{cnum}:FSIMulator:POWer:PORT{pnum}:COMPensate:STATe {strState}");
         }
-
 
         public void FSimApply(int cnum)
         {
@@ -652,6 +748,5 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"CALCulate{cnum}:FSIMulator:STATe {strState}");
         }
         #endregion
-
     }
 }

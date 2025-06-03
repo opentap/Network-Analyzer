@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -18,9 +18,10 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("LINear")]
         [Display("Linear Frequency")]
         LinearFrequency,
+
         [Scpi("SEGMent")]
         [Display("Segment Sweep")]
-        SegmentSweep
+        SegmentSweep,
     }
 
     public enum SASourceSweepTypeEnum
@@ -28,12 +29,15 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("CW")]
         [Display("CW Time")]
         CWTime,
+
         [Scpi("LIN")]
         [Display("Linear Frequency")]
         LinearFrequency,
+
         [Scpi("POW")]
         [Display("Power Sweep")]
         PowerSweep,
+
         [Scpi("LFP")]
         [Display("LinF+Power")]
         LinFPower,
@@ -44,27 +48,34 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("PEAK")]
         [Display("Peak")]
         Peak,
+
         [Scpi("AVERage")]
         [Display("Average")]
         Average,
+
         [Scpi("SAMPle")]
         [Display("Sample")]
         Sample,
+
         [Scpi("NORMal")]
         [Display("Normal")]
         Normal,
+
         [Scpi("NEGPeak")]
         [Display("NegPeak")]
         NegPeak,
+
         [Scpi("PSAMple")]
         [Display("Peak Sample")]
         PeakSample,
+
         [Scpi("PAVerage")]
         [Display("Peak Average")]
         PeakAverage,
+
         [Scpi("FASPeak")]
         [Display("Fast Peak")]
-        FastPeak
+        FastPeak,
     }
 
     public enum SAVideoAverageTypeEnum
@@ -72,18 +83,22 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("VOLT")]
         [Display("Voltage")]
         Voltage,
+
         [Scpi("POW")]
         [Display("Power")]
         Power,
+
         [Scpi("LOG")]
         [Display("Log")]
         Log,
+
         [Scpi("VMAX")]
         [Display("Voltage Max")]
         VoltageMax,
+
         [Scpi("VMIN")]
         [Display("Voltage Min")]
-        VoltageMin
+        VoltageMin,
     }
 
     public enum SAReceiverAttenuatorEnum
@@ -91,15 +106,18 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("AREC")]
         [Display("A Receiver")]
         AREC,
+
         [Scpi("BREC")]
         [Display("B Receiver")]
         BREC,
+
         [Scpi("CREC")]
         [Display("C Receiver")]
         CREC,
+
         [Scpi("DREC")]
         [Display("D Receiver")]
-        DREC
+        DREC,
     }
 
     public enum SAOnOffTypeEnum
@@ -107,17 +125,19 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("OFF")]
         [Display("OFF")]
         Off = 0,
+
         [Scpi("ON")]
         [Display("ON")]
-        On = 1
+        On = 1,
     }
 
     public enum SASourceSweepOrderTypeEnum
     {
         [Scpi("FREQ")]
         FrequencyPower,
+
         [Scpi("POW")]
-        PowerFrequency
+        PowerFrequency,
     }
 
     public enum SADataTypeEnum
@@ -125,12 +145,14 @@ namespace OpenTap.Plugins.PNAX
         [Display("Float LogMag (dBm)")]
         [Scpi("MAGD")]
         FloatLogMagdBm,
+
         [Display("Float LinMag")]
         [Scpi("AMPV")]
         FloatLinMagVolts,
+
         [Display("Integers")]
         [Scpi("PINT")]
-        Integers
+        Integers,
     }
 
     public partial class PNAX : ScpiInstrument
@@ -138,7 +160,8 @@ namespace OpenTap.Plugins.PNAX
         #region SA Setup
         public double GetSAResolutionBandwidth(int Channel)
         {
-            return ScpiQuery<double>($"SENSe{Channel}:SA:BANDwidth:RESolution?"); ;
+            return ScpiQuery<double>($"SENSe{Channel}:SA:BANDwidth:RESolution?");
+            ;
         }
 
         public void SetSAResolutionBandwidth(int Channel, double resbw)
@@ -160,7 +183,8 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetSAVideoBandwidth(int Channel)
         {
-            return ScpiQuery<double>($"SENSe{Channel}:SA:BANDwidth:VIDeo?"); ;
+            return ScpiQuery<double>($"SENSe{Channel}:SA:BANDwidth:VIDeo?");
+            ;
         }
 
         public void SetSAVideoBandwidth(int Channel, double vidbw)
@@ -284,7 +308,11 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery<double>($"SENSe{Channel}:POWer:ATTenuator? {scpi}");
         }
 
-        public void SetSAReceiverAttenuation(int Channel, SAReceiverAttenuatorEnum recvr, double att)
+        public void SetSAReceiverAttenuation(
+            int Channel,
+            SAReceiverAttenuatorEnum recvr,
+            double att
+        )
         {
             string scpi = Scpi.Format("{0}", recvr);
             ScpiCommand($"SENSe{Channel}:POWer:ATTenuator {scpi},{att}");
@@ -301,7 +329,9 @@ namespace OpenTap.Plugins.PNAX
 
         public SAOnOffTypeEnum GetSASourcePowerMode(int Channel, string port)
         {
-            SAOnOffTypeEnum retVal = ScpiQuery<SAOnOffTypeEnum>($"SOURce{Channel}:POWer:MODE? \"{port}\"");
+            SAOnOffTypeEnum retVal = ScpiQuery<SAOnOffTypeEnum>(
+                $"SOURce{Channel}:POWer:MODE? \"{port}\""
+            );
             return retVal;
         }
 
@@ -313,7 +343,9 @@ namespace OpenTap.Plugins.PNAX
 
         public SASourceSweepTypeEnum GetSASweepType(int Channel, string src)
         {
-            SASourceSweepTypeEnum retVal = ScpiQuery<SASourceSweepTypeEnum>($"SENSe{Channel}:SA:SOURce:SWEep:TYPE? \"{src}\"");
+            SASourceSweepTypeEnum retVal = ScpiQuery<SASourceSweepTypeEnum>(
+                $"SENSe{Channel}:SA:SOURce:SWEep:TYPE? \"{src}\""
+            );
             return retVal;
         }
 
@@ -335,7 +367,8 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetSAFrequencyStop(int Channel, string src)
         {
-            return ScpiQuery<double>($"SENSe{Channel}:SA:SOURce:FREQuency:STOP? \"{src}\""); ;
+            return ScpiQuery<double>($"SENSe{Channel}:SA:SOURce:FREQuency:STOP? \"{src}\"");
+            ;
         }
 
         public void SetSAFrequencyStop(int Channel, string src, double freq)
@@ -373,7 +406,6 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:SA:SOURce:SWEep:REPeat:COUNt {repeats}");
         }
 
-
         public double GetSAPowerStart(int Channel, string src)
         {
             return ScpiQuery<double>($"SENSe{Channel}:SA:SOURce:POWer:STARt? \"{src}\"");
@@ -386,7 +418,8 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetSAPowerStop(int Channel, string src)
         {
-            return ScpiQuery<double>($"SENSe{Channel}:SA:SOURce:POWer:STOP? \"{src}\""); ;
+            return ScpiQuery<double>($"SENSe{Channel}:SA:SOURce:POWer:STOP? \"{src}\"");
+            ;
         }
 
         public void SetSAPowerStop(int Channel, string src, double freq)
@@ -424,12 +457,14 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:SA:SOURce:POW:SWEep:REPeat:COUNt {repeats}");
         }
 
-
         public double GetSAPhaseStart(int Channel, string src)
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:STARt? \"{src}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:STARt? \"{src}\""
+                );
                 return double.NaN;
             }
             return ScpiQuery<double>($"SOURce{Channel}:PHASe:STARt? \"{src}\"");
@@ -439,7 +474,10 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:STARt {freq},\"{src}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:STARt {freq},\"{src}\""
+                );
                 return;
             }
             ScpiCommand($"SOURce{Channel}:PHASe:STARt {freq},\"{src}\"");
@@ -449,17 +487,24 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:STOP? \"{src}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:STOP? \"{src}\""
+                );
                 return double.NaN;
             }
-            return ScpiQuery<double>($"SOURce{Channel}:PHASe:STOP? \"{src}\""); ;
+            return ScpiQuery<double>($"SOURce{Channel}:PHASe:STOP? \"{src}\"");
+            ;
         }
 
         public void SetSAPhaseStop(int Channel, string src, double freq)
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:STOP {freq},\"{src}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:STOP {freq},\"{src}\""
+                );
                 return;
             }
             ScpiCommand($"SOURce{Channel}:PHASe:STOP {freq},\"{src}\"");
@@ -469,7 +514,10 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:FIXed? \"{src}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:FIXed? \"{src}\""
+                );
                 return double.NaN;
             }
             return ScpiQuery<double>($"SOURce{Channel}:PHASe:FIXed? \"{src}\"");
@@ -479,18 +527,19 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:FIXed {freq},\"{src}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:FIXed {freq},\"{src}\""
+                );
                 return;
             }
             ScpiCommand($"SOURce{Channel}:PHASe:FIXed {freq},\"{src}\"");
         }
 
-
         // TODO
         // Phase Number of Steps
         // Phase Sweeps per source step
         // TODO
-
 
         #endregion
 

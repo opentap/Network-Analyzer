@@ -4,32 +4,29 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.General
 {
     //[AllowAsChildIn(typeof(ReceiverLeveling))]
-    [Display("Controlled Source", Groups: new[] { "Network Analyzer", "General" },
-        Description: "Controlled Source\nCan be added as a child to the following Channels:\n\tReceiver Leveling")]
+    [Display(
+        "Controlled Source",
+        Groups: new[] { "Network Analyzer", "General" },
+        Description: "Controlled Source\nCan be added as a child to the following Channels:\n\tReceiver Leveling"
+    )]
     public class ReceiverLevelingSource : PNABaseStep
     {
         #region Settings
         [Display("Controlled Source", Group: "Receiver Leveling Setup", Order: 20)]
         public string ControlledSource
         {
-            get
-            {
-                return this.Name;
-            }
-            set
-            {
-                this.Name = value;
-            }
+            get { return this.Name; }
+            set { this.Name = value; }
         }
 
         [Display("Enabling Leveling", Group: "Receiver Leveling Setup", Order: 21)]
@@ -40,8 +37,6 @@ namespace OpenTap.Plugins.PNAX.General
 
         [Display("Leveling Type", Group: "Receiver Leveling Setup", Order: 23)]
         public ReceiverLevelingTypeEnum receiverLevelingType { get; set; }
-
-
 
         [Display("Max Power", Group: "Controlled Source", Order: 30)]
         public double MaxPower { get; set; }
@@ -56,12 +51,15 @@ namespace OpenTap.Plugins.PNAX.General
         [Display("Max Step Size", Group: "Controlled Source", Order: 33)]
         public double SafeMaxStepSize { get; set; }
 
-        [Display("Update Source Power Calibration with Leveling Data", Group: "Controlled Source", Order: 34)]
+        [Display(
+            "Update Source Power Calibration with Leveling Data",
+            Group: "Controlled Source",
+            Order: 34
+        )]
         public bool EnableUpdateSourcePowerCalibration { get; set; }
 
         [Display("Source ALC Hardware", Group: "Controlled Source", Order: 35)]
         public SourceLevelingModeType sourceLevelingMode { get; set; }
-
 
         [Display("Leveling Tolerance", Group: "Leveling Receiver", Order: 40)]
         public double LevelingTolerance { get; set; }
@@ -77,7 +75,6 @@ namespace OpenTap.Plugins.PNAX.General
 
         [Display("IFBW", Group: "Leveling Receiver", Order: 44)]
         public ReceiverLevelingIFBWEnum receiverLevelingIFBW { get; set; }
-
 
         #endregion
 
@@ -110,12 +107,16 @@ namespace OpenTap.Plugins.PNAX.General
             PNAX.ReceiverLevelingMinPower(Channel, ControlledSource, MinPower);
             PNAX.ReceiverLevelingEnableSafeMode(Channel, ControlledSource, EnableSafeModeLeveling);
             PNAX.ReceiverLevelingSafeModeStepPowerLevel(Channel, ControlledSource, SafeMaxStepSize);
-            PNAX.ReceiverLevelingUpdateSourcePowerCal(Channel, ControlledSource, EnableUpdateSourcePowerCalibration);
+            PNAX.ReceiverLevelingUpdateSourcePowerCal(
+                Channel,
+                ControlledSource,
+                EnableUpdateSourcePowerCalibration
+            );
             PNAX.ReceiverLevelingSourceALC(Channel, ControlledSource, sourceLevelingMode);
 
             PNAX.ReceiverLevelingTolerance(Channel, ControlledSource, LevelingTolerance);
             PNAX.ReceiverLevelingMaxIterations(Channel, ControlledSource, LevelingMaxIterations);
-            //PNAX.ReceiverLevelingMaxIterationsEnable(Channel, ControlledSource, true);    
+            //PNAX.ReceiverLevelingMaxIterationsEnable(Channel, ControlledSource, true);
             PNAX.ReceiverLevelingFrequency(Channel, ControlledSource, receiverLevelingFType);
             PNAX.ReceiverLevelingIFBW(Channel, ControlledSource, LevelingIFBW);
             PNAX.ReceiverIFBW(Channel, ControlledSource, receiverLevelingIFBW);
@@ -141,17 +142,38 @@ namespace OpenTap.Plugins.PNAX.General
             retVal.Add(($"{ControlledSource} MinPower", MinPower));
             retVal.Add(($"{ControlledSource} EnableSafeModeLeveling", EnableSafeModeLeveling));
             retVal.Add(($"{ControlledSource} SafeMaxStepSize", SafeMaxStepSize));
-            retVal.Add(($"{ControlledSource} UpdateSourcePowerCalibration", EnableUpdateSourcePowerCalibration));
+            retVal.Add(
+                (
+                    $"{ControlledSource} UpdateSourcePowerCalibration",
+                    EnableUpdateSourcePowerCalibration
+                )
+            );
             retVal.Add(($"{ControlledSource} SourceALCHardware", sourceLevelingMode));
 
-            retVal.Add(($"{ControlledSource} {LevelingReceiver} LevelingTolerance", LevelingTolerance));
-            retVal.Add(($"{ControlledSource} {LevelingReceiver} LevelingMaxIterations", LevelingMaxIterations));
-            retVal.Add(($"{ControlledSource} {LevelingReceiver} receiverLevelingFrequency", receiverLevelingFType));
+            retVal.Add(
+                ($"{ControlledSource} {LevelingReceiver} LevelingTolerance", LevelingTolerance)
+            );
+            retVal.Add(
+                (
+                    $"{ControlledSource} {LevelingReceiver} LevelingMaxIterations",
+                    LevelingMaxIterations
+                )
+            );
+            retVal.Add(
+                (
+                    $"{ControlledSource} {LevelingReceiver} receiverLevelingFrequency",
+                    receiverLevelingFType
+                )
+            );
             retVal.Add(($"{ControlledSource} {LevelingReceiver} LevelingIFBW", LevelingIFBW));
-            retVal.Add(($"{ControlledSource} {LevelingReceiver} ReceiverLevelingIFBW", receiverLevelingIFBW));
+            retVal.Add(
+                (
+                    $"{ControlledSource} {LevelingReceiver} ReceiverLevelingIFBW",
+                    receiverLevelingIFBW
+                )
+            );
 
             return retVal;
         }
-
     }
 }

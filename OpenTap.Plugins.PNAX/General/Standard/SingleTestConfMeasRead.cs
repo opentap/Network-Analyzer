@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -11,17 +11,22 @@ namespace OpenTap.Plugins.PNAX
     {
         [Display("Measurement", Order: 20)]
         public StandardTraceEnum StandardTrace { get; set; }
+
         [Display("Start", Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double Start { get; set; }
+
         [Display("Stop", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double Stop { get; set; }
+
         [Display("Power", Order: 23)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double Power { get; set; }
+
         [Display("Points", Order: 24)]
         public int Points { get; set; }
+
         [Display("IF Bandwidth", Order: 25)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double IFBandwidth { get; set; }
@@ -35,7 +40,6 @@ namespace OpenTap.Plugins.PNAX
             Points = 201;
             IFBandwidth = 10e3;
         }
-
     }
 
     public class MeasureReturn
@@ -57,8 +61,11 @@ namespace OpenTap.Plugins.PNAX
         }
     }
 
-    [Display("Config-Meas", Groups: new[] { "Network Analyzer", "General", "Standard" },
-        Description: "This test step is an example on how to setup the instrument, trigger it and get the results in a single test step")]
+    [Display(
+        "Config-Meas",
+        Groups: new[] { "Network Analyzer", "General", "Standard" },
+        Description: "This test step is an example on how to setup the instrument, trigger it and get the results in a single test step"
+    )]
     public class SingleTestConfMeasRead : TestStep
     {
         #region Settings
@@ -104,7 +111,16 @@ namespace OpenTap.Plugins.PNAX
             StandardTraceEnum standardTrace = configMeas.StandardTrace;
             string standardTraceName = $"CH{Channel}_{standardTrace}";
 
-            PNAX.AddNewTrace(Channel, Window, standardTraceName, "Standard", configMeas.StandardTrace.ToString(), ref _tnum, ref _mnum, ref _MeasName);
+            PNAX.AddNewTrace(
+                Channel,
+                Window,
+                standardTraceName,
+                "Standard",
+                configMeas.StandardTrace.ToString(),
+                ref _tnum,
+                ref _mnum,
+                ref _MeasName
+            );
             PNAX.SetStandardSweepType(Channel, ScalerMixerSweepType.LinearFrequency);
             PNAX.SetStart(Channel, configMeas.Start);
             PNAX.SetStop(Channel, configMeas.Stop);
@@ -129,7 +145,10 @@ namespace OpenTap.Plugins.PNAX
             var xResult = results.Where((item, index) => index % 2 == 0).ToList();
             var yResult = results.Where((item, index) => index % 2 != 0).ToList();
 
-            FrequencyOutput = xResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToList();
+            FrequencyOutput = xResult[0]
+                .Select(double.Parse)
+                .Select(z => Math.Round(z, 2))
+                .ToList();
             TraceOutput = yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToList();
 
             MeasureReturn.Freq = FrequencyOutput;

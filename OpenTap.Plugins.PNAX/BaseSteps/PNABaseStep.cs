@@ -4,12 +4,13 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
+
 //using OpenTap.Plugins.BasicSteps;
 
 namespace OpenTap.Plugins.PNAX
@@ -25,6 +26,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsControlledByParent { get; set; } = false;
         private PNAX _PNAX;
+
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("PNA", Order: 0.1)]
         public virtual PNAX PNAX
@@ -45,6 +47,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private int _Channel;
+
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Order: 0.11)]
         public virtual int Channel
@@ -71,9 +74,11 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool IsConverter { get; set; } = false;
+
         [Browsable(false)]
         public bool IsConverterEditable { get; set; } = false;
         private ConverterStagesEnum _ConverterStagesEnum;
+
         [EnabledIf("IsConverter", true, HideIfDisabled = true)]
         [EnabledIf("IsConverterEditable", true, HideIfDisabled = false)]
         [Display("Converter Stages", Order: 0.12)]
@@ -88,6 +93,7 @@ namespace OpenTap.Plugins.PNAX
                 UpdateChildStepConverterStage();
             }
         }
+
         [Browsable(false)]
         public bool DoubleStage { get; set; }
 
@@ -134,9 +140,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        protected virtual void UpdateChanelConverterStage()
-        {
-        }
+        protected virtual void UpdateChanelConverterStage() { }
 
         private void UpdateChildStepConverterStage()
         {

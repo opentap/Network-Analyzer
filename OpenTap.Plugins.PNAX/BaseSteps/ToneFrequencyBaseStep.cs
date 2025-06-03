@@ -1,11 +1,11 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -16,6 +16,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool IsSweepFCEnabled { get; set; }
+
         [EnabledIf("IsSweepFCEnabled", true, HideIfDisabled = true)]
         [Display("Type", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 9.9)]
         public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
@@ -38,7 +39,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcCenterFc { get; set; }
 
-
         [EnabledIf("IsSweepFCEnabled", true, HideIfDisabled = true)]
         [EnabledIf("IsStartStopCenterSpan", SweepSSCSTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Span fc", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 13)]
@@ -47,6 +47,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool IsFixedDeltaFEnabled { get; set; }
+
         [EnabledIf("IsFixedDeltaFEnabled", true, HideIfDisabled = true)]
         [Display("Fixed DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 14)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -54,6 +55,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool IsSweepDeltaFEnabled { get; set; }
+
         [EnabledIf("IsSweepDeltaFEnabled", true, HideIfDisabled = true)]
         [Display("Start DeltaF", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 20)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -71,6 +73,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool IsPowerSweepEnabled { get; set; }
+
         [EnabledIf("IsPowerSweepEnabled", true, HideIfDisabled = true)]
         [Display("CW f1", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 30)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -92,16 +95,19 @@ namespace OpenTap.Plugins.PNAX
         public double PowerSweepCWDeltaF { get; set; }
 
         private int _SweepFcNumberOfPoints;
+
         [Browsable(false)]
         public bool IsSweepPointsEnabled { get; set; }
+
         [EnabledIf("IsSweepPointsEnabled", true, HideIfDisabled = true)]
-        [Display("Number of Points", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 40)]
+        [Display(
+            "Number of Points",
+            Groups: new[] { "Tone Frequency", "Sweep Settings" },
+            Order: 40
+        )]
         public int SweepFcNumberOfPoints
         {
-            get
-            {
-                return _SweepFcNumberOfPoints;
-            }
+            get { return _SweepFcNumberOfPoints; }
             set
             {
                 _SweepFcNumberOfPoints = value;
@@ -109,7 +115,6 @@ namespace OpenTap.Plugins.PNAX
                 UpdateMixerSweepPoints();
             }
         }
-
 
         [Display("Main Tone IFBW", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 41)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -119,7 +124,11 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double SweepFcIMToneIFBW { get; set; }
 
-        [Display("Reduce IF BW at low frequencies", Groups: new[] { "Tone Frequency", "Sweep Settings" }, Order: 43)]
+        [Display(
+            "Reduce IF BW at low frequencies",
+            Groups: new[] { "Tone Frequency", "Sweep Settings" },
+            Order: 43
+        )]
         public bool SweepFcReduceIFBW { get; set; }
 
         [Browsable(false)]
@@ -133,9 +142,7 @@ namespace OpenTap.Plugins.PNAX
             UpdateTypeAndNotation();
         }
 
-        protected virtual void UpdateTypeAndNotation()
-        {
-        }
+        protected virtual void UpdateTypeAndNotation() { }
 
         private void UpdateDefaultValues()
         {
@@ -171,7 +178,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 SetSweepDeltaF();
             }
-            else if (IsPowerSweepEnabled)   // Power Sweep, CW, LoPowerSweep
+            else if (IsPowerSweepEnabled) // Power Sweep, CW, LoPowerSweep
             {
                 SetPowerSweep();
             }
@@ -230,13 +237,8 @@ namespace OpenTap.Plugins.PNAX
             throw new NotImplementedException();
         }
 
-        protected virtual void SetSegmentValues()
-        {
-        }
+        protected virtual void SetSegmentValues() { }
 
-        protected virtual void UpdateMixerSweepPoints()
-        {
-        }
-
+        protected virtual void UpdateMixerSweepPoints() { }
     }
 }

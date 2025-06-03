@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -57,7 +57,6 @@ namespace OpenTap.Plugins.PNAX
             string strPort = Scpi.Format("{0}", port);
             ScpiCommand($"SOURce{Channel}:POWer{strPort}:PORT:STOP {power}");
         }
-
 
         #endregion
 
@@ -141,7 +140,6 @@ namespace OpenTap.Plugins.PNAX
             string stateValue = mode ? "ON" : "OFF";
             ScpiCommand($"SENSe{Channel}:MIXer:PHASe:ABSolute {stateValue}");
         }
-
 
         #endregion
     }

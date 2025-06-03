@@ -4,17 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 using OpenTap.Plugins.PNAX.LMS;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Statistics Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.")]
+    [Display(
+        "Store Statistics Data",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Stores trace data from all channels."
+    )]
     public class StoreStatistics : StoreDataBase
     {
         #region Settings
@@ -51,7 +55,12 @@ namespace OpenTap.Plugins.PNAX
 
             if (AllData)
             {
-                MathStatisticType = MathStatisticTypeEnum.Ptp | MathStatisticTypeEnum.Std | MathStatisticTypeEnum.Mean | MathStatisticTypeEnum.Min | MathStatisticTypeEnum.Max;
+                MathStatisticType =
+                    MathStatisticTypeEnum.Ptp
+                    | MathStatisticTypeEnum.Std
+                    | MathStatisticTypeEnum.Mean
+                    | MathStatisticTypeEnum.Min
+                    | MathStatisticTypeEnum.Max;
             }
 
             foreach (int Channel in channels)
@@ -127,7 +136,11 @@ namespace OpenTap.Plugins.PNAX
                 // If at least one measurement has statistics enabled, then publish
                 if (ResultNames.Count > 0)
                 {
-                    Results.Publish($"Statistics_Data_Channel_{Channel.ToString()}", ResultNames, ResultValues.ToArray());
+                    Results.Publish(
+                        $"Statistics_Data_Channel_{Channel.ToString()}",
+                        ResultNames,
+                        ResultValues.ToArray()
+                    );
                 }
             }
 

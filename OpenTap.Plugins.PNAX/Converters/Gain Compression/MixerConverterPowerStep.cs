@@ -4,22 +4,27 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
-    [Display("Power", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Power",
+        Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" },
+        Description: "Insert a description here"
+    )]
     public class MixerConverterPowerStep : PowerBaseStep
     {
         #region Settings
 
         private double _inputPower;
+
         [Display("Linear Input Power", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public override double InputPower

@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Noise Figure Converters Channel", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Noise Figure Converters Channel",
+        Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" },
+        Description: "Insert a description here"
+    )]
     public class NoiseFigureChannel : ConverterChannelBaseStep
     {
         #region Settings
@@ -22,21 +26,59 @@ namespace OpenTap.Plugins.PNAX
         public NoiseFigureChannel()
         {
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false };
+            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+                EnablePort3Settings = false,
+                EnablePort4Settings = false,
+                EnableSweptPowerSettings = false,
+            };
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Compression
-            NoiseFigure noiseFigure = new NoiseFigure { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigure noiseFigure = new NoiseFigure
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
             // Power
-            NoiseFigurePower power = new NoiseFigurePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigurePower power = new NoiseFigurePower
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
             // Frequency
-            NoiseFigureFrequency frequency = new NoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureFrequency frequency = new NoiseFigureFrequency
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Trace
-            NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
@@ -55,7 +97,9 @@ namespace OpenTap.Plugins.PNAX
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_NF_1\',\'Noise Figure Converters\',\'NF\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_NF_1\',\'Noise Figure Converters\',\'NF\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

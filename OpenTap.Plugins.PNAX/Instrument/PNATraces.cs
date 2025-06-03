@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -19,51 +19,77 @@ namespace OpenTap.Plugins.PNAX
         {
             [Display("Lin Mag")]
             MLINear,
+
             [Display("Log Mag")]
             MLOGarithmic,
+
             [Display("Phase")]
             PHASe,
+
             [Display("Unwrapped Phase")]
             UPHase,
+
             [Display("Imaginary")]
             IMAGinary,
+
             [Display("Real")]
             REAL,
+
             [Display("Polar")]
             POLar,
+
             [Display("Smith")]
             SMITh,
+
             [Display("Inverted Smith")]
             SADMittance,
+
             [Display("SWR")]
             SWR,
+
             [Display("Group Delay")]
             GDELay,
+
             [Display("Kelvin")]
             KELVin,
+
             [Display("Fahrenheit")]
             FAHRenheit,
+
             [Display("Celsius")]
             CELSius,
+
             [Display("Positive Phase")]
             PPHase,
+
             [Display("Complex")]
-            COMPlex
+            COMPlex,
         }
 
-        public int AddNewTrace(int Channel, int Window, string Trace, string MeasClass, string Meas, ref int tnum, ref int mnum, ref string MeasName)
+        public int AddNewTrace(
+            int Channel,
+            int Window,
+            string Trace,
+            string MeasClass,
+            string Meas,
+            ref int tnum,
+            ref int mnum,
+            ref string MeasName
+        )
         {
             int traceid = GetNewWindowTraceID(Window);
             mnum = GetUniqueTraceId();
 
             // MeasName = Trace + mnum
-            // i.e. for Trace = CH1_S11 
+            // i.e. for Trace = CH1_S11
             //          mnum = 1
             //          then we get: CH1_S11_1
             // This is the format that the PNA uses
             MeasName = Trace + "_" + mnum.ToString();
 
-            ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'{MeasName}\',\'{MeasClass}\',\'{Meas}\'");
+            ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'{MeasName}\',\'{MeasClass}\',\'{Meas}\'"
+            );
 
             // Create a window if it doesn't exist already
             ScpiCommand($"DISPlay:WINDow{Window}:STATe ON");
@@ -71,7 +97,7 @@ namespace OpenTap.Plugins.PNAX
             // Display the measurement
             ScpiCommand($"DISPlay:WINDow{Window}:TRACe{traceid}:FEED \'{MeasName}\'");
 
-            // 
+            //
             ScpiCommand($"CALCulate{Channel}:PARameter:SELect \'{MeasName}\'");
 
             // Get Trace number
@@ -148,7 +174,7 @@ namespace OpenTap.Plugins.PNAX
             }
             else
             {
-                // Title has not been set, 
+                // Title has not been set,
                 // continue using MeasName
             }
 

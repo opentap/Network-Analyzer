@@ -4,23 +4,28 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
-    [Display("Statistics", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Set Statistics for a trace")]
+    [Display(
+        "Statistics",
+        Groups: new[] { "Network Analyzer", "Trace" },
+        Description: "Set Statistics for a trace"
+    )]
     public class TraceStatistics : PNABaseStep
     {
         #region Settings
         // Override for Channel so we can call ShowTraceSettings
         private int _Channel;
+
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Channel", Order: 0.11)]
         public override int Channel
@@ -64,29 +69,60 @@ namespace OpenTap.Plugins.PNAX
         [Display("Statistics Range", Groups: new[] { "Trace Statistics" }, Order: 31)]
         public MathStatisticsRangeEnum MathStatisticsRange { get; set; }
 
-        [EnabledIf("MathStatisticsRange", MathStatisticsRangeEnum.User1, MathStatisticsRangeEnum.User2, MathStatisticsRangeEnum.User3
-            , MathStatisticsRangeEnum.User4, MathStatisticsRangeEnum.User5, MathStatisticsRangeEnum.User6
-            , MathStatisticsRangeEnum.User7, MathStatisticsRangeEnum.User8, MathStatisticsRangeEnum.User9
-            , MathStatisticsRangeEnum.User10, MathStatisticsRangeEnum.User11, MathStatisticsRangeEnum.User12
-            , MathStatisticsRangeEnum.User13, MathStatisticsRangeEnum.User14, MathStatisticsRangeEnum.User15
-            , MathStatisticsRangeEnum.User16, HideIfDisabled = true)]
+        [EnabledIf(
+            "MathStatisticsRange",
+            MathStatisticsRangeEnum.User1,
+            MathStatisticsRangeEnum.User2,
+            MathStatisticsRangeEnum.User3,
+            MathStatisticsRangeEnum.User4,
+            MathStatisticsRangeEnum.User5,
+            MathStatisticsRangeEnum.User6,
+            MathStatisticsRangeEnum.User7,
+            MathStatisticsRangeEnum.User8,
+            MathStatisticsRangeEnum.User9,
+            MathStatisticsRangeEnum.User10,
+            MathStatisticsRangeEnum.User11,
+            MathStatisticsRangeEnum.User12,
+            MathStatisticsRangeEnum.User13,
+            MathStatisticsRangeEnum.User14,
+            MathStatisticsRangeEnum.User15,
+            MathStatisticsRangeEnum.User16,
+            HideIfDisabled = true
+        )]
         [Display("User Start", Groups: new[] { "Trace Statistics" }, Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double UserStart { get; set; }
 
-        [EnabledIf("MathStatisticsRange", MathStatisticsRangeEnum.User1, MathStatisticsRangeEnum.User2, MathStatisticsRangeEnum.User3
-            , MathStatisticsRangeEnum.User4, MathStatisticsRangeEnum.User5, MathStatisticsRangeEnum.User6
-            , MathStatisticsRangeEnum.User7, MathStatisticsRangeEnum.User8, MathStatisticsRangeEnum.User9
-            , MathStatisticsRangeEnum.User10, MathStatisticsRangeEnum.User11, MathStatisticsRangeEnum.User12
-            , MathStatisticsRangeEnum.User13, MathStatisticsRangeEnum.User14, MathStatisticsRangeEnum.User15
-            , MathStatisticsRangeEnum.User16, HideIfDisabled = true)]
+        [EnabledIf(
+            "MathStatisticsRange",
+            MathStatisticsRangeEnum.User1,
+            MathStatisticsRangeEnum.User2,
+            MathStatisticsRangeEnum.User3,
+            MathStatisticsRangeEnum.User4,
+            MathStatisticsRangeEnum.User5,
+            MathStatisticsRangeEnum.User6,
+            MathStatisticsRangeEnum.User7,
+            MathStatisticsRangeEnum.User8,
+            MathStatisticsRangeEnum.User9,
+            MathStatisticsRangeEnum.User10,
+            MathStatisticsRangeEnum.User11,
+            MathStatisticsRangeEnum.User12,
+            MathStatisticsRangeEnum.User13,
+            MathStatisticsRangeEnum.User14,
+            MathStatisticsRangeEnum.User15,
+            MathStatisticsRangeEnum.User16,
+            HideIfDisabled = true
+        )]
         [Display("User Stop", Groups: new[] { "Trace Statistics" }, Order: 33)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double UserStop { get; set; }
 
-        [Display("Show Smith Chart statistics in Ohms", Groups: new[] { "Trace Statistics" }, Order: 34)]
+        [Display(
+            "Show Smith Chart statistics in Ohms",
+            Groups: new[] { "Trace Statistics" },
+            Order: 34
+        )]
         public bool ShowResistance { get; set; }
-
 
         #endregion
 
@@ -173,6 +209,5 @@ namespace OpenTap.Plugins.PNAX
                 MetaData.Add(it);
             }
         }
-
     }
 }

@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(DIQChannel))]
     //[AllowChildrenOfType(typeof(DIQRange))]
-    [Display("DIQ Frequency Range", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
+    [Display(
+        "DIQ Frequency Range",
+        Groups: new[] { "Network Analyzer", "General", "Differential I/Q" },
+        Description: "Insert a description here"
+    )]
     public class DIQFrequencyRange : PNABaseStep
     {
         #region Settings
@@ -29,7 +33,12 @@ namespace OpenTap.Plugins.PNAX
             int childCount = this.ChildTestSteps.Count;
             childCount++;
 
-            DIQRange newRange = new DIQRange { IsControlledByParent = true, Channel = this.Channel, Range = childCount };
+            DIQRange newRange = new DIQRange
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                Range = childCount,
+            };
             this.ChildTestSteps.Add(newRange);
         }
 
@@ -37,11 +46,21 @@ namespace OpenTap.Plugins.PNAX
         {
             ChildTestSteps.ChildStepsChanged += childStepsChanged;
 
-            DIQRange newRange = new DIQRange { IsControlledByParent = true, Channel = this.Channel, Range = 1 };
+            DIQRange newRange = new DIQRange
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                Range = 1,
+            };
             this.ChildTestSteps.Add(newRange);
         }
 
-        void childStepsChanged(TestStepList sender, TestStepList.ChildStepsChangedAction Action, ITestStep Object, int Index)
+        void childStepsChanged(
+            TestStepList sender,
+            TestStepList.ChildStepsChangedAction Action,
+            ITestStep Object,
+            int Index
+        )
         {
             // Count how many childs the Frequency Range step has
             Log.Info($"DIQFrequencyRange has {this.ChildTestSteps.Count}");
@@ -66,7 +85,6 @@ namespace OpenTap.Plugins.PNAX
                 Log.Debug("can't find parent yet! ex: " + ex.Message);
             }
         }
-
 
         public override void Run()
         {

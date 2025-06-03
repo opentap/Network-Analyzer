@@ -4,19 +4,23 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(MODChannel))]
     //[AllowAsChildIn(typeof(MODXChannel))]
-    [Display("MOD RF Path", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "MOD RF Path",
+        Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODRFPath : PNABaseStep
     {
         #region Settings
@@ -91,15 +95,16 @@ namespace OpenTap.Plugins.PNAX
             RunChildSteps(); //If the step supports child steps.
 
             PNAX.MODSourceAttenuatorInclude(Channel, IncludeSourceAtt);
-            if (IncludeSourceAtt) PNAX.MODSourceAttenuator(Channel, SourceAttenuator, DUTInput);
+            if (IncludeSourceAtt)
+                PNAX.MODSourceAttenuator(Channel, SourceAttenuator, DUTInput);
             PNAX.MODNominalSource(Channel, NominalSourceAmp);
             PNAX.MODDutInput(Channel, DUTInput);
             PNAX.MODNominalDUTGain(Channel, NominalDUTGain);
             PNAX.MODDutOutput(Channel, DUTOutput);
             PNAX.MODReceiverAttenuator(Channel, ReceiverAttenuator, DUTOutput);
             PNAX.MODNominalDUTNFInclude(Channel, IncludeNominalDUTNF);
-            if (IncludeNominalDUTNF) PNAX.MODNominalDUTNF(Channel, NominalDUTNF);
-
+            if (IncludeNominalDUTNF)
+                PNAX.MODNominalDUTNF(Channel, NominalDUTNF);
 
             UpgradeVerdict(Verdict.Pass);
         }

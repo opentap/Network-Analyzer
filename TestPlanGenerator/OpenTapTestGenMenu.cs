@@ -11,9 +11,6 @@
 //WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //See the License for the specific language governing permissions and
 //limitations under the License.
-using OpenTap;
-using Keysight.OpenTap.Wpf;
-
 // Classes that implement IMenuItem can be used to add menus to the TAP GUI.
 // Only the Invoke method is required.
 
@@ -29,16 +26,16 @@ using Keysight.OpenTap.Wpf;
 // It is not possible to create groups under the top menus.
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
-using System.IO;
-
+using Keysight.OpenTap.Wpf;
+using OpenTap;
 
 namespace TestPlanGenerator
 {
     public abstract class ThirdPartyAppAbstract : IMenuItem, IInitializedMenuItem
     {
-
         protected Process process;
         protected GuiContext uiContext;
         protected OpenTap.TraceSource traceSource;
@@ -68,10 +65,12 @@ namespace TestPlanGenerator
 
         public abstract void Invoke();
 
-
         protected string GetTheme()
         {
-            if (Keysight.OpenTap.Wpf.EditorSettings.Current.ColorTheme == Keysight.OpenTap.Wpf.Themes.TapSkins.Theme.Light)
+            if (
+                Keysight.OpenTap.Wpf.EditorSettings.Current.ColorTheme
+                == Keysight.OpenTap.Wpf.Themes.TapSkins.Theme.Light
+            )
             {
                 return "Light";
             }
@@ -80,20 +79,21 @@ namespace TestPlanGenerator
                 return "Dark";
             }
         }
-
-
     }
 
-
-
-
     // The underscore is an keyboard short cut.
-    [Display("NA Test Generator", Group: "_NA Menu", Order: 1, Description: "Test Plan Generator for Network Analyzer.")]
+    [Display(
+        "NA Test Generator",
+        Group: "_NA Menu",
+        Order: 1,
+        Description: "Test Plan Generator for Network Analyzer."
+    )]
     public class ToolMenuA : ThirdPartyAppAbstract
     {
         private string configAppPath = @"Packages\TestPlanGenerator\TestPlanGenerator.dll";
 
-        public ToolMenuA() : base()
+        public ToolMenuA()
+            : base()
         {
             this.traceSource = Log.CreateSource("PNATool");
         }
@@ -116,12 +116,6 @@ namespace TestPlanGenerator
             {
                 this.traceSource.Error(e);
             }
-
         }
-
     }
-
-
-
 }
-

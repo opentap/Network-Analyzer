@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -33,19 +33,21 @@ namespace OpenTap.Plugins.PNAX
 
     //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
     //[AllowAsChildIn(typeof(GeneralGainCompressionNewTrace))]
-    [Display("Compression Single Trace", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
+    [Display(
+        "Compression Single Trace",
+        Groups: new[] { "Network Analyzer", "General", "Gain Compression" },
+        Description: "Insert a description here"
+    )]
     public class GeneralGainCompressionSingleTrace : SingleTraceBaseStep
     {
         #region Settings
 
         private GeneralGainCompressionTraceEnum _Meas;
+
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public GeneralGainCompressionTraceEnum Meas
         {
-            get
-            {
-                return _Meas;
-            }
+            get { return _Meas; }
             set
             {
                 _Meas = value;
@@ -60,6 +62,5 @@ namespace OpenTap.Plugins.PNAX
             Meas = GeneralGainCompressionTraceEnum.CompIn21;
             measClass = "Gain Compression";
         }
-
     }
 }

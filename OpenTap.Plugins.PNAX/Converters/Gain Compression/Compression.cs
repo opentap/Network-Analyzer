@@ -4,22 +4,23 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
-
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
-    [Display("Compression", Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Compression",
+        Groups: new[] { "Network Analyzer", "Converters", "Gain Compression Converters" },
+        Description: "Insert a description here"
+    )]
     public class Compression : CompressionBaseStep
     {
-
         #region Settings
         #endregion
 
@@ -27,6 +28,5 @@ namespace OpenTap.Plugins.PNAX
         {
             IsConverter = true;
         }
-
     }
 }

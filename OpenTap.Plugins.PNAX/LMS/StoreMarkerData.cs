@@ -4,14 +4,15 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenTap;
 using OpenTap.Plugins.PNAX.LMS;
+
 //using Newtonsoft.Json;
 
 namespace OpenTap.Plugins.PNAX
@@ -20,13 +21,17 @@ namespace OpenTap.Plugins.PNAX
     //[AllowAsChildIn(typeof(StoreData))]
     //[AllowAsChildIn(typeof(StoreDispTraceData))]
     //[AllowAsChildIn(typeof(StoreMultiPeakSearch))]
-    [Display("Store Marker Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data from all channels.\n" +
-        "This test should be placed as a child of:" +
-        "\n\tStore Trace Data" +
-        "\n\tStore Displayed Trace Data" +
-        "\n\tStore Multi Peak Search" +
-        "\n\tTest Plan" +
-        "\n\tSequence")]
+    [Display(
+        "Store Marker Data",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Stores trace data from all channels.\n"
+            + "This test should be placed as a child of:"
+            + "\n\tStore Trace Data"
+            + "\n\tStore Displayed Trace Data"
+            + "\n\tStore Multi Peak Search"
+            + "\n\tTest Plan"
+            + "\n\tSequence"
+    )]
     public class StoreMarkerData : StoreDataBase
     {
         #region Settings
@@ -101,7 +106,9 @@ namespace OpenTap.Plugins.PNAX
                     for (int mkr = 1; mkr < 16; mkr++)
                     {
                         // first lets find all markers that are enabled for this trace
-                        bool mrkrState = PNAX.ScpiQuery<bool>($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:STATe?");
+                        bool mrkrState = PNAX.ScpiQuery<bool>(
+                            $"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:STATe?"
+                        );
 
                         List<string> ResultNames = new List<string>();
                         List<IConvertible> ResultValues = new List<IConvertible>();
@@ -109,31 +116,42 @@ namespace OpenTap.Plugins.PNAX
                         if (mrkrState)
                         {
                             // Now lets get the X value
-                            double mrkrX = PNAX.ScpiQuery<double>($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:X?");
+                            double mrkrX = PNAX.ScpiQuery<double>(
+                                $"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:X?"
+                            );
 
-                            string measFormat = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:FORMat?");
-                            string mrkrFormat = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:FORMat?");
+                            string measFormat = PNAX.ScpiQuery(
+                                $"CALCulate{channel}:MEASure{trace}:FORMat?"
+                            );
+                            string mrkrFormat = PNAX.ScpiQuery(
+                                $"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:FORMat?"
+                            );
 
                             double mrkrY = double.NaN;
 
                             // Trace Format OR Marker Format
-                            if ((measFormat.Contains("SMIT")) ||
-                                (measFormat.Contains("POL")) ||
-                                (mrkrFormat.Contains("POL")) ||
-                                (mrkrFormat.Contains("POL")) ||
-                                (mrkrFormat.Contains("LINP")) ||
-                                (mrkrFormat.Contains("LOGP")))
+                            if (
+                                (measFormat.Contains("SMIT"))
+                                || (measFormat.Contains("POL"))
+                                || (mrkrFormat.Contains("POL"))
+                                || (mrkrFormat.Contains("POL"))
+                                || (mrkrFormat.Contains("LINP"))
+                                || (mrkrFormat.Contains("LOGP"))
+                            )
                             {
                                 // Finally get the Y value:  (Real, Imaginary)
-                                var yString = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:Y?");
+                                var yString = PNAX.ScpiQuery(
+                                    $"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:Y?"
+                                );
                                 var y = yString.Split(',').Select(double.Parse).ToList();
                                 mrkrY = y[0];
-
                             }
                             else
                             {
                                 // Finally get the Y value:  (Value,0)
-                                var yString = PNAX.ScpiQuery($"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:Y?");
+                                var yString = PNAX.ScpiQuery(
+                                    $"CALCulate{channel}:MEASure{trace}:MARKer{mkr}:Y?"
+                                );
                                 var y = yString.Split(',').Select(double.Parse).ToList();
                                 mrkrY = y[0];
                             }
@@ -165,7 +183,8 @@ namespace OpenTap.Plugins.PNAX
                             // if parent metadata
                             if (this.Parent is StoreMultiPeakSearch)
                             {
-                                List<(string, object)> ParentMetaData = GetParent<StoreMultiPeakSearch>().MetaData;
+                                List<(string, object)> ParentMetaData =
+                                    GetParent<StoreMultiPeakSearch>().MetaData;
                                 if ((ParentMetaData != null) && (ParentMetaData.Count > 0))
                                 {
                                     // for every item in metadata
@@ -183,17 +202,12 @@ namespace OpenTap.Plugins.PNAX
                                 publishFileName = $"{FileName}_{channel.ToString()}";
                             }
                             Results.Publish(publishFileName, ResultNames, ResultValues.ToArray());
-
                         }
-
-
                     }
                 }
             }
 
             UpgradeVerdict(Verdict.Pass);
         }
-
     }
-
 }

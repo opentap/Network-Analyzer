@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,18 +18,22 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("FCEN")]
         [Display("Sweep fc")]
         SweepFc,
+
         [Scpi("DFR")]
         [Display("Sweep DeltaF")]
         SweepDeltaF,
+
         [Scpi("POW")]
         [Display("Power Sweep")]
         PowerSweep,
+
         [Scpi("CW")]
         [Display("CW")]
         CW,
+
         [Scpi("LOP")]
         [Display("LO Power Sweep")]
-        LOPowerSweep
+        LOPowerSweep,
     }
 
     public enum XAxisDisplayAnnotationEnum
@@ -37,33 +41,38 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("INP")]
         [Display("Input")]
         Input,
+
         [Scpi("OUTP")]
         [Display("Output")]
         Output,
+
         [Scpi("LO_1")]
         [Display("LO 1")]
         LO1,
+
         [Scpi("LO_2")]
         [Display("LO 2")]
-        LO2
+        LO2,
     }
 
     //[AllowAsChildIn(typeof(SweptIMDChannel))]
-    [Display("Tone Frequency", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here", Order: 4)]
+    [Display(
+        "Tone Frequency",
+        Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" },
+        Description: "Insert a description here",
+        Order: 4
+    )]
     public class ToneFrequency : ToneFrequencyBaseStep
     {
         #region Settings
 
         [Browsable(false)]
-
         private ToneFrequencySweepTypeEnum _ToneFrequencySweepType;
+
         [Display("Sweep Type", Groups: new[] { "Tone Frequency", "Sweep Type" }, Order: 1)]
         public ToneFrequencySweepTypeEnum ToneFrequencySweepType
         {
-            get
-            {
-                return _ToneFrequencySweepType;
-            }
+            get { return _ToneFrequencySweepType; }
             set
             {
                 _ToneFrequencySweepType = value;
@@ -71,7 +80,10 @@ namespace OpenTap.Plugins.PNAX
                 IsSweepFCEnabled = value == ToneFrequencySweepTypeEnum.SweepFc;
                 IsFixedDeltaFEnabled = IsSweepFCEnabled;
                 IsSweepDeltaFEnabled = value == ToneFrequencySweepTypeEnum.SweepDeltaF;
-                IsPowerSweepEnabled = value == ToneFrequencySweepTypeEnum.CW || value == ToneFrequencySweepTypeEnum.PowerSweep || value == ToneFrequencySweepTypeEnum.LOPowerSweep;
+                IsPowerSweepEnabled =
+                    value == ToneFrequencySweepTypeEnum.CW
+                    || value == ToneFrequencySweepTypeEnum.PowerSweep
+                    || value == ToneFrequencySweepTypeEnum.LOPowerSweep;
 
                 // Update Channel value
                 try
@@ -87,7 +99,6 @@ namespace OpenTap.Plugins.PNAX
                 {
                     Log.Debug("can't find parent yet! ex: " + ex.Message);
                 }
-
             }
         }
 

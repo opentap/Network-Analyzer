@@ -4,20 +4,23 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(MODChannel))]
     //[AllowAsChildIn(typeof(MODXChannel))]
-    [Display("MOD Source Correction", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "MOD Source Correction",
+        Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODSourceCorrection : PNABaseStep
     {
         #region Settings
@@ -48,7 +51,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("dB", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double PowerDesiredTolerance { get; set; }
 
-
         [Display("Enable Cal", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 31)]
         public bool EqualizationEnableCal { get; set; }
 
@@ -66,11 +68,13 @@ namespace OpenTap.Plugins.PNAX
         public int EqualizationMaxIterations { get; set; }
 
         [EnabledIf("EqualizationEnableCal", true, HideIfDisabled = true)]
-        [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "Equalization" }, Order: 35)]
+        [Display(
+            "Desired Tolerance",
+            Groups: new[] { "Modulation Cal", "Equalization" },
+            Order: 35
+        )]
         [Unit("dB-pk", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double EqualizationDesiredTolerance { get; set; }
-
-
 
         [Display("Enable Cal", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 41)]
         public bool DistortionEnableCal { get; set; }
@@ -92,8 +96,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "Distortion" }, Order: 45)]
         [Unit("dBc", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double DistortionDesiredTolerance { get; set; }
-
-
 
         [Display("Enable Cal", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 51)]
         public bool ACPLowerEnableCal { get; set; }
@@ -120,8 +122,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Desired Tolerance", Groups: new[] { "Modulation Cal", "ACP Lower" }, Order: 55)]
         [Unit("dBc", UseEngineeringPrefix: false, StringFormat: "0.00")]
         public double ACPLowerDesiredTolerance { get; set; }
-
-
 
         [Display("Enable Cal", Groups: new[] { "Modulation Cal", "ACP Upper" }, Order: 61)]
         public bool ACPUpperEnableCal { get; set; }
@@ -250,7 +250,12 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.MODCalPort(Channel, Source, PowerCalPort, MODCalTypeEnum.POWer);
                 PNAX.MODCalSpan(Channel, Source, PowerCalSpan, MODCalTypeEnum.POWer);
                 PNAX.MODCalMaxIterations(Channel, Source, PowerMaxIterations, MODCalTypeEnum.POWer);
-                PNAX.MODCalDesiredTolearance(Channel, Source, PowerDesiredTolerance, MODCalTypeEnum.POWer);
+                PNAX.MODCalDesiredTolearance(
+                    Channel,
+                    Source,
+                    PowerDesiredTolerance,
+                    MODCalTypeEnum.POWer
+                );
             }
 
             PNAX.MODCalEnable(Channel, Source, EqualizationEnableCal, MODCalTypeEnum.EQUalization);
@@ -258,8 +263,18 @@ namespace OpenTap.Plugins.PNAX
             {
                 PNAX.MODCalPort(Channel, Source, EqualizationCalPort, MODCalTypeEnum.EQUalization);
                 PNAX.MODCalSpan(Channel, Source, EqualizationCalSpan, MODCalTypeEnum.EQUalization);
-                PNAX.MODCalMaxIterations(Channel, Source, EqualizationMaxIterations, MODCalTypeEnum.EQUalization);
-                PNAX.MODCalDesiredTolearance(Channel, Source, EqualizationDesiredTolerance, MODCalTypeEnum.EQUalization);
+                PNAX.MODCalMaxIterations(
+                    Channel,
+                    Source,
+                    EqualizationMaxIterations,
+                    MODCalTypeEnum.EQUalization
+                );
+                PNAX.MODCalDesiredTolearance(
+                    Channel,
+                    Source,
+                    EqualizationDesiredTolerance,
+                    MODCalTypeEnum.EQUalization
+                );
             }
 
             PNAX.MODCalEnable(Channel, Source, DistortionEnableCal, MODCalTypeEnum.DISTortion);
@@ -267,8 +282,18 @@ namespace OpenTap.Plugins.PNAX
             {
                 PNAX.MODCalPort(Channel, Source, DistortionCalPort, MODCalTypeEnum.DISTortion);
                 PNAX.MODCalSpan(Channel, Source, DistortionCalSpan, MODCalTypeEnum.DISTortion);
-                PNAX.MODCalMaxIterations(Channel, Source, DistortionMaxIterations, MODCalTypeEnum.DISTortion);
-                PNAX.MODCalDesiredTolearance(Channel, Source, DistortionDesiredTolerance, MODCalTypeEnum.DISTortion);
+                PNAX.MODCalMaxIterations(
+                    Channel,
+                    Source,
+                    DistortionMaxIterations,
+                    MODCalTypeEnum.DISTortion
+                );
+                PNAX.MODCalDesiredTolearance(
+                    Channel,
+                    Source,
+                    DistortionDesiredTolerance,
+                    MODCalTypeEnum.DISTortion
+                );
             }
 
             PNAX.MODCalEnable(Channel, Source, ACPLowerEnableCal, MODCalTypeEnum.ACPLower);
@@ -277,8 +302,18 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.MODCalPort(Channel, Source, ACPLowerCalPort, MODCalTypeEnum.ACPLower);
                 PNAX.MODCalSpan(Channel, Source, ACPLowerCalSpan, MODCalTypeEnum.ACPLower);
                 PNAX.MODCalGuardBand(Channel, Source, ACPLowerGuardBand, MODCalTypeEnum.ACPLower);
-                PNAX.MODCalMaxIterations(Channel, Source, ACPLowerMaxIterations, MODCalTypeEnum.ACPLower);
-                PNAX.MODCalDesiredTolearance(Channel, Source, ACPLowerDesiredTolerance, MODCalTypeEnum.ACPLower);
+                PNAX.MODCalMaxIterations(
+                    Channel,
+                    Source,
+                    ACPLowerMaxIterations,
+                    MODCalTypeEnum.ACPLower
+                );
+                PNAX.MODCalDesiredTolearance(
+                    Channel,
+                    Source,
+                    ACPLowerDesiredTolerance,
+                    MODCalTypeEnum.ACPLower
+                );
             }
 
             PNAX.MODCalEnable(Channel, Source, ACPUpperEnableCal, MODCalTypeEnum.ACPUpper);
@@ -287,8 +322,18 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.MODCalPort(Channel, Source, ACPUpperCalPort, MODCalTypeEnum.ACPUpper);
                 PNAX.MODCalSpan(Channel, Source, ACPUpperCalSpan, MODCalTypeEnum.ACPUpper);
                 PNAX.MODCalGuardBand(Channel, Source, ACPUpperGuardBand, MODCalTypeEnum.ACPUpper);
-                PNAX.MODCalMaxIterations(Channel, Source, ACPUpperMaxIterations, MODCalTypeEnum.ACPUpper);
-                PNAX.MODCalDesiredTolearance(Channel, Source, ACPUpperDesiredTolerance, MODCalTypeEnum.ACPUpper);
+                PNAX.MODCalMaxIterations(
+                    Channel,
+                    Source,
+                    ACPUpperMaxIterations,
+                    MODCalTypeEnum.ACPUpper
+                );
+                PNAX.MODCalDesiredTolearance(
+                    Channel,
+                    Source,
+                    ACPUpperDesiredTolerance,
+                    MODCalTypeEnum.ACPUpper
+                );
             }
 
             PNAX.WaitForOperationComplete();
@@ -298,7 +343,7 @@ namespace OpenTap.Plugins.PNAX
 
             // Calibration details returns multiple single responses, using SCPIQuery leaves multiple lines on the queue
             // Better not to use Calibration Details for now
-            //Log.Info("MOD Calibration Details: " + PNAX.MODGetCalibrationDetails(Channel, Source)); 
+            //Log.Info("MOD Calibration Details: " + PNAX.MODGetCalibrationDetails(Channel, Source));
             String calStatus = PNAX.MODGetCalibrationStatus(Channel, Source);
             Log.Info("MOD Calibration Status: " + calStatus);
 

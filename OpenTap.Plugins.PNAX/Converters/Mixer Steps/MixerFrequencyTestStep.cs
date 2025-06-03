@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -17,23 +17,30 @@ namespace OpenTap.Plugins.PNAX
     {
         [Scpi("SWEPT")]
         StartStop,
+
         [Scpi("SWEPT")]
         CenterSpan,
+
         [Scpi("FIXED")]
-        Fixed
+        Fixed,
     }
 
     public enum SidebandTypeEnum
     {
         High,
-        Low
+        Low,
     }
 
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
     //[AllowAsChildIn(typeof(SweptIMDChannel))]
     //[AllowAsChildIn(typeof(NoiseFigureChannel))]
     //[AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Mixer Frequency", Groups: new[] { "Network Analyzer", "Converters" }, Description: "Insert a description here", Order: 3)]
+    [Display(
+        "Mixer Frequency",
+        Groups: new[] { "Network Analyzer", "Converters" },
+        Description: "Insert a description here",
+        Order: 3
+    )]
     public class MixerFrequencyTestStep : PNABaseStep
     {
         #region Settings
@@ -41,20 +48,19 @@ namespace OpenTap.Plugins.PNAX
         #region Input
         [Browsable(false)]
         public bool IsInputMixerFrequencyTypeStartStop { get; set; }
+
         [Browsable(false)]
         public bool IsInputMixerFrequencyTypeCenterSpan { get; set; }
+
         [Browsable(false)]
         public bool IsInputMixerFrequencyTypeFixed { get; set; }
 
-
         private MixerFrequencyTypeEnum _InputMixerFrequencyType;
+
         [Display("Input", Groups: new[] { "Mixer Frequency", "Input" }, Order: 10)]
         public MixerFrequencyTypeEnum InputMixerFrequencyType
         {
-            get
-            {
-                return _InputMixerFrequencyType;
-            }
+            get { return _InputMixerFrequencyType; }
             set
             {
                 _InputMixerFrequencyType = value;
@@ -121,19 +127,19 @@ namespace OpenTap.Plugins.PNAX
         #region LO1
         [Browsable(false)]
         public bool IsLO1MixerFrequencyTypeStartStop { get; set; }
+
         [Browsable(false)]
         public bool IsLO1MixerFrequencyTypeCenterSpan { get; set; }
+
         [Browsable(false)]
         public bool IsLO1MixerFrequencyTypeFixed { get; set; }
 
         private MixerFrequencyTypeEnum _LO1MixerFrequencyType;
+
         [Display("LO1", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 20)]
         public MixerFrequencyTypeEnum LO1MixerFrequencyType
         {
-            get
-            {
-                return _LO1MixerFrequencyType;
-            }
+            get { return _LO1MixerFrequencyType; }
             set
             {
                 _LO1MixerFrequencyType = value;
@@ -202,21 +208,20 @@ namespace OpenTap.Plugins.PNAX
         #region IF
         [Browsable(false)]
         public bool IsIFMixerFrequencyTypeStartStop { get; set; }
+
         [Browsable(false)]
         public bool IsIFMixerFrequencyTypeCenterSpan { get; set; }
+
         [Browsable(false)]
         public bool IsIFMixerFrequencyTypeFixed { get; set; }
 
-
         private MixerFrequencyTypeEnum _IFMixerFrequencyType;
+
         [Display("IF", Groups: new[] { "Mixer Frequency", "IF" }, Order: 30)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public MixerFrequencyTypeEnum IFMixerFrequencyType
         {
-            get
-            {
-                return _IFMixerFrequencyType;
-            }
+            get { return _IFMixerFrequencyType; }
             set
             {
                 _IFMixerFrequencyType = value;
@@ -279,20 +284,20 @@ namespace OpenTap.Plugins.PNAX
         #region LO2
         [Browsable(false)]
         public bool IsLO2MixerFrequencyTypeStartStop { get; set; }
+
         [Browsable(false)]
         public bool IsLO2MixerFrequencyTypeCenterSpan { get; set; }
+
         [Browsable(false)]
         public bool IsLO2MixerFrequencyTypeFixed { get; set; }
 
         private MixerFrequencyTypeEnum _LO2MixerFrequencyType;
+
         [Display("LO2", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 40)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public MixerFrequencyTypeEnum LO2MixerFrequencyType
         {
-            get
-            {
-                return _LO2MixerFrequencyType;
-            }
+            get { return _LO2MixerFrequencyType; }
             set
             {
                 _LO2MixerFrequencyType = value;
@@ -368,20 +373,19 @@ namespace OpenTap.Plugins.PNAX
         #region Output
         [Browsable(false)]
         public bool IsOutputMixerFrequencyTypeStartStop { get; set; }
+
         [Browsable(false)]
         public bool IsOutputMixerFrequencyTypeCenterSpan { get; set; }
+
         [Browsable(false)]
         public bool IsOutputMixerFrequencyTypeFixed { get; set; }
 
-
         private MixerFrequencyTypeEnum _OutputMixerFrequencyType;
+
         [Display("Output", Groups: new[] { "Mixer Frequency", "Output" }, Order: 50)]
         public MixerFrequencyTypeEnum OutputMixerFrequencyType
         {
-            get
-            {
-                return _OutputMixerFrequencyType;
-            }
+            get { return _OutputMixerFrequencyType; }
             set
             {
                 _OutputMixerFrequencyType = value;
@@ -449,7 +453,6 @@ namespace OpenTap.Plugins.PNAX
         #endregion
 
 
-
         #endregion
 
 
@@ -466,7 +469,9 @@ namespace OpenTap.Plugins.PNAX
                 int traceid = PNAX.GetNewTraceID(DummyChannel);
                 // Define a dummy measurement so we can setup all channel parameters
                 // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'"
+                );
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -498,7 +503,9 @@ namespace OpenTap.Plugins.PNAX
                 }
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                );
 
                 PNAX.Close();
             }
@@ -506,13 +513,14 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    PNAX.ScpiCommand(
+                        $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                    );
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate Input values!");
                 return;
             }
-
         }
 
         private void CalcLO1Values()
@@ -528,7 +536,9 @@ namespace OpenTap.Plugins.PNAX
                 int traceid = PNAX.GetNewTraceID(DummyChannel);
                 // Define a dummy measurement so we can setup all channel parameters
                 // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'"
+                );
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -564,7 +574,9 @@ namespace OpenTap.Plugins.PNAX
                 InputGTLO1 = ReadInputGTLO1;
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                );
 
                 PNAX.Close();
             }
@@ -572,13 +584,14 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    PNAX.ScpiCommand(
+                        $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                    );
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate LO1 values!");
                 return;
             }
-
         }
 
         private void CalcLO2Values()
@@ -594,7 +607,9 @@ namespace OpenTap.Plugins.PNAX
                 int traceid = PNAX.GetNewTraceID(DummyChannel);
                 // Define a dummy measurement so we can setup all channel parameters
                 // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'"
+                );
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -629,7 +644,9 @@ namespace OpenTap.Plugins.PNAX
                 IF1GTLO2 = ReadInputGTLO2;
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                );
 
                 PNAX.Close();
             }
@@ -637,13 +654,14 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    PNAX.ScpiCommand(
+                        $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                    );
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate LO2 values!");
                 return;
             }
-
         }
 
         private void CalcOutputValues()
@@ -659,7 +677,9 @@ namespace OpenTap.Plugins.PNAX
                 int traceid = PNAX.GetNewTraceID(DummyChannel);
                 // Define a dummy measurement so we can setup all channel parameters
                 // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'"
+                );
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -686,15 +706,21 @@ namespace OpenTap.Plugins.PNAX
                 else if (inpMode.Equals("FIXED"))
                 {
                     OutputMixerFrequencyType = MixerFrequencyTypeEnum.Fixed;
-                    double ReadOutputMixerFrequencyFixed = PNAX.GetFrequencyOutputFixed(DummyChannel);
+                    double ReadOutputMixerFrequencyFixed = PNAX.GetFrequencyOutputFixed(
+                        DummyChannel
+                    );
                     OutputMixerFrequencyFixed = ReadOutputMixerFrequencyFixed;
                 }
 
-                SidebandTypeEnum ReadOutputSidebandType = PNAX.GetFrequencyOutputSideband(DummyChannel);
+                SidebandTypeEnum ReadOutputSidebandType = PNAX.GetFrequencyOutputSideband(
+                    DummyChannel
+                );
                 OutputSidebandType = ReadOutputSidebandType;
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                PNAX.ScpiCommand(
+                    $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                );
 
                 PNAX.Close();
             }
@@ -702,13 +728,14 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    PNAX.ScpiCommand(
+                        $"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'"
+                    );
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate Input values!");
                 return;
             }
-
         }
 
         public MixerFrequencyTestStep()
@@ -1115,6 +1142,5 @@ namespace OpenTap.Plugins.PNAX
         {
             return retVal;
         }
-
     }
 }

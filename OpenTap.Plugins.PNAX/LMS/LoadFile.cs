@@ -1,24 +1,38 @@
-﻿using OpenTap;   // Use OpenTAP infrastructure/core components (log,TestStep definition, etc)
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
+using OpenTap; // Use OpenTAP infrastructure/core components (log,TestStep definition, etc)
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Load File", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Load State File From Controlling computer")]
+    [Display(
+        "Load File",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Load State File From Controlling computer"
+    )]
     public class LoadFile : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-        [Display("State Filename", "Specfiy path and filename for csa data to be loaded", "Load File", Order: 10)]
+        [Display(
+            "State Filename",
+            "Specfiy path and filename for csa data to be loaded",
+            "Load File",
+            Order: 10
+        )]
         [FilePath(FilePathAttribute.BehaviorChoice.Open, "csa")]
         public string StateFile { get; set; }
 
-        [Display("Force Copy", "Overwrite state file even if it already exists on instrument", "Load File", Order: 20)]
+        [Display(
+            "Force Copy",
+            "Overwrite state file even if it already exists on instrument",
+            "Load File",
+            Order: 20
+        )]
         public bool overwrite { get; set; }
         #endregion
 
@@ -56,7 +70,8 @@ namespace OpenTap.Plugins.PNAX
 
         private bool IsFileValid()
         {
-            if (string.IsNullOrEmpty(StateFile)) return false;
+            if (string.IsNullOrEmpty(StateFile))
+                return false;
 
             return File.Exists(StateFile);
         }

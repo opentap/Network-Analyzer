@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -28,7 +28,7 @@ namespace OpenTap.Plugins.PNAX
         AI2,
         AIG,
         AOS1,
-        AOS2
+        AOS2,
     }
 
     public enum IMDToneSelectEnum
@@ -37,20 +37,25 @@ namespace OpenTap.Plugins.PNAX
         Low,
         High,
         Max,
-        Min
+        Min,
     }
 
     public enum IMDMeasureAtEnum
     {
         [Display("DUT IN")]
         DUTIN,
+
         [Display("DUT OUT")]
-        DUTOUT
+        DUTOUT,
     }
 
     //[AllowAsChildIn(typeof(SweptIMDChannel))]
     //[AllowChildrenOfType(typeof(SweptIMDSingleTrace))]
-    [Display("Swept IMD Traces", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Swept IMD Traces",
+        Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" },
+        Description: "Insert a description here"
+    )]
     public class SweptIMDNewTrace : AddNewTraceBaseStep
     {
         #region Settings
@@ -62,6 +67,7 @@ namespace OpenTap.Plugins.PNAX
         public string ParamName { get; set; }
 
         private IMDTraceTypeEnum _IMDTraceType;
+
         [Display("Type", Groups: new[] { "Trace" }, Order: 1)]
         public IMDTraceTypeEnum IMDTraceType
         {
@@ -69,8 +75,10 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _IMDTraceType = value;
-                if ((_IMDTraceType == IMDTraceTypeEnum.TonePower) ||
-                    (_IMDTraceType == IMDTraceTypeEnum.ToneGain))
+                if (
+                    (_IMDTraceType == IMDTraceTypeEnum.TonePower)
+                    || (_IMDTraceType == IMDTraceTypeEnum.ToneGain)
+                )
                 {
                     IMDOrderOptions = new List<int> { 1, 2, 3, 5, 7, 9 };
                     IMDOrder = 1;
@@ -84,15 +92,12 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         private IMDToneSelectEnum _MDToneSelect;
+
         [Display("Tone Select", Groups: new[] { "Trace" }, Order: 2)]
         public IMDToneSelectEnum IMDToneSelect
         {
-            get
-            {
-                return _MDToneSelect;
-            }
+            get { return _MDToneSelect; }
             set
             {
                 _MDToneSelect = value;
@@ -101,6 +106,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private List<int> _IMDOrderOptions = new List<int> { 1, 2, 3, 5, 7, 9 };
+
         [Browsable(false)]
         [Display("Order Options", Groups: new[] { "Trace" }, Order: 0.1)]
         public List<int> IMDOrderOptions
@@ -114,14 +120,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private int _IMDOrder;
+
         [AvailableValues(nameof(IMDOrderOptions))]
         [Display("Order", Groups: new[] { "Trace" }, Order: 3)]
         public int IMDOrder
         {
-            get
-            {
-                return _IMDOrder;
-            }
+            get { return _IMDOrder; }
             set
             {
                 _IMDOrder = value;
@@ -129,23 +133,18 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
-
         private IMDMeasureAtEnum _IMDMeasureAt;
+
         [Display("Measure At", Groups: new[] { "Trace" }, Order: 4)]
         public IMDMeasureAtEnum IMDMeasureAt
         {
-            get
-            {
-                return _IMDMeasureAt;
-            }
+            get { return _IMDMeasureAt; }
             set
             {
                 _IMDMeasureAt = value;
                 UpdateSweptIMDConverterTestName();
             }
         }
-
 
         #endregion
 
@@ -278,12 +277,30 @@ namespace OpenTap.Plugins.PNAX
             EnableButton = false;
             IsConverter = true;
             UpdateSweptIMDConverterTestName();
-            ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new SweptIMDSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
 
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            this.ChildTestSteps.Add(
+                new SweptIMDSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
 
         public override void Run()
@@ -291,7 +308,9 @@ namespace OpenTap.Plugins.PNAX
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_PwrMain_1\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_PwrMain_1\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

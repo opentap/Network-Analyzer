@@ -44,13 +44,13 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        protected virtual void AddNewTrace()
-        {
-        }
+        protected virtual void AddNewTrace() { }
 
         protected virtual void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_{measEnumName}_1\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_{measEnumName}_1\'"
+            );
         }
     }
 }

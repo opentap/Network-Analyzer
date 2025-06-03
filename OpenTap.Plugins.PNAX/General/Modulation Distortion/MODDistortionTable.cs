@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("MOD Distortion Table", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "MOD Distortion Table",
+        Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODDistortionTable : PNABaseStep
     {
         #region Settings
@@ -43,7 +47,11 @@ namespace OpenTap.Plugins.PNAX
         {
             Window = 1;
             ShowTable = true;
-            MODTableSetupCarrier = MODTableSetupCarrierEnum.CarrierIn1dBm | MODTableSetupCarrierEnum.CarrierOut2dBm | MODTableSetupCarrierEnum.CarrierGain21dB | MODTableSetupCarrierEnum.CarrierIBW;
+            MODTableSetupCarrier =
+                MODTableSetupCarrierEnum.CarrierIn1dBm
+                | MODTableSetupCarrierEnum.CarrierOut2dBm
+                | MODTableSetupCarrierEnum.CarrierGain21dB
+                | MODTableSetupCarrierEnum.CarrierIBW;
             MODTableSetupEVM = MODTableSetupEVMEnum.EVMDistEq21;
             MODTableSetupNPR = MODTableSetupNPREnum.NPROut2dBc;
             MODTableSetupACP = MODTableSetupACPEnum.ACPUpIn1dBc | MODTableSetupACPEnum.ACPUpOut2dBc;

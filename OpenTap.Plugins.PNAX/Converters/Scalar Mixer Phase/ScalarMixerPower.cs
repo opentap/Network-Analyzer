@@ -4,29 +4,31 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Scalar Mixer Power", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display(
+        "Scalar Mixer Power",
+        Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" },
+        Description: "Insert a description here"
+    )]
     public class ScalarMixerPower : PowerBaseStep
     {
         #region Settings
         private ScalerMixerSweepType _SweepType;
+
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Sweep Type", Order: 0.5)]
         public ScalerMixerSweepType SweepType
         {
-            get
-            {
-                return _SweepType;
-            }
+            get { return _SweepType; }
             set
             {
                 _SweepType = value;
@@ -42,7 +44,6 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
-
 
         [Browsable(false)]
         public bool EnablePowerSweepOutputEdit { get; set; } = false;
@@ -152,21 +153,18 @@ namespace OpenTap.Plugins.PNAX
             {
                 ("PowerOnAllChannels", PowerOnAllChannels),
                 ("PortPowersCoupled", PortPowersCoupled),
-
                 ("SMC PortInput", PortInput),
                 ("SMC PortOutput", PortOutput),
-
                 ("SMC_InputPower", InputPower),
                 ("SMC_InputPortSourceAttenuator", InputPortSourceAttenuator),
                 ("SMC_InputPortReceiverAttenuator", InputPortReceiverAttenuator),
                 ("SMC_InputSourceLevelingMode", InputSourceLevelingMode),
                 ("SMC_AutoInputPortSourceAttenuator", AutoInputPortSourceAttenuator),
-
                 ("SMC_OutputPower", OutputPower),
                 ("SMC_OutputPortSourceAttenuator", OutputPortSourceAttenuator),
                 ("SMC_OutputPortReceiverAttenuator", OutputPortReceiverAttenuator),
                 ("SMC_OutputSourceLevelingMode", OutputSourceLevelingMode),
-                ("SMC_AutoOutputPortSourceAttenuator", AutoOutputPortSourceAttenuator)
+                ("SMC_AutoOutputPortSourceAttenuator", AutoOutputPortSourceAttenuator),
             };
 
             if (EnablePowerSweepOutputEdit)
@@ -188,6 +186,5 @@ namespace OpenTap.Plugins.PNAX
 
             return retVal;
         }
-
     }
 }

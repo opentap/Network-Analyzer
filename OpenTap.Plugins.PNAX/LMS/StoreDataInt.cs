@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Trace Data - Integer", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends an integer data to trace.")]
+    [Display(
+        "Store Trace Data - Integer",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Appends an integer data to trace."
+    )]
     [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDataInt : TestStep
     {
@@ -40,5 +44,4 @@ namespace OpenTap.Plugins.PNAX.LMS
             UpgradeVerdict(Verdict.Pass);
         }
     }
-
 }

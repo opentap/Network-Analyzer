@@ -1,13 +1,17 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Window Size", Groups: new[] { "Network Analyzer" }, Description: "Set and read the display size. The settings are minimum (minimizes the display), maximum, and normal.")]
+    [Display(
+        "Window Size",
+        Groups: new[] { "Network Analyzer" },
+        Description: "Set and read the display size. The settings are minimum (minimizes the display), maximum, and normal."
+    )]
     public class WindowSize : TestStep
     {
         #region Settings
@@ -19,7 +23,6 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Window Size", Order: 3)]
         public VNAWindowSize windowSize { get; set; }
-
 
         #endregion
 

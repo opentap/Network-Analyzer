@@ -25,14 +25,12 @@ namespace OpenTap.Plugins.PNAX
         public string Trace { get; set; }
 
         private bool _CustomTraceMeas;
+
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Custom Meas", Groups: new[] { "Trace" }, Order: 10.9)]
         public bool CustomTraceMeas
         {
-            get
-            {
-                return _CustomTraceMeas;
-            }
+            get { return _CustomTraceMeas; }
             set
             {
                 _CustomTraceMeas = value;
@@ -41,14 +39,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private string _CustomMeas;
+
         [EnabledIf(nameof(CustomTraceMeas), true, HideIfDisabled = true)]
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11.2)]
         public String CustomMeas
         {
-            get
-            {
-                return _CustomMeas;
-            }
+            get { return _CustomMeas; }
             set
             {
                 _CustomMeas = value;
@@ -63,7 +59,6 @@ namespace OpenTap.Plugins.PNAX
         [EnabledIf(nameof(CustomTraceMeas), true, HideIfDisabled = true)]
         [Display("Expression", Groups: new[] { "Trace" }, Order: 11.21)]
         public string Expression { get; set; }
-
 
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Window", Groups: new[] { "Trace" }, Order: 14)]
@@ -131,7 +126,14 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
         public virtual void AddMarker()
         {
-            ChildTestSteps.Add(new Marker() { PNAX = PNAX, Channel = Channel, mkr = NextMarker() });
+            ChildTestSteps.Add(
+                new Marker()
+                {
+                    PNAX = PNAX,
+                    Channel = Channel,
+                    mkr = NextMarker(),
+                }
+            );
         }
 
         public int NextMarker()
@@ -158,10 +160,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(true)]
         [EnabledIf("EnableTraceSettings", true, HideIfDisabled = true)]
         [Display("Add Multi Peak Search", Groups: new[] { "Trace" }, Order: 70)]
-        public virtual void AddMultiPeakSearch()
-        {
-        }
-
+        public virtual void AddMultiPeakSearch() { }
 
         public virtual void UpdateTestStepName()
         {
@@ -199,12 +198,20 @@ namespace OpenTap.Plugins.PNAX
             //}
             //else
             //{
-            PNAX.AddNewTrace(Channel, Window, Trace, measClass, finalMeasEnumName, ref _tnum, ref _mnum, ref _MeasName);
+            PNAX.AddNewTrace(
+                Channel,
+                Window,
+                Trace,
+                measClass,
+                finalMeasEnumName,
+                ref _tnum,
+                ref _mnum,
+                ref _MeasName
+            );
             //}
             tnum = _tnum;
             mnum = _mnum;
             MeasName = _MeasName;
         }
-
     }
 }

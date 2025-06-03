@@ -1,13 +1,17 @@
-﻿using OpenTap;   // Use OpenTAP infrastructure/core components (log,TestStep definition, etc)
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
+using OpenTap; // Use OpenTAP infrastructure/core components (log,TestStep definition, etc)
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Start Cal All", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Starts Cal All on the instrument")]
+    [Display(
+        "Start Cal All",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Starts Cal All on the instrument"
+    )]
     public class StartCalAll : TestStep
     {
         #region Settings
@@ -16,9 +20,7 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-        public StartCalAll()
-        {
-        }
+        public StartCalAll() { }
 
         public override void Run()
         {
@@ -28,6 +30,5 @@ namespace OpenTap.Plugins.PNAX
 
             UpgradeVerdict(Verdict.Pass);
         }
-
     }
 }

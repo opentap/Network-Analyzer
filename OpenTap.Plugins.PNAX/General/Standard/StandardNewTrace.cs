@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -25,7 +25,11 @@ namespace OpenTap.Plugins.PNAX
 
     //[AllowAsChildIn(typeof(StandardChannel))]
     //[AllowChildrenOfType(typeof(StandardSingleTrace))]
-    [Display("Standard New Trace", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
+    [Display(
+        "Standard New Trace",
+        Groups: new[] { "Network Analyzer", "General", "Standard" },
+        Description: "Insert a description here"
+    )]
     public class StandardNewTrace : AddNewTraceBaseStep
     {
         #region Settings
@@ -36,7 +40,16 @@ namespace OpenTap.Plugins.PNAX
         public StandardNewTrace()
         {
             Meas = StandardTraceEnum.S11;
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new StandardSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
 
         // overloaded constructor for window and sheet
@@ -45,13 +58,22 @@ namespace OpenTap.Plugins.PNAX
             if ((standardTraces is null) || (standardTraces.Count == 0))
             {
                 // add default trace
-                ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = StandardTraceEnum.S11 });
+                ChildTestSteps.Add(
+                    new StandardSingleTrace() { PNAX = this.PNAX, Meas = StandardTraceEnum.S11 }
+                );
                 return;
             }
 
             foreach (StandardTrace tr in standardTraces)
             {
-                StandardSingleTrace sstr = new StandardSingleTrace() { PNAX = this.PNAX, Channel = tr.Channel, Meas = tr.Meas, Window = tr.Window, Sheet = tr.Sheet };
+                StandardSingleTrace sstr = new StandardSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Channel = tr.Channel,
+                    Meas = tr.Meas,
+                    Window = tr.Window,
+                    Sheet = tr.Sheet,
+                };
 
                 sstr.AddTraceFormat(tr.MeasurementFormat);
 
@@ -78,8 +100,16 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new StandardSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
-
     }
 }

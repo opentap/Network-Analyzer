@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -29,14 +29,18 @@ namespace OpenTap.Plugins.PNAX
         AI2_2,
     }
 
-
     //[AllowAsChildIn(typeof(ScalarMixerChannel))]
     //[AllowAsChildIn(typeof(ScalarMixerNewTrace))]
-    [Display("Scalar Mixer Single Trace", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display(
+        "Scalar Mixer Single Trace",
+        Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" },
+        Description: "Insert a description here"
+    )]
     public class ScalarMixerSingleTrace : SingleTraceBaseStep
     {
         #region Settings
         private SMCTraceEnum _Meas;
+
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11)]
         public SMCTraceEnum Meas
         {
@@ -56,6 +60,5 @@ namespace OpenTap.Plugins.PNAX
             Meas = SMCTraceEnum.SC21;
             measClass = "Scalar Mixer/Converter";
         }
-
     }
 }

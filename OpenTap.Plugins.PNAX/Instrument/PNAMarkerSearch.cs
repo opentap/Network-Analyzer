@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -18,12 +18,14 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("NEG")]
         [Display("Negative")]
         NEG,
+
         [Scpi("POS")]
         [Display("Positive")]
         POS,
+
         [Scpi("BOTH")]
         [Display("Both")]
-        BOTH
+        BOTH,
     }
 
     public partial class PNAX : ScpiInstrument
@@ -46,18 +48,28 @@ namespace OpenTap.Plugins.PNAX
 
         public void SetMultiPeakSearchThreshold(int Channel, int mnum, double value)
         {
-            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:THReshold {value}");
+            ScpiCommand(
+                $"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:THReshold {value}"
+            );
         }
 
         public void SetMultiPeakSearchExcursion(int Channel, int mnum, double value)
         {
-            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:EXCursion {value}");
+            ScpiCommand(
+                $"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:EXCursion {value}"
+            );
         }
 
-        public void SetMultiPeakSearchPolarity(int Channel, int mnum, SAMultiPeakSearchPolarityEnumType value)
+        public void SetMultiPeakSearchPolarity(
+            int Channel,
+            int mnum,
+            SAMultiPeakSearchPolarityEnumType value
+        )
         {
             string scpi = Scpi.Format("{0}", value);
-            ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:POLarity {scpi}");
+            ScpiCommand(
+                $"CALCulate{Channel}:MEASure{mnum}:MARKer:FUNCtion:MULTi:PEAK:POLarity {scpi}"
+            );
         }
 
         public void SetMarkersOff(int Channel, int mnum)

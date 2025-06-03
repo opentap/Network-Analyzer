@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,26 +18,33 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("INTernal")]
         [Display("Internal")]
         INTernal,
+
         [Scpi("OPENloop")]
         [Display("Open Loop")]
-        OPENloop
+        OPENloop,
     }
 
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
     //[AllowAsChildIn(typeof(SweptIMDChannel))]
     //[AllowAsChildIn(typeof(NoiseFigureChannel))]
     //[AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Mixer Power", Groups: new[] { "Network Analyzer", "Converters" }, Description: "Insert a description here", Order: 2)]
+    [Display(
+        "Mixer Power",
+        Groups: new[] { "Network Analyzer", "Converters" },
+        Description: "Insert a description here",
+        Order: 2
+    )]
     public class MixerPowerTestStep : PNABaseStep
     {
         #region Settings
         [Browsable(false)]
         public bool EnablePort3Settings { get; set; } = true;
+
         [Browsable(false)]
         public bool EnablePort4Settings { get; set; } = true;
+
         [Browsable(false)]
         public bool EnableSweptPowerSettings { get; set; } = true;
-
 
         [Display("Power On (All Channels)", Order: 10)]
         public bool PowerOnAllChannels { get; set; }
@@ -46,14 +53,12 @@ namespace OpenTap.Plugins.PNAX
         public bool EnableLO1 { get; set; }
 
         private LOEnum _PortLO1;
+
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("LO1", Group: "LO1", Order: 20)]
         public LOEnum PortLO1
         {
-            get
-            {
-                return _PortLO1;
-            }
+            get { return _PortLO1; }
             set
             {
                 _PortLO1 = value;
@@ -77,21 +82,18 @@ namespace OpenTap.Plugins.PNAX
         [Display("Source Leveling Mode", Group: "LO1", Order: 22)]
         public SourceLevelingModeType SourceLevelingModeLO1 { get; set; }
 
-
         [Browsable(false)]
         public bool EnableLO2 { get; set; }
 
         private LOEnum _PortLO2;
+
         [EnabledIf("ConverterStages", ConverterStagesEnum._2, HideIfDisabled = false)]
         [EnabledIf("EnableLO2", true, HideIfDisabled = false)]
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("LO2", Group: "LO2", Order: 30)]
         public LOEnum PortLO2
         {
-            get
-            {
-                return _PortLO2;
-            }
+            get { return _PortLO2; }
             set
             {
                 _PortLO2 = value;
@@ -174,8 +176,8 @@ namespace OpenTap.Plugins.PNAX
             var defaultValues = PNAX.GetMixerPowerDefaultValues();
             var defaultMixerSetupValues = PNAX.GetMixerSetupDefaultValues();
 
-            PortLO1 = defaultMixerSetupValues.PortLO1;  // get this value from TestStep MixerSetupTestStep.cs
-            PortLO2 = defaultMixerSetupValues.PortLO2;  // get this value from TestStep MixerSetupTestStep.cs
+            PortLO1 = defaultMixerSetupValues.PortLO1; // get this value from TestStep MixerSetupTestStep.cs
+            PortLO2 = defaultMixerSetupValues.PortLO2; // get this value from TestStep MixerSetupTestStep.cs
 
             PowerOnAllChannels = defaultValues.PowerOnAllChannels;
 
@@ -280,6 +282,5 @@ namespace OpenTap.Plugins.PNAX
 
             return retVal;
         }
-
     }
 }

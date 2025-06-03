@@ -1,7 +1,7 @@
-﻿using Keysight.OpenTap.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using OpenTap;
-using System.IO;
+using Keysight.OpenTap.Wpf;
 using Microsoft.Win32;
+using OpenTap;
 
 namespace TestPlanGenerator
 {
@@ -29,8 +29,10 @@ namespace TestPlanGenerator
 
         public TestGen()
         {
-            string finalFileName = System.IO.Directory.GetCurrentDirectory() + "\\" + @"\Input.xlsx";
-            string dialogFileName = System.IO.Directory.GetCurrentDirectory() + "\\" + @"\DialogTemplates.csv";
+            string finalFileName =
+                System.IO.Directory.GetCurrentDirectory() + "\\" + @"\Input.xlsx";
+            string dialogFileName =
+                System.IO.Directory.GetCurrentDirectory() + "\\" + @"\DialogTemplates.csv";
 
             InitializeComponent();
             DataContext = new TestGenModel();
@@ -57,48 +59,49 @@ namespace TestPlanGenerator
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if ((e.Key == Key.Return) || (e.Key == Key.Enter))
             {
                 // Update binding value
-                BindingExpression binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
+                BindingExpression binding = ((TextBox)sender).GetBindingExpression(
+                    TextBox.TextProperty
+                );
                 binding.UpdateSource();
 
                 // Switch focus to indicate user the change was made
                 //MainPanel.Focus();
             }
-
         }
 
         private void OnLostFocusHandler(object sender, RoutedEventArgs e)
         {
-
             // Update binding value
-            BindingExpression binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
+            BindingExpression binding = ((TextBox)sender).GetBindingExpression(
+                TextBox.TextProperty
+            );
             binding.UpdateSource();
 
             // Switch focus to indicate user the change was made
             //MainPanel.Focus();
-
         }
 
         private void GeneratePlanButton_Click(object sender, RoutedEventArgs e)
         {
-
-            this.traceSource.Info("TestPlanInputFileName: " + (DataContext as TestGenModel).TestPlanInputFileName);
-
+            this.traceSource.Info(
+                "TestPlanInputFileName: " + (DataContext as TestGenModel).TestPlanInputFileName
+            );
 
             TestPlan testPlan = (DataContext as TestGenModel).GenerateTestPlan();
             SetTestPlan(testPlan);
-
         }
 
         private void GenerateDialogPlanButton_Click(object sender, RoutedEventArgs e)
         {
-
-            this.traceSource.Info("TestPlanInputFileName: " + (DataContext as TestGenModel).TestPlanDialogInputFileName);
+            this.traceSource.Info(
+                "TestPlanInputFileName: "
+                    + (DataContext as TestGenModel).TestPlanDialogInputFileName
+            );
 
             // Dialog Test Plan
             TestPlan testPlan = (DataContext as TestGenModel).GenerateDialogTestPlan();
@@ -115,9 +118,7 @@ namespace TestPlanGenerator
             {
                 (DataContext as TestGenModel).TestPlanInputFileName = dlg.FileName;
             }
-
         }
-
 
         private void SetTestPlan(TestPlan testPlan)
         {
@@ -144,7 +145,6 @@ namespace TestPlanGenerator
             {
                 (DataContext as TestGenModel).TestPlanInputFileName = dlg.FileName;
             }
-
         }
 
         private void BrowseOutputFileButton_Click(object sender, RoutedEventArgs e)

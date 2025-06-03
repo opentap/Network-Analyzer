@@ -4,31 +4,30 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum InputSourceLevelingModeEnum
     {
         [Scpi("INT")]
         Internal,
+
         [Scpi("OPEN")]
         OpenLoop,
-        ReceiverR1
+        ReceiverR1,
     }
 
     public enum OutputSourceLevelingModeEnum
     {
         Internal,
-        ReceiverR2
+        ReceiverR2,
     }
-
 
     [Browsable(false)]
     public class PowerBaseStep : PNABaseStep
@@ -40,6 +39,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool HasPortPowersCoupled { get; set; } = false;
         private bool _portPowersCoupled;
+
         [EnabledIf("HasPortPowersCoupled", true, HideIfDisabled = true)]
         [Display("Port Powers Coupled", Order: 11)]
         public bool PortPowersCoupled
@@ -61,6 +61,7 @@ namespace OpenTap.Plugins.PNAX
         public PortsEnum PortInput { get; set; }
 
         private double _inputPower;
+
         [Display("Power Level", Group: "DUT Input Port", Order: 21)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public virtual double InputPower
@@ -77,6 +78,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool HasAutoInputPort { get; set; } = false;
         private bool _autoInputPortSourceAttenuator;
+
         [EnabledIf("HasAutoInputPort", true, HideIfDisabled = true)]
         [Display("Auto", Group: "DUT Input Port", Order: 22)]
         public bool AutoInputPortSourceAttenuator
@@ -93,6 +95,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public double InputPortSourceAttenuatorAutoValue { get; set; }
         private double _inputPortSourceAttenuator;
+
         [EnabledIf("AutoInputPortSourceAttenuator", false)]
         [Display("Source Attenuator", Group: "DUT Input Port", Order: 22)]
         [Unit("dB", UseEngineeringPrefix: true)]
@@ -100,7 +103,9 @@ namespace OpenTap.Plugins.PNAX
         {
             get
             {
-                return AutoInputPortSourceAttenuator ? InputPortSourceAttenuatorAutoValue : _inputPortSourceAttenuator;
+                return AutoInputPortSourceAttenuator
+                    ? InputPortSourceAttenuatorAutoValue
+                    : _inputPortSourceAttenuator;
             }
             set
             {
@@ -119,6 +124,7 @@ namespace OpenTap.Plugins.PNAX
 
         [Browsable(false)]
         public bool OutputPortEnabled { get; set; } = true;
+
         [EnabledIf("OutputPortEnabled", true)]
         [Display("Output Port", Group: "DUT Output Port", Order: 30)]
         public PortsEnum PortOutput { get; set; }
@@ -135,6 +141,7 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public double OutputPortSourceAttenuatorAutoValue { get; set; }
         private double _outputPortSourceAttenuator;
+
         [EnabledIf("AutoOutputPortSourceAttenuator", false)]
         [EnabledIf("PortPowersCoupled", false)]
         [Display("Source Attenuator", Group: "DUT Output Port", Order: 33)]
@@ -143,12 +150,11 @@ namespace OpenTap.Plugins.PNAX
         {
             get
             {
-                return AutoOutputPortSourceAttenuator ? OutputPortSourceAttenuatorAutoValue : _outputPortSourceAttenuator;
+                return AutoOutputPortSourceAttenuator
+                    ? OutputPortSourceAttenuatorAutoValue
+                    : _outputPortSourceAttenuator;
             }
-            set
-            {
-                _outputPortSourceAttenuator = value;
-            }
+            set { _outputPortSourceAttenuator = value; }
         }
 
         [Display("Receiver Attenuator (A)", Group: "DUT Output Port", Order: 34)]
@@ -157,7 +163,6 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Source Leveling Mode", Group: "DUT Output Port", Order: 35)]
         public OutputSourceLevelingModeEnum OutputSourceLevelingMode { get; set; }
-
 
         #endregion
 
@@ -246,9 +251,6 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetSourceAttenuatorAutoMode(Channel, PortOutput, AutoOutputPortSourceAttenuator);
         }
 
-        protected virtual void SetSweepPower()
-        {
-
-        }
+        protected virtual void SetSweepPower() { }
     }
 }

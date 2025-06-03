@@ -4,20 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
-
-
     //[AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [Display("Noise Figure", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Noise Figure",
+        Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" },
+        Description: "Insert a description here"
+    )]
     public class NoiseFigure : NoiseFigureBaseStep
     {
         public NoiseFigure()

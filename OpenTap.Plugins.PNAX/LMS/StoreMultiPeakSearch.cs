@@ -4,24 +4,32 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Multi Peak Search", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Insert a description here")]
+    [Display(
+        "Store Multi Peak Search",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Insert a description here"
+    )]
     public class StoreMultiPeakSearch : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-
-        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
+        [Display(
+            "Channel",
+            Description: "Choose which channel to grab data from.",
+            "Measurements",
+            Order: 10
+        )]
         public int Channel { get; set; }
 
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
@@ -35,7 +43,6 @@ namespace OpenTap.Plugins.PNAX
         public StoreMultiPeakSearch()
         {
             MetaData = new List<(string, object)>();
-
         }
 
         public override void Run()
@@ -51,7 +58,10 @@ namespace OpenTap.Plugins.PNAX
             {
                 SASourceSweepTypeEnum sweepType = PNAX.GetSASweepType(Channel, source);
                 SAOnOffTypeEnum state = PNAX.GetSASourcePowerMode(Channel, source);
-                if ((sweepType == SASourceSweepTypeEnum.LinearFrequency) && (state == SAOnOffTypeEnum.On))
+                if (
+                    (sweepType == SASourceSweepTypeEnum.LinearFrequency)
+                    && (state == SAOnOffTypeEnum.On)
+                )
                 {
                     IsLinearFrequencySweep = true;
                     LinFreSources.Add(source);
@@ -86,13 +96,20 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.MultiPeakSearchExecute(Channel, mnum);
 
                     // Store Markers
-                    MetaData = new List<(string, object)>
-                    {
-                        ("Sweep Step", rep + 1)
-                    };
+                    MetaData = new List<(string, object)> { ("Sweep Step", rep + 1) };
                     foreach (string source in LinFreSources)
                     {
-                        MetaData.Add(($"{source} Freq", GetCurrentSweepFreq(SourceCellSweepValues[$"{source}_start"], SourceCellSweepValues[$"{source}_stop"], steps, rep)));
+                        MetaData.Add(
+                            (
+                                $"{source} Freq",
+                                GetCurrentSweepFreq(
+                                    SourceCellSweepValues[$"{source}_start"],
+                                    SourceCellSweepValues[$"{source}_stop"],
+                                    steps,
+                                    rep
+                                )
+                            )
+                        );
                     }
                     RunChildSteps();
                 }

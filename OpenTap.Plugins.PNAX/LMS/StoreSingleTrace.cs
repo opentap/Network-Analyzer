@@ -4,24 +4,32 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Store Single Trace", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Stores trace data for a single given trace")]
+    [Display(
+        "Store Single Trace",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Stores trace data for a single given trace"
+    )]
     public class StoreSingleTrace : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
 
-
-        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
+        [Display(
+            "Channel",
+            Description: "Choose which channel to grab data from.",
+            "Measurements",
+            Order: 10
+        )]
         public int Channel { get; set; }
 
         [Display("MNum", Groups: new[] { "Trace" }, Order: 21)]
@@ -81,13 +89,19 @@ namespace OpenTap.Plugins.PNAX
             List<ResultColumn> resultColumns = new List<ResultColumn>();
 
             freqLength = xResult[0].Count;
-            ResultColumn resultColumn = new ResultColumn("Frequency (Hz)", xResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
+            ResultColumn resultColumn = new ResultColumn(
+                "Frequency (Hz)",
+                xResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray()
+            );
             resultColumns.Add(resultColumn);
 
             if (xResult[0].Count == yResult[0].Count)
             {
                 // one data per frequency point
-                ResultColumn resultColumn2 = new ResultColumn($"{MeasName}", yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray());
+                ResultColumn resultColumn2 = new ResultColumn(
+                    $"{MeasName}",
+                    yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray()
+                );
                 resultColumns.Add(resultColumn2);
 
                 if (OutputTraceData)
@@ -99,7 +113,10 @@ namespace OpenTap.Plugins.PNAX
             else
             {
                 // most likely we have complex data, i.e. two numbers per data point
-                var twoPoints = yResult[0].Select(double.Parse).Select(z => Math.Round(z, 2)).ToArray();
+                var twoPoints = yResult[0]
+                    .Select(double.Parse)
+                    .Select(z => Math.Round(z, 2))
+                    .ToArray();
                 double[] point1 = new double[freqLength];
                 double[] point2 = new double[freqLength];
                 int j = 0;
@@ -113,15 +130,12 @@ namespace OpenTap.Plugins.PNAX
                 resultColumns.Add(resultColumni);
                 ResultColumn resultColumnj = new ResultColumn($"{MeasName}_j", point2);
                 resultColumns.Add(resultColumnj);
-
             }
 
             ResultTable resultTable = new ResultTable($"{filename}", resultColumns.ToArray());
             Results.PublishTable(resultTable);
 
-
             UpgradeVerdict(Verdict.Pass);
-
         }
     }
 }

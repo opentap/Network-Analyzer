@@ -4,17 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.LMS
 {
-    [Display("Store Trace Data - DUT Meta Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends DUT Meta data to publish table")]
+    [Display(
+        "Store Trace Data - DUT Meta Data",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Appends DUT Meta data to publish table"
+    )]
     [AllowAsChildIn(typeof(StoreDataBase))]
     public class StoreDutMetaData : TestStep
     {
@@ -24,9 +28,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         #endregion
 
-        public StoreDutMetaData()
-        {
-        }
+        public StoreDutMetaData() { }
 
         public override void Run()
         {

@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(DIQSources))]
-    [Display("DIQ Source", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
+    [Display(
+        "DIQ Source",
+        Groups: new[] { "Network Analyzer", "General", "Differential I/Q" },
+        Description: "Insert a description here"
+    )]
     public class DIQSource : PNABaseStep
     {
         #region Settings
@@ -23,6 +27,7 @@ namespace OpenTap.Plugins.PNAX
         public bool IsRangesVisible { get; set; } = false;
 
         private int _NumberOfRanges;
+
         [EnabledIf("IsRangesVisible", true, HideIfDisabled = true)]
         public int NumberOfRanges
         {
@@ -31,19 +36,13 @@ namespace OpenTap.Plugins.PNAX
                 _NumberOfRanges = value;
                 UpdateAvailableRanges();
             }
-            get
-            {
-                return _NumberOfRanges;
-            }
+            get { return _NumberOfRanges; }
         }
 
         [Display("Name", Group: "Source", Order: 20)]
         public string SourceName
         {
-            get
-            {
-                return this.Name;
-            }
+            get { return this.Name; }
             set
             {
                 this.Name = value;
@@ -73,15 +72,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("External Source Port", Groups: new[] { "Source" }, Order: 23)]
         public int ExtSourcePort { get; set; }
 
-
         private bool _SweepPower;
+
         [Display("Sweep Power", Groups: new[] { "Power" }, Order: 30)]
         public bool SweepPower
         {
-            get
-            {
-                return _SweepPower;
-            }
+            get { return _SweepPower; }
             set
             {
                 _SweepPower = value;
@@ -97,14 +93,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private double _StartPower;
+
         [Display("Start Power", Groups: new[] { "Power" }, Order: 31)]
         [Unit("dBm", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double StartPower
         {
-            get
-            {
-                return _StartPower;
-            }
+            get { return _StartPower; }
             set
             {
                 _StartPower = value;
@@ -125,14 +119,12 @@ namespace OpenTap.Plugins.PNAX
         public string LevelingMode { get; set; }
 
         private bool _Autorange;
+
         [EnabledIf("SweepPower", false, HideIfDisabled = false)]
         [Display("Auto range source attenuator", Groups: new[] { "Power" }, Order: 34)]
         public bool Autorange
         {
-            get
-            {
-                return _Autorange;
-            }
+            get { return _Autorange; }
             set
             {
                 _Autorange = value;
@@ -143,7 +135,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         [EnabledIf("Autorange", false, HideIfDisabled = false)]
         [Display("Source Attenuator", Groups: new[] { "Power" }, Order: 35)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
@@ -153,13 +144,11 @@ namespace OpenTap.Plugins.PNAX
         public DIQPhaseStateEnumtype DIQPhaseState { get; set; }
 
         private bool _SweepPhase;
+
         [Display("Sweep Phase", Groups: new[] { "Phase" }, Order: 41)]
         public bool SweepPhase
         {
-            get
-            {
-                return _SweepPhase;
-            }
+            get { return _SweepPhase; }
             set
             {
                 _SweepPhase = value;
@@ -171,14 +160,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private double _StartPhase;
+
         [Display("Start Phase", Groups: new[] { "Phase" }, Order: 42)]
         [Unit("°", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double StartPhase
         {
-            get
-            {
-                return _StartPhase;
-            }
+            get { return _StartPhase; }
             set
             {
                 _StartPhase = value;
@@ -193,7 +180,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Stop Phase", Groups: new[] { "Phase" }, Order: 43)]
         [Unit("°", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double StopPhase { get; set; }
-
 
         [Display("Referenced to", Groups: new[] { "Phase" }, Order: 44)]
         [AvailableValues(nameof(ReferencedToListOfAvailableValues))]
@@ -214,7 +200,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Max Iterations", Groups: new[] { "Phase" }, Order: 48)]
         public int MaxIterations { get; set; }
 
-
         [Display("Match Correction On", Groups: new[] { "Match Correction" }, Order: 50)]
         public bool MatchCorrection { get; set; }
 
@@ -227,6 +212,7 @@ namespace OpenTap.Plugins.PNAX
         public string RRec { get; set; }
 
         private List<string> _SelectMatchFreqRange;
+
         [Display("Select Frequency Range", Groups: new[] { "Match Correction" }, Order: 53)]
         [AvailableValues(nameof(FreqRangesListOfAvailableValues))]
         public List<string> SelectMatchFreqRange
@@ -250,9 +236,15 @@ namespace OpenTap.Plugins.PNAX
         [Display("Match Frequency Range", Groups: new[] { "Match Correction" }, Order: 54)]
         public string MatchFreqRange { get; set; }
 
-
         private List<string> _FreqRangesListOfAvailableValues;
-        [Display("Frequency Range Values", "Editable list for Frequency Range values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+
+        [Display(
+            "Frequency Range Values",
+            "Editable list for Frequency Range values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 101,
+            Collapsed: true
+        )]
         public List<string> FreqRangesListOfAvailableValues
         {
             get { return _FreqRangesListOfAvailableValues; }
@@ -264,7 +256,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private List<string> _LevelingModeListOfAvailableValues;
-        [Display("Leveling Mode Values", "Editable list for Leveling Mode values", Groups: new[] { "Available Values Setup" }, Order: 102, Collapsed: true)]
+
+        [Display(
+            "Leveling Mode Values",
+            "Editable list for Leveling Mode values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 102,
+            Collapsed: true
+        )]
         public List<string> LevelingModeListOfAvailableValues
         {
             get { return _LevelingModeListOfAvailableValues; }
@@ -276,7 +275,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private List<string> _ReferencedToListOfAvailableValues;
-        [Display("Referenced To Values", "Editable list for Referenced To values", Groups: new[] { "Available Values Setup" }, Order: 103, Collapsed: true)]
+
+        [Display(
+            "Referenced To Values",
+            "Editable list for Referenced To values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 103,
+            Collapsed: true
+        )]
         public List<string> ReferencedToListOfAvailableValues
         {
             get { return _ReferencedToListOfAvailableValues; }
@@ -288,7 +294,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private List<string> _ReceiverListOfAvailableValues;
-        [Display("Receiver Values", "Editable list for Receiver values", Groups: new[] { "Available Values Setup" }, Order: 104, Collapsed: true)]
+
+        [Display(
+            "Receiver Values",
+            "Editable list for Receiver values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 104,
+            Collapsed: true
+        )]
         public List<string> ReceiverListOfAvailableValues
         {
             get { return _ReceiverListOfAvailableValues; }
@@ -300,7 +313,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private List<string> _TRecListOfAvailableValues;
-        [Display("Test Receiver Values", "Editable list for Test Receiver values", Groups: new[] { "Available Values Setup" }, Order: 105, Collapsed: true)]
+
+        [Display(
+            "Test Receiver Values",
+            "Editable list for Test Receiver values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 105,
+            Collapsed: true
+        )]
         public List<string> TRecListOfAvailableValues
         {
             get { return _TRecListOfAvailableValues; }
@@ -312,7 +332,14 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private List<string> _RRecListOfAvailableValues;
-        [Display("Reference Receiver Values", "Editable list for Reference Receiver values", Groups: new[] { "Available Values Setup" }, Order: 106, Collapsed: true)]
+
+        [Display(
+            "Reference Receiver Values",
+            "Editable list for Reference Receiver values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 106,
+            Collapsed: true
+        )]
         public List<string> RRecListOfAvailableValues
         {
             get { return _RRecListOfAvailableValues; }
@@ -323,8 +350,8 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         private List<string> _listOfAvailableValues;
+
         [Display("Available Values", "An editable list of values.")]
         public List<string> ListOfAvailableValues
         {
@@ -351,9 +378,25 @@ namespace OpenTap.Plugins.PNAX
         public DIQSource()
         {
             _FreqRangesListOfAvailableValues = new List<string> { "F1" };
-            _LevelingModeListOfAvailableValues = new List<string> { "Internal", "Internal-R1,1", "Open Loop", "Open Loop-R1,1" };
+            _LevelingModeListOfAvailableValues = new List<string>
+            {
+                "Internal",
+                "Internal-R1,1",
+                "Open Loop",
+                "Open Loop-R1,1",
+            };
             _ReferencedToListOfAvailableValues = new List<string> { "Port 3", "Port 4", "Source3" };
-            _ReceiverListOfAvailableValues = new List<string> { "a1", "a2", "a3", "a4", "b1", "b2", "b3", "b4" };
+            _ReceiverListOfAvailableValues = new List<string>
+            {
+                "a1",
+                "a2",
+                "a3",
+                "a4",
+                "b1",
+                "b2",
+                "b3",
+                "b4",
+            };
             _TRecListOfAvailableValues = new List<string> { "b1", "b2", "b3", "b4" };
             _RRecListOfAvailableValues = new List<string> { "a1", "a2", "a3", "a4" };
 

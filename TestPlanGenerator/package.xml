@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 
 InfoLink: Specifies a location where additional information about the package can be found.
 Version: The version of the package. Must be in a semver 2.0 compatible format. This can be automatically updated from GIT.
@@ -6,11 +6,20 @@ Version: The version of the package. Must be in a semver 2.0 compatible format. 
 For Version the following macro is available (Only works if the project directory is under Git source control):
 $(GitVersion) - Gets the version from Git in the recommended format Major.Minor.Build-PreRelease+CommitHash.BranchName.
 -->
-<Package Name="TestPlanGenerator" Version="0.1.0-alpha" OS="Windows,Linux" Architecture="AnyCPU" xmlns="http://opentap.io/schemas/package">
+<Package
+  Name="TestPlanGenerator"
+  Version="0.1.0-alpha"
+  OS="Windows,Linux"
+  Architecture="AnyCPU"
+  xmlns="http://opentap.io/schemas/package"
+>
   <Description>This is my OpenTAP plugin package.</Description>
   <Files>
-    <File Path="Packages/TestPlanGenerator/TestPlanGenerator.dll" SourcePath="TestPlanGenerator.dll">
-      <SetAssemblyInfo Attributes="Version"/>
+    <File
+      Path="Packages/TestPlanGenerator/TestPlanGenerator.dll"
+      SourcePath="TestPlanGenerator.dll"
+    >
+      <SetAssemblyInfo Attributes="Version" />
       <!--ObfuscateWithDotfuscator/-->
     </File>
   </Files>

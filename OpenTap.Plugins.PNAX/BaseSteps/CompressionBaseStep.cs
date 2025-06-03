@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,30 +18,37 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("CFLG")]
         [Display("Compression From Linear Gain")]
         CompressionFromLinearGain,
+
         [Scpi("CFMG")]
         [Display("Compression From Max Gain")]
         CompressionFromMaxGain,
+
         [Scpi("BACKoff")]
         [Display("Compression From Back Off")]
         CompressionFromBackOff,
+
         [Scpi("XYCOM")]
         [Display("X/Y Compression")]
         XYCompression,
+
         [Scpi("SAT")]
         [Display("Compression From Saturation")]
-        CompressionFromSaturation
+        CompressionFromSaturation,
     }
 
     public enum EndOfSweepConditionEnum
     {
         [Scpi("STAN")]
         Default,
+
         [Scpi("POFF")]
         RFOff,
+
         [Scpi("PSTA")]
         StartPower,
+
         [Scpi("PSTO")]
-        StopPower
+        StopPower,
     }
 
     [Browsable(false)]
@@ -51,12 +58,22 @@ namespace OpenTap.Plugins.PNAX
         [Display("Compression Method", Group: "Compression Method", Order: 10)]
         public CompressionMethodEnum CompressionMethod { get; set; }
 
-        [EnabledIf("CompressionMethod", CompressionMethodEnum.CompressionFromMaxGain, CompressionMethodEnum.CompressionFromLinearGain, CompressionMethodEnum.CompressionFromBackOff, HideIfDisabled = true)]
+        [EnabledIf(
+            "CompressionMethod",
+            CompressionMethodEnum.CompressionFromMaxGain,
+            CompressionMethodEnum.CompressionFromLinearGain,
+            CompressionMethodEnum.CompressionFromBackOff,
+            HideIfDisabled = true
+        )]
         [Display("Level", Group: "Compression Method", Order: 11)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionLevel { get; set; }
 
-        [EnabledIf("CompressionMethod", CompressionMethodEnum.CompressionFromBackOff, HideIfDisabled = true)]
+        [EnabledIf(
+            "CompressionMethod",
+            CompressionMethodEnum.CompressionFromBackOff,
+            HideIfDisabled = true
+        )]
         [Display("Back Off", Group: "Compression Method", Order: 12)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionBackOff { get; set; }
@@ -71,12 +88,14 @@ namespace OpenTap.Plugins.PNAX
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.00")]
         public double CompressionDeltaY { get; set; }
 
-        [EnabledIf("CompressionMethod", CompressionMethodEnum.CompressionFromSaturation, HideIfDisabled = true)]
+        [EnabledIf(
+            "CompressionMethod",
+            CompressionMethodEnum.CompressionFromSaturation,
+            HideIfDisabled = true
+        )]
         [Display("From Max Pout", Group: "Compression Method", Order: 15)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double CompressionFromMaxPout { get; set; }
-
-
 
         [Display("Tolerance", Group: "SMART Sweep", Order: 20)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0.000")]
@@ -117,7 +136,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Compression Point Interpolation", Group: "2D Sweep", Order: 29)]
         public bool CompressionPointInterpolation { get; set; }
 
-
         [Display("End of Sweep Condition", Group: "Sweep", Order: 30)]
         public EndOfSweepConditionEnum EndOfSweepCondition { get; set; }
 
@@ -132,9 +150,7 @@ namespace OpenTap.Plugins.PNAX
             UpdateDefaultValuesDC();
         }
 
-        protected virtual void UpdateDefaultValuesDC()
-        {
-        }
+        protected virtual void UpdateDefaultValuesDC() { }
 
         private void UpdateDefaultValues()
         {
@@ -161,7 +177,6 @@ namespace OpenTap.Plugins.PNAX
 
             EndOfSweepCondition = DefaultValues.EndOfSweepCondition;
             SettlingTime = DefaultValues.SettlingTime;
-
         }
 
         public override void Run()
@@ -177,9 +192,7 @@ namespace OpenTap.Plugins.PNAX
             UpgradeVerdict(Verdict.Pass);
         }
 
-        protected virtual void SetDC()
-        {
-        }
+        protected virtual void SetDC() { }
 
         private void SetCompressionEnding()
         {

@@ -1,18 +1,17 @@
-﻿using OpenTap;   // Use OpenTAP infrastructure/core components (log,TestStep definition, etc)
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap; // Use OpenTAP infrastructure/core components (log,TestStep definition, etc)
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum TuningMethodEnum
     {
         BroadbandAndPrecise,
         PreciseOnly,
-        DisableTuning
+        DisableTuning,
     }
 
     public enum TuningPointTypeEnum
@@ -20,7 +19,7 @@ namespace OpenTap.Plugins.PNAX
         FirstPoint,
         MiddlePoint,
         LastPoint,
-        Custom
+        Custom,
     }
 
     public enum ScalerMixerSweepType
@@ -28,46 +27,60 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("LINear")]
         [Display("Linear Frequency", Order: 1)]
         LinearFrequency = StandardSweepTypeEnum.LinearFrequency,
+
         [Scpi("CW")]
         [Display("CW Time", Order: 2)]
         CWTime = StandardSweepTypeEnum.CWTime,
+
         [Scpi("SEGMent")]
         [Display("Segment Sweep", Order: 3)]
         SegmentSweep = StandardSweepTypeEnum.SegmentSweep,
+
         [Scpi("POWer")]
         [Display("Power", Order: 4)]
-        Power = StandardSweepTypeEnum.PowerSweep
+        Power = StandardSweepTypeEnum.PowerSweep,
     }
 
     public enum ScalerMixerPhasePoint
     {
         [Display("Normalize First Point")]
         FirstPoint,
+
         [Display("Normalize Middle Point")]
         MiddlePoint,
+
         [Display("Normalize Last Point")]
         LastPoint,
+
         [Display("Specify Normalization Point")]
         SpecifyPoint,
+
         [Display("Use Absolute Phase (requires internal source as LO)")]
-        AbsolutePhase
+        AbsolutePhase,
     }
 
     //[AllowAsChildIn(typeof(GainCompressionChannel))]
     //[AllowAsChildIn(typeof(SweptIMDChannel))]
     //[AllowAsChildIn(typeof(NoiseFigureChannel))]
     //[AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Mixer Setup", Groups: new[] { "Network Analyzer", "Converters" }, Description: "Insert description here", Order: 1)]
+    [Display(
+        "Mixer Setup",
+        Groups: new[] { "Network Analyzer", "Converters" },
+        Description: "Insert description here",
+        Order: 1
+    )]
     public class MixerSetupTestStep : PNABaseStep
     {
         #region Settings
 
         [Display("Port", Group: "Input Port", Order: 30)]
         public PortsEnum PortInput { get; set; }
+
         [Display("Port", Group: "Output Port", Order: 60)]
         public PortsEnum PortOutput { get; set; }
 
         private LOEnum _portLO1;
+
         [Output]
         [Display("Port", Group: "LO1 Port", Order: 40)]
         public LOEnum PortLO1
@@ -120,24 +133,23 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Fractional Multiplier Numerator", Group: "Input Port", Order: 31)]
         public int InputFractionalMultiplierNumerator { get; set; }
+
         [Display("Fractional Multiplier Denominator", Group: "Input Port", Order: 32)]
         public int InputFractionalMultiplierDenominator { get; set; }
 
         [Display("Fractional Multiplier Numerator", Group: "LO1 Port", Order: 41)]
         public int LO1FractionalMultiplierNumerator { get; set; }
+
         [Display("Fractional Multiplier Denominator", Group: "LO1 Port", Order: 42)]
         public int LO1FractionalMultiplierDenominator { get; set; }
 
         [Display("Fractional Multiplier Numerator", Group: "LO2 Port", Order: 51)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public int LO2FractionalMultiplierNumerator { get; set; }
+
         [Display("Fractional Multiplier Denominator", Group: "LO2 Port", Order: 52)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public int LO2FractionalMultiplierDenominator { get; set; }
-
-
-
-
 
         [Display("Enable Embedded LO", Group: "Embedded LO", Order: 70)]
         public bool EnableEmbeddedLO { get; set; }
@@ -155,6 +167,7 @@ namespace OpenTap.Plugins.PNAX
         public int SweepPoints { get; set; }
 
         private int _tuningPoint;
+
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point", Group: "Embedded LO", Order: 73)]
         public int TuningPoint
@@ -215,9 +228,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LOFrequencyDelta { get; set; }
 
-
-
-
         #endregion
 
         public MixerSetupTestStep()
@@ -238,7 +248,8 @@ namespace OpenTap.Plugins.PNAX
             PortLO1 = defaultValues.PortLO1;
             PortLO2 = defaultValues.PortLO2;
             InputFractionalMultiplierNumerator = defaultValues.InputFractionalMultiplierNumerator;
-            InputFractionalMultiplierDenominator = defaultValues.InputFractionalMultiplierDenominator;
+            InputFractionalMultiplierDenominator =
+                defaultValues.InputFractionalMultiplierDenominator;
             LO1FractionalMultiplierNumerator = defaultValues.LO1FractionalMultiplierNumerator;
             LO1FractionalMultiplierDenominator = defaultValues.LO1FractionalMultiplierDenominator;
             LO2FractionalMultiplierNumerator = defaultValues.LO2FractionalMultiplierNumerator;
@@ -263,14 +274,29 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetConverterStages(Channel, ConverterStages);
             PNAX.SetPortInputOutput(Channel, PortInput, PortOutput);
             PNAX.SetInputFractionalMultiplierNumerator(Channel, InputFractionalMultiplierNumerator);
-            PNAX.SetInputFractionalMultiplierDenominator(Channel, InputFractionalMultiplierDenominator);
+            PNAX.SetInputFractionalMultiplierDenominator(
+                Channel,
+                InputFractionalMultiplierDenominator
+            );
             PNAX.SetLOFractionalMultiplierNumerator(Channel, 1, LO1FractionalMultiplierNumerator);
-            PNAX.SetLOFractionalMultiplierDenominator(Channel, 1, LO1FractionalMultiplierDenominator);
+            PNAX.SetLOFractionalMultiplierDenominator(
+                Channel,
+                1,
+                LO1FractionalMultiplierDenominator
+            );
             PNAX.SetPortLO(Channel, 1, PortLO1);
             if (ConverterStages == ConverterStagesEnum._2)
             {
-                PNAX.SetLOFractionalMultiplierNumerator(Channel, 2, LO2FractionalMultiplierNumerator);
-                PNAX.SetLOFractionalMultiplierDenominator(Channel, 2, LO2FractionalMultiplierDenominator);
+                PNAX.SetLOFractionalMultiplierNumerator(
+                    Channel,
+                    2,
+                    LO2FractionalMultiplierNumerator
+                );
+                PNAX.SetLOFractionalMultiplierDenominator(
+                    Channel,
+                    2,
+                    LO2FractionalMultiplierDenominator
+                );
                 PNAX.SetPortLO(Channel, 2, PortLO2);
             }
 
@@ -301,12 +327,16 @@ namespace OpenTap.Plugins.PNAX
                 ("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator),
                 ("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator),
                 ("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator),
-                ("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator)
+                ("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator),
             };
             if (ConverterStages == ConverterStagesEnum._2)
             {
-                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator));
-                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator));
+                retVal.Add(
+                    ("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator)
+                );
+                retVal.Add(
+                    ("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator)
+                );
                 retVal.Add(("LO2 Port", PortLO2));
             }
             retVal.Add(("Enable Embedded LO", EnableEmbeddedLO));
@@ -325,7 +355,6 @@ namespace OpenTap.Plugins.PNAX
 
             return retVal;
         }
-
 
         protected override void UpdateChanelConverterStage()
         {

@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -13,37 +13,43 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum ConverterStagesEnum
     {
         [Display("1")]
         _1,
+
         [Display("2")]
-        _2
+        _2,
     }
 
     public enum PortsEnum
     {
         [Scpi("1")]
         Port1 = 1,
+
         [Scpi("2")]
         Port2 = 2,
+
         [Scpi("3")]
         Port3 = 3,
+
         [Scpi("4")]
-        Port4 = 4
+        Port4 = 4,
     }
 
     public enum LOEnum
     {
         [Scpi("Not controlled")]
         NotControlled,
+
         [Scpi("Port 3")]
         Port3,
+
         [Scpi("Port 4")]
         Port4,
+
         [Scpi("Source 3")]
-        Source3
+        Source3,
     }
 
     public class StandardChannelValues
@@ -85,13 +91,14 @@ namespace OpenTap.Plugins.PNAX
             standardChannelValues.StopPhase = 0;
 
             standardChannelValues.SweepTimeAuto = 0.016884;
-            standardChannelValues.SweepTimeStepped = 0.002010;        // for N5247B: 190.520e-3;
+            standardChannelValues.SweepTimeStepped = 0.002010; // for N5247B: 190.520e-3;
             standardChannelValues.DwellTime = 0;
             standardChannelValues.SweepDelay = 0;
             standardChannelValues.AutoSweepTime = true;
             standardChannelValues.FastSweep = false;
             standardChannelValues.StandardChannelSweepMode = StandardChannelSweepModeEnum.Auto;
-            standardChannelValues.StandardChannelSweepSequence = StandardChannelSweepSequenceEnum.Standard;
+            standardChannelValues.StandardChannelSweepSequence =
+                StandardChannelSweepSequenceEnum.Standard;
 
             return standardChannelValues;
         }
@@ -303,7 +310,8 @@ namespace OpenTap.Plugins.PNAX
         {
             ToneFrequencyValues toneFrequencyValues = new ToneFrequencyValues();
             toneFrequencyValues.ToneFrequencySweepType = ToneFrequencySweepTypeEnum.SweepFc;
-            toneFrequencyValues.GeneralToneFrequencySweepType = GeneralToneFrequencySweepTypeEnum.SweepFc;
+            toneFrequencyValues.GeneralToneFrequencySweepType =
+                GeneralToneFrequencySweepTypeEnum.SweepFc;
             toneFrequencyValues.SweepFcStartFc = 10.5e6;
             toneFrequencyValues.SweepFcStopFc = 49.9995e9;
             toneFrequencyValues.SweepFcCenterFc = 25.005e9;
@@ -488,27 +496,29 @@ namespace OpenTap.Plugins.PNAX
 
             return converterPowerValues;
         }
-
     }
 
     public class GeneralGainCompressionPowerValues : MixerConverterPowerValue
     {
         public static new GeneralGainCompressionPowerValues GetPresetValues()
         {
-            GeneralGainCompressionPowerValues generalGainCompressionPowerValues = new GeneralGainCompressionPowerValues();
+            GeneralGainCompressionPowerValues generalGainCompressionPowerValues =
+                new GeneralGainCompressionPowerValues();
 
             generalGainCompressionPowerValues.PowerOnAllChannels = true;
             generalGainCompressionPowerValues.PortPowersCoupled = true;
             generalGainCompressionPowerValues.InputPortLinearInputPower = -25;
             generalGainCompressionPowerValues.InputPortSourceAttenuator = 0;
             generalGainCompressionPowerValues.InputPortReceiverAttenuator = 0;
-            generalGainCompressionPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            generalGainCompressionPowerValues.InputSourceLevelingMode =
+                InputSourceLevelingModeEnum.Internal;
 
             generalGainCompressionPowerValues.OutputPortReversePower = -15;
             generalGainCompressionPowerValues.AutoOutputPortSourceAttenuator = false;
             generalGainCompressionPowerValues.OutputPortSourceAttenuator = 0;
             generalGainCompressionPowerValues.OutputPortReceiverAttenuator = 0;
-            generalGainCompressionPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            generalGainCompressionPowerValues.OutputSourceLevelingMode =
+                OutputSourceLevelingModeEnum.Internal;
 
             generalGainCompressionPowerValues.PowerSweepStartPower = -25;
             generalGainCompressionPowerValues.PowerSweepStopPower = -5;
@@ -531,7 +541,8 @@ namespace OpenTap.Plugins.PNAX
 
         public static ScalarMixerConverterPowerValue GetPresetValues()
         {
-            ScalarMixerConverterPowerValue converterPowerValues = new ScalarMixerConverterPowerValue();
+            ScalarMixerConverterPowerValue converterPowerValues =
+                new ScalarMixerConverterPowerValue();
 
             converterPowerValues.PowerOnAllChannels = true;
             converterPowerValues.PortPowersCoupled = true;
@@ -558,7 +569,6 @@ namespace OpenTap.Plugins.PNAX
 
             return converterPowerValues;
         }
-
     }
 
     public class NoiseFigureConverterValues
@@ -599,14 +609,14 @@ namespace OpenTap.Plugins.PNAX
 
             return NFDefault;
         }
-
     }
 
     public class NoiseFigureConverterPowerValue : ConverterPowerBaseValues
     {
         public static NoiseFigureConverterPowerValue GetPresetValues()
         {
-            NoiseFigureConverterPowerValue converterPowerValues = new NoiseFigureConverterPowerValue();
+            NoiseFigureConverterPowerValue converterPowerValues =
+                new NoiseFigureConverterPowerValue();
 
             converterPowerValues.PowerOnAllChannels = true;
             converterPowerValues.InputPortLinearInputPower = -30;
@@ -622,7 +632,6 @@ namespace OpenTap.Plugins.PNAX
 
             return converterPowerValues;
         }
-
     }
 
     public class NoiseFigureConverterFrequencyValues
@@ -640,7 +649,8 @@ namespace OpenTap.Plugins.PNAX
 
         public static NoiseFigureConverterFrequencyValues GetPresetValues()
         {
-            NoiseFigureConverterFrequencyValues converterFrequencyValues = new NoiseFigureConverterFrequencyValues();
+            NoiseFigureConverterFrequencyValues converterFrequencyValues =
+                new NoiseFigureConverterFrequencyValues();
             converterFrequencyValues.SweepType = SweepTypeEnum.LinearSweep;
             converterFrequencyValues.GeneralNFSweepType = GeneralNFSweepTypeEnum.LinearSweep;
             converterFrequencyValues.SweepSettingsNumberOfPoints = 201;
@@ -681,7 +691,6 @@ namespace OpenTap.Plugins.PNAX
         }
     }
 
-
     public partial class PNAX : ScpiInstrument
     {
         public StandardChannelValues GetStandardChannelDefaultValues()
@@ -691,9 +700,9 @@ namespace OpenTap.Plugins.PNAX
 
             return DefaultStandardChannelValues;
         }
+
         private void UpdateStandardValues()
         {
-
             try
             {
                 Open();
@@ -743,7 +752,6 @@ namespace OpenTap.Plugins.PNAX
                 Log.Error("Cannot update default values, use preset instead");
                 return;
             }
-
         }
 
         public MixerSetupValues GetMixerSetupDefaultValues()
@@ -787,6 +795,7 @@ namespace OpenTap.Plugins.PNAX
                 return MixerPowerValues.GetPresetValues();
             return DefaultMixerPowerValues;
         }
+
         private void UpdateMixerPowerValues()
         {
             if (DefaultMixerPowerValues == null)
@@ -812,6 +821,7 @@ namespace OpenTap.Plugins.PNAX
                 return MixerFrequencyValues.GetPresetValues();
             return DefaultMixerFrequencyValues;
         }
+
         private void UpdateMixerFrequencyValues()
         {
             if (DefaultMixerFrequencyValues == null)
@@ -863,6 +873,7 @@ namespace OpenTap.Plugins.PNAX
                 return ToneFrequencyValues.GetPresetValues();
             return DefaultToneFrequencyValues;
         }
+
         private void UpdateToneFrequencyValues()
         {
             if (DefaultToneFrequencyValues == null)
@@ -919,7 +930,8 @@ namespace OpenTap.Plugins.PNAX
             if (DefaultConverterCompressionValues == null)
                 DefaultConverterCompressionValues = new ConverterCompressionValues();
 
-            DefaultConverterCompressionValues.CompressionMethod = CompressionMethodEnum.CompressionFromLinearGain;
+            DefaultConverterCompressionValues.CompressionMethod =
+                CompressionMethodEnum.CompressionFromLinearGain;
             DefaultConverterCompressionValues.CompressionLevel = 1;
             DefaultConverterCompressionValues.CompressionBackOff = 10;
             DefaultConverterCompressionValues.CompressionDeltaX = 10;
@@ -974,8 +986,8 @@ namespace OpenTap.Plugins.PNAX
             if (DefaultNoiseFigureConverterValues == null)
                 return NoiseFigureConverterValues.GetPresetValues();
             return DefaultNoiseFigureConverterValues;
-
         }
+
         private void UpdateMixerConverterPowerValues()
         {
             if (DefaultMixerConverterPowerValues == null)
@@ -983,12 +995,14 @@ namespace OpenTap.Plugins.PNAX
 
             DefaultMixerConverterPowerValues.PowerOnAllChannels = true;
 
-            DefaultMixerConverterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            DefaultMixerConverterPowerValues.InputSourceLevelingMode =
+                InputSourceLevelingModeEnum.Internal;
             DefaultMixerConverterPowerValues.InputPortLinearInputPower = -25;
             DefaultMixerConverterPowerValues.InputPortSourceAttenuator = 0;
             DefaultMixerConverterPowerValues.InputPortReceiverAttenuator = 0;
 
-            DefaultMixerConverterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            DefaultMixerConverterPowerValues.OutputSourceLevelingMode =
+                OutputSourceLevelingModeEnum.Internal;
             DefaultMixerConverterPowerValues.OutputPortReversePower = -5;
             DefaultMixerConverterPowerValues.AutoOutputPortSourceAttenuator = false;
             DefaultMixerConverterPowerValues.OutputPortSourceAttenuator = 0;
@@ -1015,13 +1029,15 @@ namespace OpenTap.Plugins.PNAX
             DefaultScalarMixerConverterPowerValues.PowerOnAllChannels = true;
             DefaultScalarMixerConverterPowerValues.PortPowersCoupled = true;
 
-            DefaultScalarMixerConverterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            DefaultScalarMixerConverterPowerValues.InputSourceLevelingMode =
+                InputSourceLevelingModeEnum.Internal;
             DefaultScalarMixerConverterPowerValues.InputPortLinearInputPower = -15;
             DefaultScalarMixerConverterPowerValues.AutoInputPortSourceAttenuator = true;
             DefaultScalarMixerConverterPowerValues.InputPortSourceAttenuator = 0;
             DefaultScalarMixerConverterPowerValues.InputPortReceiverAttenuator = 0;
 
-            DefaultScalarMixerConverterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            DefaultScalarMixerConverterPowerValues.OutputSourceLevelingMode =
+                OutputSourceLevelingModeEnum.Internal;
             DefaultScalarMixerConverterPowerValues.OutputPortReversePower = -15;
             DefaultScalarMixerConverterPowerValues.AutoOutputPortSourceAttenuator = true;
             DefaultScalarMixerConverterPowerValues.OutputPortSourceAttenuator = 0;
@@ -1064,13 +1080,15 @@ namespace OpenTap.Plugins.PNAX
             DefaultNoiseFigureConverterPowerValues.PowerOnAllChannels = true;
             DefaultNoiseFigureConverterPowerValues.PortPowersCoupled = true;
 
-            DefaultNoiseFigureConverterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
+            DefaultNoiseFigureConverterPowerValues.InputSourceLevelingMode =
+                InputSourceLevelingModeEnum.Internal;
             DefaultNoiseFigureConverterPowerValues.InputPortLinearInputPower = -30;
             DefaultNoiseFigureConverterPowerValues.AutoInputPortSourceAttenuator = false;
             DefaultNoiseFigureConverterPowerValues.InputPortSourceAttenuator = 20;
             DefaultNoiseFigureConverterPowerValues.InputPortReceiverAttenuator = 0;
 
-            DefaultNoiseFigureConverterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
+            DefaultNoiseFigureConverterPowerValues.OutputSourceLevelingMode =
+                OutputSourceLevelingModeEnum.Internal;
             DefaultNoiseFigureConverterPowerValues.OutputPortReversePower = -20;
             DefaultNoiseFigureConverterPowerValues.AutoOutputPortSourceAttenuator = false;
             DefaultNoiseFigureConverterPowerValues.OutputPortSourceAttenuator = 20;
@@ -1105,6 +1123,5 @@ namespace OpenTap.Plugins.PNAX
                 return GeneralGainCompressionPowerValues.GetPresetValues();
             return DefaultGeneralGainCompressionPowerValues;
         }
-
     }
 }

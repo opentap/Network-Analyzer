@@ -1,16 +1,15 @@
-﻿using Microsoft.Office.Interop.Excel;
-using OpenTap;
-using OpenTap.Plugins.PNAX;
-using OpenTap.Plugins.BasicSteps;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
+using OpenTap;
+using OpenTap.Plugins.BasicSteps;
+using OpenTap.Plugins.PNAX;
 using static OpenTap.Plugins.PNAX.PNAX;
-using System.IO;
 
 namespace TestPlanGenerator
 {
@@ -24,8 +23,8 @@ namespace TestPlanGenerator
     {
         public int Points { get; set; }
         public double IFBW { get; set; }
-
     }
+
     public class StandardLinearSweep : StandardSweep
     {
         public double StartFreq { get; set; }
@@ -58,14 +57,12 @@ namespace TestPlanGenerator
         public Verdict NegativeVerdict { get; set; }
     }
 
-
     public class StandardPhaseSweep : StandardSweep
     {
         public double StartPhase { get; set; }
         public double StopPhase { get; set; }
         public double CW { get; set; }
     }
-
 
     class TestGenModel : INotifyPropertyChanged
     {
@@ -79,6 +76,7 @@ namespace TestPlanGenerator
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -87,10 +85,7 @@ namespace TestPlanGenerator
         private String _TestPlanInputFileName;
         public String TestPlanInputFileName
         {
-            get
-            {
-                return _TestPlanInputFileName;
-            }
+            get { return _TestPlanInputFileName; }
             set
             {
                 _TestPlanInputFileName = value;
@@ -101,10 +96,7 @@ namespace TestPlanGenerator
         private String _TestPlanDialogInputFileName;
         public String TestPlanDialogInputFileName
         {
-            get
-            {
-                return _TestPlanDialogInputFileName;
-            }
+            get { return _TestPlanDialogInputFileName; }
             set
             {
                 _TestPlanDialogInputFileName = value;
@@ -115,10 +107,7 @@ namespace TestPlanGenerator
         private String _TestPlanOutputFileName;
         public String TestPlanOutputFileName
         {
-            get
-            {
-                return _TestPlanOutputFileName;
-            }
+            get { return _TestPlanOutputFileName; }
             set
             {
                 _TestPlanOutputFileName = value;
@@ -171,7 +160,17 @@ namespace TestPlanGenerator
                         StandardLinearSweep sls = o as StandardLinearSweep;
 
                         // now generate the standard channel measurement class
-                        StandardChannel standard = new StandardChannel(sls.Channel, StandardSweepTypeEnum.LinearFrequency, sls.StartFreq, sls.StopFreq, sls.Power, double.NaN, sls.Points, sls.IFBW, standardTraces);
+                        StandardChannel standard = new StandardChannel(
+                            sls.Channel,
+                            StandardSweepTypeEnum.LinearFrequency,
+                            sls.StartFreq,
+                            sls.StopFreq,
+                            sls.Power,
+                            double.NaN,
+                            sls.Points,
+                            sls.IFBW,
+                            standardTraces
+                        );
                         testPlan.ChildTestSteps.Add(standard);
                     }
                     else if (o is StandardPowerSweep)
@@ -179,7 +178,17 @@ namespace TestPlanGenerator
                         StandardPowerSweep sls = o as StandardPowerSweep;
 
                         // now generate the standard channel measurement class
-                        StandardChannel standard = new StandardChannel(sls.Channel, StandardSweepTypeEnum.PowerSweep, sls.StartPower, sls.StopPower, double.NaN, sls.CW, sls.Points, sls.IFBW, standardTraces);
+                        StandardChannel standard = new StandardChannel(
+                            sls.Channel,
+                            StandardSweepTypeEnum.PowerSweep,
+                            sls.StartPower,
+                            sls.StopPower,
+                            double.NaN,
+                            sls.CW,
+                            sls.Points,
+                            sls.IFBW,
+                            standardTraces
+                        );
                         testPlan.ChildTestSteps.Add(standard);
                     }
                     else if (o is StandardCWSweep)
@@ -187,7 +196,17 @@ namespace TestPlanGenerator
                         StandardCWSweep sls = o as StandardCWSweep;
 
                         // now generate the standard channel measurement class
-                        StandardChannel standard = new StandardChannel(sls.Channel, StandardSweepTypeEnum.CWTime, double.NaN, double.NaN, sls.Power, sls.CW, sls.Points, sls.IFBW, standardTraces);
+                        StandardChannel standard = new StandardChannel(
+                            sls.Channel,
+                            StandardSweepTypeEnum.CWTime,
+                            double.NaN,
+                            double.NaN,
+                            sls.Power,
+                            sls.CW,
+                            sls.Points,
+                            sls.IFBW,
+                            standardTraces
+                        );
                         testPlan.ChildTestSteps.Add(standard);
                     }
                     else if (o is StandardPhaseSweep)
@@ -195,17 +214,23 @@ namespace TestPlanGenerator
                         StandardPhaseSweep sls = o as StandardPhaseSweep;
 
                         // now generate the standard channel measurement class
-                        StandardChannel standard = new StandardChannel(sls.Channel, StandardSweepTypeEnum.PhaseSweep, sls.StartPhase, sls.StopPhase, double.NaN, sls.CW, sls.Points, sls.IFBW, standardTraces);
+                        StandardChannel standard = new StandardChannel(
+                            sls.Channel,
+                            StandardSweepTypeEnum.PhaseSweep,
+                            sls.StartPhase,
+                            sls.StopPhase,
+                            double.NaN,
+                            sls.CW,
+                            sls.Points,
+                            sls.IFBW,
+                            standardTraces
+                        );
                         testPlan.ChildTestSteps.Add(standard);
                     }
                 }
-
             }
 
             // save output file
-
-
-
 
             return testPlan;
         }
@@ -234,7 +259,10 @@ namespace TestPlanGenerator
 
                 int col = excelRange.Columns.Count;
                 string columnLetter = GetExcelColumnName(col);
-                string[] values = GetRange("A" + rowNumber + ":" + columnLetter + rowNumber + "", sheet);
+                string[] values = GetRange(
+                    "A" + rowNumber + ":" + columnLetter + rowNumber + "",
+                    sheet
+                );
 
                 if (values[1].Equals("Standard"))
                 {
@@ -302,7 +330,10 @@ namespace TestPlanGenerator
 
                 int col = excelRange.Columns.Count;
                 string columnLetter = GetExcelColumnName(col);
-                string[] values = GetRange("A" + rowNumber + ":" + columnLetter + rowNumber + "", sheet);
+                string[] values = GetRange(
+                    "A" + rowNumber + ":" + columnLetter + rowNumber + "",
+                    sheet
+                );
 
                 if (values[1].Equals("Standard"))
                 {
@@ -321,10 +352,7 @@ namespace TestPlanGenerator
                 }
             }
 
-
-
             wb.Close();
-
         }
 
         private string GetExcelColumnName(int columnNumber)
@@ -345,8 +373,10 @@ namespace TestPlanGenerator
 
         public string[] GetRange(string range, Worksheet excelWorksheet)
         {
-            Microsoft.Office.Interop.Excel.Range workingRangeCells =
-              excelWorksheet.get_Range(range, Type.Missing);
+            Microsoft.Office.Interop.Excel.Range workingRangeCells = excelWorksheet.get_Range(
+                range,
+                Type.Missing
+            );
             //workingRangeCells.Select();
 
             System.Array array = (System.Array)workingRangeCells.Cells.Value2;
@@ -357,7 +387,6 @@ namespace TestPlanGenerator
 
         string[] ConvertToStringArray(System.Array values)
         {
-
             // create a new string array
             string[] theArray = new string[values.Length];
 
@@ -373,7 +402,6 @@ namespace TestPlanGenerator
             return theArray;
         }
 
-
         public TestPlan GenerateDialogTestPlanCSV()
         {
             TestPlan testPlan = new TestPlan();
@@ -381,11 +409,9 @@ namespace TestPlanGenerator
 
             this.traceSource.Info("Starting Test Sequence Generation from CSV");
 
-            this.traceSource.Info("TestPlanInputFileName: " + TestPlanDialogInputFileName.ToString());
-
-
-
-
+            this.traceSource.Info(
+                "TestPlanInputFileName: " + TestPlanDialogInputFileName.ToString()
+            );
 
             return testPlan;
         }
@@ -394,7 +420,9 @@ namespace TestPlanGenerator
         {
             this.traceSource.Info("Starting Test Sequence Generation");
 
-            this.traceSource.Info("TestPlanInputFileName: " + TestPlanDialogInputFileName.ToString());
+            this.traceSource.Info(
+                "TestPlanInputFileName: " + TestPlanDialogInputFileName.ToString()
+            );
             this.traceSource.Info("TestPlanOutputFileName: " + TestPlanOutputFileName.ToString());
 
             TestPlan testPlan = new TestPlan();
@@ -433,7 +461,7 @@ namespace TestPlanGenerator
                         PictureSource = excelDialogStep.URL,
                         Name = excelDialogStep.MessageID,
                         PositiveAnswer = excelDialogStep.PositiveVerdict,
-                        NegativeAnswer = excelDialogStep.NegativeVerdict
+                        NegativeAnswer = excelDialogStep.NegativeVerdict,
                     };
                     testPlan.ChildTestSteps.Add(dialogStep);
                 }
@@ -465,7 +493,9 @@ namespace TestPlanGenerator
                     {
                         if (values.Count() != NumberOfHeaders)
                         {
-                            throw new Exception($"Row {rowNumber}: {line} \nhas an incorrect character, check the message does not contain any commas");
+                            throw new Exception(
+                                $"Row {rowNumber}: {line} \nhas an incorrect character, check the message does not contain any commas"
+                            );
                         }
 
                         ExcelDialogStep dialogStep = new ExcelDialogStep();
@@ -509,7 +539,6 @@ namespace TestPlanGenerator
                         }
                         ListOfchannels.Add(dialogStep);
                     }
-
                 }
             }
         }
@@ -538,7 +567,10 @@ namespace TestPlanGenerator
 
                 int col = excelRange.Columns.Count;
                 string columnLetter = GetExcelColumnName(col);
-                string[] values = GetRange("A" + rowNumber + ":" + columnLetter + rowNumber + "", sheet);
+                string[] values = GetRange(
+                    "A" + rowNumber + ":" + columnLetter + rowNumber + "",
+                    sheet
+                );
 
                 if (values[0].Equals("Dialog"))
                 {
@@ -585,9 +617,6 @@ namespace TestPlanGenerator
                 }
             }
             wb.Close();
-
         }
-
-
     }
 }

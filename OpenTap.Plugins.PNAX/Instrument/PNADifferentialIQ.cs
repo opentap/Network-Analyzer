@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -13,18 +13,19 @@ using System.Linq;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum DIQPortStateEnumtype
     {
         [Display("Auto On")]
         [Scpi("AUTO")]
         Auto,
+
         [Display("Always On")]
         [Scpi("ON")]
         On,
+
         [Display("Off")]
         [Scpi("OFF")]
-        Off
+        Off,
     }
 
     public enum DIQPhaseStateEnumtype
@@ -32,12 +33,14 @@ namespace OpenTap.Plugins.PNAX
         [Display("Off")]
         [Scpi("OFF")]
         Off,
+
         [Display("Controlled")]
         [Scpi("CONT")]
         Controlled,
+
         [Display("Open loop")]
         [Scpi("OPEN")]
-        Oopenloop
+        Oopenloop,
     }
 
     public partial class PNAX : ScpiInstrument
@@ -135,7 +138,8 @@ namespace OpenTap.Plugins.PNAX
             // Expecting a string like "F1", need to remove the 'F' and parse the number to int
             string replaceValue = value.Replace("F", "");
             int range;
-            if (!int.TryParse(replaceValue, out range)) throw new Exception($"Invalid Frequency Range: {value}");
+            if (!int.TryParse(replaceValue, out range))
+                throw new Exception($"Invalid Frequency Range: {value}");
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:RANGe {range},\"{source}\"");
         }
 
@@ -143,7 +147,10 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:EXTernal:PORT {port},\"{source}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:EXTernal:PORT {port},\"{source}\""
+                );
                 return;
             }
             ScpiCommand($"SOURce{Channel}:PHASe:EXTernal:PORT {port},\"{source}\"");
@@ -180,7 +187,9 @@ namespace OpenTap.Plugins.PNAX
         public void DIQSourcePowerAttenuationAuto(int Channel, string source, bool state)
         {
             string stateValue = state ? "ON" : "OFF";
-            ScpiCommand($"SENSe{Channel}:DIQ:PORT:POWer:ATTenuation:AUTO {stateValue},\"{source}\"");
+            ScpiCommand(
+                $"SENSe{Channel}:DIQ:PORT:POWer:ATTenuation:AUTO {stateValue},\"{source}\""
+            );
         }
         #endregion
 
@@ -221,7 +230,10 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:CONTrol:TOLerance {value},\"{source}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:CONTrol:TOLerance {value},\"{source}\""
+                );
                 return;
             }
             ScpiCommand($"SOURce{Channel}:PHASe:CONTrol:TOLerance {value},\"{source}\"");
@@ -231,7 +243,10 @@ namespace OpenTap.Plugins.PNAX
         {
             if (!OptionS93088)
             {
-                Log.Warning("Option S93088A/B not on instrument, skipping command: " + $"SOURce{Channel}:PHASe:CONTrol:ITERation {value},\"{source}\"");
+                Log.Warning(
+                    "Option S93088A/B not on instrument, skipping command: "
+                        + $"SOURce{Channel}:PHASe:CONTrol:ITERation {value},\"{source}\""
+                );
                 return;
             }
             ScpiCommand($"SOURce{Channel}:PHASe:CONTrol:ITERation {value},\"{source}\"");
@@ -250,7 +265,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:MATCh:TRECeiver \"{recvr}\",\"{source}\"");
         }
 
-        public void DIQSourceMatchCorrectionReferenceReceiver(int Channel, string source, string recvr)
+        public void DIQSourceMatchCorrectionReferenceReceiver(
+            int Channel,
+            string source,
+            string recvr
+        )
         {
             ScpiCommand($"SENSe{Channel}:DIQ:PORT:MATCh:RRECeiver \"{recvr}\",\"{source}\"");
         }

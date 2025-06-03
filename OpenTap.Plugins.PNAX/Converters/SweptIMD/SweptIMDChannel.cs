@@ -4,16 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Swept IMD Converters Channel", Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" }, Description: "Insert a description here", Order: 4)]
+    [Display(
+        "Swept IMD Converters Channel",
+        Groups: new[] { "Network Analyzer", "Converters", "Swept IMD Converters" },
+        Description: "Insert a description here",
+        Order: 4
+    )]
     public class SweptIMDChannel : ConverterChannelBaseStep
     {
         #region Settings
@@ -37,20 +42,52 @@ namespace OpenTap.Plugins.PNAX
             // Add child steps in the order that is required
 
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
+            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+                EnablePort3Settings = false,
+                EnablePort4Settings = false,
+            };
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Tone Power
-            TonePower power = new TonePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, ToneFrequencySweepType = this.ChannelSweepType };
+            TonePower power = new TonePower
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+                ToneFrequencySweepType = this.ChannelSweepType,
+            };
             // Tone Frequency
-            ToneFrequency frequency = new ToneFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ToneFrequency frequency = new ToneFrequency
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Traces
-            SweptIMDNewTrace sweptIMDNewTrace = new SweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
-
+            SweptIMDNewTrace sweptIMDNewTrace = new SweptIMDNewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Defaults
             mixerFrequencyTestStep.InputMixerFrequencyStart = 10.5e6;
@@ -69,8 +106,6 @@ namespace OpenTap.Plugins.PNAX
             mixerFrequencyTestStep.OutputMixerFrequencyCenter = 25.005e9;
             mixerFrequencyTestStep.OutputMixerFrequencySpan = 49.99e9;
 
-
-
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(mixerFrequencyTestStep);
@@ -87,7 +122,9 @@ namespace OpenTap.Plugins.PNAX
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_PwrMain_1\',\'Swept IMD Converters\',\'PwrMain\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_PwrMain_1\',\'Swept IMD Converters\',\'PwrMain\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

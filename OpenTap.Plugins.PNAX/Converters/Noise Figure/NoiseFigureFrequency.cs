@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -17,16 +17,22 @@ namespace OpenTap.Plugins.PNAX
     {
         [Display("Output")]
         Output,
+
         [Display("Input")]
-        Input
+        Input,
     }
 
     //[AllowAsChildIn(typeof(NoiseFigureChannel))]
-    [Display("Noise Figure Frequency", Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" }, Description: "Insert a description here")]
+    [Display(
+        "Noise Figure Frequency",
+        Groups: new[] { "Network Analyzer", "Converters", "Noise Figure Converters" },
+        Description: "Insert a description here"
+    )]
     public class NoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings
         private SweepTypeEnum _sweepType;
+
         [Display("Sweep Type", Order: 1)]
         public SweepTypeEnum SweepType
         {
@@ -61,7 +67,6 @@ namespace OpenTap.Plugins.PNAX
             SweepSettingsCenter = DefaultValues.SweepSettingsCenter;
             SweepSettingsSpan = DefaultValues.SweepSettingsSpan;
             SweepSettingsFixed = DefaultValues.SweepSettingsFixed;
-
         }
 
         protected override void SetSweepType()
@@ -72,7 +77,6 @@ namespace OpenTap.Plugins.PNAX
         protected override void SetMode()
         {
             // Noise Frequency does not set Mode, only Gain Compression Frequency, which also derives from same base class
-
         }
     }
 }

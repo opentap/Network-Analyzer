@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,45 +18,52 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("LIN")]
         [Display("Linear Sweep")]
         LinearSweep,
+
         [Scpi("LOGarithmic")]
         [Display("Log Frequency")]
         LogFrequency,
+
         [Scpi("CW")]
         [Display("CW Frequency")]
         CWFrequency,
+
         [Scpi("SEGMent")]
         [Display("Segment Sweep")]
-        SegmentSweep
+        SegmentSweep,
     }
 
     public enum SweepSSCSTypeEnum
     {
         [Display("Start/Stop")]
         StartStop,
+
         [Display("Center/Span")]
-        CenterSpan
+        CenterSpan,
     }
 
     //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
-    [Display("Noise Figure Frequency", Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" }, Description: "Insert a description here")]
+    [Display(
+        "Noise Figure Frequency",
+        Groups: new[] { "Network Analyzer", "General", "Noise Figure Cold Source" },
+        Description: "Insert a description here"
+    )]
     public class GeneralNoiseFigureFrequency : FrequencyBaseStep
     {
         #region Settings
         private GeneralNFSweepTypeEnum _SweepType;
+
         [Display("Sweep Type", Order: 1)]
         public GeneralNFSweepTypeEnum SweepType
         {
-            get
-            {
-                return _SweepType;
-            }
+            get { return _SweepType; }
             set
             {
                 _SweepType = value;
                 EnableSegmentSweepSettings = value == GeneralNFSweepTypeEnum.SegmentSweep;
                 CWFrequencyEnabled = value == GeneralNFSweepTypeEnum.CWFrequency;
-                LinearSweepEnabled = value == GeneralNFSweepTypeEnum.LinearSweep ||
-                                    value == GeneralNFSweepTypeEnum.LogFrequency;
+                LinearSweepEnabled =
+                    value == GeneralNFSweepTypeEnum.LinearSweep
+                    || value == GeneralNFSweepTypeEnum.LogFrequency;
             }
         }
 
@@ -64,13 +71,11 @@ namespace OpenTap.Plugins.PNAX
         public XAxisAnnotation XAxisAnnotation { get; set; }
 
         private int _SweepSettingsNumberOfPoints;
+
         [Display("Number Of Points", Group: "Sweep Settings", Order: 10)]
         public override int SweepSettingsNumberOfPoints
         {
-            get
-            {
-                return _SweepSettingsNumberOfPoints;
-            }
+            get { return _SweepSettingsNumberOfPoints; }
             set
             {
                 _SweepSettingsNumberOfPoints = value;
@@ -88,7 +93,6 @@ namespace OpenTap.Plugins.PNAX
                 {
                     Log.Debug("can't find parent yet! ex: " + ex.Message);
                 }
-
             }
         }
 
@@ -123,7 +127,6 @@ namespace OpenTap.Plugins.PNAX
         protected override void SetMode()
         {
             // Noise Frequency does not set Mode, only Gain Compression Frequency, which also derives from same base class
-
         }
     }
 }

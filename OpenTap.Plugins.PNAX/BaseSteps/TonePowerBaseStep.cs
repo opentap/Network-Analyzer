@@ -4,20 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum DutInputPortsEnum
     {
         [Scpi("1")]
         Port1 = 1,
+
         [Scpi("3")]
         Port3 = 3,
     }
@@ -26,20 +26,24 @@ namespace OpenTap.Plugins.PNAX
     {
         [Scpi("2")]
         Port2 = 2,
+
         [Scpi("4")]
-        Port4 = 4
+        Port4 = 4,
     }
 
     public enum PowerLevelingEnum
     {
         [Display("Set Input Power")]
         SetInputPower,
+
         [Display("Set Input Power, receiver leveling")]
         SetInputPowerReceiverLeveling,
+
         [Display("Set Input Power, equal tones at output")]
         SetInputPowerEqualTonesAtOutput,
+
         [Display("Set Output Power, receiver leveling")]
-        SetOutputPowerReceiverLeveling
+        SetOutputPowerReceiverLeveling,
     }
 
     [Browsable(false)]
@@ -63,8 +67,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("dB", UseEngineeringPrefix: true)]
         public double ReceiverAttenuatorDutInput { get; set; }
 
-
-
         [Display("Output Port", Group: "DUT Output", Order: 40)]
         public DutOutputPortsEnum PortOutput { get; set; }
 
@@ -76,15 +78,12 @@ namespace OpenTap.Plugins.PNAX
         [Unit("dB", UseEngineeringPrefix: true)]
         public double ReceiverAttenuatorDutOutput { get; set; }
 
-
         private bool _CoupleTonePowers;
+
         [Display("Coupled Tone Powers", Group: "Tone Powers", Order: 50)]
         public bool CoupleTonePowers
         {
-            get
-            {
-                return _CoupleTonePowers;
-            }
+            get { return _CoupleTonePowers; }
             set
             {
                 _CoupleTonePowers = value;
@@ -103,6 +102,7 @@ namespace OpenTap.Plugins.PNAX
         public PowerLevelingEnum PowerLeveling { get; set; }
 
         private double _fixedF1Power;
+
         [EnabledIf("IsPowerSweep", false, HideIfDisabled = false)]
         [Display("Fixed f1 Power", Group: "Tone Powers", Order: 53)]
         [Unit("dBm", UseEngineeringPrefix: true)]
@@ -122,6 +122,7 @@ namespace OpenTap.Plugins.PNAX
         public double FixedF2Power { get; set; }
 
         private double _startF1Power;
+
         [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Start f1 Power", Group: "Tone Powers", Order: 55)]
         [Unit("dBm", UseEngineeringPrefix: true)]
@@ -141,6 +142,7 @@ namespace OpenTap.Plugins.PNAX
         public double StartF2Power { get; set; }
 
         private double _stopF1Power;
+
         [EnabledIf("IsPowerSweep", true, HideIfDisabled = false)]
         [Display("Stop f1 Power", Group: "Tone Powers", Order: 57)]
         [Unit("dBm", UseEngineeringPrefix: true)]
@@ -230,8 +232,9 @@ namespace OpenTap.Plugins.PNAX
         private void SetIMDLevelingMode()
         {
             PNAX.SetIMDPowerLevelingMode(Channel, PowerLeveling);
-            bool modeValue = (PowerLeveling == PowerLevelingEnum.SetInputPowerReceiverLeveling) ||
-                             (PowerLeveling == PowerLevelingEnum.SetOutputPowerReceiverLeveling);
+            bool modeValue =
+                (PowerLeveling == PowerLevelingEnum.SetInputPowerReceiverLeveling)
+                || (PowerLeveling == PowerLevelingEnum.SetOutputPowerReceiverLeveling);
             PNAX.SetIMDReceiverLevelingMode(Channel, (int)PortInput, modeValue);
         }
 

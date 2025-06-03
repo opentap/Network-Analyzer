@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,27 +18,33 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("24e6")]
         [Display("24 MHz")]
         TwentyFour,
+
         [Scpi("8e6")]
         [Display("8.0 MHz")]
         Eight,
+
         [Scpi("4e6")]
         [Display("4.0 MHz")]
         Four,
+
         [Scpi("2e6")]
         [Display("2.0 MHz")]
         Two,
+
         [Scpi("8e3")]
         [Display("0.8 MHz")]
-        PointEight
+        PointEight,
     }
+
     public enum NoiseBandwidthNormal
     {
         [Scpi("1.2e6")]
         [Display("1.2 MHz")]
         OnePointTwo,
+
         [Scpi("720e3")]
         [Display("720 kHz")]
-        PointSevenTwo
+        PointSevenTwo,
     }
 
     public enum NoiseReceiver
@@ -46,9 +52,10 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("NORM")]
         [Display("NA Receiver (Port 2)")]
         NAReceiver,
+
         [Scpi("NOIS")]
         [Display("Noise Receiver")]
-        NoiseReceiver
+        NoiseReceiver,
     }
 
     public enum ReceiverGain
@@ -56,12 +63,14 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("30")]
         [Display("High")]
         High,
+
         [Scpi("15")]
         [Display("Medium")]
         Medium,
+
         [Scpi("0")]
         [Display("Low")]
-        Low
+        Low,
     }
 
     [Browsable(false)]
@@ -72,14 +81,12 @@ namespace OpenTap.Plugins.PNAX
         public bool IsUseNarrowbandCompensationEnabled { get; set; }
 
         private NoiseBandwidthNoise _NoiseBandwidthNoise;
+
         [EnabledIf("NoiseReceiver", NoiseReceiver.NoiseReceiver, HideIfDisabled = true)]
         [Display("Noise Bandwidth", Group: "Bandwidth/Average", Order: 21)]
         public NoiseBandwidthNoise NoiseBandwidthNoise
         {
-            get
-            {
-                return _NoiseBandwidthNoise;
-            }
+            get { return _NoiseBandwidthNoise; }
             set
             {
                 _NoiseBandwidthNoise = value;
@@ -88,14 +95,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         private NoiseBandwidthNormal _NoiseBandwidthNormal;
+
         [EnabledIf("NoiseReceiver", NoiseReceiver.NAReceiver, HideIfDisabled = true)]
         [Display("Noise Bandwidth", Group: "Bandwidth/Average", Order: 21)]
         public NoiseBandwidthNormal NoiseBandwidthNormal
         {
-            get
-            {
-                return _NoiseBandwidthNormal;
-            }
+            get { return _NoiseBandwidthNormal; }
             set
             {
                 _NoiseBandwidthNormal = value;
@@ -119,13 +124,11 @@ namespace OpenTap.Plugins.PNAX
         public bool UseNarrowbandCompensation { get; set; }
 
         private NoiseReceiver _NoiseReceiver;
+
         [Display("Noise Receiver", Group: "Noise Receiver", Order: 31)]
         public NoiseReceiver NoiseReceiver
         {
-            get
-            {
-                return _NoiseReceiver;
-            }
+            get { return _NoiseReceiver; }
             set
             {
                 _NoiseReceiver = value;
@@ -144,13 +147,13 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         [EnabledIf("NoiseReceiver", NoiseReceiver.NoiseReceiver, HideIfDisabled = false)]
         [Display("Receiver Gain", Group: "Noise Receiver", Order: 32)]
         public ReceiverGain ReceiverGain { get; set; }
 
         [Display("Source Temperature", Group: "Source Temperature", Order: 41)]
         public double SourceTemperature { get; set; }
+
         [Display("Use 302K for Vector Noise", Group: "Source Temperature", Order: 41)]
         public bool Use302K { get; set; }
 
@@ -168,8 +171,12 @@ namespace OpenTap.Plugins.PNAX
 
         public void UpdateIsUseNarrowbandCompensationEnabled()
         {
-            IsUseNarrowbandCompensationEnabled = (_NoiseReceiver == NoiseReceiver.NoiseReceiver || _NoiseBandwidthNoise == NoiseBandwidthNoise.Two ||
-                                                  _NoiseBandwidthNoise == NoiseBandwidthNoise.Four || _NoiseBandwidthNoise == NoiseBandwidthNoise.PointEight);
+            IsUseNarrowbandCompensationEnabled = (
+                _NoiseReceiver == NoiseReceiver.NoiseReceiver
+                || _NoiseBandwidthNoise == NoiseBandwidthNoise.Two
+                || _NoiseBandwidthNoise == NoiseBandwidthNoise.Four
+                || _NoiseBandwidthNoise == NoiseBandwidthNoise.PointEight
+            );
             if (IsUseNarrowbandCompensationEnabled == false)
             {
                 // uncheck it
@@ -190,7 +197,7 @@ namespace OpenTap.Plugins.PNAX
             NoiseBandwidthNormal = NFDefault.NoiseBandwidthNormal;
             AverageNumberNoise = NFDefault.AverageNumberNoise;
             AverageNumberNormal = NFDefault.AverageNumberNormal;
-            NoiseReceiver = NFDefault.NoiseReceiver;    // After AverageNumberNoise and AverageNumberNormal have been set
+            NoiseReceiver = NFDefault.NoiseReceiver; // After AverageNumberNoise and AverageNumberNormal have been set
             IsAverageOnNoise = NFDefault.IsAverageOnNoise;
             IsAverageOnNormal = NFDefault.IsAverageOnNormal;
             UseNarrowbandCompensation = NFDefault.UseNarrowbandCompensation;
@@ -201,7 +208,11 @@ namespace OpenTap.Plugins.PNAX
             EnableSourcePulling = NFDefault.EnableSourcePulling;
             NoiseTunerFile = NFDefault.NoiseTunerFile;
 
-            Rules.Add(() => ((MaxImpedanceStates >= 4) && (MaxImpedanceStates <= 7)), "Max Acquired Impedance States must be between 4 and 7", nameof(MaxImpedanceStates));
+            Rules.Add(
+                () => ((MaxImpedanceStates >= 4) && (MaxImpedanceStates <= 7)),
+                "Max Acquired Impedance States must be between 4 and 7",
+                nameof(MaxImpedanceStates)
+            );
         }
 
         public override void Run()

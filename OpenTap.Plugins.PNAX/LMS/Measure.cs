@@ -4,16 +4,20 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Trigger Channels", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Triggers every channel")]
+    [Display(
+        "Trigger Channels",
+        Groups: new[] { "Network Analyzer", "Load/Measure/Store" },
+        Description: "Triggers every channel"
+    )]
     public class Measure : TestStep
     {
         #region Settings
@@ -24,8 +28,14 @@ namespace OpenTap.Plugins.PNAX
         public bool AutoSelectChannels { get; set; }
 
         [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
-        [Display("Channels", Description: "Choose which channels to trigger.", "Measurements", Order: 2)]
+        [Display(
+            "Channels",
+            Description: "Choose which channels to trigger.",
+            "Measurements",
+            Order: 2
+        )]
         public List<int> channels { get; set; }
+
         // ToDo: Add property here for each parameter the end user should be able to change
 
         [Display("Sweep Mode", Group: "Settings", Order: 10)]

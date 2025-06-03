@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -57,7 +57,8 @@ namespace OpenTap.Plugins.PNAX
 
         public double GetFOMStop(int Channel, int Range)
         {
-            return ScpiQuery<double>($"SENSe{Channel}:FOM:RANGe{Range}:FREQuency:STOP?"); ;
+            return ScpiQuery<double>($"SENSe{Channel}:FOM:RANGe{Range}:FREQuency:STOP?");
+            ;
         }
 
         public void SetFOMStop(int Channel, int Range, double freq)
@@ -123,7 +124,9 @@ namespace OpenTap.Plugins.PNAX
 
         public int FOMSegmentAdd(int Channel, int Range)
         {
-            int NumberOfSegments = ScpiQuery<int>($"SENSe{Channel}:FOM:RANGe{Range}:SEGMent:COUNt?");
+            int NumberOfSegments = ScpiQuery<int>(
+                $"SENSe{Channel}:FOM:RANGe{Range}:SEGMent:COUNt?"
+            );
             NumberOfSegments++;
             ScpiCommand($"SENSe{Channel}:FOM:RANGe{Range}:SEGMent{NumberOfSegments}:ADD");
             return NumberOfSegments;
@@ -150,7 +153,5 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{Channel}:FOM:RANGe{Range}:SEGMent{segment}:FREQuency:STOP {freq}");
         }
         #endregion
-
-
     }
 }

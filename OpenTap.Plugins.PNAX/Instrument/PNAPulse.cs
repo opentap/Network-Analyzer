@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -18,12 +18,14 @@ namespace OpenTap.Plugins.PNAX
         [Display("Off")]
         [Scpi("OFF")]
         Off,
+
         [Display("Standard Pulse")]
         [Scpi("STD")]
         Standard,
+
         [Display("Pulse Profile")]
         [Scpi("PROFILE")]
-        Profile
+        Profile,
     }
 
     public enum PulseModeBasicEnumtype
@@ -31,6 +33,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Off")]
         [Scpi("OFF")]
         Off,
+
         [Display("Standard Pulse")]
         [Scpi("STD")]
         Standard,
@@ -41,9 +44,10 @@ namespace OpenTap.Plugins.PNAX
         [Display("Narrowband")]
         [Scpi("OFF")]
         Narrowband,
+
         [Display("Wideband")]
         [Scpi("ON")]
-        Wideband
+        Wideband,
     }
 
     public enum PulsePrimaryClockEnumtype
@@ -51,9 +55,10 @@ namespace OpenTap.Plugins.PNAX
         [Display("Internal")]
         [Scpi("Internal")]
         Internal,
+
         [Display("External")]
         [Scpi("External")]
-        External
+        External,
     }
 
     public enum PulseTriggerEnumtype
@@ -61,9 +66,10 @@ namespace OpenTap.Plugins.PNAX
         [Display("Internal")]
         [Scpi("Internal")]
         Internal,
+
         [Display("External")]
         [Scpi("External")]
-        External
+        External,
     }
 
     public enum Pulse4ModeEnumtype
@@ -71,20 +77,21 @@ namespace OpenTap.Plugins.PNAX
         [Display("All ADC Activity")]
         [Scpi("ALL")]
         All,
+
         [Display("Trace ADC Activity")]
         [Scpi("TRAC")]
-        Trace
+        Trace,
     }
-
 
     public enum PulseTriggerTypeEnumtype
     {
         [Display("Edge")]
         [Scpi("EDGE")]
         Edge,
+
         [Display("Level")]
         [Scpi("LEV")]
-        Level
+        Level,
     }
 
     public enum PulseTriggerPolarityEnumtype
@@ -92,31 +99,35 @@ namespace OpenTap.Plugins.PNAX
         [Display("Positive/High")]
         [Scpi("POS")]
         Positive,
+
         [Display("Negative/Low")]
         [Scpi("NEG")]
-        Negative
+        Negative,
     }
 
     public enum PulseTriggerLevelEdgeEnumtype
     {
         [Display("High Level")]
         HighLevel,
+
         [Display("Low Level")]
         LowLevel,
+
         [Display("Positive Edge")]
         PositiveEdge,
+
         [Display("Negative Edge")]
-        NegativeEdge
+        NegativeEdge,
     }
 
     public enum PulseALCModeEnumType
     {
         [Scpi("INT")]
         Internal,
-        [Scpi("OPEN")]
-        OpenLoop
-    }
 
+        [Scpi("OPEN")]
+        OpenLoop,
+    }
 
     public partial class PNAX : ScpiInstrument
     {
@@ -202,6 +213,7 @@ namespace OpenTap.Plugins.PNAX
         {
             ScpiCommand($"SENSe{Channel}:SWEep:TIME:STOP {value}");
         }
+
         public double PulseSweepTimeQ(int Channel)
         {
             return ScpiQuery<double>($"SENSe{Channel}:SWEep:TIME:STOP?");

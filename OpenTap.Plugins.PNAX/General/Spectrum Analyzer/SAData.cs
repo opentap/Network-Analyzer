@@ -4,27 +4,34 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
-    [Display("SA Data", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display(
+        "SA Data",
+        Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" },
+        Description: "Insert a description here"
+    )]
     public class SAData : PNABaseStep
     {
         #region Settings
 
         [Display("Data Format", Groups: new[] { "Data" }, Order: 20)]
         public SADataTypeEnum DataFormat { get; set; }
+
         [Display("Export Receivers", Groups: new[] { "Data" }, Order: 21)]
         public String ExportReceivers { get; set; }
+
         [Display("Don't save data below threshold", Groups: new[] { "Data" }, Order: 22)]
         public bool ThresholdState { get; set; }
+
         [Display("Value", Groups: new[] { "Data" }, Order: 23)]
         public double ThresholdValue { get; set; }
 
@@ -33,26 +40,34 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         [Display("Export to text file", Groups: new[] { "Export" }, Order: 31)]
         public bool ExportToTextState { get; set; }
+
         [Display("Verbose Mode", Groups: new[] { "Export" }, Order: 32)]
         public bool VerboseModeState { get; set; }
+
         [Display("Export markers with data files", Groups: new[] { "Export" }, Order: 33)]
         public bool ExportMarkersState { get; set; }
+
         [Display("Export all markers to a single file", Groups: new[] { "Export" }, Order: 34)]
         public bool ExportAllMarkersState { get; set; }
+
         [Display("Erase files each new sweep", Groups: new[] { "Export" }, Order: 35)]
         public bool EraseFilesState { get; set; }
+
         [Display("File name prefix", Groups: new[] { "Export" }, Order: 36)]
         public string FileName { get; set; }
 
         [Display("Export to FIFO buffer", Groups: new[] { "Export" }, Order: 40)]
         public bool ExportFifoState { get; set; }
+
         [Display("Export to shared memory", Groups: new[] { "Export" }, Order: 41)]
         public bool ExportToSharedMemoryState { get; set; }
+
         [Display("Share name", Groups: new[] { "Export" }, Order: 42)]
         public string ShareName { get; set; }
 
         [Display("Export IQ data to binary file", Groups: new[] { "Export IQ data" }, Order: 50)]
         public bool ExportIQToBinaryState { get; set; }
+
         [Display("Export IQ to text file", Groups: new[] { "Export IQ data" }, Order: 51)]
         public bool ExportIQToTextState { get; set; }
 

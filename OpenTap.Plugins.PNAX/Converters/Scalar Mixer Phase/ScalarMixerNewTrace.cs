@@ -4,17 +4,21 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(ScalarMixerChannel))]
-    [Display("Scalar Mixer New Trace", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display(
+        "Scalar Mixer New Trace",
+        Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" },
+        Description: "Insert a description here"
+    )]
     public class ScalarMixerNewTrace : AddNewTraceBaseStep
     {
         #region Settings
@@ -40,13 +44,21 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new ScalarMixerSingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
 
         protected override void DeleteDummyTrace()
         {
             PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
         }
-
     }
 }

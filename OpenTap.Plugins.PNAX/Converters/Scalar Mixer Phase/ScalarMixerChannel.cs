@@ -4,20 +4,25 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Scalar Mixer/Converter + Phase Channel", Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" }, Description: "Insert a description here")]
+    [Display(
+        "Scalar Mixer/Converter + Phase Channel",
+        Groups: new[] { "Network Analyzer", "Converters", "Scalar Mixer Converter + Phase" },
+        Description: "Insert a description here"
+    )]
     public class ScalarMixerChannel : ConverterChannelBaseStep
     {
         #region Settings
         private ScalerMixerSweepType _sweepType { get; set; }
+
         public void UpdateChannelSweepType(ScalerMixerSweepType value)
         {
             _sweepType = value;
@@ -30,28 +35,56 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
-
         #endregion
 
         public ScalarMixerChannel()
         {
-
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
+            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+                EnablePort3Settings = false,
+                EnablePort4Settings = false,
+            };
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Compression
-            ScalarMixerSweep scalerMixerSweep = new ScalarMixerSweep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerSweep scalerMixerSweep = new ScalarMixerSweep
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
             // Power
-            ScalarMixerPower scalerMixerPower = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerPower scalerMixerPower = new ScalarMixerPower
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Traces
-            ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
-
+            ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                ConverterStages = this.ConverterStages,
+            };
 
             // Defaults for MixerPowerTestStep
             mixerPowerTestStep.LO1SweptPowerStart = -10.0;
@@ -77,7 +110,9 @@ namespace OpenTap.Plugins.PNAX
             PNAX.GetNewTraceID(Channel);
             // Define a dummy measurement so we can setup all channel parameters
             // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_SC21_1\',\'Scalar Mixer/Converter\',\'SC21\'");
+            PNAX.ScpiCommand(
+                $"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_SC21_1\',\'Scalar Mixer/Converter\',\'SC21\'"
+            );
 
             RunChildSteps(); //If the step supports child steps.
 

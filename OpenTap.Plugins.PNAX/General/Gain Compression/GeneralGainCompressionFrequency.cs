@@ -4,12 +4,12 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
@@ -18,32 +18,37 @@ namespace OpenTap.Plugins.PNAX
         [Scpi("LIN")]
         [Display("Linear Sweep")]
         LinearSweep,
+
         [Scpi("LOGarithmic")]
         [Display("Log Frequency")]
         LogFrequency,
+
         [Scpi("SEGMent")]
         [Display("Segment Sweep")]
-        SegmentSweep
+        SegmentSweep,
     }
 
     //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
-    [Display("Gain Compression Frequency", Groups: new[] { "Network Analyzer", "General", "Gain Compression" }, Description: "Insert a description here")]
+    [Display(
+        "Gain Compression Frequency",
+        Groups: new[] { "Network Analyzer", "General", "Gain Compression" },
+        Description: "Insert a description here"
+    )]
     public class GeneralGainCompressionFrequency : FrequencyBaseStep
     {
         #region Settings
 
         private GeneralGainCompressionSweepTypeEnum _SweepType;
+
         [Display("Sweep Type", Order: 1)]
         public GeneralGainCompressionSweepTypeEnum SweepType
         {
-            get
-            {
-                return _SweepType;
-            }
+            get { return _SweepType; }
             set
             {
                 _SweepType = value;
-                EnableSegmentSweepSettings = value == GeneralGainCompressionSweepTypeEnum.SegmentSweep;
+                EnableSegmentSweepSettings =
+                    value == GeneralGainCompressionSweepTypeEnum.SegmentSweep;
                 LinearSweepEnabled = !EnableSegmentSweepSettings;
                 CWFrequencyEnabled = false;
             }

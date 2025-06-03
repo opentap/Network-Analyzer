@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 {
     //[AllowAsChildIn(typeof(SpectrumAnalyzerChannel))]
     //[AllowChildrenOfType(typeof(SASingleTrace))]
-    [Display("SA New Trace", Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" }, Description: "Insert a description here")]
+    [Display(
+        "SA New Trace",
+        Groups: new[] { "Network Analyzer", "General", "Spectrum Analyzer" },
+        Description: "Insert a description here"
+    )]
     public class SANewTrace : AddNewTraceBaseStep
     {
         #region Settings
@@ -26,14 +30,31 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         public SANewTrace()
         {
             Meas = SATraceEnum.B;
-            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new SASingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            ChildTestSteps.Add(
+                new SASingleTrace()
+                {
+                    PNAX = this.PNAX,
+                    Meas = this.Meas,
+                    Channel = this.Channel,
+                    IsControlledByParent = true,
+                    EnableTraceSettings = true,
+                }
+            );
         }
-
 
         [Browsable(false)]
         public override List<(string, object)> GetMetaData()

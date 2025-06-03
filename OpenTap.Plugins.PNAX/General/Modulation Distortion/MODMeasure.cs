@@ -4,19 +4,23 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(MODChannel))]
     //[AllowAsChildIn(typeof(MODXChannel))]
-    [Display("MOD Measure", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "MOD Measure",
+        Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODMeasure : PNABaseStep
     {
         #region Settings
@@ -30,29 +34,52 @@ namespace OpenTap.Plugins.PNAX
         [Display("Carrier Offset Freq", Group: "Settings", Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0")]
         public double MODCarrierOffset { get; set; }
+
         [EnabledIf("Autofill", false, HideIfDisabled = true)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         [Display("Carrier Integration BW", Group: "Settings", Order: 23)]
         public double MODCarrierIBW { get; set; }
 
         [EnabledIf("Autofill", false, HideIfDisabled = true)]
-        [EnabledIf("MODMeasurementType", MODMeasurementTypeEnum.ACP, MODMeasurementTypeEnum.ACPEVM, HideIfDisabled = true)]
+        [EnabledIf(
+            "MODMeasurementType",
+            MODMeasurementTypeEnum.ACP,
+            MODMeasurementTypeEnum.ACPEVM,
+            HideIfDisabled = true
+        )]
         [Display("ACP Lower Offset Freq", Group: "Settings", Order: 24)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double MODACPLowOffset { get; set; }
+
         [EnabledIf("Autofill", false, HideIfDisabled = true)]
-        [EnabledIf("MODMeasurementType", MODMeasurementTypeEnum.ACP, MODMeasurementTypeEnum.ACPEVM, HideIfDisabled = true)]
+        [EnabledIf(
+            "MODMeasurementType",
+            MODMeasurementTypeEnum.ACP,
+            MODMeasurementTypeEnum.ACPEVM,
+            HideIfDisabled = true
+        )]
         [Display("ACP Lower Integration BW", Group: "Settings", Order: 25)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double MODACPLowIBW { get; set; }
 
         [EnabledIf("Autofill", false, HideIfDisabled = true)]
-        [EnabledIf("MODMeasurementType", MODMeasurementTypeEnum.ACP, MODMeasurementTypeEnum.ACPEVM, HideIfDisabled = true)]
+        [EnabledIf(
+            "MODMeasurementType",
+            MODMeasurementTypeEnum.ACP,
+            MODMeasurementTypeEnum.ACPEVM,
+            HideIfDisabled = true
+        )]
         [Display("ACP Upper Offset Freq", Group: "Settings", Order: 26)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double MODACPUpperOffset { get; set; }
+
         [EnabledIf("Autofill", false, HideIfDisabled = true)]
-        [EnabledIf("MODMeasurementType", MODMeasurementTypeEnum.ACP, MODMeasurementTypeEnum.ACPEVM, HideIfDisabled = true)]
+        [EnabledIf(
+            "MODMeasurementType",
+            MODMeasurementTypeEnum.ACP,
+            MODMeasurementTypeEnum.ACPEVM,
+            HideIfDisabled = true
+        )]
         [Display("ACP Upper Integration BW", Group: "Settings", Order: 27)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double MODACPUpperIBW { get; set; }
@@ -62,17 +89,15 @@ namespace OpenTap.Plugins.PNAX
         [Display("Notch Offset Freq", Group: "Settings", Order: 26)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0")]
         public double MODNPROffset { get; set; }
+
         [EnabledIf("Autofill", false, HideIfDisabled = true)]
         [EnabledIf("MODMeasurementType", MODMeasurementTypeEnum.NPR, HideIfDisabled = true)]
         [Display("Notch Integration BW", Group: "Settings", Order: 27)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double MODNPRIBW { get; set; }
 
-
-
         [Display("Measurement Details", Group: "Measurement Details", Order: 30)]
         public bool EnableMeasurementDetails { get; set; }
-
 
         [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
         [Display("Equalization Aperture Auto", Group: "Measurement Details", Order: 31)]
@@ -83,7 +108,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("Equalization Aperture", Group: "Measurement Details", Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double EqualizationAperture { get; set; }
-
 
         [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
         [Display("ADC Anti-alias Filter", Group: "Measurement Details", Order: 33)]
@@ -115,7 +139,6 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double SymbolRate { get; set; }
 
-
         [EnabledIf("EnableMeasurementDetails", true, HideIfDisabled = true)]
         [Display("DUT NF", Group: "Measurement Details", Order: 39)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
@@ -139,8 +162,16 @@ namespace OpenTap.Plugins.PNAX
             MODNPROffset = 0;
             MODNPRIBW = 10e6;
 
-            Rules.Add(() => ((EVMNormalization >= 0.1) && (EVMNormalization <= 1)), "EVM normalization must be between 0.1 and 1", nameof(EVMNormalization));
-            Rules.Add(() => ((MODAlpha >= 0) && (MODAlpha <= 1)), "Alpha must be between 0 and 1", nameof(MODAlpha));
+            Rules.Add(
+                () => ((EVMNormalization >= 0.1) && (EVMNormalization <= 1)),
+                "EVM normalization must be between 0.1 and 1",
+                nameof(EVMNormalization)
+            );
+            Rules.Add(
+                () => ((MODAlpha >= 0) && (MODAlpha <= 1)),
+                "Alpha must be between 0 and 1",
+                nameof(MODAlpha)
+            );
             EnableMeasurementDetails = false;
             EqualizationAperture = 10.24e6;
             EqualizationApertureAuto = true;
@@ -166,8 +197,10 @@ namespace OpenTap.Plugins.PNAX
             {
                 retVal.Add(("MODCarrierOffset", MODCarrierOffset));
                 retVal.Add(("MODCarrierIBW", MODCarrierIBW));
-                if ((MODMeasurementType == MODMeasurementTypeEnum.ACP) ||
-                    (MODMeasurementType == MODMeasurementTypeEnum.ACPEVM))
+                if (
+                    (MODMeasurementType == MODMeasurementTypeEnum.ACP)
+                    || (MODMeasurementType == MODMeasurementTypeEnum.ACPEVM)
+                )
                 {
                     retVal.Add(("MODACPLowOffset", MODACPLowOffset));
                     retVal.Add(("MODACPLowIBW", MODACPLowIBW));
@@ -211,8 +244,10 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.MODSetOffset(Channel, MODCarrierOffset, MODMeasConfigTypeEnum.CARRier);
                 PNAX.MODSetIBW(Channel, MODCarrierIBW, MODMeasConfigTypeEnum.CARRier);
 
-                if ((MODMeasurementType == MODMeasurementTypeEnum.ACP) ||
-                    (MODMeasurementType == MODMeasurementTypeEnum.ACPEVM))
+                if (
+                    (MODMeasurementType == MODMeasurementTypeEnum.ACP)
+                    || (MODMeasurementType == MODMeasurementTypeEnum.ACPEVM)
+                )
                 {
                     PNAX.MODSetOffset(Channel, MODACPLowOffset, MODMeasConfigTypeEnum.ACPLower);
                     PNAX.MODSetIBW(Channel, MODACPLowIBW, MODMeasConfigTypeEnum.ACPLower);

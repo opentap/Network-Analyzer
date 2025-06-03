@@ -4,20 +4,23 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     //[AllowAsChildIn(typeof(TestPlan))]
     //[AllowAsChildIn(typeof(MODChannel))]
     //[AllowAsChildIn(typeof(MODXChannel))]
-    [Display("MOD Modulation", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "MOD Modulation",
+        Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODModulate : PNABaseStep
     {
         #region Settings
@@ -30,7 +33,6 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Enable Modulation", Group: "Settings", Order: 12)]
         public bool EnableModulation { get; set; }
-
 
         #endregion
 

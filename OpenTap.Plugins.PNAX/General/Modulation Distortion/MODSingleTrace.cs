@@ -4,16 +4,15 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
-
     public enum MODTraceEnum
     {
         PIn1,
@@ -30,12 +29,15 @@ namespace OpenTap.Plugins.PNAX
         LMatch2,
         CarrIn1,
         CarrOut2,
-        CarrGain21
+        CarrGain21,
     }
 
-
     //[AllowAsChildIn(typeof(MODNewTrace))]
-    [Display("Modulation Distortion Single Trace", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
+    [Display(
+        "Modulation Distortion Single Trace",
+        Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" },
+        Description: "Insert a description here"
+    )]
     public class MODSingleTrace : SingleTraceBaseStep
     {
         #region Settings
@@ -45,15 +47,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("Meas", Groups: new[] { "Trace" }, Order: 11.1)]
         public MODTraceEnum Meas
         {
-            get
-            {
-                return _Meas;
-            }
+            get { return _Meas; }
             set
             {
                 _Meas = value;
                 string scpi = Scpi.Format("{0}", value);
-                measEnumName = scpi;    // value.ToString();
+                measEnumName = scpi; // value.ToString();
                 UpdateTestStepName();
             }
         }
@@ -65,6 +64,5 @@ namespace OpenTap.Plugins.PNAX
             Meas = MODTraceEnum.PIn1;
             measClass = "Modulation Distortion";
         }
-
     }
 }

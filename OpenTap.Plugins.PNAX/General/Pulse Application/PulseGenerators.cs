@@ -4,18 +4,22 @@
 //              the sample application files (and/or any modified version) in any way
 //              you find useful, provided that you agree that Keysight Technologies has no
 //              warranty, obligations or liability for any sample application files.
-using OpenTap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using OpenTap;
 
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(PulseSetup))]
-    [Display("Pulse Generators Setup", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
+    [Display(
+        "Pulse Generators Setup",
+        Groups: new[] { "Network Analyzer", "General" },
+        Description: "Insert a description here"
+    )]
     public class PulseGenerators : PNABaseStep
     {
         #region Settings
@@ -24,22 +28,35 @@ namespace OpenTap.Plugins.PNAX
 
         // Update parent step Pulse Timing section with these values
         [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
-        [Display("Trigger", Groups: new[] { "Pulse Generators" }, Order: 21, Description: "Set this value on parent step")]
+        [Display(
+            "Trigger",
+            Groups: new[] { "Pulse Generators" },
+            Order: 21,
+            Description: "Set this value on parent step"
+        )]
         public PulseTriggerEnumtype PulseTriggerType { get; set; }
 
         // Update parent step Pulse Timing section with these values
         [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
-        [Display("Frequency", Groups: new[] { "Pulse Generators" }, Order: 22, Description: "Set this value on parent step")]
+        [Display(
+            "Frequency",
+            Groups: new[] { "Pulse Generators" },
+            Order: 22,
+            Description: "Set this value on parent step"
+        )]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double Frequency { get; set; }
 
-
         // Update parent step Pulse Timing section with these values
         [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
-        [Display("Period", Groups: new[] { "Pulse Generators" }, Order: 23, Description: "Set this value on parent step")]
+        [Display(
+            "Period",
+            Groups: new[] { "Pulse Generators" },
+            Order: 23,
+            Description: "Set this value on parent step"
+        )]
         [Unit("sec", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double Period { get; set; }
-
 
         [Display("Source 1 Enable Modulator", Groups: new[] { "Pulsed Sources" }, Order: 31)]
         public bool Source1EnableModulator { get; set; }
@@ -54,11 +71,15 @@ namespace OpenTap.Plugins.PNAX
         [AvailableValues(nameof(PulseGenListOfAvailableValues))]
         public String ModulatorDrive { get; set; }
 
-
-
         private bool _SynchADCUsingPulseTrigger;
+
         [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
-        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulsed Receivers" }, Order: 41, Description: "Set this value on parent step")]
+        [Display(
+            "Synchronize ADCs Using Pulse Trigger",
+            Groups: new[] { "Pulsed Receivers" },
+            Order: 41,
+            Description: "Set this value on parent step"
+        )]
         public bool SynchADCUsingPulseTrigger
         {
             set
@@ -67,10 +88,7 @@ namespace OpenTap.Plugins.PNAX
 
                 UpdatePulse0Enable();
             }
-            get
-            {
-                return _SynchADCUsingPulseTrigger;
-            }
+            get { return _SynchADCUsingPulseTrigger; }
         }
 
         [Display("Pulse4 Output Indicates", Groups: new[] { "Pulsed Receivers" }, Order: 42)]
@@ -93,10 +111,15 @@ namespace OpenTap.Plugins.PNAX
         [Unit("sec", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double RFModulatorDelay { get; set; }
 
-
-
         private List<string> _PulseGenListOfAvailableValues;
-        [Display("Pulse Gen Values", "Editable list for Pulse Gen values", Groups: new[] { "Available Values Setup" }, Order: 101, Collapsed: true)]
+
+        [Display(
+            "Pulse Gen Values",
+            "Editable list for Pulse Gen values",
+            Groups: new[] { "Available Values Setup" },
+            Order: 101,
+            Collapsed: true
+        )]
         public List<string> PulseGenListOfAvailableValues
         {
             get { return _PulseGenListOfAvailableValues; }
@@ -125,24 +148,58 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-
         public PulseGenerators()
         {
             // ON >> CW
             // RearPanel >> External
-            _PulseGenListOfAvailableValues = new List<string> { "On", "Off", "Pulse1", "Pulse2", "Pulse3", "Pulse4", "RearPanel" };
+            _PulseGenListOfAvailableValues = new List<string>
+            {
+                "On",
+                "Off",
+                "Pulse1",
+                "Pulse2",
+                "Pulse3",
+                "Pulse4",
+                "RearPanel",
+            };
 
-            Generator pulse0 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse0", PulseWidth = 10e-9, PulseDelay = 250e-9 };
+            Generator pulse0 = new Generator
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                PulseName = "Pulse0",
+                PulseWidth = 10e-9,
+                PulseDelay = 250e-9,
+            };
             this.ChildTestSteps.Add(pulse0);
-            Generator pulse1 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse1" };
+            Generator pulse1 = new Generator
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                PulseName = "Pulse1",
+            };
             this.ChildTestSteps.Add(pulse1);
-            Generator pulse2 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse2" };
+            Generator pulse2 = new Generator
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                PulseName = "Pulse2",
+            };
             this.ChildTestSteps.Add(pulse2);
-            Generator pulse3 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse3" };
+            Generator pulse3 = new Generator
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                PulseName = "Pulse3",
+            };
             this.ChildTestSteps.Add(pulse3);
-            Generator pulse4 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse4" };
+            Generator pulse4 = new Generator
+            {
+                IsControlledByParent = true,
+                Channel = this.Channel,
+                PulseName = "Pulse4",
+            };
             this.ChildTestSteps.Add(pulse4);
-
 
             Source1EnableModulator = false;
             ALCOpenLoop = false;
@@ -221,6 +278,5 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
         }
-
     }
 }

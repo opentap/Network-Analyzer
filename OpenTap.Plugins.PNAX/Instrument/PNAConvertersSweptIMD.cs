@@ -1,9 +1,9 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using OpenTap;
 
 //Note this template assumes that you have a SCPI based instrument, and accordingly
 //extends the ScpiInstrument base class.
@@ -27,7 +27,11 @@ namespace OpenTap.Plugins.PNAX
             return ScpiQuery<int>($"SENS{Channel}:IMD:PMAP:OUTP?");
         }
 
-        public void SetIMDPortInputOutput(int Channel, DutInputPortsEnum inport, DutOutputPortsEnum outport)
+        public void SetIMDPortInputOutput(
+            int Channel,
+            DutInputPortsEnum inport,
+            DutOutputPortsEnum outport
+        )
         {
             string inp = Scpi.Format("{0}", inport);
             string outp = Scpi.Format("{0}", outport);
@@ -129,7 +133,6 @@ namespace OpenTap.Plugins.PNAX
             string stateValue = mode ? "1" : "0";
             ScpiCommand($"SOURce{Channel}:POWer{Port}:ALC:RECeiver {stateValue}");
         }
-
 
         public double GetIMDFixedPowerF1(int Channel)
         {
@@ -394,6 +397,5 @@ namespace OpenTap.Plugins.PNAX
         }
 
         #endregion
-
     }
 }
