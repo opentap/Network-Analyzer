@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _IMDTraceType = value;
                 if ((_IMDTraceType == IMDTraceTypeEnum.TonePower) ||
-                    (_IMDTraceType == IMDTraceTypeEnum.ToneGain) )
+                    (_IMDTraceType == IMDTraceTypeEnum.ToneGain))
                 {
                     IMDOrderOptions = new List<int> { 1, 2, 3, 5, 7, 9 };
                     IMDOrder = 1;
@@ -228,7 +228,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 // enable button
                 EnableButton = true;
-                Meas = (SweptIMDTraceEnum) Enum.Parse(typeof(SweptIMDTraceEnum), ParamName);
+                Meas = (SweptIMDTraceEnum)Enum.Parse(typeof(SweptIMDTraceEnum), ParamName);
             }
             else
             {

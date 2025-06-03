@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
         public double PeakThreshold { get; set; }
 
         [Display("Peak Excursion", Groups: new[] { "Trace" }, Order: 12)]
-        public double PeakExcursion{ get; set; }
+        public double PeakExcursion { get; set; }
 
         [Display("Peak Polarity", Groups: new[] { "Trace" }, Order: 13)]
         public SAMultiPeakSearchPolarityEnumType PeakPolarity { get; set; }

@@ -55,12 +55,12 @@ namespace OpenTap.Plugins.PNAX
             var DefaultValues = PNAX.GetNoiseFigureConverterFrequencyDefaultValues();
 
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
-            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
-            SweepSettingsStart          = DefaultValues.SweepSettingsStart;
-            SweepSettingsStop           = DefaultValues.SweepSettingsStop;
-            SweepSettingsCenter         = DefaultValues.SweepSettingsCenter;
-            SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
-            SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
+            SweepSettingsIFBandwidth = DefaultValues.SweepSettingsIFBandwidth;
+            SweepSettingsStart = DefaultValues.SweepSettingsStart;
+            SweepSettingsStop = DefaultValues.SweepSettingsStop;
+            SweepSettingsCenter = DefaultValues.SweepSettingsCenter;
+            SweepSettingsSpan = DefaultValues.SweepSettingsSpan;
+            SweepSettingsFixed = DefaultValues.SweepSettingsFixed;
 
         }
 

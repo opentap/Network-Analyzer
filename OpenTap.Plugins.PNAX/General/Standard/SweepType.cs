@@ -56,7 +56,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     //[AllowAsChildIn(typeof(StandardChannel))]
-    [Display("Sweep Type", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
+    [Display("Sweep Type", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
     public class SweepType : PNABaseStep
     {
         #region Settings
@@ -72,7 +72,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _StandardSweepType = value;
-                EnableSegmentSweepSettings = value== StandardSweepTypeEnum.SegmentSweep;
+                EnableSegmentSweepSettings = value == StandardSweepTypeEnum.SegmentSweep;
             }
         }
 

@@ -730,7 +730,7 @@ namespace OpenTap.Plugins.PNAX
             }
             return Verdict.Pass;
         }
-        
+
         public override void Run()
         {
             if (DoHeadlessModeTasks() == Verdict.Fail)
@@ -797,7 +797,7 @@ namespace OpenTap.Plugins.PNAX
             }
             //if (IsPowerCalEnabled)
             //{
-                PNAX.CalAllSetProperty("Include Power Calibration", IncludePowerCalibration.ToString());
+            PNAX.CalAllSetProperty("Include Power Calibration", IncludePowerCalibration.ToString());
             //}
             if (IsIMDEnabled)
             {
@@ -865,7 +865,7 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
 
-            for(int CalStep = 1; CalStep <= CalSteps; CalStep++)
+            for (int CalStep = 1; CalStep <= CalSteps; CalStep++)
             {
                 String StepDescription = PNAX.CalAllStepDescription(CalChannel, CalStep);
 
@@ -1014,7 +1014,7 @@ namespace OpenTap.Plugins.PNAX
 
     class SelectConnectorTypeDialog : IDisplayAnnotation
     {
-        public SelectConnectorTypeDialog(DUTConnectorsEnum Port1Input, DUTConnectorsEnum Port2Input, DUTConnectorsEnum Port3Input, DUTConnectorsEnum Port4Input )
+        public SelectConnectorTypeDialog(DUTConnectorsEnum Port1Input, DUTConnectorsEnum Port2Input, DUTConnectorsEnum Port3Input, DUTConnectorsEnum Port4Input)
         {
             Port1 = Port1Input;
             Port2 = Port2Input;
@@ -1028,14 +1028,14 @@ namespace OpenTap.Plugins.PNAX
 
 
         [Display("Port 1 Connector", "Select the connector type for Port 1")]
-        public DUTConnectorsEnum Port1  { get; set; }
+        public DUTConnectorsEnum Port1 { get; set; }
 
         [Display("Port 2 Connector", "Select the connector type for Port 2")]
         public DUTConnectorsEnum Port2 { get; set; }
-        
+
         [Display("Port 3 Connector", "Select the connector type for Port 3")]
         public DUTConnectorsEnum Port3 { get; set; }
-        
+
         [Display("Port 4 Connector", "Select the connector type for Port 4")]
         public DUTConnectorsEnum Port4 { get; set; }
 

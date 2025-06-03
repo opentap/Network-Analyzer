@@ -48,19 +48,19 @@ namespace OpenTap.Plugins.PNAX
     {
         [Scpi("PTP")]
         [Display("Peak to Peak")]
-        Ptp=1,
+        Ptp = 1,
         [Scpi("STDEV")]
         [Display("Std Dev")]
-        Std=2,
+        Std = 2,
         [Scpi("MEAN")]
         [Display("Mean")]
-        Mean=4,
+        Mean = 4,
         [Scpi("MIN")]
         [Display("Min")]
-        Min=8,
+        Min = 8,
         [Scpi("MAX")]
         [Display("Max")]
-        Max=16
+        Max = 16
     }
 
     public enum MathStatisticsRangeEnum
@@ -129,7 +129,7 @@ namespace OpenTap.Plugins.PNAX
 
         public bool GetLimitTestOn(int Channel, int mnum)
         {
-            int state = IsModelA ? ScpiQuery<int>($"CALCulate{Channel}:LIMit:STATe?") : ScpiQuery<int>($"CALCulate{ Channel }:MEASure{mnum}:LIMit:STATe?");
+            int state = IsModelA ? ScpiQuery<int>($"CALCulate{Channel}:LIMit:STATe?") : ScpiQuery<int>($"CALCulate{Channel}:MEASure{mnum}:LIMit:STATe?");
             return state == 1;
         }
 
@@ -175,7 +175,7 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:DATA:DELete");
 
             int segm = 1;
-            foreach(LimitSegmentDefinition limit in limitSegments)
+            foreach (LimitSegmentDefinition limit in limitSegments)
             {
                 string t = Scpi.Format("{0}", limit.LimitType);
                 ScpiCommand($"CALCulate{Channel}:MEASure{mnum}:LIMit:SEGMent{segm}:TYPE {t}");

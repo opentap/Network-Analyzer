@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Standard Channel", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
+    [Display("Standard Channel", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
     public class StandardChannel : PNABaseStep
     {
         #region Settings

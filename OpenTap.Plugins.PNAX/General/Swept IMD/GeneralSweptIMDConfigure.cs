@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
         public bool EnableReceiverConfiguration { get; set; }
 
         [EnabledIf(nameof(EnableReceiverConfiguration), true, HideIfDisabled = true)]
-        [Display("Receiver Configuration", Groups: new[] { "Receiver Configuration"}, Order: 11)]
+        [Display("Receiver Configuration", Groups: new[] { "Receiver Configuration" }, Order: 11)]
         public ReceiverConfigurationEnumType ReceiverConfiguration { get; set; }
         #endregion
 

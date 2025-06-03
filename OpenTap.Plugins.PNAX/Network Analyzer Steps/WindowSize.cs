@@ -20,7 +20,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Window Size", Order: 3)]
         public VNAWindowSize windowSize { get; set; }
 
-        
+
         #endregion
 
         public WindowSize()

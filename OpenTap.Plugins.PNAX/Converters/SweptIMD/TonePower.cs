@@ -24,7 +24,7 @@ namespace OpenTap.Plugins.PNAX
         private ToneFrequencySweepTypeEnum _ToneFrequencySweepType;
         [EnabledIf("IsControlledByParent", false, HideIfDisabled = false)]
         [Display("Sweep Type", Order: 0.5)]
-        public ToneFrequencySweepTypeEnum ToneFrequencySweepType 
+        public ToneFrequencySweepTypeEnum ToneFrequencySweepType
         {
             get
             {
@@ -34,7 +34,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 _ToneFrequencySweepType = value;
                 IsPowerSweep = _ToneFrequencySweepType == ToneFrequencySweepTypeEnum.PowerSweep;
-            } 
+            }
         }
 
         #endregion

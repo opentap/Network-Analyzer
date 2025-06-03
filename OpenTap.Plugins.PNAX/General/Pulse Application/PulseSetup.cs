@@ -89,7 +89,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("SW Gating", Groups: new[] { "Properties", "Pulse Detection Method" }, Order: 43)]
         public bool PulseDetectionMethodSWGating { get; set; }
 
-        [Display("Autoselect IF Path Gain and Loss", Groups: new[] { "Properties"}, Order: 44)]
+        [Display("Autoselect IF Path Gain and Loss", Groups: new[] { "Properties" }, Order: 44)]
         public bool IfPathGainAndLossAuto { get; set; }
 
         // TODO implement IFPath dialog

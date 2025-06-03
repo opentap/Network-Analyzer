@@ -45,7 +45,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Source", Group: "Sources", Order: 40)]
         public void AddSource()
         {
-            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel , SourceName = "Source" };
+            DIQSource newSource = new DIQSource { IsControlledByParent = true, Channel = this.Channel, SourceName = "Source" };
             this.ChildTestSteps.Add(newSource);
         }
 

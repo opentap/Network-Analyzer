@@ -76,7 +76,7 @@ namespace OpenTap.Plugins.PNAX
 
         private bool _SweepPower;
         [Display("Sweep Power", Groups: new[] { "Power" }, Order: 30)]
-        public bool SweepPower 
+        public bool SweepPower
         {
             get
             {

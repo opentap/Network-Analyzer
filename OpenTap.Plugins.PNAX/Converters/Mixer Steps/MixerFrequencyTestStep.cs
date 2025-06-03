@@ -49,7 +49,7 @@ namespace OpenTap.Plugins.PNAX
 
         private MixerFrequencyTypeEnum _InputMixerFrequencyType;
         [Display("Input", Groups: new[] { "Mixer Frequency", "Input" }, Order: 10)]
-        public MixerFrequencyTypeEnum InputMixerFrequencyType 
+        public MixerFrequencyTypeEnum InputMixerFrequencyType
         {
             get
             {
@@ -58,7 +58,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _InputMixerFrequencyType = value;
-                if (_InputMixerFrequencyType== MixerFrequencyTypeEnum.StartStop)
+                if (_InputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
                 {
                     IsInputMixerFrequencyTypeStartStop = true;
                     IsInputMixerFrequencyTypeCenterSpan = false;

@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [Display("User Preset Save File", Groups: new[] { "Network Analyzer" }, Description: "Saves the current instrument settings as UserPreset.sta.  Subsequent execution of SYSTem:UPReset will cause the VNA to assume this instrument state." +
         "Regardless of the state of the User Preset Enable checkbox, the SYST:PRESet command will always preset the VNA to the factory preset settings, and SYST:UPReset will always perform a User Preset.")]
-    public class UserPresetSaveFile: TestStep
+    public class UserPresetSaveFile : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]

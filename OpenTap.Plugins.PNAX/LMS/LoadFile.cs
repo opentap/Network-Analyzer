@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
         {
             UpgradeVerdict(Verdict.NotSet);
 
-            try 
+            try
             {
                 Log.Debug("State File Name: " + StateFile);
                 string absolutePath = Path.GetFullPath(StateFile);
@@ -42,11 +42,11 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.LoadState(absolutePath, overwrite);
                 PNAX.WaitForOperationComplete();
             }
-            catch(FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

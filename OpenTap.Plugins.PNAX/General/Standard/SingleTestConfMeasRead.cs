@@ -11,7 +11,7 @@ namespace OpenTap.Plugins.PNAX
     {
         [Display("Measurement", Order: 20)]
         public StandardTraceEnum StandardTrace { get; set; }
-        [Display("Start",Order: 21)]
+        [Display("Start", Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double Start { get; set; }
         [Display("Stop", Order: 22)]
@@ -41,7 +41,7 @@ namespace OpenTap.Plugins.PNAX
     public class MeasureReturn
     {
         [Output]
-        [Display("Frequency",Order: 100)]
+        [Display("Frequency", Order: 100)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public List<double> Freq { get; set; } = new List<double>();
 
@@ -57,7 +57,7 @@ namespace OpenTap.Plugins.PNAX
         }
     }
 
-    [Display("Config-Meas", Groups: new[] { "Network Analyzer", "General", "Standard" }, 
+    [Display("Config-Meas", Groups: new[] { "Network Analyzer", "General", "Standard" },
         Description: "This test step is an example on how to setup the instrument, trigger it and get the results in a single test step")]
     public class SingleTestConfMeasRead : TestStep
     {

@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
     }
 
     //[AllowAsChildIn(typeof(StandardChannel))]
-    [Display("Timing", Groups: new[] { "Network Analyzer", "General",  "Standard" }, Description: "Insert a description here")]
+    [Display("Timing", Groups: new[] { "Network Analyzer", "General", "Standard" }, Description: "Insert a description here")]
     public class Timing : PNABaseStep
     {
         #region Settings
@@ -54,12 +54,13 @@ namespace OpenTap.Plugins.PNAX
         private double _SweepTimeStepped;
         private StandardChannelSweepModeEnum _StandardChannelSweepMode;
         [Display("Sweep Mode", Group: "Sweep Mode", Order: 20)]
-        public StandardChannelSweepModeEnum StandardChannelSweepMode {
+        public StandardChannelSweepModeEnum StandardChannelSweepMode
+        {
             get
             {
                 return _StandardChannelSweepMode;
             }
-            set 
+            set
             {
                 _StandardChannelSweepMode = value;
                 if (_StandardChannelSweepMode == StandardChannelSweepModeEnum.Auto)

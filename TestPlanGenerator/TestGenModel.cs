@@ -144,7 +144,7 @@ namespace TestPlanGenerator
 
             // foreach Channel in csv file
             // add channel to childsteps
-            foreach(object o in ListOfchannels)
+            foreach (object o in ListOfchannels)
             {
                 // Create a list of all Traces associated to this Channel number
                 // make sure the channel id and channel type are the same on both lists before adding to the trace list

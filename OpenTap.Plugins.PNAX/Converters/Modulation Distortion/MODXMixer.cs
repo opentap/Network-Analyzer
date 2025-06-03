@@ -113,7 +113,7 @@ namespace OpenTap.Plugins.PNAX
         public double LO1Power { get; set; }
 
         [Display("LO1 Leveling", Groups: new[] { "Power", "LO1" }, Order: 52)]
-        public SourceLevelingModeType LO1SourceLevelingMode{ get; set; }
+        public SourceLevelingModeType LO1SourceLevelingMode { get; set; }
 
         [Display("LO1 Attenuator", Groups: new[] { "Power", "LO1" }, Order: 53)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]

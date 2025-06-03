@@ -54,14 +54,14 @@ namespace OpenTap.Plugins.PNAX
             PositionY = 0.0;
 
             limitSegments = new List<LimitSegmentDefinition>();
-            limitSegments.Add(new LimitSegmentDefinition { LimitType = LimitType.Off, BeginStim = 0, EndStim = 0, BeginResp = 0, EndResp = 0});
+            limitSegments.Add(new LimitSegmentDefinition { LimitType = LimitType.Off, BeginStim = 0, EndStim = 0, BeginResp = 0, EndResp = 0 });
 
             GlobalPassFail = false;
         }
 
         public override void Run()
         {
-            int mnum  = GetParent<SingleTraceBaseStep>().mnum;
+            int mnum = GetParent<SingleTraceBaseStep>().mnum;
             int Window = GetParent<SingleTraceBaseStep>().Window;
 
             PNAX.SetLimitTestOn(Channel, mnum, LimitTest);

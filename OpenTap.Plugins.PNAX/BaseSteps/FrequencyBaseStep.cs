@@ -42,7 +42,7 @@ namespace OpenTap.Plugins.PNAX
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
         public double SweepSettingsIFBandwidth { get; set; }
 
-        [Browsable (false)]
+        [Browsable(false)]
         public bool LinearSweepEnabled { get; set; }
         [EnabledIf("LinearSweepEnabled", true, HideIfDisabled = true)]
         [Display("Type", Group: "Sweep Settings", Order: 11.9)]

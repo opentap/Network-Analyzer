@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("Differential I/Q Channel", Groups: new[] { "Network Analyzer", "General",  "Differential I/Q" }, Description: "Insert a description here")]
+    [Display("Differential I/Q Channel", Groups: new[] { "Network Analyzer", "General", "Differential I/Q" }, Description: "Insert a description here")]
     public class DIQChannel : PNABaseStep
     {
         #region Settings

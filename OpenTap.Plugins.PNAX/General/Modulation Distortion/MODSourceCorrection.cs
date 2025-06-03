@@ -313,7 +313,7 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.MODSourceCorrection(Channel, Source, ModSourceCorrection);
 
                 UpgradeVerdict(Verdict.Pass);
-            } 
+            }
         }
     }
 }

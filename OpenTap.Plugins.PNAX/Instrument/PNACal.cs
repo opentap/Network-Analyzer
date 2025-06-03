@@ -257,7 +257,7 @@ namespace OpenTap.Plugins.PNAX
             List<string> AllMeasClasses = new List<string>();
             List<int> Channels = GetActiveChannels();
 
-            foreach(int ch in Channels)
+            foreach (int ch in Channels)
             {
                 ScpiCommand($"SYST:ACT:CHAN {ch}");
                 WaitForOperationComplete();
@@ -368,7 +368,7 @@ namespace OpenTap.Plugins.PNAX
         public void CalAllSelectPorts(List<int> Ports)
         {
             List<int> Channels = GetActiveChannels();
-            foreach(int ch in Channels)
+            foreach (int ch in Channels)
             {
                 string AllPortsString = string.Join(",", Ports.ToArray());
                 CalAllSelectPorts(ch, AllPortsString);
@@ -465,7 +465,7 @@ namespace OpenTap.Plugins.PNAX
                 var csetCatalogStr = ScpiQuery("CSET:CATalog?");
                 List<string> csetCat = csetCatalogStr.Split(',').ToList();
                 bool found = false;
-                foreach(string cset in csetCat)
+                foreach (string cset in csetCat)
                 {
                     if (cset.Equals(CalSetName))
                     {

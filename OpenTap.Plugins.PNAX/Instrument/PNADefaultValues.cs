@@ -534,27 +534,27 @@ namespace OpenTap.Plugins.PNAX
             ScalarMixerConverterPowerValue converterPowerValues = new ScalarMixerConverterPowerValue();
 
             converterPowerValues.PowerOnAllChannels = true;
-            converterPowerValues.PortPowersCoupled  = true;
+            converterPowerValues.PortPowersCoupled = true;
 
             converterPowerValues.AutoInputPortSourceAttenuator = true;
-            converterPowerValues.InputPortLinearInputPower     = -15;
-            converterPowerValues.InputPortSourceAttenuator     = 0;
-            converterPowerValues.InputPortReceiverAttenuator   = 0;
-            converterPowerValues.InputSourceLevelingMode       = InputSourceLevelingModeEnum.Internal;
+            converterPowerValues.InputPortLinearInputPower = -15;
+            converterPowerValues.InputPortSourceAttenuator = 0;
+            converterPowerValues.InputPortReceiverAttenuator = 0;
+            converterPowerValues.InputSourceLevelingMode = InputSourceLevelingModeEnum.Internal;
 
-            converterPowerValues.OutputPortReversePower         = -15;
+            converterPowerValues.OutputPortReversePower = -15;
             converterPowerValues.AutoOutputPortSourceAttenuator = true;
-            converterPowerValues.OutputPortSourceAttenuator     = 0;
-            converterPowerValues.OutputPortReceiverAttenuator   = 0;
-            converterPowerValues.OutputSourceLevelingMode       = OutputSourceLevelingModeEnum.Internal;
+            converterPowerValues.OutputPortSourceAttenuator = 0;
+            converterPowerValues.OutputPortReceiverAttenuator = 0;
+            converterPowerValues.OutputSourceLevelingMode = OutputSourceLevelingModeEnum.Internal;
 
-            converterPowerValues.InputPowerSweepStartPower  = -15;
-            converterPowerValues.InputPowerSweepStopPower   = -15;
+            converterPowerValues.InputPowerSweepStartPower = -15;
+            converterPowerValues.InputPowerSweepStopPower = -15;
             converterPowerValues.InputPowerSweepPowerPoints = 201;
-            converterPowerValues.InputPowerSweepPowerStep   = 0;
+            converterPowerValues.InputPowerSweepPowerStep = 0;
 
             converterPowerValues.OutputPowerSweepStartPower = -15;
-            converterPowerValues.OutputPowerSweepStopPower  = -15;
+            converterPowerValues.OutputPowerSweepStopPower = -15;
 
             return converterPowerValues;
         }
@@ -665,7 +665,7 @@ namespace OpenTap.Plugins.PNAX
         public double IFBandwidth;
         public bool IsEnablePhase;
         public ScalerMixerPhasePoint PhasePoint = ScalerMixerPhasePoint.MiddlePoint;
- 
+
         public static MixerSweepValue GetPresetValues()
         {
             MixerSweepValue mixerSweepValue = new MixerSweepValue();

@@ -58,7 +58,7 @@ namespace OpenTap.Plugins.PNAX
 
         private bool _SynchADCUsingPulseTrigger;
         [EnabledIf("IsSettingReadOnly", true, HideIfDisabled = false)]
-        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulsed Receivers" }, Order: 41, Description:"Set this value on parent step")]
+        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulsed Receivers" }, Order: 41, Description: "Set this value on parent step")]
         public bool SynchADCUsingPulseTrigger
         {
             set

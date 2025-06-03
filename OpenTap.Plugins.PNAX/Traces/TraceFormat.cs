@@ -15,7 +15,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(SingleTraceBaseStep))]
-    [Display("TraceFormat", Groups: new[] { "Network Analyzer", "Trace"}, Description: "Insert a description here")]
+    [Display("TraceFormat", Groups: new[] { "Network Analyzer", "Trace" }, Description: "Insert a description here")]
     public class TraceFormat : PNABaseStep
     {
         #region Settings
@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
         public override void Run()
         {
             //Channel = GetParent<GeneralSingleTraceBaseStep>().Channel;
-            int mnum  = GetParent<SingleTraceBaseStep>().mnum;
+            int mnum = GetParent<SingleTraceBaseStep>().mnum;
 
             PNAX.SetTraceFormat(Channel, mnum, Format);
 

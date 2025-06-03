@@ -503,7 +503,7 @@ namespace OpenTap.Plugins.PNAX
             int port = (int)dutport;
             ScpiCommand($"SOURce{Channel}:POWer{port}:ATTenuation:RECeiver:TEST {value}");
         }
-        
+
         public void MODNominalDUTNFInclude(int Channel, bool state)
         {
             String StateStr = "OFF";
@@ -692,7 +692,7 @@ namespace OpenTap.Plugins.PNAX
             return retVal;
         }
 
-        
+
         public void MODTableAddParameter(int Channel, MODTableSetupCarrierEnum modParamName)
         {
             List<string> paramNames = modParamName.MODGetFlagsScpi();

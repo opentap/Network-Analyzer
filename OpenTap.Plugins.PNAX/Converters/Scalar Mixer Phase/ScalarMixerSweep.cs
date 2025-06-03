@@ -150,17 +150,17 @@ namespace OpenTap.Plugins.PNAX
         {
             UpdateDefaultValues();
         }
-        
+
         private void UpdateDefaultValues()
         {
             var DefaultValues = PNAX.GetMixerSweepDefaultValues();
 
-            SweepType                = DefaultValues.SweepType;
-            IsXAxisPointSpacing      = DefaultValues.IsXAxisPointSpacing;
+            SweepType = DefaultValues.SweepType;
+            IsXAxisPointSpacing = DefaultValues.IsXAxisPointSpacing;
             IsReversedPortTwoCoupler = DefaultValues.IsReversedPortTwoCoupler;
-            IsAvoidSpurs             = DefaultValues.IsAvoidSpurs;
-            NumberOfPoints           = DefaultValues.NumberOfPoints;
-            IFBandwidth              = DefaultValues.IFBandwidth;
+            IsAvoidSpurs = DefaultValues.IsAvoidSpurs;
+            NumberOfPoints = DefaultValues.NumberOfPoints;
+            IFBandwidth = DefaultValues.IFBandwidth;
             IsEnablePhase = DefaultValues.IsEnablePhase;
             PhasePoint = DefaultValues.PhasePoint;
         }

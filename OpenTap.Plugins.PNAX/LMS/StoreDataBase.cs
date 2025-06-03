@@ -15,7 +15,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class StoreDataBase: TestStep
+    public class StoreDataBase : TestStep
     {
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }

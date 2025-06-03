@@ -23,7 +23,7 @@ namespace OpenTap.Plugins.PNAX
         public void UpdateChannelSweepType(GeneralToneFrequencySweepTypeEnum value)
         {
             ChannelSweepType = value;
-            foreach(TestStep step in ChildTestSteps)
+            foreach (TestStep step in ChildTestSteps)
             {
                 if (step is GeneralTonePower)
                 {

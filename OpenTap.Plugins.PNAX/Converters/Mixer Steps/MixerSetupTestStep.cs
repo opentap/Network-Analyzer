@@ -63,7 +63,7 @@ namespace OpenTap.Plugins.PNAX
         #region Settings
 
         [Display("Port", Group: "Input Port", Order: 30)]
-        public PortsEnum PortInput { get; set;}
+        public PortsEnum PortInput { get; set; }
         [Display("Port", Group: "Output Port", Order: 60)]
         public PortsEnum PortOutput { get; set; }
 
@@ -95,7 +95,7 @@ namespace OpenTap.Plugins.PNAX
         private LOEnum _portLO2;
 
         [Display("Port", Group: "LO2 Port", Order: 50)]
-        [EnabledIf("DoubleStage", true ,HideIfDisabled =true)]
+        [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public LOEnum PortLO2
         {
             get { return _portLO2; }
@@ -157,7 +157,7 @@ namespace OpenTap.Plugins.PNAX
         private int _tuningPoint;
         [EnabledIf("EnableEmbeddedLO", true, HideIfDisabled = true)]
         [Display("Tuning Point", Group: "Embedded LO", Order: 73)]
-        public int TuningPoint 
+        public int TuningPoint
         {
             get
             {

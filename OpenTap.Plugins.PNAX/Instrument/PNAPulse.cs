@@ -76,7 +76,7 @@ namespace OpenTap.Plugins.PNAX
         Trace
     }
 
-    
+
     public enum PulseTriggerTypeEnumtype
     {
         [Display("Edge")]
@@ -305,7 +305,7 @@ namespace OpenTap.Plugins.PNAX
                 PulseGeneratorALCOpenLoop(Channel, PulseALCModeEnumType.Internal);
             }
         }
-        
+
         public void PulseGeneratorALCOpenLoop(int Channel, PulseALCModeEnumType pulseALCMode)
         {
             string ALCMode = Scpi.Format("{0}", pulseALCMode);
@@ -354,7 +354,7 @@ namespace OpenTap.Plugins.PNAX
             string modeValue = Scpi.Format("{0}", mode);
             ScpiCommand($"SENSe{Channel}:PULSe:TTYPe {modeValue}");
         }
-                
+
         public void PulseTriggerPolarity(int Channel, PulseTriggerPolarityEnumtype mode)
         {
             string modeValue = Scpi.Format("{0}", mode);

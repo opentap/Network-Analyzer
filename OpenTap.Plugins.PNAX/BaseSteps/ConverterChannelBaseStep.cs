@@ -43,7 +43,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [Browsable(false)]
-        public bool IsSweepPointEditable {get; set;}
+        public bool IsSweepPointEditable { get; set; }
         private int _SweepPoints;
         [EnabledIf("IsSweepPointEditable", HideIfDisabled = false)]
         [Display("Sweep Points", Order: 20)]

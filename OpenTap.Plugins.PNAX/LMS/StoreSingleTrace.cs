@@ -119,7 +119,7 @@ namespace OpenTap.Plugins.PNAX
             ResultTable resultTable = new ResultTable($"{filename}", resultColumns.ToArray());
             Results.PublishTable(resultTable);
 
-            
+
             UpgradeVerdict(Verdict.Pass);
 
         }

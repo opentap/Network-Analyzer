@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
     //[AllowAsChildIn(typeof(StandardChannel))]
     //[AllowAsChildIn(typeof(GeneralGainCompressionChannel))]
     //[AllowAsChildIn(typeof(GeneralNoiseFigureChannel))]
-    [Display("Frequency Offset", Groups: new[] { "Network Analyzer", "General" }, 
+    [Display("Frequency Offset", Groups: new[] { "Network Analyzer", "General" },
         Description: "Frequency Offset Mode\nCan be added as a child to the following Channels:\n\tStandard\n\tGain Compression\n\tNoise Figure Cold Source")]
     public class FrequencyOffset : PNABaseStep
     {
@@ -47,7 +47,7 @@ namespace OpenTap.Plugins.PNAX
         #region Primary
         private StandardSweepTypeEnum _PrimarySweepType;
         [Display("Data Acquisition Mode", Groups: new[] { "Primary" }, Order: 20)]
-        public StandardSweepTypeEnum PrimarySweepType 
+        public StandardSweepTypeEnum PrimarySweepType
         {
             get
             {
@@ -64,12 +64,12 @@ namespace OpenTap.Plugins.PNAX
         }
 
         [EnabledIf("PrimarySweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [Display("Start", Groups: new[] { "Primary" , "Settings"}, Order: 21)]
+        [Display("Start", Groups: new[] { "Primary", "Settings" }, Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000")]
         public double PrimaryStart { get; set; }
 
         [EnabledIf("PrimarySweepType", StandardSweepTypeEnum.LinearFrequency, StandardSweepTypeEnum.LogFrequency, HideIfDisabled = true)]
-        [Display("Stop", Groups: new[] { "Primary" , "Settings"}, Order: 22)]
+        [Display("Stop", Groups: new[] { "Primary", "Settings" }, Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000000000")]
         public double PrimaryStop { get; set; }
 
@@ -95,10 +95,10 @@ namespace OpenTap.Plugins.PNAX
         #region Source
         private FOMModeEnum _SourceMode;
         [Display("Source Mode", Groups: new[] { "Source" }, Order: 30)]
-        public FOMModeEnum SourceMode 
+        public FOMModeEnum SourceMode
         {
-            get 
-            { 
+            get
+            {
                 return _SourceMode;
             }
             set
@@ -481,7 +481,7 @@ namespace OpenTap.Plugins.PNAX
             SetSweep(PrimarySweepType, 1, PrimaryStart, PrimaryStop, PrimaryPoints, true, PrimaryCW, PrimarySweepTime, PrimarySegmentDefinition);
 
             // Source
-            if(SourceMode == FOMModeEnum.Coupled)
+            if (SourceMode == FOMModeEnum.Coupled)
             {
                 SetCoupled(2, SourceOffset, SourceMultiplier, SourceDivisor);
             }

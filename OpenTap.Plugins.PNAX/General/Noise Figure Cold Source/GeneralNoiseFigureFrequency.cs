@@ -102,15 +102,15 @@ namespace OpenTap.Plugins.PNAX
         protected override void UpdateSweepSettings()
         {
             var DefaultValues = PNAX.GetNoiseFigureConverterFrequencyDefaultValues();
-            SweepType                   = DefaultValues.GeneralNFSweepType;
+            SweepType = DefaultValues.GeneralNFSweepType;
 
             SweepSettingsNumberOfPoints = DefaultValues.SweepSettingsNumberOfPoints;
-            SweepSettingsIFBandwidth    = DefaultValues.SweepSettingsIFBandwidth;
-            SweepSettingsStart          = DefaultValues.SweepSettingsStart;
-            SweepSettingsStop           = DefaultValues.SweepSettingsStop;
-            SweepSettingsCenter         = DefaultValues.SweepSettingsCenter;
-            SweepSettingsSpan           = DefaultValues.SweepSettingsSpan;
-            SweepSettingsFixed          = DefaultValues.SweepSettingsFixed;
+            SweepSettingsIFBandwidth = DefaultValues.SweepSettingsIFBandwidth;
+            SweepSettingsStart = DefaultValues.SweepSettingsStart;
+            SweepSettingsStop = DefaultValues.SweepSettingsStop;
+            SweepSettingsCenter = DefaultValues.SweepSettingsCenter;
+            SweepSettingsSpan = DefaultValues.SweepSettingsSpan;
+            SweepSettingsFixed = DefaultValues.SweepSettingsFixed;
 
             IsStartStopCenterSpan = SweepSSCSTypeEnum.StartStop;
         }

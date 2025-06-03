@@ -73,8 +73,8 @@ namespace OpenTap.Plugins.PNAX
             return tracesList;
         }
         /// <summary>
-                 /// Load state file into Network Analyzer
-                 /// </summary>
+        /// Load state file into Network Analyzer
+        /// </summary>
         public void LoadState(string filename, bool overwrite)
         {
             string FileName = filename;
@@ -212,7 +212,7 @@ namespace OpenTap.Plugins.PNAX
                     resultsList.Add(yList);
 
                     // now query PF
-                    string strPF = IsModelA? ScpiQuery($"CALC{channel}:LIMit:FAIL?") : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
+                    string strPF = IsModelA ? ScpiQuery($"CALC{channel}:LIMit:FAIL?") : ScpiQuery($"CALC{channel}:MEAS{trace}:LIMit:FAIL?");
                     List<string> GlobalPF = new List<string>();
                     // Create a list of n values all equal to strPF
                     string verdict = strPF.Equals("0") ? Verdict.Pass.ToString() : Verdict.Fail.ToString();
@@ -291,7 +291,7 @@ namespace OpenTap.Plugins.PNAX
                 if (i % 2 == 0)
                 {
                     var traceinfo = tracesList[i].Split('_');
-                    if (int.Parse(traceinfo[(traceinfo.Length-1)]) == mnum) // custom traces such as CH1_PowerSupply_VM1_2 have more than 3 elements once they are split by '_', using the last item as the mnum
+                    if (int.Parse(traceinfo[(traceinfo.Length - 1)]) == mnum) // custom traces such as CH1_PowerSupply_VM1_2 have more than 3 elements once they are split by '_', using the last item as the mnum
                     {
                         retVal = traceinfo[1];
                         return retVal;
@@ -467,24 +467,24 @@ namespace OpenTap.Plugins.PNAX
                 const string BRING_TO_FRONT_TITLE = "BringVNAToFront";
                 ScpiCommand($@"MMEM:CDIR ""{DEFAULT_FOLDER}""");
                 const string VBA_PROGRAM =
-					"\' Create a WMI object\r\n" + 
-                    "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\r\n" + 
-                    "\r\n" + 
-                    "\' Function to bring a window to the front by process name\r\n" + 
-                    "Sub BringWindowToFrontByProcessName(processName)\r\n" + 
-                    "    Dim colProcesses, objProcess, hWnd\r\n" + 
-                    "    Set colProcesses = objWMIService.ExecQuery(\"Select * from Win32_Process Where Name = \'\" & processName & \"\'\")\r\n" + 
-                    "    \r\n" + 
-                    "    For Each objProcess In colProcesses\r\n" + 
-                    "        hWnd = objProcess.Handle\r\n" + 
-                    "        If hWnd <> 0 Then\r\n" + 
-                    "            Set objShell = CreateObject(\"WScript.Shell\")\r\n" + 
-                    "            objShell.AppActivate objProcess.ProcessId\r\n" + 
-                    "            Exit For\r\n" + 
-                    "        End If\r\n" + 
-                    "    Next\r\n" + 
-                    "End Sub\r\n" + 
-                    "\r\n" + 
+                    "\' Create a WMI object\r\n" +
+                    "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\r\n" +
+                    "\r\n" +
+                    "\' Function to bring a window to the front by process name\r\n" +
+                    "Sub BringWindowToFrontByProcessName(processName)\r\n" +
+                    "    Dim colProcesses, objProcess, hWnd\r\n" +
+                    "    Set colProcesses = objWMIService.ExecQuery(\"Select * from Win32_Process Where Name = \'\" & processName & \"\'\")\r\n" +
+                    "    \r\n" +
+                    "    For Each objProcess In colProcesses\r\n" +
+                    "        hWnd = objProcess.Handle\r\n" +
+                    "        If hWnd <> 0 Then\r\n" +
+                    "            Set objShell = CreateObject(\"WScript.Shell\")\r\n" +
+                    "            objShell.AppActivate objProcess.ProcessId\r\n" +
+                    "            Exit For\r\n" +
+                    "        End If\r\n" +
+                    "    Next\r\n" +
+                    "End Sub\r\n" +
+                    "\r\n" +
                     "BringWindowToFrontByProcessName \"835x.exe\"";
 
                 // find the macro slot

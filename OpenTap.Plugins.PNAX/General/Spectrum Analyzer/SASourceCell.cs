@@ -121,7 +121,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             RunChildSteps(); //If the step supports child steps.
             PNAX.SetSASourcePowerMode(Channel, CellName, State);
             PNAX.SetSASweepType(Channel, CellName, SASourceSweepType);
-            
+
             switch (SASourceSweepType)
             {
                 case SASourceSweepTypeEnum.CWTime:

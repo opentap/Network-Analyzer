@@ -54,7 +54,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 return _PortLO1;
             }
-            set 
+            set
             {
                 _PortLO1 = value;
                 if (_PortLO1 == LOEnum.NotControlled)
@@ -111,7 +111,7 @@ namespace OpenTap.Plugins.PNAX
         public SourceLevelingModeType SourceLevelingModeLO2 { get; set; }
 
         [EnabledIf("EnablePort3Settings", true, HideIfDisabled = false)]
-        [Display("Source Attenuator", Groups: new[] { "Port Settings" , "Port 3" }, Order: 40)]
+        [Display("Source Attenuator", Groups: new[] { "Port Settings", "Port 3" }, Order: 40)]
         [Unit("dB", UseEngineeringPrefix: true)]
         public double SourceAttenuatorPowerPort3 { get; set; }
 
@@ -181,19 +181,19 @@ namespace OpenTap.Plugins.PNAX
 
             SourceLevelingModeLO1 = defaultValues.SourceLevelingModeLO1;
             SourceLevelingModeLO2 = defaultValues.SourceLevelingModeLO2;
-            LO1Power              = defaultValues.Lo1Power;
-            LO2Power              = defaultValues.Lo2Power;
+            LO1Power = defaultValues.Lo1Power;
+            LO2Power = defaultValues.Lo2Power;
 
-            SourceAttenuatorPowerPort3   = defaultValues.SourceAttenuatorPowerPort3;
+            SourceAttenuatorPowerPort3 = defaultValues.SourceAttenuatorPowerPort3;
             ReceiverAttenuatorPowerPort3 = defaultValues.ReceiverAttenuatorPowerPort3;
-            SourceAttenuatorPowerPort4   = defaultValues.SourceAttenuatorPowerPort4;
+            SourceAttenuatorPowerPort4 = defaultValues.SourceAttenuatorPowerPort4;
             ReceiverAttenuatorPowerPort4 = defaultValues.ReceiverAttenuatorPowerPort4;
             LO1SweptPowerStart = defaultValues.LO1SweptPowerStart;
-            LO1SweptPowerStop  = defaultValues.LO1SweptPowerStop ;
-            LO1SweptPowerStep  = defaultValues.LO1SweptPowerStep ;
+            LO1SweptPowerStop = defaultValues.LO1SweptPowerStop;
+            LO1SweptPowerStep = defaultValues.LO1SweptPowerStep;
             LO2SweptPowerStart = defaultValues.LO2SweptPowerStart;
-            LO2SweptPowerStop  = defaultValues.LO2SweptPowerStop ;
-            LO2SweptPowerStep  = defaultValues.LO2SweptPowerStep ;
+            LO2SweptPowerStop = defaultValues.LO2SweptPowerStop;
+            LO2SweptPowerStep = defaultValues.LO2SweptPowerStep;
         }
 
         public override void Run()
@@ -205,7 +205,7 @@ namespace OpenTap.Plugins.PNAX
             // We are assuming Port 3, but we need to get this value from MixerSetupTestStep:PortLO1 "PortLO1"
             PNAX.SetSourceLevelingMode(Channel, 3, SourceLevelingModeLO1.ToString());
 
-            if(ConverterStages == ConverterStagesEnum._2)
+            if (ConverterStages == ConverterStagesEnum._2)
             {
                 PNAX.SetLOPower(Channel, 2, LO2Power);
                 // We are assuming Port 4, but we need to get this value from MixerSetupTestStep:PortLO2 "PortLO2"

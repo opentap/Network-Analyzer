@@ -50,7 +50,7 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [EnabledIf("IsControlledByParent", false,HideIfDisabled = true)]
+        [EnabledIf("IsControlledByParent", false, HideIfDisabled = true)]
         [Display("Window (standalone)", Groups: new[] { "Trace" }, Order: 14)]
         public int Window { get; set; }
 

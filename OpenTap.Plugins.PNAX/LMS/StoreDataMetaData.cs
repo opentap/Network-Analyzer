@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX.LMS
         {
             List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
 
-            
+
 
             // if MetaData available
             if ((MetaData.Property != null) && (MetaData.Value.Count > 1))

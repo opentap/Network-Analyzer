@@ -33,7 +33,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new GeneralGainCompressionSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true  });
+            ChildTestSteps.Add(new GeneralGainCompressionSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
         }
 
         protected override void DeleteDummyTrace()

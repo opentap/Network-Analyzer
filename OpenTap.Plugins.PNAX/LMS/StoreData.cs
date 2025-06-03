@@ -226,7 +226,7 @@ namespace OpenTap.Plugins.PNAX
                         if ((MetaData != null) && (MetaData.Count > 0))
                         {
                             // for every item in metadata
-                            foreach(var i in MetaData)
+                            foreach (var i in MetaData)
                             {
                                 object[] objMetaData = new object[freqLength];
                                 for (int data = 0; data < freqLength; data++)
@@ -380,7 +380,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

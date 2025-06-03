@@ -13,7 +13,7 @@ using System.Text;
 
 namespace OpenTap.Plugins.PNAX
 {
-    [Display("User Preset State", Groups: new[] { "Network Analyzer" }, Description: "Performs a User Preset. There must be an active User Preset state file (see Load and Save) or an error will be returned" + 
+    [Display("User Preset State", Groups: new[] { "Network Analyzer" }, Description: "Performs a User Preset. There must be an active User Preset state file (see Load and Save) or an error will be returned" +
         ".Regardless of the state of the User Preset Enable checkbox, the SYST:PRESet command will always preset the VNA to the factory preset settings, and SYST: UPReset will always perform a User Preset.")]
     public class UserPresetState : TestStep
     {

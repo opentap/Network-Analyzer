@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX
 {
     [Display("User Preset Load File", Groups: new[] { "Network Analyzer" }, Description: "Loads an existing instrument state file (.sta or .cst) to be used for User Preset. Subsequent execution of SYSTem:UPReset will cause the VNA to assume this instrument state." +
         "Regardless of the state of the User Preset Enable checkbox, the SYST:PRESet command will always preset the VNA to the factory preset settings, and SYST:UPReset will always perform a User Preset.")]
-    public class UserPresetLoadFile: TestStep
+    public class UserPresetLoadFile : TestStep
     {
         #region Settings
         [Display("PNA", Order: 0.1)]
