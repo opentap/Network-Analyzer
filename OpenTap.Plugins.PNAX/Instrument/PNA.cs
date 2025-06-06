@@ -577,6 +577,11 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"DISPlay:WINDow{wnum}:Y:AUTO");
         }
 
+        public void AutoScaleTrace(int mnum)
+        {
+            ScpiCommand($"DISPlay:MEASure{mnum}:Y:AUTO");
+        }
+
         public void DisplayWindowSize(int wnum, VNAWindowSize windowSize)
         {
             string size = Scpi.Format("{0}", windowSize);
