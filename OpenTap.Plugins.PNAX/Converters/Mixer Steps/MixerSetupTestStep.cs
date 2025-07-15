@@ -194,10 +194,6 @@ namespace OpenTap.Plugins.PNAX
         [Display("LO Frequency Delta", Group: "Embedded LO", Order: 79)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LOFrequencyDelta { get; set; }
-
-
-
-
         #endregion
 
         public MixerSetupTestStep()

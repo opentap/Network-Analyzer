@@ -161,8 +161,8 @@ namespace OpenTap.Plugins.PNAX
             IsAvoidSpurs             = DefaultValues.IsAvoidSpurs;
             NumberOfPoints           = DefaultValues.NumberOfPoints;
             IFBandwidth              = DefaultValues.IFBandwidth;
-            IsEnablePhase = DefaultValues.IsEnablePhase;
-            PhasePoint = DefaultValues.PhasePoint;
+            IsEnablePhase            = DefaultValues.IsEnablePhase;
+            PhasePoint               = DefaultValues.PhasePoint;
         }
         public override void Run()
         {
@@ -182,17 +182,10 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetReversedPort2Coupler(Channel, IsReversedPortTwoCoupler);
             PNAX.SetPoints(Channel, NumberOfPoints);
             PNAX.SetIFBandwidth(Channel, IFBandwidth);
-
             PNAX.SetMixerPhase(Channel, IsEnablePhase);
             PNAX.SetNormalizingDataPoint(Channel, PhasePointValue);
-            if (PhasePoint == ScalerMixerPhasePoint.AbsolutePhase)
-            {
-                PNAX.SetMixerUseAbsolutePhase(Channel, true);
-            }
-            else
-            {
-                PNAX.SetMixerUseAbsolutePhase(Channel, false);
-            }
+            PNAX.SetMixerUseAbsolutePhase(Channel, PhasePoint == ScalerMixerPhasePoint.AbsolutePhase);
+
             UpgradeVerdict(Verdict.Pass);
         }
 

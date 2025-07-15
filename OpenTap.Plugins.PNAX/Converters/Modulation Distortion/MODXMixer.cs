@@ -113,7 +113,7 @@ namespace OpenTap.Plugins.PNAX
         public double LO1Power { get; set; }
 
         [Display("LO1 Leveling", Groups: new[] { "Power", "LO1" }, Order: 52)]
-        public SourceLevelingModeType LO1SourceLevelingMode{ get; set; }
+        public SourceLevelingModeType LO1SourceLevelingMode { get; set; }
 
         [Display("LO1 Attenuator", Groups: new[] { "Power", "LO1" }, Order: 53)]
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
@@ -269,27 +269,24 @@ namespace OpenTap.Plugins.PNAX
             }
             PNAX.MixerApply(Channel);
 
-
             // Power
-            PNAX.SetPortLO(Channel, 1, LO1Source);
-            //PNAX.MODMixerSourceRole(Channel, "INPUT", "Device0");
-            PNAX.SetLOPower(Channel, 1, LO1Power);
-            PNAX.SetSourceLevelingMode(Channel, InputPort, LO1SourceLevelingMode.ToString());
-            PNAX.SetSourceAttenuator(Channel, InputPort, LO1Attenuator);
-
+            SetPower(LO1Source, LO1Power, LO1SourceLevelingMode.ToString(), LO1Attenuator);
             if (ConverterStages == ConverterStagesEnum._2)
-            {
-                PNAX.SetPortLO(Channel, 2, LO2Source);
-                //PNAX.MODMixerSourceRole(Channel, "INPUT", "Device0");
-                PNAX.SetLOPower(Channel, 2, LO2Power);
-                PNAX.SetSourceLevelingMode(Channel, InputPort, LO1SourceLevelingMode.ToString());
-                PNAX.SetSourceAttenuator(Channel, InputPort, LO1Attenuator);
-            }
+                SetPower(LO2Source, LO2Power, LO2SourceLevelingMode.ToString(), LO2Attenuator);
+
             // Apply changes to instrument
             PNAX.MixerCalc(Channel);
             PNAX.MixerApply(Channel);
 
             UpgradeVerdict(Verdict.Pass);
+        }
+
+        private void SetPower(string source, double power, string mode, double attenuator)
+        {
+            PNAX.SetPortLO(Channel, 1, source);
+            PNAX.SetLOPower(Channel, 1, power);
+            PNAX.SetSourceLevelingMode(Channel, InputPort, mode);
+            PNAX.SetSourceAttenuator(Channel, InputPort, attenuator);
         }
     }
 }
