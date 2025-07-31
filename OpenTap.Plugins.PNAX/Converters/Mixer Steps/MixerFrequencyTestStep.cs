@@ -59,24 +59,9 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _InputMixerFrequencyType = value;
-                if (_InputMixerFrequencyType== MixerFrequencyTypeEnum.StartStop)
-                {
-                    IsInputMixerFrequencyTypeStartStop = true;
-                    IsInputMixerFrequencyTypeCenterSpan = false;
-                    IsInputMixerFrequencyTypeFixed = false;
-                }
-                else if (_InputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    IsInputMixerFrequencyTypeStartStop = false;
-                    IsInputMixerFrequencyTypeCenterSpan = true;
-                    IsInputMixerFrequencyTypeFixed = false;
-                }
-                else if (_InputMixerFrequencyType == MixerFrequencyTypeEnum.Fixed)
-                {
-                    IsInputMixerFrequencyTypeStartStop = false;
-                    IsInputMixerFrequencyTypeCenterSpan = false;
-                    IsInputMixerFrequencyTypeFixed = true;
-                }
+                IsInputMixerFrequencyTypeStartStop = _InputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop;
+                IsInputMixerFrequencyTypeCenterSpan = _InputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan;
+                IsInputMixerFrequencyTypeFixed = _InputMixerFrequencyType == MixerFrequencyTypeEnum.Fixed;
             }
         }
 
