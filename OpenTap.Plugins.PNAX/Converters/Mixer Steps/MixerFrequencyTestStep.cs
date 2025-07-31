@@ -449,6 +449,7 @@ namespace OpenTap.Plugins.PNAX
                 if (target != CalculationTarget.LO2) SetLO2(DummyChannel);
                 if (target != CalculationTarget.Output) SetOutput(DummyChannel);
 
+
                 // Execute the calculation and read back the results
                 switch (target)
                 {
@@ -459,8 +460,8 @@ namespace OpenTap.Plugins.PNAX
                         if (inpMode.Equals("SWEPT"))
                         {
                             InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
-                            InputMixerFrequencyStart = PNAX.GetFrequencyLOStart(DummyChannel, 1);
-                            InputMixerFrequencyStop = PNAX.GetFrequencyLOStop(DummyChannel, 1);
+                            InputMixerFrequencyStart = PNAX.GetFrequencyInputStart(DummyChannel);
+                            InputMixerFrequencyStop = PNAX.GetFrequencyInputStop(DummyChannel);
                         }
                         else if (inpMode.Equals("FIXED"))
                         {
