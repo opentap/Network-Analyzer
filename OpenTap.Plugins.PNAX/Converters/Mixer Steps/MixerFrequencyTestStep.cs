@@ -607,7 +607,6 @@ namespace OpenTap.Plugins.PNAX
 
             // Apply changes to instrument
             PNAX.MixerCalc(Channel);
-            //PNAX.MixerApply(Channel);
 
             ValidateAllSettings();
             UpgradeVerdict(Verdict.Pass);
