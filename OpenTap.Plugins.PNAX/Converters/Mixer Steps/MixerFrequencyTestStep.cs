@@ -489,6 +489,7 @@ namespace OpenTap.Plugins.PNAX
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
+                SetMultiplier(DummyChannel);
                 //SetInput();
                 SetLO1(DummyChannel);
                 SetIF(DummyChannel);
@@ -504,8 +505,8 @@ namespace OpenTap.Plugins.PNAX
                 if (inpMode.Equals("SWEPT"))
                 {
                     InputMixerFrequencyType = MixerFrequencyTypeEnum.StartStop;
-                    double ReadStart = PNAX.GetFrequencyLOStart(DummyChannel, 1);
-                    double ReadStop = PNAX.GetFrequencyLOStop(DummyChannel, 1);
+                    double ReadStart = PNAX.GetFrequencyInputStart(DummyChannel);
+                    double ReadStop = PNAX.GetFrequencyInputStop(DummyChannel);
                     InputMixerFrequencyStart = ReadStart;
                     InputMixerFrequencyStop = ReadStop;
                 }
