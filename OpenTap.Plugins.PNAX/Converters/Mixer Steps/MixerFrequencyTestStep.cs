@@ -950,10 +950,17 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetInputFractionalMultiplierDenominator(Channel, InputFractionalMultiplierDenominator);
             PNAX.SetLOFractionalMultiplierNumerator(Channel, 1, LO1FractionalMultiplierNumerator);
             PNAX.SetLOFractionalMultiplierDenominator(Channel, 1, LO1FractionalMultiplierDenominator);
+
+            retVal.Add(("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator));
+            retVal.Add(("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator));
+            retVal.Add(("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator));
+            retVal.Add(("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator));
             if (ConverterStages == ConverterStagesEnum._2)
             {
                 PNAX.SetLOFractionalMultiplierNumerator(Channel, 2, LO2FractionalMultiplierNumerator);
                 PNAX.SetLOFractionalMultiplierDenominator(Channel, 2, LO2FractionalMultiplierDenominator);
+                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator));
+                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator));
             }
         }
 
