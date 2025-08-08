@@ -46,60 +46,30 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsInputMixerFrequencyTypeFixed { get; set; }
 
-
-        private MixerFrequencyTypeEnum _InputMixerFrequencyType;
         [Display("Input", Groups: new[] { "Mixer Frequency", "Input" }, Order: 10)]
-        public MixerFrequencyTypeEnum InputMixerFrequencyType 
-        {
-            get
-            {
-                return _InputMixerFrequencyType;
-            }
-            set
-            {
-                _InputMixerFrequencyType = value;
-                if (_InputMixerFrequencyType== MixerFrequencyTypeEnum.StartStop)
-                {
-                    IsInputMixerFrequencyTypeStartStop = true;
-                    IsInputMixerFrequencyTypeCenterSpan = false;
-                    IsInputMixerFrequencyTypeFixed = false;
-                }
-                else if (_InputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    IsInputMixerFrequencyTypeStartStop = false;
-                    IsInputMixerFrequencyTypeCenterSpan = true;
-                    IsInputMixerFrequencyTypeFixed = false;
-                }
-                else if (_InputMixerFrequencyType == MixerFrequencyTypeEnum.Fixed)
-                {
-                    IsInputMixerFrequencyTypeStartStop = false;
-                    IsInputMixerFrequencyTypeCenterSpan = false;
-                    IsInputMixerFrequencyTypeFixed = true;
-                }
-            }
-        }
+        public MixerFrequencyTypeEnum InputMixerFrequencyType { get; set; }
 
-        [EnabledIf("IsInputMixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("InputMixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Mixer Frequency", "Input" }, Order: 11)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double InputMixerFrequencyStart { get; set; }
 
-        [EnabledIf("IsInputMixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("InputMixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Mixer Frequency", "Input" }, Order: 12)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double InputMixerFrequencyStop { get; set; }
 
-        [EnabledIf("IsInputMixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("InputMixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Center", Groups: new[] { "Mixer Frequency", "Input" }, Order: 13)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double InputMixerFrequencyCenter { get; set; }
 
-        [EnabledIf("IsInputMixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("InputMixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Span", Groups: new[] { "Mixer Frequency", "Input" }, Order: 14)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double InputMixerFrequencySpan { get; set; }
 
-        [EnabledIf("IsInputMixerFrequencyTypeFixed", true, HideIfDisabled = true)]
+        [EnabledIf("InputMixerFrequencyType", MixerFrequencyTypeEnum.Fixed, HideIfDisabled = true)]
         [Display("Fixed", Groups: new[] { "Mixer Frequency", "Input" }, Order: 15)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double InputMixerFrequencyFixed { get; set; }
@@ -132,59 +102,30 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsLO1MixerFrequencyTypeFixed { get; set; }
 
-        private MixerFrequencyTypeEnum _LO1MixerFrequencyType;
         [Display("LO1", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 20)]
-        public MixerFrequencyTypeEnum LO1MixerFrequencyType
-        {
-            get
-            {
-                return _LO1MixerFrequencyType;
-            }
-            set
-            {
-                _LO1MixerFrequencyType = value;
-                if (_LO1MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-                {
-                    IsLO1MixerFrequencyTypeStartStop = true;
-                    IsLO1MixerFrequencyTypeCenterSpan = false;
-                    IsLO1MixerFrequencyTypeFixed = false;
-                }
-                else if (_LO1MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    IsLO1MixerFrequencyTypeStartStop = false;
-                    IsLO1MixerFrequencyTypeCenterSpan = true;
-                    IsLO1MixerFrequencyTypeFixed = false;
-                }
-                else if (_LO1MixerFrequencyType == MixerFrequencyTypeEnum.Fixed)
-                {
-                    IsLO1MixerFrequencyTypeStartStop = false;
-                    IsLO1MixerFrequencyTypeCenterSpan = false;
-                    IsLO1MixerFrequencyTypeFixed = true;
-                }
-            }
-        }
+        public MixerFrequencyTypeEnum LO1MixerFrequencyType { get; set; }
 
-        [EnabledIf("IsLO1MixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("LO1MixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 21)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO1MixerFrequencyStart { get; set; }
 
-        [EnabledIf("IsLO1MixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("LO1MixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 22)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO1MixerFrequencyStop { get; set; }
 
-        [EnabledIf("IsLO1MixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("LO1MixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Center", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 23)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO1MixerFrequencyCenter { get; set; }
 
-        [EnabledIf("IsLO1MixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("LO1MixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Span", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 24)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO1MixerFrequencySpan { get; set; }
 
-        [EnabledIf("IsLO1MixerFrequencyTypeFixed", true, HideIfDisabled = true)]
+        [EnabledIf("LO1MixerFrequencyType", MixerFrequencyTypeEnum.Fixed, HideIfDisabled = true)]
         [Display("Fixed", Groups: new[] { "Mixer Frequency", "LO1" }, Order: 25)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO1MixerFrequencyFixed { get; set; }
@@ -219,62 +160,33 @@ namespace OpenTap.Plugins.PNAX
         public bool IsIFMixerFrequencyTypeFixed { get; set; }
 
 
-        private MixerFrequencyTypeEnum _IFMixerFrequencyType;
         [Display("IF", Groups: new[] { "Mixer Frequency", "IF" }, Order: 30)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
-        public MixerFrequencyTypeEnum IFMixerFrequencyType
-        {
-            get
-            {
-                return _IFMixerFrequencyType;
-            }
-            set
-            {
-                _IFMixerFrequencyType = value;
-                if (_IFMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-                {
-                    IsIFMixerFrequencyTypeStartStop = true;
-                    IsIFMixerFrequencyTypeCenterSpan = false;
-                    IsIFMixerFrequencyTypeFixed = false;
-                }
-                else if (_IFMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    IsIFMixerFrequencyTypeStartStop = false;
-                    IsIFMixerFrequencyTypeCenterSpan = true;
-                    IsIFMixerFrequencyTypeFixed = false;
-                }
-                else if (_IFMixerFrequencyType == MixerFrequencyTypeEnum.Fixed)
-                {
-                    IsIFMixerFrequencyTypeStartStop = false;
-                    IsIFMixerFrequencyTypeCenterSpan = false;
-                    IsIFMixerFrequencyTypeFixed = true;
-                }
-            }
-        }
+        public MixerFrequencyTypeEnum IFMixerFrequencyType { get; set; }
 
         [Display("Sideband", Groups: new[] { "Mixer Frequency", "IF" }, Order: 30.5)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         public SidebandTypeEnum IFSidebandType { get; set; }
 
-        [EnabledIf("IsIFMixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("IFMixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Mixer Frequency", "IF" }, Order: 31)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double IFMixerFrequencyStart { get; set; }
 
-        [EnabledIf("IsIFMixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("IFMixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Mixer Frequency", "IF" }, Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double IFMixerFrequencyStop { get; set; }
 
-        [EnabledIf("IsIFMixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("IFMixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Center", Groups: new[] { "Mixer Frequency", "IF" }, Order: 33)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double IFMixerFrequencyCenter { get; set; }
 
-        [EnabledIf("IsIFMixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("IFMixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Span", Groups: new[] { "Mixer Frequency", "IF" }, Order: 34)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -295,64 +207,35 @@ namespace OpenTap.Plugins.PNAX
         [Browsable(false)]
         public bool IsLO2MixerFrequencyTypeFixed { get; set; }
 
-        private MixerFrequencyTypeEnum _LO2MixerFrequencyType;
         [Display("LO2", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 40)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
-        public MixerFrequencyTypeEnum LO2MixerFrequencyType
-        {
-            get
-            {
-                return _LO2MixerFrequencyType;
-            }
-            set
-            {
-                _LO2MixerFrequencyType = value;
-                if (_LO2MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-                {
-                    IsLO2MixerFrequencyTypeStartStop = true;
-                    IsLO2MixerFrequencyTypeCenterSpan = false;
-                    IsLO2MixerFrequencyTypeFixed = false;
-                }
-                else if (_LO2MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    IsLO2MixerFrequencyTypeStartStop = false;
-                    IsLO2MixerFrequencyTypeCenterSpan = true;
-                    IsLO2MixerFrequencyTypeFixed = false;
-                }
-                else if (_LO2MixerFrequencyType == MixerFrequencyTypeEnum.Fixed)
-                {
-                    IsLO2MixerFrequencyTypeStartStop = false;
-                    IsLO2MixerFrequencyTypeCenterSpan = false;
-                    IsLO2MixerFrequencyTypeFixed = true;
-                }
-            }
-        }
+        public MixerFrequencyTypeEnum LO2MixerFrequencyType { get; set; }
 
-        [EnabledIf("IsLO2MixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("LO2MixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 41)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO2MixerFrequencyStart { get; set; }
 
-        [EnabledIf("IsLO2MixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("LO2MixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 42)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO2MixerFrequencyStop { get; set; }
 
-        [EnabledIf("IsLO2MixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("LO2MixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Center", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 43)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO2MixerFrequencyCenter { get; set; }
 
-        [EnabledIf("IsLO2MixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("LO2MixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Span", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 44)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double LO2MixerFrequencySpan { get; set; }
 
-        [EnabledIf("IsLO2MixerFrequencyTypeFixed", true, HideIfDisabled = true)]
+        [EnabledIf("LO2MixerFrequencyType", MixerFrequencyTypeEnum.Fixed, HideIfDisabled = true)]
         [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
         [Display("Fixed", Groups: new[] { "Mixer Frequency", "LO2" }, Order: 45)]
         [Unit("Hz", UseEngineeringPrefix: true)]
@@ -393,62 +276,33 @@ namespace OpenTap.Plugins.PNAX
         public bool IsOutputMixerFrequencyTypeFixed { get; set; }
 
 
-        private MixerFrequencyTypeEnum _OutputMixerFrequencyType;
         [Display("Output", Groups: new[] { "Mixer Frequency", "Output" }, Order: 50)]
-        public MixerFrequencyTypeEnum OutputMixerFrequencyType
-        {
-            get
-            {
-                return _OutputMixerFrequencyType;
-            }
-            set
-            {
-                _OutputMixerFrequencyType = value;
-                if (_OutputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-                {
-                    IsOutputMixerFrequencyTypeStartStop = true;
-                    IsOutputMixerFrequencyTypeCenterSpan = false;
-                    IsOutputMixerFrequencyTypeFixed = false;
-                }
-                else if (_OutputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    IsOutputMixerFrequencyTypeStartStop = false;
-                    IsOutputMixerFrequencyTypeCenterSpan = true;
-                    IsOutputMixerFrequencyTypeFixed = false;
-                }
-                else if (_OutputMixerFrequencyType == MixerFrequencyTypeEnum.Fixed)
-                {
-                    IsOutputMixerFrequencyTypeStartStop = false;
-                    IsOutputMixerFrequencyTypeCenterSpan = false;
-                    IsOutputMixerFrequencyTypeFixed = true;
-                }
-            }
-        }
+        public MixerFrequencyTypeEnum OutputMixerFrequencyType { set; get; }
 
         [Display("Sideband", Groups: new[] { "Mixer Frequency", "Output" }, Order: 50.5)]
         public SidebandTypeEnum OutputSidebandType { get; set; }
 
-        [EnabledIf("IsOutputMixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("OutputMixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Start", Groups: new[] { "Mixer Frequency", "Output" }, Order: 51)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double OutputMixerFrequencyStart { get; set; }
 
-        [EnabledIf("IsOutputMixerFrequencyTypeStartStop", true, HideIfDisabled = true)]
+        [EnabledIf("OutputMixerFrequencyType", MixerFrequencyTypeEnum.StartStop, HideIfDisabled = true)]
         [Display("Stop", Groups: new[] { "Mixer Frequency", "Output" }, Order: 52)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double OutputMixerFrequencyStop { get; set; }
 
-        [EnabledIf("IsOutputMixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("OutputMixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Center", Groups: new[] { "Mixer Frequency", "Output" }, Order: 53)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double OutputMixerFrequencyCenter { get; set; }
 
-        [EnabledIf("IsOutputMixerFrequencyTypeCenterSpan", true, HideIfDisabled = true)]
+        [EnabledIf("OutputMixerFrequencyType", MixerFrequencyTypeEnum.CenterSpan, HideIfDisabled = true)]
         [Display("Span", Groups: new[] { "Mixer Frequency", "Output" }, Order: 54)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double OutputMixerFrequencySpan { get; set; }
 
-        [EnabledIf("IsOutputMixerFrequencyTypeFixed", true, HideIfDisabled = true)]
+        [EnabledIf("OutputMixerFrequencyType", MixerFrequencyTypeEnum.Fixed, HideIfDisabled = true)]
         [Display("Fixed", Groups: new[] { "Mixer Frequency", "Output" }, Order: 55)]
         [Unit("Hz", UseEngineeringPrefix: true)]
         public double OutputMixerFrequencyFixed { get; set; }
