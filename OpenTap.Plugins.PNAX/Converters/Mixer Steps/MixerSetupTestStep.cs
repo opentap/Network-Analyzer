@@ -118,26 +118,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [Display("Fractional Multiplier Numerator", Group: "Input Port", Order: 31)]
-        public int InputFractionalMultiplierNumerator { get; set; }
-        [Display("Fractional Multiplier Denominator", Group: "Input Port", Order: 32)]
-        public int InputFractionalMultiplierDenominator { get; set; }
-
-        [Display("Fractional Multiplier Numerator", Group: "LO1 Port", Order: 41)]
-        public int LO1FractionalMultiplierNumerator { get; set; }
-        [Display("Fractional Multiplier Denominator", Group: "LO1 Port", Order: 42)]
-        public int LO1FractionalMultiplierDenominator { get; set; }
-
-        [Display("Fractional Multiplier Numerator", Group: "LO2 Port", Order: 51)]
-        [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
-        public int LO2FractionalMultiplierNumerator { get; set; }
-        [Display("Fractional Multiplier Denominator", Group: "LO2 Port", Order: 52)]
-        [EnabledIf("DoubleStage", true, HideIfDisabled = true)]
-        public int LO2FractionalMultiplierDenominator { get; set; }
-
-
-
-
 
         [Display("Enable Embedded LO", Group: "Embedded LO", Order: 70)]
         public bool EnableEmbeddedLO { get; set; }
@@ -237,12 +217,6 @@ namespace OpenTap.Plugins.PNAX
             PortOutput = defaultValues.PortOutput;
             PortLO1 = defaultValues.PortLO1;
             PortLO2 = defaultValues.PortLO2;
-            InputFractionalMultiplierNumerator = defaultValues.InputFractionalMultiplierNumerator;
-            InputFractionalMultiplierDenominator = defaultValues.InputFractionalMultiplierDenominator;
-            LO1FractionalMultiplierNumerator = defaultValues.LO1FractionalMultiplierNumerator;
-            LO1FractionalMultiplierDenominator = defaultValues.LO1FractionalMultiplierDenominator;
-            LO2FractionalMultiplierNumerator = defaultValues.LO2FractionalMultiplierNumerator;
-            LO2FractionalMultiplierDenominator = defaultValues.LO2FractionalMultiplierDenominator;
 
             EnableEmbeddedLO = defaultValues.EnableEmbeddedLO;
             TuningMethod = defaultValues.TuningMethod;
@@ -262,15 +236,9 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.SetConverterStages(Channel, ConverterStages);
             PNAX.SetPortInputOutput(Channel, PortInput, PortOutput);
-            PNAX.SetInputFractionalMultiplierNumerator(Channel, InputFractionalMultiplierNumerator);
-            PNAX.SetInputFractionalMultiplierDenominator(Channel, InputFractionalMultiplierDenominator);
-            PNAX.SetLOFractionalMultiplierNumerator(Channel, 1, LO1FractionalMultiplierNumerator);
-            PNAX.SetLOFractionalMultiplierDenominator(Channel, 1, LO1FractionalMultiplierDenominator);
             PNAX.SetPortLO(Channel, 1, PortLO1);
             if (ConverterStages == ConverterStagesEnum._2)
             {
-                PNAX.SetLOFractionalMultiplierNumerator(Channel, 2, LO2FractionalMultiplierNumerator);
-                PNAX.SetLOFractionalMultiplierDenominator(Channel, 2, LO2FractionalMultiplierDenominator);
                 PNAX.SetPortLO(Channel, 2, PortLO2);
             }
 
@@ -298,15 +266,9 @@ namespace OpenTap.Plugins.PNAX
             {
                 ("Converter Stages", ConverterStages),
                 ("Input Port", PortInput),
-                ("Fractional Multiplier Numerator", InputFractionalMultiplierNumerator),
-                ("Fractional Multiplier Denominator", InputFractionalMultiplierDenominator),
-                ("LO1 Fractional Multiplier Numerator", LO1FractionalMultiplierNumerator),
-                ("LO1 Fractional Multiplier Denominator", LO1FractionalMultiplierDenominator)
             };
             if (ConverterStages == ConverterStagesEnum._2)
             {
-                retVal.Add(("LO2 Fractional Multiplier Numerator", LO2FractionalMultiplierNumerator));
-                retVal.Add(("LO2 Fractional Multiplier Denominator", LO2FractionalMultiplierDenominator));
                 retVal.Add(("LO2 Port", PortLO2));
             }
             retVal.Add(("Enable Embedded LO", EnableEmbeddedLO));
