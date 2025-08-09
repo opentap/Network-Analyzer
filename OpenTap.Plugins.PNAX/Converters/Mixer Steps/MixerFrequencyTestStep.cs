@@ -590,6 +590,113 @@ namespace OpenTap.Plugins.PNAX
         {
             IsConverter = true;
             UpdateDefaultValues();
+            retVal = new List<(string, object)>();
+        }
+
+        public override void Run()
+        {
+            RunChildSteps(); //If the step supports child steps.
+
+            // Start from scratch
+            PNAX.MixerDiscard(Channel);
+            PNAX.SetConverterStages(Channel, ConverterStages);
+            SetInput(Channel);
+            SetMultiplier(Channel);
+            SetLO1(Channel);
+            SetIF(Channel);
+            SetLO2(Channel);
+            SetOutput(Channel);
+            // Apply changes to instrument
+            PNAX.MixerCalc(Channel);
+            PNAX.MixerApply(Channel);
+
+            // Now read back and validate the values were not changed by the Calculate command
+            ValidateInput(Channel);
+            ValidateLO1(Channel);
+            ValidateIF(Channel);
+            ValidateLO2(Channel);
+            ValidateOutput(Channel);
+
+            UpgradeVerdict(Verdict.Pass);
+        }
+
+        /// <summary>
+        /// A generic method to validate settings for any stage after they have been applied.
+        /// </summary>
+        private void ValidateStageSettings(int channel, MixerFrequencyTypeEnum freqType, double start, double stop, double center, double span, double fixedFreq, 
+            Action<int, string> validateMode,
+            Action<int, double> validateStart, 
+            Action<int, double> validateStop, 
+            Action<int, double> validateFixed)
+        {
+            if (freqType == MixerFrequencyTypeEnum.Fixed)
+            {
+                validateMode?.Invoke(channel, "FIXED");
+                validateFixed(channel, fixedFreq);
+            }
+            else // StartStop or CenterSpan are both "SWEPT" mode
+            {
+                validateMode?.Invoke(channel, "SWEPT");
+                double expectedStart = (freqType == MixerFrequencyTypeEnum.CenterSpan) ? center - (span / 2) : start;
+                double expectedStop = (freqType == MixerFrequencyTypeEnum.CenterSpan) ? center + (span / 2) : stop;
+                validateStart(channel, expectedStart);
+                validateStop(channel, expectedStop);
+            }
+        }
+
+        private void ValidateInput(int channel)
+        {
+            ValidateStageSettings(channel, InputMixerFrequencyType, InputMixerFrequencyStart, InputMixerFrequencyStop, InputMixerFrequencyCenter, InputMixerFrequencySpan, InputMixerFrequencyFixed,
+                (ch, mode) => PNAX.ValidateMixerFrequencyInputMode(ch, mode), 
+                PNAX.ValidateFrequencyInputStart, 
+                PNAX.ValidateFrequencyInputStop, 
+                PNAX.ValidateFrequencyInputFixed);
+        }
+
+        private void ValidateLO1(int channel)
+        {
+            ValidateStageSettings(channel, LO1MixerFrequencyType, LO1MixerFrequencyStart, LO1MixerFrequencyStop, LO1MixerFrequencyCenter, LO1MixerFrequencySpan, LO1MixerFrequencyFixed,
+                (ch, mode) => PNAX.ValidateMixerFrequencyLOMode(ch, 1, mode), 
+                (ch, val) => PNAX.ValidateFrequencyLOStart(ch, 1, val),
+                (ch, val) => PNAX.ValidateFrequencyLOStop(ch, 1, val), 
+                (ch, val) => PNAX.ValidateFrequencyLOFixed(ch, 1, val));
+            PNAX.ValidateLOILTI(channel, 1, InputGTLO1);
+        }
+
+        private void ValidateIF(int channel)
+        {
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                ValidateStageSettings(channel, IFMixerFrequencyType, IFMixerFrequencyStart, IFMixerFrequencyStop, IFMixerFrequencyCenter, IFMixerFrequencySpan, IFMixerFrequencyFixed, 
+                    null,
+                    (ch, val) => PNAX.ValidateFrequencyIFStart(ch, val), 
+                    (ch, val) => PNAX.ValidateFrequencyIFStop(ch, val), 
+                    (ch, val) => {/* TODO */});
+                PNAX.ValidateFrequencyIFSideband(channel, IFSidebandType);
+            }
+        }
+
+        private void ValidateLO2(int channel)
+        {
+            if (ConverterStages == ConverterStagesEnum._2)
+            {
+                ValidateStageSettings(channel, LO2MixerFrequencyType, LO2MixerFrequencyStart, LO2MixerFrequencyStop, LO2MixerFrequencyCenter, LO2MixerFrequencySpan, LO2MixerFrequencyFixed,
+                    (ch, mode) => PNAX.ValidateMixerFrequencyLOMode(ch, 2, mode),
+                    (ch, val) => PNAX.ValidateFrequencyLOStart(ch, 2, val),
+                    (ch, val) => PNAX.ValidateFrequencyLOStop(ch, 2, val),
+                    (ch, val) => PNAX.ValidateFrequencyLOFixed(ch, 2, val));
+                PNAX.ValidateLOILTI(channel, 2, IF1GTLO2);
+            }
+        }
+
+        private void ValidateOutput(int channel)
+        {
+            ValidateStageSettings(channel, OutputMixerFrequencyType, OutputMixerFrequencyStart, OutputMixerFrequencyStop, OutputMixerFrequencyCenter, OutputMixerFrequencySpan, OutputMixerFrequencyFixed, 
+                null, // No mode validation for output
+                (ch, val) => PNAX.ValidateFrequencyOutputStart(ch, val),
+                (ch, val) => PNAX.ValidateFrequencyOutputStop(ch, val),
+                (ch, val) => PNAX.ValidateFrequencyOutputFixed(ch, val));
+            PNAX.ValidateFrequencyOutputSideband(channel, OutputSidebandType);
         }
 
         private void UpdateDefaultValues()
@@ -645,158 +752,7 @@ namespace OpenTap.Plugins.PNAX
             OutputMixerFrequencyFixed = defaultValues.OutputMixerFrequencyFixed;
         }
 
-        public override void Run()
-        {
-            RunChildSteps(); //If the step supports child steps.
 
-            // Initialize MetaData list
-            retVal = new List<(string, object)>();
-
-            // Start from scratch
-            PNAX.MixerDiscard(Channel);
-
-            PNAX.SetConverterStages(Channel, ConverterStages);
-
-            SetInput(Channel);
-            SetMultiplier(Channel);
-            SetLO1(Channel);
-            SetIF(Channel);
-            SetLO2(Channel);
-            SetOutput(Channel);
-
-            // Apply changes to instrument
-            PNAX.MixerCalc(Channel);
-            PNAX.MixerApply(Channel);
-
-            // Now read back and validate the values were not changed by the Calculate command
-            #region Input
-            if (InputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-            {
-                PNAX.ValidateMixerFrequencyInputMode(Channel, "SWEPT");
-                PNAX.ValidateFrequencyInputStart(Channel, InputMixerFrequencyStart);
-                PNAX.ValidateFrequencyInputStop(Channel, InputMixerFrequencyStop);
-            }
-            else if (InputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-            {
-                // Calculate Start/Stop from Center/Span
-                double start = InputMixerFrequencyCenter - (InputMixerFrequencySpan / 2);
-                double stop = InputMixerFrequencyCenter + (InputMixerFrequencySpan / 2);
-
-                PNAX.ValidateMixerFrequencyInputMode(Channel, "SWEPT");
-                PNAX.ValidateFrequencyInputStart(Channel, start);
-                PNAX.ValidateFrequencyInputStop(Channel, stop);
-            }
-            else
-            {
-                // Fixed
-                PNAX.ValidateMixerFrequencyInputMode(Channel, "FIXED");
-                PNAX.ValidateFrequencyInputFixed(Channel, InputMixerFrequencyFixed);
-            }
-            #endregion
-
-            #region LO1
-            if (LO1MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-            {
-                PNAX.ValidateMixerFrequencyLOMode(Channel, 1, "SWEPT");
-                PNAX.ValidateFrequencyLOStart(Channel, 1, LO1MixerFrequencyStart);
-                PNAX.ValidateFrequencyLOStop(Channel, 1, LO1MixerFrequencyStop);
-            }
-            else if (LO1MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-            {
-                // Calculate Start/Stop from Center/Span
-                double start = LO1MixerFrequencyCenter - (LO1MixerFrequencySpan / 2);
-                double stop = LO1MixerFrequencyCenter + (LO1MixerFrequencySpan / 2);
-                PNAX.ValidateMixerFrequencyLOMode(Channel, 1, "SWEPT");
-                PNAX.ValidateFrequencyLOStart(Channel, 1, start);
-                PNAX.ValidateFrequencyLOStop(Channel, 1, stop);
-            }
-            else
-            {
-                // Fixed
-                PNAX.ValidateMixerFrequencyLOMode(Channel, 1, "FIXED");
-                PNAX.ValidateFrequencyLOFixed(Channel, 1, LO1MixerFrequencyFixed);
-            }
-            PNAX.ValidateLOILTI(Channel, 1, InputGTLO1);
-            #endregion
-
-            #region IF
-            if (ConverterStages == ConverterStagesEnum._2)
-            {
-                if (IFMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-                {
-                    PNAX.ValidateFrequencyIFStart(Channel, IFMixerFrequencyStart);
-                    PNAX.ValidateFrequencyIFStop(Channel, IFMixerFrequencyStop);
-                }
-                else if (IFMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    // Calculate Start/Stop from Center/Span
-                    double start = IFMixerFrequencyCenter - (IFMixerFrequencySpan / 2);
-                    double stop = IFMixerFrequencyCenter + (IFMixerFrequencySpan / 2);
-                    PNAX.ValidateFrequencyIFStart(Channel, start);
-                    PNAX.ValidateFrequencyIFStop(Channel, stop);
-                }
-                else
-                {
-                    // Fixed
-                    // TODO find command for IF Fixed
-                    // PNAX.SetFrequencyIFFixed(Channel, IFMixerFrequencyFixed);
-                }
-                PNAX.ValidateFrequencyIFSideband(Channel, IFSidebandType);
-            }
-            #endregion
-
-            #region LO2
-            if (ConverterStages == ConverterStagesEnum._2)
-            {
-                if (LO2MixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-                {
-                    PNAX.ValidateMixerFrequencyLOMode(Channel, 1, "SWEPT");
-                    PNAX.ValidateFrequencyLOStart(Channel, 2, LO2MixerFrequencyStart);
-                    PNAX.ValidateFrequencyLOStop(Channel, 2, LO2MixerFrequencyStop);
-                }
-                else if (LO2MixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-                {
-                    // Calculate Start/Stop from Center/Span
-                    double start = LO2MixerFrequencyCenter - (LO2MixerFrequencySpan / 2);
-                    double stop = LO2MixerFrequencyCenter + (LO2MixerFrequencySpan / 2);
-                    PNAX.ValidateMixerFrequencyLOMode(Channel, 1, "SWEPT");
-                    PNAX.ValidateFrequencyLOStart(Channel, 2, start);
-                    PNAX.ValidateFrequencyLOStop(Channel, 2, stop);
-                }
-                else
-                {
-                    // Fixed
-                    PNAX.ValidateMixerFrequencyLOMode(Channel, 1, "FIXED");
-                    PNAX.ValidateFrequencyLOFixed(Channel, 2, LO2MixerFrequencyFixed);
-                }
-                PNAX.ValidateLOILTI(Channel, 2, IF1GTLO2);
-            }
-            #endregion
-
-            #region Output
-            if (OutputMixerFrequencyType == MixerFrequencyTypeEnum.StartStop)
-            {
-                PNAX.ValidateFrequencyOutputStart(Channel, OutputMixerFrequencyStart);
-                PNAX.ValidateFrequencyOutputStop(Channel, OutputMixerFrequencyStop);
-            }
-            else if (OutputMixerFrequencyType == MixerFrequencyTypeEnum.CenterSpan)
-            {
-                // Calculate Start/Stop from Center/Span
-                double start = OutputMixerFrequencyCenter - (OutputMixerFrequencySpan / 2);
-                double stop = OutputMixerFrequencyCenter + (OutputMixerFrequencySpan / 2);
-                PNAX.ValidateFrequencyOutputStart(Channel, start);
-                PNAX.ValidateFrequencyOutputStop(Channel, stop);
-            }
-            else
-            {
-                // Fixed
-                PNAX.ValidateFrequencyOutputFixed(Channel, OutputMixerFrequencyFixed);
-            }
-            PNAX.ValidateFrequencyOutputSideband(Channel, OutputSidebandType);
-            #endregion
-
-            UpgradeVerdict(Verdict.Pass);
-        }
 
         private void SetMultiplier(int Channel)
         {
