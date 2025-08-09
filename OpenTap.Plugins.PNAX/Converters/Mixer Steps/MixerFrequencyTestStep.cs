@@ -93,7 +93,6 @@ namespace OpenTap.Plugins.PNAX
 
         #endregion
 
-
         #region LO1
         [Browsable(false)]
         public bool IsLO1MixerFrequencyTypeStartStop { get; set; }
@@ -320,11 +319,7 @@ namespace OpenTap.Plugins.PNAX
         }
 
         #endregion
-
-
-
         #endregion
-
 
         public MixerFrequencyTestStep()
         {
