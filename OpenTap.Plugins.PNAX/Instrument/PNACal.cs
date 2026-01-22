@@ -407,7 +407,7 @@ namespace OpenTap.Plugins.PNAX
                 // Error 342, may need error 341 also
                 if (!ex.Message.StartsWith("Error: 342"))
                 {
-                    throw ex;
+                    throw;
                 }
 
             }

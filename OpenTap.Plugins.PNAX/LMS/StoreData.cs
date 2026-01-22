@@ -190,10 +190,6 @@ namespace OpenTap.Plugins.PNAX
 
                                 // append xaxisvalues
                                 resultColumn = new ResultColumn($"{TraceName}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
-                                if (false)
-                                {
-                                    resultColumns.Add(resultColumn);
-                                }
 
                                 // append pf
                                 List<string> pfByRow = new List<string>();
@@ -376,13 +372,13 @@ namespace OpenTap.Plugins.PNAX
                 }
 
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException)
             {
-                throw ex;
+                throw;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw ex;
+                throw;
             }
 
             UpgradeVerdict(Verdict.Pass);

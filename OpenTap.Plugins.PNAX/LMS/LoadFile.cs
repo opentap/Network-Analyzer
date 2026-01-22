@@ -42,13 +42,13 @@ namespace OpenTap.Plugins.PNAX
                 PNAX.LoadState(absolutePath, overwrite);
                 PNAX.WaitForOperationComplete();
             }
-            catch(FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                throw ex;
+                throw;
             }
-            catch(Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             UpgradeVerdict(Verdict.Pass);

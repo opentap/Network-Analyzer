@@ -706,9 +706,9 @@ namespace OpenTap.Plugins.PNAX
 
                 // We now have switched to the folder
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
         }
