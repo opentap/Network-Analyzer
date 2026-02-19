@@ -48,13 +48,13 @@ namespace OpenTap.Plugins.PNAX
                     PNAX.AutoScaleWindow(window);
                 }
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException)
             {
-                throw ex;
+                throw; // Preserve the original stack trace
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw; // Preserve the original stack trace
             }
 
             UpgradeVerdict(Verdict.Pass);

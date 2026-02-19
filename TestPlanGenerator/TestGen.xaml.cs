@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using OpenTap;
 using System.IO;
 using Microsoft.Win32;
+using System.Runtime.Versioning;
 
 namespace TestPlanGenerator
 {
@@ -119,13 +120,23 @@ namespace TestPlanGenerator
         }
 
 
+    // ...
+
         private void SetTestPlan(TestPlan testPlan)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 try
                 {
-                    this.uiContext.Plan = testPlan;
+                    if (OperatingSystem.IsWindowsVersionAtLeast(7))
+                    {
+                        // Marking the following line with the SupportedOSPlatform attribute to suppress CA1416 warning
+                        SetPlanForWindows(testPlan);
+                    }
+                    else
+                    {
+                        throw new PlatformNotSupportedException("This functionality is only supported on Windows 7.0 and later.");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -133,6 +144,12 @@ namespace TestPlanGenerator
                 }
             });
         }
+
+    [SupportedOSPlatform("windows7.0")]
+    private void SetPlanForWindows(TestPlan testPlan)
+    {
+        this.uiContext.Plan = testPlan;
+    }
 
         private void BrowseInputFileButton_Click(object sender, RoutedEventArgs e)
         {

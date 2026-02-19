@@ -222,8 +222,8 @@ namespace TestPlanGenerator
             // Parse Channels
             int sheetIndex = 1;
             Worksheet sheet = (Worksheet)wb.Sheets.Item[sheetIndex];
-            Range excelRange = sheet.UsedRange;
-            foreach (Range row in excelRange.Rows)
+            Microsoft.Office.Interop.Excel.Range excelRange = sheet.UsedRange;
+            foreach (Microsoft.Office.Interop.Excel.Range row in excelRange.Rows)
             {
                 int rowNumber = row.Row;
 
@@ -291,7 +291,7 @@ namespace TestPlanGenerator
             sheetIndex = 2;
             sheet = (Worksheet)wb.Sheets.Item[sheetIndex];
             excelRange = sheet.UsedRange;
-            foreach (Range row in excelRange.Rows)
+            foreach (Microsoft.Office.Interop.Excel.Range row in excelRange.Rows)
             {
                 int rowNumber = row.Row;
 
@@ -526,8 +526,8 @@ namespace TestPlanGenerator
             // Parse Channels
             int sheetIndex = 1;
             Worksheet sheet = (Worksheet)wb.Sheets.Item[sheetIndex];
-            Range excelRange = sheet.UsedRange;
-            foreach (Range row in excelRange.Rows)
+            Microsoft.Office.Interop.Excel.Range excelRange = sheet.UsedRange;
+            foreach (Microsoft.Office.Interop.Excel.Range row in excelRange.Rows)
             {
                 int rowNumber = row.Row;
 

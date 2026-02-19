@@ -64,13 +64,13 @@ namespace OpenTap.Plugins.PNAX
                 }
                 PNAX.WaitForOperationComplete();
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException)
             {
-                throw ex;
+                throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             UpgradeVerdict(Verdict.Pass);

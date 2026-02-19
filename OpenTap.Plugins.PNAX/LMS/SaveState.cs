@@ -47,13 +47,13 @@ namespace OpenTap.Plugins.PNAX
                 Log.Info("---Save State Completed---");
                 PNAX.WaitForOperationComplete();
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                throw ex;
+                throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             UpgradeVerdict(Verdict.Pass);

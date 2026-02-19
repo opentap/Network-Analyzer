@@ -510,7 +510,7 @@ namespace OpenTap.Plugins.PNAX
 
                 PNAX.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (PNAX.IsConnected)
                 {
@@ -519,7 +519,6 @@ namespace OpenTap.Plugins.PNAX
                 Log.Error("Cannot query channels!");
                 return;
             }
-
         }
 
         public CalAll()

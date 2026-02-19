@@ -71,13 +71,22 @@ namespace TestPlanGenerator
 
         protected string GetTheme()
         {
-            if (Keysight.OpenTap.Wpf.EditorSettings.Current.ColorTheme == Keysight.OpenTap.Wpf.Themes.TapSkins.Theme.Light)
+            // Check if the platform supports the EditorSettings API
+            if (OperatingSystem.IsWindowsVersionAtLeast(7))
             {
-                return "Light";
+                if (Keysight.OpenTap.Wpf.EditorSettings.Current.ColorTheme == Keysight.OpenTap.Wpf.Themes.TapSkins.Theme.Light)
+                {
+                    return "Light";
+                }
+                else
+                {
+                    return "Dark";
+                }
             }
             else
             {
-                return "Dark";
+                // Default to "Light" theme for unsupported platforms
+                return "Light";
             }
         }
 

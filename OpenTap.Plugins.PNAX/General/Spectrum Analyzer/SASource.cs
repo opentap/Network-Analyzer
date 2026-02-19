@@ -46,7 +46,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Output]
         [Browsable(true)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
-        public List<(string, object)> MetaData { get; private set; }
+        public new List<(string, object)> MetaData { get; private set; }
         #endregion
 
         public SASource()
