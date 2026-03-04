@@ -472,6 +472,23 @@ namespace OpenTap.Plugins.PNAX
 
             IoTimeout = deftimeout;
         }
+        public SweepModeEnumType GetSweepStatus(int Channel)
+        {
+            string scpi = ScpiQuery($"SENSe{Channel}:SWEep:MODE?");
+            switch (Scpi.Format("{0}", SweepModeEnumType.HOLD))
+            {
+                case "HOLD":
+                    return SweepModeEnumType.HOLD;
+                case "CONT":
+                    return SweepModeEnumType.CONT;
+                case "GRO":
+                    return SweepModeEnumType.GRO;
+                case "SING":
+                    return SweepModeEnumType.SING;
+                default:
+                    throw new Exception($"Unknown sweep mode: {scpi}");
+            }
+        }
 
         public void SendTrigger(int Channel)
         {
