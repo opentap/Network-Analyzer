@@ -160,6 +160,9 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateDefaultValues()
         {
+            if (PNAX == null)
+                return;
+
             var defaultValues = PNAX.GetStandardChannelDefaultValues();
             StandardSweepType = defaultValues.SweepType;
             SweepPropertiesStart = defaultValues.Start;
