@@ -1,7 +1,5 @@
-﻿using OpenTap;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -708,7 +706,10 @@ namespace OpenTap.Plugins.PNAX
             }
             catch (Exception ex)
             {
-                throw ex;
+                if (ex is TimeoutException)
+                    Log.Error("Failed to change folder. Please ensure that 'Enable Remote Drive Access' is enabled in System -> System Setup -> Remote Interface.");
+
+                throw;
             }
 
         }
