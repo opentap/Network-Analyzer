@@ -61,24 +61,8 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
     public class SASetup : PNABaseStep
     {
         #region Settings
-        private SASweepTypeEnum _SASweepType;
         [Display("Data Acquisition Mode", Order: 10)]
-        public SASweepTypeEnum SASweepType
-        {
-            get
-            {
-                return _SASweepType;
-            }
-            set
-            {
-                _SASweepType = value;
-                SAEnableSegmentSweepSettings = false;
-                if (_SASweepType == SASweepTypeEnum.SegmentSweep)
-                {
-                    SAEnableSegmentSweepSettings = true;
-                }
-            }
-        }
+        public SASweepTypeEnum SASweepType { get; set; }
 
         [Display("Type", Group: "Sweep Properties", Order: 20.0)]
         public SweepSSCSTypeEnum IsStartStopCenterSpan { get; set; }
@@ -153,30 +137,27 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Unit("dB", UseEngineeringPrefix: true, StringFormat: "0")]
         public double RcvrDAttenuator { get; set; }
 
-        [Browsable(false)]
-        public bool SAEnableSegmentSweepSettings { get; set; } = false;
-
-        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASweepType", SASweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
         [Display("Segment Definition Type", Group: "Sweep Properties", Order: 30)]
         public SegmentDefinitionTypeEnum SASegmentDefinitionType { get; set; }
 
-        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASweepType", SASweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
         [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.File, HideIfDisabled = false)]
         [Display("Segment Table File Name", Group: "Sweep Properties", Order: 31)]
         [FilePath]
         public string SASegmentTable { get; set; }
 
-        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASweepType", SASweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
         [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
         [Display("Segment Table", Group: "Sweep Properties", Order: 32)]
         public List<SASegmentDefinition> SAsegmentDefinitions { get; set; }
 
-        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASweepType", SASweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
         [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
         [Display("Show Table", Group: "Sweep Properties", Order: 33)]
         public bool SAShowTable { get; set; }
 
-        [EnabledIf("SAEnableSegmentSweepSettings", true, HideIfDisabled = true)]
+        [EnabledIf("SASweepType", SASweepTypeEnum.SegmentSweep, HideIfDisabled = true)]
         [EnabledIf("SASegmentDefinitionType", SegmentDefinitionTypeEnum.List, HideIfDisabled = false)]
         [Display("Segment Attributes", Group: "Sweep Properties", Order: 34)]
         public SASegmentAttributes SASegmentAttributes { get; set; }
