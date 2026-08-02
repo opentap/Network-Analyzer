@@ -22,7 +22,7 @@ namespace OpenTap.Plugins.PNAX
 
 
         [Display("Auto Select All Channels", Group: "Measurements", Order: 10)]
-        public bool AutoSelectChannels { get; set; }
+        public virtual bool AutoSelectChannels { get; set; }
 
         [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
         [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10.1)]
