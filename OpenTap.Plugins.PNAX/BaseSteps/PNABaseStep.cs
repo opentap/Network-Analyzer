@@ -114,10 +114,11 @@ namespace OpenTap.Plugins.PNAX
             // UpgradeVerdict(Verdict.Pass);
         }
 
+        // Default: steps that don't contribute metadata simply have nothing to report.
         [Browsable(false)]
         public virtual List<(string, object)> GetMetaData()
         {
-            throw new NotImplementedException();
+            return new List<(string, object)>();
         }
 
         public virtual void UpdateMetaData()

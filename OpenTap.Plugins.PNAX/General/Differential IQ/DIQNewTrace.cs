@@ -46,14 +46,6 @@ namespace OpenTap.Plugins.PNAX
         }
 
 
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
         protected override void DeleteDummyTrace()
         {
             DeleteDummyTrace(string.Empty);

@@ -546,14 +546,6 @@ namespace OpenTap.Plugins.PNAX
             PNAX.SetFOMSweepType(Channel, Range, StandardSweepTypeEnum.SegmentSweep);
         }
 
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
         private void SetSweep(StandardSweepTypeEnum SweepType, int Range, double Start, double Stop, int Points, bool IfSetPoints,
                               double CW, double SweepTime, List<SegmentDefinition> SegmentDefinition)
         {

@@ -80,14 +80,6 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             ExportIQToTextState = false;
         }
 
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
         private SAOnOffTypeEnum ConvertBoolToOnOff(bool state)
         {
             SAOnOffTypeEnum retVal = SAOnOffTypeEnum.Off;
