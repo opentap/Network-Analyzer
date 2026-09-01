@@ -14,46 +14,11 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Display("Modulation Distortion Channel", Groups: new[] { "Network Analyzer", "General", "Modulation Distortion" }, Description: "Insert a description here")]
-    public class MODChannel : PNABaseStep
+    public class MODChannel : MODChannelBaseStep
     {
-        #region Settings
-
-        [Display("Sweep Mode", Group: "Settings", Order: 10)]
-        public SweepModeEnumType sweepMode { get; set; }
-        #endregion
-
         public MODChannel()
         {
-            IsControlledByParent = false;
-            Channel = 1;
-            sweepMode = SweepModeEnumType.SING;
-
-            // Traces
-            MODNewTrace modNewTrace = ConfigureChildStep(new MODNewTrace());
-            MODModulate modModulate = ConfigureChildStep(new MODModulate());
-            MODSourceCorrection modSourceCorrection = ConfigureChildStep(new MODSourceCorrection());
-            MODSweep modSweep = ConfigureChildStep(new MODSweep());
-            MODRFPath modRFPath = ConfigureChildStep(new MODRFPath());
-            MODMeasure modMeasure = ConfigureChildStep(new MODMeasure());
-
-            this.ChildTestSteps.Add(modNewTrace);
-            this.ChildTestSteps.Add(modSweep);
-            this.ChildTestSteps.Add(modRFPath);
-            this.ChildTestSteps.Add(modModulate);
-            this.ChildTestSteps.Add(modSourceCorrection);
-            this.ChildTestSteps.Add(modMeasure);
-        }
-
-        public override void Run()
-        {
-            DefineDummyTrace("Modulation Distortion", "PIn1", string.Empty);
-
-            RunChildSteps(); //If the step supports child steps.
-
-            PNAX.SetSweepMode(Channel, SweepModeEnumType.SING);
-
-            UpgradeVerdict(Verdict.Pass);
-            UpdateMetaData();
+            AddModChildSteps(new MODNewTrace());
         }
     }
 }
