@@ -16,60 +16,50 @@ namespace OpenTap.Plugins.PNAX
 {
     //[AllowAsChildIn(typeof(StandardChannel))]
     [Display("Pulse Setup", Groups: new[] { "Network Analyzer", "General" }, Description: "Insert a description here")]
-    public class PulseSetup : PNABaseStep
+    public class PulseSetup : PulseSetupBasic
     {
         #region Settings
         [Browsable(false)]
         public bool IsSettingReadOnly { get; set; } = false;
 
 
+        // Full pulse mode set; hides PulseSetupBasic's reduced PulseModeBasicEnumtype.
         [Display("Pulse Mode", Group: "Pulse Measurement", Order: 21)]
-        public PulseModeEnumtype PulseMode { get; set; }
+        public new PulseModeEnumtype PulseMode { get; set; }
 
-        [Display("Pulse Width", Group: "Pulse Timing", Order: 30)]
-        [Unit("sec", UseEngineeringPrefix: true, StringFormat: "000.000")]
-        public double PulseWidthPrimary { get; set; }
-
-        private double _PulsePeriodPrimary;
-        [Display("Pulse Period", Group: "Pulse Timing", Order: 31)]
-        [Unit("sec", UseEngineeringPrefix: true, StringFormat: "0.000")]
-        public double PulsePeriodPrimary
+        public override double PulsePeriodPrimary
         {
             get
             {
-                return _PulsePeriodPrimary;
+                return base.PulsePeriodPrimary;
             }
             set
             {
-                _PulsePeriodPrimary = value;
+                base.PulsePeriodPrimary = value;
                 foreach (var a in this.ChildTestSteps)
                 {
                     if (a is PulseGenerators)
                     {
-                        (a as PulseGenerators).Period = _PulsePeriodPrimary;
+                        (a as PulseGenerators).Period = value;
                     }
                 }
             }
         }
 
-
-        private double _PulseFrequencyPrimary;
-        [Display("Pulse Frequency", Group: "Pulse Timing", Order: 32)]
-        [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
-        public double PulseFrequencyPrimary
+        public override double PulseFrequencyPrimary
         {
             get
             {
-                return _PulseFrequencyPrimary;
+                return base.PulseFrequencyPrimary;
             }
             set
             {
-                _PulseFrequencyPrimary = value;
+                base.PulseFrequencyPrimary = value;
                 foreach (var a in this.ChildTestSteps)
                 {
                     if (a is PulseGenerators)
                     {
-                        (a as PulseGenerators).Frequency = _PulseFrequencyPrimary;
+                        (a as PulseGenerators).Frequency = value;
                     }
                 }
             }
@@ -128,53 +118,6 @@ namespace OpenTap.Plugins.PNAX
 
         [Display("Autoselect Pulse Generators", Groups: new[] { "Measurement Timing" }, Order: 52)]
         public bool PulseGeneratorsAuto { get; set; }
-
-        private PulseTriggerEnumtype _PulseTriggerType;
-        [Display("Trigger Source", Groups: new[] { "Pulse Trigger" }, Order: 60)]
-        public PulseTriggerEnumtype PulseTriggerType
-        {
-            get
-            {
-                return _PulseTriggerType;
-            }
-            set
-            {
-                _PulseTriggerType = value;
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is PulseGenerators)
-                    {
-                        (a as PulseGenerators).PulseTriggerType = value;
-                    }
-                }
-            }
-        }
-
-
-        [EnabledIf("PulseTriggerType", PulseTriggerEnumtype.External, HideIfDisabled = false)]
-        [Display("Trigger Level/Edge", Groups: new[] { "Pulse Trigger" }, Order: 61)]
-        public PulseTriggerLevelEdgeEnumtype pulseTriggerLevelEdge { get; set; }
-
-        private bool _SynchADCUsingPulseTrigger;
-        [Display("Synchronize ADCs Using Pulse Trigger", Groups: new[] { "Pulse Trigger" }, Order: 62)]
-        public bool SynchADCUsingPulseTrigger
-        {
-            get
-            {
-                return _SynchADCUsingPulseTrigger;
-            }
-            set
-            {
-                _SynchADCUsingPulseTrigger = value;
-                foreach (var a in this.ChildTestSteps)
-                {
-                    if (a is PulseGenerators)
-                    {
-                        (a as PulseGenerators).SynchADCUsingPulseTrigger = value;
-                    }
-                }
-            }
-        }
 
         [Display("ADC trigger delay", Groups: new[] { "Pulse Trigger" }, Order: 63)]
         public double ADCTriggerDelay { get; set; }
@@ -274,27 +217,7 @@ namespace OpenTap.Plugins.PNAX
             PNAX.PulseGeneratorsAutoselect(Channel, PulseGeneratorsAuto);
 
             // Trigger
-            PNAX.PulseGeneratorTrigger(Channel, PulseTriggerType);
-            switch (pulseTriggerLevelEdge)
-            {
-                case PulseTriggerLevelEdgeEnumtype.HighLevel:
-                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Level);
-                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Positive);
-                    break;
-                case PulseTriggerLevelEdgeEnumtype.LowLevel:
-                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Level);
-                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Negative);
-                    break;
-                case PulseTriggerLevelEdgeEnumtype.PositiveEdge:
-                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Edge);
-                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Positive);
-                    break;
-                case PulseTriggerLevelEdgeEnumtype.NegativeEdge:
-                    PNAX.PulseTriggerType(Channel, PulseTriggerTypeEnumtype.Edge);
-                    PNAX.PulseTriggerPolarity(Channel, PulseTriggerPolarityEnumtype.Negative);
-                    break;
-            }
-            PNAX.PulseGeneratorSyncADCs(Channel, SynchADCUsingPulseTrigger);
+            ApplyPulseTrigger();
             PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
 
 
