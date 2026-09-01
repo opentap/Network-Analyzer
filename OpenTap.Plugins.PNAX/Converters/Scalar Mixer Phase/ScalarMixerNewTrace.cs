@@ -45,7 +45,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
+            DeleteDummyTrace("SC21");
         }
 
     }

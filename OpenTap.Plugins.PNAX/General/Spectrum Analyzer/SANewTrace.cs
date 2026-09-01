@@ -45,7 +45,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_B_1\'");
+            DeleteDummyTrace("B");
         }
     }
 }

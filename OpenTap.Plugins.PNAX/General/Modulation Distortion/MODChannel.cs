@@ -46,10 +46,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Modulation Distortion\',\'PIn1\'");
+            DefineDummyTrace("Modulation Distortion", "PIn1", string.Empty);
 
             RunChildSteps(); //If the step supports child steps.
 

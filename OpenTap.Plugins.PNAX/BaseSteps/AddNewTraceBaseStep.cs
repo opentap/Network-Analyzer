@@ -50,7 +50,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected virtual void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_{measEnumName}_1\'");
+            DeleteDummyTrace(measEnumName);
         }
     }
 }

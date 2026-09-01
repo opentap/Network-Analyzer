@@ -138,6 +138,38 @@ namespace OpenTap.Plugins.PNAX
         {
         }
 
+        protected string GetDummyTraceName(string measurementName = null)
+        {
+            return GetDummyTraceName(Channel, measurementName);
+        }
+
+        protected string GetDummyTraceName(int channel, string measurementName = null)
+        {
+            string measurementSuffix = string.IsNullOrEmpty(measurementName) ? string.Empty : $"_{measurementName}";
+            return $"CH{channel}_DUMMY{measurementSuffix}_1";
+        }
+
+        protected void DefineDummyTrace(string measurementClass, string measurementName, string dummyTraceMeasurementName = null)
+        {
+            DefineDummyTrace(Channel, measurementClass, measurementName, dummyTraceMeasurementName);
+        }
+
+        protected void DefineDummyTrace(int channel, string measurementClass, string measurementName, string dummyTraceMeasurementName = null)
+        {
+            PNAX.GetNewTraceID(channel);
+            PNAX.ScpiCommand($"CALCulate{channel}:CUST:DEFine '{GetDummyTraceName(channel, dummyTraceMeasurementName ?? measurementName)}','{measurementClass}','{measurementName}'");
+        }
+
+        protected void DeleteDummyTrace(string dummyTraceMeasurementName)
+        {
+            DeleteDummyTrace(Channel, dummyTraceMeasurementName);
+        }
+
+        protected void DeleteDummyTrace(int channel, string dummyTraceMeasurementName)
+        {
+            PNAX.ScpiCommand($"CALCulate{channel}:PARameter:DELete '{GetDummyTraceName(channel, dummyTraceMeasurementName)}'");
+        }
+
         private void UpdateChildStepConverterStage()
         {
             foreach (var step in this.ChildTestSteps)
