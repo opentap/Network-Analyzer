@@ -36,12 +36,8 @@ namespace OpenTap.Plugins.PNAX
         {
             // Add child steps in the order that is required
 
-            // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
-            // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep { EnablePort3Settings = false, EnablePort4Settings = false });
-            // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
+            // Mixer Setup/Power/Frequency
+            var mixerSteps = AddMixerChildSteps();
 
             // Tone Power
             TonePower power = ConfigureChildStep(new TonePower { ToneFrequencySweepType = this.ChannelSweepType });
@@ -53,29 +49,26 @@ namespace OpenTap.Plugins.PNAX
 
 
             // Defaults
-            mixerFrequencyTestStep.InputMixerFrequencyStart = 10.5e6;
-            mixerFrequencyTestStep.InputMixerFrequencyStop = 49.9995e9;
-            mixerFrequencyTestStep.InputMixerFrequencyCenter = 25.005e9;
-            mixerFrequencyTestStep.InputMixerFrequencySpan = 49.99e9;
+            mixerSteps.Frequency.InputMixerFrequencyStart = 10.5e6;
+            mixerSteps.Frequency.InputMixerFrequencyStop = 49.9995e9;
+            mixerSteps.Frequency.InputMixerFrequencyCenter = 25.005e9;
+            mixerSteps.Frequency.InputMixerFrequencySpan = 49.99e9;
 
-            mixerFrequencyTestStep.IFMixerFrequencyStart = 10.5e6;
-            mixerFrequencyTestStep.IFMixerFrequencyStop = 49.9995e9;
-            mixerFrequencyTestStep.IFMixerFrequencyCenter = 25.005e9;
-            mixerFrequencyTestStep.IFMixerFrequencySpan = 49.99e9;
-            mixerFrequencyTestStep.IFMixerFrequencyFixed = 10e6;
+            mixerSteps.Frequency.IFMixerFrequencyStart = 10.5e6;
+            mixerSteps.Frequency.IFMixerFrequencyStop = 49.9995e9;
+            mixerSteps.Frequency.IFMixerFrequencyCenter = 25.005e9;
+            mixerSteps.Frequency.IFMixerFrequencySpan = 49.99e9;
+            mixerSteps.Frequency.IFMixerFrequencyFixed = 10e6;
 
-            mixerFrequencyTestStep.OutputMixerFrequencyStart = 10.5e6;
-            mixerFrequencyTestStep.OutputMixerFrequencyStop = 49.9995e9;
-            mixerFrequencyTestStep.OutputMixerFrequencyCenter = 25.005e9;
-            mixerFrequencyTestStep.OutputMixerFrequencySpan = 49.99e9;
+            mixerSteps.Frequency.OutputMixerFrequencyStart = 10.5e6;
+            mixerSteps.Frequency.OutputMixerFrequencyStop = 49.9995e9;
+            mixerSteps.Frequency.OutputMixerFrequencyCenter = 25.005e9;
+            mixerSteps.Frequency.OutputMixerFrequencySpan = 49.99e9;
 
 
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(sweptIMDNewTrace);
 
             // Once we have all child steps, lets get the number of points

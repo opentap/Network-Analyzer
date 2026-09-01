@@ -23,12 +23,8 @@ namespace OpenTap.Plugins.PNAX
         {
             // Add child steps in the order that is required
             
-            // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
-            // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep { EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false });
-            // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
+            // Mixer Setup/Power/Frequency
+            AddMixerChildSteps(enableSweptPowerSettings: false);
 
             // Compression
             Compression compression = ConfigureChildStep(new Compression());
@@ -43,9 +39,6 @@ namespace OpenTap.Plugins.PNAX
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(compression);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(gainCompressionNewTrace);
 
             // Once we have all child steps, lets get the number of points
