@@ -55,9 +55,9 @@ namespace OpenTap.Plugins.PNAX
             NumberOfRanges = 1;
 
             // Traces
-            DIQNewTrace standardNewTrace = new DIQNewTrace { IsControlledByParent = true, Channel = this.Channel };
-            DIQFrequencyRange freqRange = new DIQFrequencyRange { IsControlledByParent = true, Channel = this.Channel };
-            DIQSources sources = new DIQSources { IsControlledByParent = true, Channel = this.Channel };
+            DIQNewTrace standardNewTrace = ConfigureChildStep(new DIQNewTrace());
+            DIQFrequencyRange freqRange = ConfigureChildStep(new DIQFrequencyRange());
+            DIQSources sources = ConfigureChildStep(new DIQSources());
 
             this.ChildTestSteps.Add(standardNewTrace);
             this.ChildTestSteps.Add(freqRange);

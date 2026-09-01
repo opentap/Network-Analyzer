@@ -24,13 +24,13 @@ namespace OpenTap.Plugins.PNAX
             IsControlledByParent = false;
 
             // NoiseFigure
-            GeneralNoiseFigure noiseFigure = new GeneralNoiseFigure { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigure noiseFigure = ConfigureChildStep(new GeneralNoiseFigure());
             // Power
-            GeneralNoiseFigurePower power = new GeneralNoiseFigurePower { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigurePower power = ConfigureChildStep(new GeneralNoiseFigurePower());
             // Frequency
-            GeneralNoiseFigureFrequency frequency = new GeneralNoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigureFrequency frequency = ConfigureChildStep(new GeneralNoiseFigureFrequency());
             // Trace
-            GeneralNoiseFigureNewTrace noiseFigureNewTrace = new GeneralNoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigureNewTrace noiseFigureNewTrace = ConfigureChildStep(new GeneralNoiseFigureNewTrace());
 
             this.ChildTestSteps.Add(noiseFigure);
             this.ChildTestSteps.Add(power);

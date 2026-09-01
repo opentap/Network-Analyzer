@@ -29,7 +29,7 @@ namespace OpenTap.Plugins.PNAX
             int childCount = this.ChildTestSteps.Count;
             childCount++;
 
-            DIQRange newRange = new DIQRange { IsControlledByParent = true, Channel = this.Channel, Range = childCount };
+            DIQRange newRange = ConfigureChildStep(new DIQRange { Range = childCount });
             this.ChildTestSteps.Add(newRange);
         }
 
@@ -37,7 +37,7 @@ namespace OpenTap.Plugins.PNAX
         {
             ChildTestSteps.ChildStepsChanged += childStepsChanged;
 
-            DIQRange newRange = new DIQRange { IsControlledByParent = true, Channel = this.Channel, Range = 1 };
+            DIQRange newRange = ConfigureChildStep(new DIQRange { Range = 1 });
             this.ChildTestSteps.Add(newRange);
         }
 

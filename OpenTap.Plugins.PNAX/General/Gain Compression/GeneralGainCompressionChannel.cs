@@ -25,13 +25,13 @@ namespace OpenTap.Plugins.PNAX
             // Add child steps in the order that is required
 
             // Compression
-            GeneralGainCompression compression = new GeneralGainCompression { IsControlledByParent = true, Channel = this.Channel};
+            GeneralGainCompression compression = ConfigureChildStep(new GeneralGainCompression());
             // Power
-            GeneralGainCompressionPower power = new GeneralGainCompressionPower { IsControlledByParent = true, Channel = this.Channel};
+            GeneralGainCompressionPower power = ConfigureChildStep(new GeneralGainCompressionPower());
             // Frequency
-            GeneralGainCompressionFrequency frequency = new GeneralGainCompressionFrequency { IsControlledByParent = true, Channel = this.Channel};
+            GeneralGainCompressionFrequency frequency = ConfigureChildStep(new GeneralGainCompressionFrequency());
             // Traces
-            GeneralGainCompressionNewTrace gainCompressionNewTrace = new GeneralGainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel};
+            GeneralGainCompressionNewTrace gainCompressionNewTrace = ConfigureChildStep(new GeneralGainCompressionNewTrace());
 
             this.ChildTestSteps.Add(compression);
             this.ChildTestSteps.Add(power);

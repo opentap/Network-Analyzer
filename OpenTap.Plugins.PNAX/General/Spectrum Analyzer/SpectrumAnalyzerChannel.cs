@@ -25,9 +25,9 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
             Channel = 1;
 
             // SA Setup
-            SASetup saSetup = new SASetup { IsControlledByParent = true, Channel = this.Channel };
-            SASource saSource = new SASource { IsControlledByParent = true, Channel = this.Channel };
-            SANewTrace saNewTrace = new SANewTrace { IsControlledByParent = true, Channel = this.Channel };
+            SASetup saSetup = ConfigureChildStep(new SASetup());
+            SASource saSource = ConfigureChildStep(new SASource());
+            SANewTrace saNewTrace = ConfigureChildStep(new SANewTrace());
 
             this.ChildTestSteps.Add(saSetup);
             this.ChildTestSteps.Add(saSource);
@@ -39,7 +39,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Display("Add Advanced Data", Groups: new[] { "Advanced" }, Order: 30)]
         public void AddAdvancedData()
         {
-            SAData sAData = new SAData() { IsControlledByParent = true, Channel = this.Channel, PNAX = this.PNAX };
+            SAData sAData = ConfigureChildStep(new SAData());
             this.ChildTestSteps.Add(sAData);
         }
 

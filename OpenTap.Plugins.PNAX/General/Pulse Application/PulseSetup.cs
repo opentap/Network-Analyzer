@@ -210,7 +210,7 @@ namespace OpenTap.Plugins.PNAX
             _IFPathListOfAvailableValues = new List<string> { "A", "B", "C", "D", "R1", "R2", "R3", "R4" };
             _IFInputListOfAvailableValues = new List<string> { "Internal", "External" };
 
-            PulseGenerators pulseGenerators = new PulseGenerators { IsControlledByParent = true, Channel = this.Channel };
+            PulseGenerators pulseGenerators = ConfigureChildStep(new PulseGenerators());
             this.ChildTestSteps.Add(pulseGenerators);
 
             PulseMode = PulseModeEnumtype.Off;

@@ -29,12 +29,12 @@ namespace OpenTap.Plugins.PNAX
             sweepMode = SweepModeEnumType.SING;
 
             // Traces
-            MODNewTrace modNewTrace = new MODNewTrace { IsControlledByParent = true, Channel = this.Channel };
-            MODModulate modModulate = new MODModulate { IsControlledByParent = true, Channel = this.Channel };
-            MODSourceCorrection modSourceCorrection = new MODSourceCorrection { IsControlledByParent = true, Channel = this.Channel };
-            MODSweep modSweep = new MODSweep { IsControlledByParent = true, Channel = this.Channel };
-            MODRFPath modRFPath = new MODRFPath { IsControlledByParent = true, Channel = this.Channel };
-            MODMeasure modMeasure = new MODMeasure { IsControlledByParent = true, Channel = this.Channel };
+            MODNewTrace modNewTrace = ConfigureChildStep(new MODNewTrace());
+            MODModulate modModulate = ConfigureChildStep(new MODModulate());
+            MODSourceCorrection modSourceCorrection = ConfigureChildStep(new MODSourceCorrection());
+            MODSweep modSweep = ConfigureChildStep(new MODSweep());
+            MODRFPath modRFPath = ConfigureChildStep(new MODRFPath());
+            MODMeasure modMeasure = ConfigureChildStep(new MODMeasure());
 
             this.ChildTestSteps.Add(modNewTrace);
             this.ChildTestSteps.Add(modSweep);

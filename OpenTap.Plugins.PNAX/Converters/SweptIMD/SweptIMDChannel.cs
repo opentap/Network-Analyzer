@@ -37,19 +37,19 @@ namespace OpenTap.Plugins.PNAX
             // Add child steps in the order that is required
 
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
+            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep { EnablePort3Settings = false, EnablePort4Settings = false });
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
 
             // Tone Power
-            TonePower power = new TonePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, ToneFrequencySweepType = this.ChannelSweepType };
+            TonePower power = ConfigureChildStep(new TonePower { ToneFrequencySweepType = this.ChannelSweepType });
             // Tone Frequency
-            ToneFrequency frequency = new ToneFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ToneFrequency frequency = ConfigureChildStep(new ToneFrequency());
 
             // Traces
-            SweptIMDNewTrace sweptIMDNewTrace = new SweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            SweptIMDNewTrace sweptIMDNewTrace = ConfigureChildStep(new SweptIMDNewTrace());
 
 
             // Defaults

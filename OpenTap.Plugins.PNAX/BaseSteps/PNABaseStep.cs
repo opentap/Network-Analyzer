@@ -170,6 +170,20 @@ namespace OpenTap.Plugins.PNAX
             PNAX.ScpiCommand($"CALCulate{channel}:PARameter:DELete '{GetDummyTraceName(channel, dummyTraceMeasurementName)}'");
         }
 
+        protected T ConfigureChildStep<T>(T childStep) where T : PNABaseStep
+        {
+            childStep.IsControlledByParent = true;
+            childStep.Channel = Channel;
+            childStep.PNAX = PNAX;
+            childStep.ConverterStages = ConverterStages;
+            return childStep;
+        }
+
+        protected void AddConfiguredChildStep<T>(T childStep) where T : PNABaseStep
+        {
+            ChildTestSteps.Add(ConfigureChildStep(childStep));
+        }
+
         private void UpdateChildStepConverterStage()
         {
             foreach (var step in this.ChildTestSteps)

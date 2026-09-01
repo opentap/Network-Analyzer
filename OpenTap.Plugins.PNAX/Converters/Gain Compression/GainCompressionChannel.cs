@@ -24,21 +24,21 @@ namespace OpenTap.Plugins.PNAX
             // Add child steps in the order that is required
             
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false };
+            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep { EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false });
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
 
             // Compression
-            Compression compression = new Compression { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            Compression compression = ConfigureChildStep(new Compression());
             // Power
-            MixerConverterPowerStep power = new MixerConverterPowerStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerConverterPowerStep power = ConfigureChildStep(new MixerConverterPowerStep());
             // Frequency
-            GainCompressionFrequency frequency = new GainCompressionFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            GainCompressionFrequency frequency = ConfigureChildStep(new GainCompressionFrequency());
 
             // Traces
-            GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            GainCompressionNewTrace gainCompressionNewTrace = ConfigureChildStep(new GainCompressionNewTrace());
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);

@@ -22,21 +22,21 @@ namespace OpenTap.Plugins.PNAX
         public NoiseFigureChannel()
         {
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false };
+            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep { EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false });
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
 
             // Compression
-            NoiseFigure noiseFigure = new NoiseFigure { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigure noiseFigure = ConfigureChildStep(new NoiseFigure());
             // Power
-            NoiseFigurePower power = new NoiseFigurePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigurePower power = ConfigureChildStep(new NoiseFigurePower());
             // Frequency
-            NoiseFigureFrequency frequency = new NoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureFrequency frequency = ConfigureChildStep(new NoiseFigureFrequency());
 
             // Trace
-            NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureNewTrace noiseFigureNewTrace = ConfigureChildStep(new NoiseFigureNewTrace());
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);

@@ -31,17 +31,17 @@ namespace OpenTap.Plugins.PNAX.General
         {
             MetaData = new List<(string, object)>();
 
-            ReceiverLevelingSource p1 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Port 1", LevelingReceiver = "R1" };
+            ReceiverLevelingSource p1 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Port 1", LevelingReceiver = "R1" });
             this.ChildTestSteps.Add(p1);
-            ReceiverLevelingSource p2 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Port 2", LevelingReceiver = "R2" };
+            ReceiverLevelingSource p2 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Port 2", LevelingReceiver = "R2" });
             this.ChildTestSteps.Add(p2);
-            ReceiverLevelingSource p3 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Port 3", LevelingReceiver = "R3" };
+            ReceiverLevelingSource p3 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Port 3", LevelingReceiver = "R3" });
             this.ChildTestSteps.Add(p3);
-            ReceiverLevelingSource p4 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Port 4", LevelingReceiver = "R4" };
+            ReceiverLevelingSource p4 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Port 4", LevelingReceiver = "R4" });
             this.ChildTestSteps.Add(p4);
-            ReceiverLevelingSource p1src2 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Port 1 Src2", LevelingReceiver = "R1" };
+            ReceiverLevelingSource p1src2 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Port 1 Src2", LevelingReceiver = "R1" });
             this.ChildTestSteps.Add(p1src2);
-            ReceiverLevelingSource src3 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Source 3", LevelingReceiver = "R1" };
+            ReceiverLevelingSource src3 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Source 3", LevelingReceiver = "R1" });
             this.ChildTestSteps.Add(src3);
 
         }
@@ -50,7 +50,7 @@ namespace OpenTap.Plugins.PNAX.General
         [Display("Add Controlled Source", Group: "Controlled Sources", Order: 40)]
         public void AddControlledSource()
         {
-            ReceiverLevelingSource newsrc1 = new ReceiverLevelingSource { IsControlledByParent = true, Channel = this.Channel, ControlledSource = "Port 1", LevelingReceiver = "R1" };
+            ReceiverLevelingSource newsrc1 = ConfigureChildStep(new ReceiverLevelingSource { ControlledSource = "Port 1", LevelingReceiver = "R1" });
             this.ChildTestSteps.Add(newsrc1);
         }
 

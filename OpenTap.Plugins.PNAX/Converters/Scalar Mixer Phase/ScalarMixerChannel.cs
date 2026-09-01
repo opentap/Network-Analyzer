@@ -38,19 +38,19 @@ namespace OpenTap.Plugins.PNAX
         {
 
             // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
             // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
+            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep { EnablePort3Settings = false, EnablePort4Settings = false });
             // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
 
             // Compression
-            ScalarMixerSweep scalerMixerSweep = new ScalarMixerSweep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerSweep scalerMixerSweep = ConfigureChildStep(new ScalarMixerSweep());
             // Power
-            ScalarMixerPower scalerMixerPower = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerPower scalerMixerPower = ConfigureChildStep(new ScalarMixerPower());
 
             // Traces
-            ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerNewTrace scalarMixerNewTrace = ConfigureChildStep(new ScalarMixerNewTrace());
 
 
             // Defaults for MixerPowerTestStep

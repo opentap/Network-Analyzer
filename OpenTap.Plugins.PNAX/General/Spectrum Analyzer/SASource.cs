@@ -57,12 +57,12 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
 
             SourceSweepOrder = SASourceSweepOrderTypeEnum.FrequencyPower;
 
-            SASourceCell port1 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 1" };
-            SASourceCell port2 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 2" };
-            SASourceCell port3 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 3" };
-            SASourceCell port4 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 4" };
-            SASourceCell port1src2 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Port 1 Src2" };
-            SASourceCell source3 = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Source3" };
+            SASourceCell port1 = ConfigureChildStep(new SASourceCell { CellName = "Port 1" });
+            SASourceCell port2 = ConfigureChildStep(new SASourceCell { CellName = "Port 2" });
+            SASourceCell port3 = ConfigureChildStep(new SASourceCell { CellName = "Port 3" });
+            SASourceCell port4 = ConfigureChildStep(new SASourceCell { CellName = "Port 4" });
+            SASourceCell port1src2 = ConfigureChildStep(new SASourceCell { CellName = "Port 1 Src2" });
+            SASourceCell source3 = ConfigureChildStep(new SASourceCell { CellName = "Source3" });
 
             this.ChildTestSteps.Add(port1);
             this.ChildTestSteps.Add(port2);
@@ -77,7 +77,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Display("Add Source Cell", Group: "Source Cells", Order: 40)]
         public void AddSourceCell()
         {
-            SASourceCell newSource = new SASourceCell { IsControlledByParent = true, Channel = this.Channel, CellName = "Device0" };
+            SASourceCell newSource = ConfigureChildStep(new SASourceCell { CellName = "Device0" });
             this.ChildTestSteps.Add(newSource);
         }
 
