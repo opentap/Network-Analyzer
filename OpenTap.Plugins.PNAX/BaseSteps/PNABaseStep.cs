@@ -127,7 +127,10 @@ namespace OpenTap.Plugins.PNAX
 
             foreach (var ch in this.ChildTestSteps)
             {
-                List<(string, object)> ret = (ch as PNABaseStep).GetMetaData();
+                if (!(ch is PNABaseStep childStep))
+                    continue;
+
+                List<(string, object)> ret = childStep.GetMetaData();
                 foreach (var it in ret)
                 {
                     MetaData.Add(it);
