@@ -26,12 +26,12 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         public SANewTrace()
         {
             Meas = SATraceEnum.B;
-            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<SASingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new SASingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<SASingleTrace>(trace => trace.Meas = Meas);
         }
 
 

@@ -32,7 +32,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<ScalarMixerSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void DeleteDummyTrace()

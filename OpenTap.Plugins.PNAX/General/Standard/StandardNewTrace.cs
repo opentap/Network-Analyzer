@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
         public StandardNewTrace()
         {
             Meas = StandardTraceEnum.S11;
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<StandardSingleTrace>(trace => trace.Meas = Meas);
         }
 
         // overloaded constructor for window and sheet
@@ -70,7 +70,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<StandardSingleTrace>(trace => trace.Meas = Meas);
         }
 
     }

@@ -28,12 +28,12 @@ namespace OpenTap.Plugins.PNAX
         {
             Meas = GeneralGainCompressionTraceEnum.S21;
             measEnumName = Meas.ToString();
-            ChildTestSteps.Add(new GeneralGainCompressionSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<GeneralGainCompressionSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new GeneralGainCompressionSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true  });
+            AddNewTraceChild<GeneralGainCompressionSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void DeleteDummyTrace()

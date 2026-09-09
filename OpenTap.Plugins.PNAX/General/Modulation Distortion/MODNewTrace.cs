@@ -26,7 +26,7 @@ namespace OpenTap.Plugins.PNAX
         public MODNewTrace()
         {
             Meas = MODTraceEnum.PIn1;
-            ChildTestSteps.Add(new MODSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<MODSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void DeleteDummyTrace()
@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new MODSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<MODSingleTrace>(trace => trace.Meas = Meas);
         }
     }
 }

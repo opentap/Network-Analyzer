@@ -278,12 +278,12 @@ namespace OpenTap.Plugins.PNAX
             EnableButton = false;
             IsConverter = true;
             UpdateSweptIMDConverterTestName();
-            ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<SweptIMDSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new SweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<SweptIMDSingleTrace>(trace => trace.Meas = Meas);
         }
 
         public override void Run()

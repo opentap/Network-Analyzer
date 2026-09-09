@@ -39,7 +39,7 @@ namespace OpenTap.Plugins.PNAX
         public DIQNewTrace()
         {
             Meas = DIQTraceEnum.IPwrF1;
-            ChildTestSteps.Add(new DIQSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<DIQSingleTrace>(trace => trace.Meas = Meas);
             NewMeas = "NewDIQTrace";
             Expression = "(a1_F1*b1_F1)/(a2_F1*b2_F1)";
             Rules.Add(() => ((NewMeas.Contains("_") == false)), "Parameter name can not include underscore", nameof(NewMeas));
@@ -54,7 +54,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 12)]
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new DIQSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<DIQSingleTrace>(trace => trace.Meas = Meas);
         }
 
         [Browsable(true)]
