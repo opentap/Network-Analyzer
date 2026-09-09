@@ -188,13 +188,6 @@ namespace OpenTap.Plugins.PNAX
                                     UpgradeVerdict(Verdict.Fail);
                                 }
 
-                                // append xaxisvalues
-                                resultColumn = new ResultColumn($"{TraceName}_XAxis", x1[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray());
-                                if (false)
-                                {
-                                    resultColumns.Add(resultColumn);
-                                }
-
                                 // append pf
                                 List<string> pfByRow = new List<string>();
                                 var arraypf = x2[i].Select(double.Parse).Select(x => Math.Round(x, 2)).ToArray();

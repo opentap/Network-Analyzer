@@ -94,7 +94,7 @@ namespace OpenTap.Plugins.PNAX
         [Output]
         [Browsable(false)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
-        public List<(string, object)> MetaData { get; set; }
+        public virtual List<(string, object)> MetaData { get; set; }
         #endregion
 
         public PNABaseStep()
