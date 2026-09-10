@@ -61,7 +61,12 @@ namespace OpenTap.Plugins.PNAX
         [Display("Define New Trace", Groups: new[] { "New Trace" }, Order: 23)]
         public void AddNewCustomTrace()
         {
-            ChildTestSteps.Add(new DIQSingleTrace() { PNAX = this.PNAX, CustomMeas = NewMeas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true, Expression = this.Expression, CustomTraceMeas = true });
+            AddNewTraceChild<DIQSingleTrace>(trace =>
+            {
+                trace.CustomMeas = NewMeas;
+                trace.Expression = Expression;
+                trace.CustomTraceMeas = true;
+            });
         }
     }
 }
