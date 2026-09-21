@@ -30,7 +30,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            if (!Desc.Equals("") && (Value != double.NaN))
+            if (!Desc.Equals("") && !double.IsNaN(Value))
             {
                 ParentMetaData.Add((Desc, Value));
             }
