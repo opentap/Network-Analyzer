@@ -45,4 +45,10 @@ namespace OpenTap.Plugins.PNAX
             }
         }
     }
+
+    [Browsable(false)]
+    public abstract class StoreDataMetaDataChildBase : TestStep
+    {
+        protected List<(string, object)> ParentMetaData => GetParent<StoreDataBase>().MetaData;
+    }
 }

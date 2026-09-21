@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - Meta Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends Meta data to trace.")]
     [AllowAsChildIn(typeof(StoreDataBase))]
-    public class StoreDataMetaData : TestStep
+    public class StoreDataMetaData : StoreDataMetaDataChildBase
     {
         #region Settings
         [Browsable(true)]
@@ -30,10 +30,6 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
-
-            
-
             // if MetaData available
             if ((MetaData.Property != null) && (MetaData.Value.Count > 1))
             {
@@ -41,7 +37,7 @@ namespace OpenTap.Plugins.PNAX.LMS
                 foreach (var i in MetaData.Value)
                 {
                     // Append Parent Step's metadata
-                    _parentsMetaData.Add(i);
+                    ParentMetaData.Add(i);
                 }
             }
             else
@@ -53,7 +49,7 @@ namespace OpenTap.Plugins.PNAX.LMS
                 List<(string, object)> ret = x.GetMetaData();
                 foreach (var it in ret)
                 {
-                    _parentsMetaData.Add(it);
+                    ParentMetaData.Add(it);
                     Log.Info("Adding metadata: " + x.GetMetaData());
                 }
             }
