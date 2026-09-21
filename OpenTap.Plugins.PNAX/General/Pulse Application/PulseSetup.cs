@@ -278,16 +278,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
         public override void UpdateMetaData()
         {
-            MetaData = new List<(string, object)>();
-
-            foreach (var ch in this.ChildTestSteps)
-            {
-                List<(string, object)> ret = (ch as PulseGenerators).GetMetaData();
-                foreach (var it in ret)
-                {
-                    MetaData.Add(it);
-                }
-            }
+            UpdateMetaDataFromChildren<PulseGenerators>();
         }
 
     }

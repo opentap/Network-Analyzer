@@ -138,6 +138,23 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        protected void UpdateMetaDataFromChildren<TChild>() where TChild : PNABaseStep
+        {
+            MetaData = new List<(string, object)>();
+
+            foreach (var child in ChildTestSteps)
+            {
+                if (!(child is TChild childStep))
+                    continue;
+
+                List<(string, object)> childMetaData = childStep.GetMetaData();
+                foreach (var item in childMetaData)
+                {
+                    MetaData.Add(item);
+                }
+            }
+        }
+
         protected virtual void UpdateChanelConverterStage()
         {
         }
