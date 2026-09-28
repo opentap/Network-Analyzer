@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(KS8500_REPO_TOKEN)' != ''">
-    <OpenTapPackageReference Include="Sign" Version="$(SIGN_VERSION)" Reference="False" Repository="https://test-automation.pw.keysight.com/api/packages" Token="$(KS8500_REPO_TOKEN)" />
+    <OpenTapPackageReference Include="Sign" Version="$(SIGN_VERSION)" Reference="False" Repository="https://internal.automation.keysight.com/api/repository" Token="$(KS8500_REPO_TOKEN)" />
   </ItemGroup>
 
   <ItemGroup>
