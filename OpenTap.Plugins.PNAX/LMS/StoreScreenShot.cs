@@ -23,7 +23,15 @@ namespace OpenTap.Plugins.PNAX.LMS
         public PNAX PNAX { get; set; }
 
         [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
-        public MacroString filename { get; set; }
+        public string filename
+        {
+            get => _filename.Text;
+            set
+            {
+                _filename.Text = value;
+            }
+        }
+        private MacroString _filename;
 
         [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
         public bool IsCustomPath { get; set; }
@@ -36,7 +44,8 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public StoreScreenShot()
         {
-            filename = new MacroString(this) { Text = "Screen_1" };
+            _filename = new MacroString(this);
+            filename = "Screen_1";
             IsCustomPath = false;
             CustomPath = new MacroString(this) { Text = @"C:\" };
         }
@@ -48,12 +57,12 @@ namespace OpenTap.Plugins.PNAX.LMS
             string dir;
             if (IsCustomPath)
             {
-                dir = Path.Combine(CustomPath.Expand(PlanRun), filename.Expand(PlanRun) + ".bmp"); ;
+                dir = Path.Combine(CustomPath.Expand(PlanRun), _filename.Expand(PlanRun) + ".bmp"); ;
             }
             else
             {
                 string assemblyDir = AssemblyDirectory();
-                dir = Path.Combine(assemblyDir, "Results", filename.Expand(PlanRun) + ".bmp");
+                dir = Path.Combine(assemblyDir, "Results", _filename.Expand(PlanRun) + ".bmp");
             }
 
             PNAX.SaveScreen(dir);
