@@ -512,6 +512,21 @@ namespace OpenTap.Plugins.PNAX
             ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:SAVE:IMMediate");
         }
 
+        public void CalAllSave(int CalChannel, string CalSetName)
+        {
+            ScpiCommand($"SENSe{CalChannel}:CORRection:COLLect:GUIDed:SAVE:CSET '{CalSetName}'");
+        }
+
+        // Cal All only saves to Cal Registers; copy the channel's register into a named Cal Set.
+        public void CopyChannelCalToCalSet(int Channel, string CalSetName)
+        {
+            if (CalsetCatalog().Contains(CalSetName))
+            {
+                ScpiCommand($"SENS:CORR:CSET:DEL '{CalSetName}'");
+            }
+            ScpiCommand($"SENSe{Channel}:CORRection:CSET:COPY '{CalSetName}'");
+        }
+
         public int SimulatorMode()
         {
             if (IsModelA) return 0;
