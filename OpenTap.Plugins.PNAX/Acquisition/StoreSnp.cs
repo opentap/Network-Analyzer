@@ -59,14 +59,15 @@ namespace OpenTap.Plugins.PNAX.LMS
             Log.Info("Channel from trace: " + Channel);
             Log.Info("MNUM from trace: " + mnum);
 
-            SingleTraceBaseStep x = (mnum.Step as SingleTraceBaseStep);
-
-            Log.Info("trace Window: ");
-            Log.Info("trace Window: " + x.Window);
-            Log.Info("trace Sheet: " + x.Sheet);
-            Log.Info("trace tnum: " + x.tnum);
-            Log.Info("trace mnum: " + x.mnum);
-            Log.Info("trace MeasName: " + x.MeasName);
+            if (mnum.Step is SingleTraceBaseStep x)
+            {
+                Log.Info("trace Window: ");
+                Log.Info("trace Window: " + x.Window);
+                Log.Info("trace Sheet: " + x.Sheet);
+                Log.Info("trace tnum: " + x.tnum);
+                Log.Info("trace mnum: " + x.mnum);
+                Log.Info("trace MeasName: " + x.MeasName);
+            }
 
             UpgradeVerdict(Verdict.NotSet);
 

@@ -85,6 +85,9 @@ namespace OpenTap.Plugins.PNAX
 
         private void UpdateDefaultValues()
         {
+            if (PNAX == null)
+                return;
+
             var defaultValues = PNAX.GetStandardChannelDefaultValues();
             _SweepTimeAuto = defaultValues.SweepTimeAuto;
             _SweepTimeStepped = defaultValues.SweepTimeStepped;

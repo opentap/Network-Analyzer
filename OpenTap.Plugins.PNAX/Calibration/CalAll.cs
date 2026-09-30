@@ -742,14 +742,15 @@ namespace OpenTap.Plugins.PNAX
 
             PNAX.CalAllReset();
 
+            List<int> calibratedChannels = new List<int>();
             if (AutoSelectChannels)
             {
                 // Set Channels and Ports according to values on the instrument
                 // Query channels
-                List<int> Channels = PNAX.GetActiveChannels();
+                calibratedChannels = PNAX.GetActiveChannels();
 
                 // for each channel query its type
-                foreach (int ch in Channels)
+                foreach (int ch in calibratedChannels)
                 {
                     PNAX.CalAllSelectPorts(ch, CalChannels);
                 }
@@ -760,6 +761,7 @@ namespace OpenTap.Plugins.PNAX
                 foreach (CalibrateAllSelectedChannels cal in _CalAllSelectedChannels)
                 {
                     PNAX.CalAllSelectPorts(cal.Channel, cal.Ports);
+                    calibratedChannels.Add(cal.Channel);
                 }
             }
 
@@ -847,7 +849,8 @@ namespace OpenTap.Plugins.PNAX
                 }
             }
 
-            PNAX.CalAllInit(CalChannel, CalSetName);
+            // Cal All ignores the INIT Cal Set name; passing it would only create an empty Cal Set.
+            PNAX.CalAllInit(CalChannel);
 
             int CalSteps = PNAX.CalAllNumberOfSteps(CalChannel);
 
@@ -891,18 +894,17 @@ namespace OpenTap.Plugins.PNAX
 
                 PNAX.CalAllStep(CalChannel, CalStep);
             }
-            PNAX.IoTimeout = deftimeout;
 
             PNAX.CalAllSave(CalChannel);
 
-            if (PNAX.SimulatorMode() > 0)
+            foreach (int ch in calibratedChannels)
             {
-                //Creates a unity Cal Set
-                //PNAX.ScpiCommand("SENSe<cnum>:CORRection:CSET:CREate:DEFault \"CH1_CALREG\", [<correctiontype>]");
-                PNAX.ScpiCommand("sense:correction:cset:deactivate");
-                PNAX.ScpiCommand($"SENS:CORR:CSET:DEL '{CalSetName}'");
-                PNAX.ScpiCommand($"SENS:CORR:CSET:CRE:DEF '{CalSetName}','Full 2P(1,2)'");
+                string name = calibratedChannels.Count == 1 ? CalSetName : $"{CalSetName}_Ch{ch}";
+                PNAX.CopyChannelCalToCalSet(ch, name);
+                Log.Info($"Channel {ch} calibration saved to Cal Set '{name}'");
             }
+
+            PNAX.IoTimeout = deftimeout;
 
             UpgradeVerdict(Verdict.Pass);
         }

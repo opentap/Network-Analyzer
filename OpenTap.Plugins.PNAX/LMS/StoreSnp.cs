@@ -33,7 +33,15 @@ namespace OpenTap.Plugins.PNAX.LMS
         public List<int> Ports { get; set; }
 
         [Display("File Name", Groups: new[] { "File Name Details" }, Order: 30)]
-        public MacroString filename { get; set; }
+        public string filename
+        {
+            get => _filename.Text;
+            set
+            {
+                _filename.Text = value;
+            }
+        }
+        private MacroString _filename;
 
         [Display("Enable Custom Path", Groups: new[] { "File Name Details" }, Order: 31, Description: "Enable to enter a custom path, Disable to use \\Test Automation\\Results")]
         public bool IsCustomPath { get; set; }
@@ -48,7 +56,8 @@ namespace OpenTap.Plugins.PNAX.LMS
         {
             channels = new List<int>() { 1 };
             Ports = new List<int>() { 1, 2 };
-            filename = new MacroString(this) { Text = "MySnP" };
+            _filename = new MacroString(this);
+            filename = "MySnP";
             IsCustomPath = false;
             CustomPath = new MacroString(this) { Text = @"C:\" };
         }
@@ -75,7 +84,7 @@ namespace OpenTap.Plugins.PNAX.LMS
                 // Port Count to Update file extension s<n>p
                 int PortCount = Ports.Count;
 
-                MacroString macroString = new MacroString(this) { Text = filename.Text + "_CH" + channel };
+                MacroString macroString = new MacroString(this) { Text = _filename.Text + "_CH" + channel };
                 if (IsCustomPath)
                 {
                     dir = Path.Combine(CustomPath.Expand(PlanRun), macroString.Expand(PlanRun) + $".s{PortCount}p"); ;
