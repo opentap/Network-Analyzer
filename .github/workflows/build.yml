@@ -65,7 +65,7 @@ jobs:
           TAP_SIGN_AUTH: ${{ secrets.TAP_SIGN_AUTH }}
           TAP_SIGN_CERT: ${{ github.workspace }}/sign.cer
           KS8500_REPO_TOKEN: ${{ secrets.KS8500_REPO_TOKEN }}
-          SIGN_VERSION: "1.5.0-beta.7+8118ecec"
+          SIGN_VERSION: "1.6.0^"
       # Upload the package so it can be downloaded from GitHub, 
       # and consumed by other steps in this workflow
       

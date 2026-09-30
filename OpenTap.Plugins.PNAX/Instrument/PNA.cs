@@ -401,28 +401,7 @@ namespace OpenTap.Plugins.PNAX
             return TraceCount++;
         }
 
-        public override void ScpiCommand(string command)
-        {
-            base.ScpiCommand(command);
-
-            if (IsWaitForOpc)
-            {
-                WaitForOperationComplete();
-            }
-
-            if (IsQueryForErrors)
-            {
-                List<ScpiError> errors = base.QueryErrors();
-
-                if (errors.Count > 0)
-                {
-                    string errorString = string.Join(",", errors.ToArray());
-                    throw new Exception($"Error: {errorString} while sending command: {command}");
-                }
-            }
-        }
-
-        public void ScpiCommand(string command, int timeOut)
+        public void ScpiCommand(string command, int timeOut = 2000)
         {
             base.ScpiCommand(command);
 
@@ -431,23 +410,35 @@ namespace OpenTap.Plugins.PNAX
                 WaitForOperationComplete(timeOut);
             }
 
-            if (IsQueryForErrors)
-            {
-                List<ScpiError> errors = base.QueryErrors();
-
-                if (errors.Count > 0)
-                {
-                    string errorString = string.Join(",", errors.ToArray());
-                    throw new Exception($"Error: {errorString} while sending command: {command}");
-                }
-            }
+            QueryForErrors(command);
         }
 
         public override string ScpiQuery(string query, bool isSilent = false)
         {
-            string strRet = base.ScpiQuery(query, isSilent);
-            strRet = strRet.Replace("\n", "");
-            return strRet;
+            try
+            {
+                string strRet = base.ScpiQuery(query, isSilent);
+                strRet = strRet.Replace("\n", "");
+                return strRet;
+            }
+            catch (Exception)
+            {
+                QueryForErrors(query);
+                throw;
+            }
+        }
+
+        private void QueryForErrors(string command)
+        {
+            if (!IsQueryForErrors)
+                return;
+
+            List<ScpiError> errors = QueryErrors();
+            if (errors.Count <= 0)
+                return;
+
+            string errorString = string.Join(",", errors.ToArray());
+            Log.Error($"Error: {errorString} while sending command: {command}");
         }
 
         public void SetTriggerSource(TriggerSourceEnumType trigerSource)
