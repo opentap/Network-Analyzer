@@ -48,9 +48,21 @@ namespace OpenTap.Plugins.PNAX
         {
         }
 
+        protected T AddNewTraceChild<T>(Action<T> configure) where T : SingleTraceBaseStep, new()
+        {
+            T childStep = new T();
+            configure(childStep);
+            childStep.PNAX = PNAX;
+            childStep.Channel = Channel;
+            childStep.IsControlledByParent = true;
+            childStep.EnableTraceSettings = true;
+            ChildTestSteps.Add(childStep);
+            return childStep;
+        }
+
         protected virtual void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_{measEnumName}_1\'");
+            DeleteDummyTrace(measEnumName);
         }
     }
 }

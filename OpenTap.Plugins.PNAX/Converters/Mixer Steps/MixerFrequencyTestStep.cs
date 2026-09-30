@@ -482,10 +482,7 @@ namespace OpenTap.Plugins.PNAX
 
                 // Create Dummy channel
                 //PNAX.MixerDiscard(DummyChannel);
-                int traceid = PNAX.GetNewTraceID(DummyChannel);
-                // Define a dummy measurement so we can setup all channel parameters
-                // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                DefineDummyTrace(DummyChannel, "Gain Compression Converters", "SC21");
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -518,7 +515,7 @@ namespace OpenTap.Plugins.PNAX
                 }
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                DeleteDummyTrace(DummyChannel, "SC21");
 
                 PNAX.Close();
             }
@@ -526,7 +523,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    DeleteDummyTrace(DummyChannel, "SC21");
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate Input values!");
@@ -545,10 +542,7 @@ namespace OpenTap.Plugins.PNAX
 
                 // Create Dummy channel
                 //PNAX.MixerDiscard(DummyChannel);
-                int traceid = PNAX.GetNewTraceID(DummyChannel);
-                // Define a dummy measurement so we can setup all channel parameters
-                // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                DefineDummyTrace(DummyChannel, "Gain Compression Converters", "SC21");
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -584,7 +578,7 @@ namespace OpenTap.Plugins.PNAX
                 InputGTLO1 = ReadInputGTLO1;
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                DeleteDummyTrace(DummyChannel, "SC21");
 
                 PNAX.Close();
             }
@@ -592,7 +586,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    DeleteDummyTrace(DummyChannel, "SC21");
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate LO1 values!");
@@ -611,10 +605,7 @@ namespace OpenTap.Plugins.PNAX
 
                 // Create Dummy channel
                 //PNAX.MixerDiscard(DummyChannel);
-                int traceid = PNAX.GetNewTraceID(DummyChannel);
-                // Define a dummy measurement so we can setup all channel parameters
-                // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                DefineDummyTrace(DummyChannel, "Gain Compression Converters", "SC21");
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -649,7 +640,7 @@ namespace OpenTap.Plugins.PNAX
                 IF1GTLO2 = ReadInputGTLO2;
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                DeleteDummyTrace(DummyChannel, "SC21");
 
                 PNAX.Close();
             }
@@ -657,7 +648,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    DeleteDummyTrace(DummyChannel, "SC21");
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate LO2 values!");
@@ -676,10 +667,7 @@ namespace OpenTap.Plugins.PNAX
 
                 // Create Dummy channel
                 //PNAX.MixerDiscard(DummyChannel);
-                int traceid = PNAX.GetNewTraceID(DummyChannel);
-                // Define a dummy measurement so we can setup all channel parameters
-                // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-                PNAX.ScpiCommand($"CALCulate{DummyChannel.ToString()}:CUST:DEFine \'CH{DummyChannel.ToString()}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+                DefineDummyTrace(DummyChannel, "Gain Compression Converters", "SC21");
 
                 // Set requirements
                 PNAX.SetConverterStages(DummyChannel, ConverterStages);
@@ -715,7 +703,7 @@ namespace OpenTap.Plugins.PNAX
                 OutputSidebandType = ReadOutputSidebandType;
 
                 // Delete Dummy Channel
-                PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                DeleteDummyTrace(DummyChannel, "SC21");
 
                 PNAX.Close();
             }
@@ -723,7 +711,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 if (PNAX.IsConnected)
                 {
-                    PNAX.ScpiCommand($"CALCulate{DummyChannel}:PARameter:DELete \'CH{DummyChannel}_DUMMY_SC21_1\'");
+                    DeleteDummyTrace(DummyChannel, "SC21");
                     PNAX.Close();
                 }
                 Log.Error("Cannot calcluate Input values!");

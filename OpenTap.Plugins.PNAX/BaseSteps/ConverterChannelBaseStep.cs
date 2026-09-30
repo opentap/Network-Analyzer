@@ -124,6 +124,25 @@ namespace OpenTap.Plugins.PNAX
             IsControlledByParent = false;
         }
 
+        // Common mixer setup/power/frequency trio shared by all converter channels; added in fixed order right before the channel's NewTrace step.
+        protected (MixerSetupTestStep Setup, MixerPowerTestStep Power, MixerFrequencyTestStep Frequency) AddMixerChildSteps(bool enableSweptPowerSettings = true)
+        {
+            MixerSetupTestStep mixerSetupTestStep = ConfigureChildStep(new MixerSetupTestStep());
+            MixerPowerTestStep mixerPowerTestStep = ConfigureChildStep(new MixerPowerTestStep
+            {
+                EnablePort3Settings = false,
+                EnablePort4Settings = false,
+                EnableSweptPowerSettings = enableSweptPowerSettings
+            });
+            MixerFrequencyTestStep mixerFrequencyTestStep = ConfigureChildStep(new MixerFrequencyTestStep());
+
+            ChildTestSteps.Add(mixerFrequencyTestStep);
+            ChildTestSteps.Add(mixerPowerTestStep);
+            ChildTestSteps.Add(mixerSetupTestStep);
+
+            return (mixerSetupTestStep, mixerPowerTestStep, mixerFrequencyTestStep);
+        }
+
         public override void Run()
         {
             UpdateMetaData();

@@ -115,7 +115,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Format", Groups: new[] { "Trace" }, Order: 30)]
         public virtual void AddTraceFormat()
         {
-            ChildTestSteps.Add(new TraceFormat() { PNAX = PNAX, Channel = Channel });
+            AddTraceChild(new TraceFormat());
         }
 
         [Browsable(true)]
@@ -123,7 +123,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Title", Groups: new[] { "Trace" }, Order: 40)]
         public virtual void AddTraceTitle()
         {
-            ChildTestSteps.Add(new TraceTitle() { PNAX = PNAX, Channel = Channel });
+            AddTraceChild(new TraceTitle());
         }
 
         [Browsable(true)]
@@ -131,7 +131,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Marker", Groups: new[] { "Trace" }, Order: 50)]
         public virtual void AddMarker()
         {
-            ChildTestSteps.Add(new Marker() { PNAX = PNAX, Channel = Channel, mkr = NextMarker() });
+            AddTraceChild(new Marker { mkr = NextMarker() });
         }
 
         public int NextMarker()
@@ -152,7 +152,7 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Trace Limits", Groups: new[] { "Trace" }, Order: 60)]
         public virtual void AddTraceLimits()
         {
-            ChildTestSteps.Add(new TraceLimits() { PNAX = PNAX, Channel = Channel });
+            AddTraceChild(new TraceLimits());
         }
 
         [Browsable(true)]
@@ -160,6 +160,14 @@ namespace OpenTap.Plugins.PNAX
         [Display("Add Multi Peak Search", Groups: new[] { "Trace" }, Order: 70)]
         public virtual void AddMultiPeakSearch()
         {
+        }
+
+        protected T AddTraceChild<T>(T childStep) where T : PNABaseStep
+        {
+            childStep.PNAX = PNAX;
+            childStep.Channel = Channel;
+            ChildTestSteps.Add(childStep);
+            return childStep;
         }
 
 

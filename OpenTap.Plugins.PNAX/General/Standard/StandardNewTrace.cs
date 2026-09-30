@@ -36,7 +36,7 @@ namespace OpenTap.Plugins.PNAX
         public StandardNewTrace()
         {
             Meas = StandardTraceEnum.S11;
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<StandardSingleTrace>(trace => trace.Meas = Meas);
         }
 
         // overloaded constructor for window and sheet
@@ -63,22 +63,14 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
+            DeleteDummyTrace(string.Empty);
         }
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new StandardSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<StandardSingleTrace>(trace => trace.Meas = Meas);
         }
 
     }

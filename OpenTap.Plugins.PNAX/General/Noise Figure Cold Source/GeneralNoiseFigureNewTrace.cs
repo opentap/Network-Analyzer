@@ -25,17 +25,17 @@ namespace OpenTap.Plugins.PNAX
         public GeneralNoiseFigureNewTrace()
         {
             Meas = GeneralNoiseFigureTraceEnum.NF;
-            ChildTestSteps.Add(new GeneralNoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<GeneralNoiseFigureSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void AddNewTrace()
         {
-            this.ChildTestSteps.Add(new GeneralNoiseFigureSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<GeneralNoiseFigureSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_NF_1\'");
+            DeleteDummyTrace("NF");
         }
 
 

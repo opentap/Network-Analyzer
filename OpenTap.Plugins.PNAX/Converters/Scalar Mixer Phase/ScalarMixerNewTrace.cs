@@ -30,22 +30,14 @@ namespace OpenTap.Plugins.PNAX
             AddNewTrace();
         }
 
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new ScalarMixerSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<ScalarMixerSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_SC21_1\'");
+            DeleteDummyTrace("SC21");
         }
 
     }

@@ -244,12 +244,12 @@ namespace OpenTap.Plugins.PNAX
             IMDMeasureAt = IMDMeasureAtEnum.DUTOUT;
             EnableButton = false;
             UpdateSweptIMDTestName();
-            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<GeneralSweptIMDSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new GeneralSweptIMDSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<GeneralSweptIMDSingleTrace>(trace => trace.Meas = Meas);
         }
 
         public override void Run()
@@ -257,7 +257,7 @@ namespace OpenTap.Plugins.PNAX
             // Delete dummy trace defined during channel setup
             // DISPlay:MEASure<mnum>:DELete?
             // CALCulate<cnum>:PARameter:DELete[:NAME] <Mname>
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_PwrMain_1\'");
+            DeleteDummyTrace("PwrMain");
 
             RunChildSteps(); //If the step supports child steps.
 

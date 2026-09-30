@@ -60,7 +60,7 @@ namespace OpenTap.Plugins.PNAX.General.Spectrum_Analyzer
         [Display("Add Multi Peak Search", Groups: new[] { "Trace" }, Order: 70)]
         public override void AddMultiPeakSearch()
         {
-            this.ChildTestSteps.Add(new MultiPeakSearch() { PNAX = this.PNAX, Channel = this.Channel });
+            AddTraceChild(new MultiPeakSearch());
         }
         #endregion
 

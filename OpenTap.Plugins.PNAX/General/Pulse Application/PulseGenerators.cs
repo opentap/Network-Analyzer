@@ -132,15 +132,15 @@ namespace OpenTap.Plugins.PNAX
             // RearPanel >> External
             _PulseGenListOfAvailableValues = new List<string> { "On", "Off", "Pulse1", "Pulse2", "Pulse3", "Pulse4", "RearPanel" };
 
-            Generator pulse0 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse0", PulseWidth = 10e-9, PulseDelay = 250e-9 };
+            Generator pulse0 = ConfigureChildStep(new Generator { PulseName = "Pulse0", PulseWidth = 10e-9, PulseDelay = 250e-9 });
             this.ChildTestSteps.Add(pulse0);
-            Generator pulse1 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse1" };
+            Generator pulse1 = ConfigureChildStep(new Generator { PulseName = "Pulse1" });
             this.ChildTestSteps.Add(pulse1);
-            Generator pulse2 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse2" };
+            Generator pulse2 = ConfigureChildStep(new Generator { PulseName = "Pulse2" });
             this.ChildTestSteps.Add(pulse2);
-            Generator pulse3 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse3" };
+            Generator pulse3 = ConfigureChildStep(new Generator { PulseName = "Pulse3" });
             this.ChildTestSteps.Add(pulse3);
-            Generator pulse4 = new Generator { IsControlledByParent = true, Channel = this.Channel, PulseName = "Pulse4" };
+            Generator pulse4 = ConfigureChildStep(new Generator { PulseName = "Pulse4" });
             this.ChildTestSteps.Add(pulse4);
 
 

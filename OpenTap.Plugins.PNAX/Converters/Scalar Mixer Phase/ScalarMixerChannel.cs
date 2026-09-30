@@ -37,35 +37,28 @@ namespace OpenTap.Plugins.PNAX
         public ScalarMixerChannel()
         {
 
-            // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
-            // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
-            // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            // Mixer Setup/Power/Frequency
+            var mixerSteps = AddMixerChildSteps();
 
             // Compression
-            ScalarMixerSweep scalerMixerSweep = new ScalarMixerSweep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerSweep scalerMixerSweep = ConfigureChildStep(new ScalarMixerSweep());
             // Power
-            ScalarMixerPower scalerMixerPower = new ScalarMixerPower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerPower scalerMixerPower = ConfigureChildStep(new ScalarMixerPower());
 
             // Traces
-            ScalarMixerNewTrace scalarMixerNewTrace = new ScalarMixerNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ScalarMixerNewTrace scalarMixerNewTrace = ConfigureChildStep(new ScalarMixerNewTrace());
 
 
             // Defaults for MixerPowerTestStep
-            mixerPowerTestStep.LO1SweptPowerStart = -10.0;
-            mixerPowerTestStep.LO1SweptPowerStop = 0.0;
-            mixerPowerTestStep.LO1SweptPowerStep = 0.050;
-            mixerPowerTestStep.LO2SweptPowerStart = -10.0;
-            mixerPowerTestStep.LO2SweptPowerStop = 0.0;
-            mixerPowerTestStep.LO2SweptPowerStep = 0.050;
+            mixerSteps.Power.LO1SweptPowerStart = -10.0;
+            mixerSteps.Power.LO1SweptPowerStop = 0.0;
+            mixerSteps.Power.LO1SweptPowerStep = 0.050;
+            mixerSteps.Power.LO2SweptPowerStart = -10.0;
+            mixerSteps.Power.LO2SweptPowerStop = 0.0;
+            mixerSteps.Power.LO2SweptPowerStep = 0.050;
 
             this.ChildTestSteps.Add(scalerMixerSweep);
             this.ChildTestSteps.Add(scalerMixerPower);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(scalarMixerNewTrace);
 
             // Once we have all child steps, lets get the number of points
@@ -74,10 +67,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_SC21_1\',\'Scalar Mixer/Converter\',\'SC21\'");
+            DefineDummyTrace("Scalar Mixer/Converter", "SC21");
 
             RunChildSteps(); //If the step supports child steps.
 

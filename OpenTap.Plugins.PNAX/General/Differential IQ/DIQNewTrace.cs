@@ -39,37 +39,34 @@ namespace OpenTap.Plugins.PNAX
         public DIQNewTrace()
         {
             Meas = DIQTraceEnum.IPwrF1;
-            ChildTestSteps.Add(new DIQSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<DIQSingleTrace>(trace => trace.Meas = Meas);
             NewMeas = "NewDIQTrace";
             Expression = "(a1_F1*b1_F1)/(a2_F1*b2_F1)";
             Rules.Add(() => ((NewMeas.Contains("_") == false)), "Parameter name can not include underscore", nameof(NewMeas));
         }
 
 
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
-        }
-
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
+            DeleteDummyTrace(string.Empty);
         }
 
         [Display("Add New Trace", Groups: new[] { "Trace" }, Order: 12)]
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new DIQSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<DIQSingleTrace>(trace => trace.Meas = Meas);
         }
 
         [Browsable(true)]
         [Display("Define New Trace", Groups: new[] { "New Trace" }, Order: 23)]
         public void AddNewCustomTrace()
         {
-            ChildTestSteps.Add(new DIQSingleTrace() { PNAX = this.PNAX, CustomMeas = NewMeas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true, Expression = this.Expression, CustomTraceMeas = true });
+            AddNewTraceChild<DIQSingleTrace>(trace =>
+            {
+                trace.CustomMeas = NewMeas;
+                trace.Expression = Expression;
+                trace.CustomTraceMeas = true;
+            });
         }
     }
 }
