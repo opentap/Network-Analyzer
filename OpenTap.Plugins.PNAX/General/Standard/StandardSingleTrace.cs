@@ -46,45 +46,85 @@ namespace OpenTap.Plugins.PNAX
         [Display("Ssd12/Ssc12")]
         [Scpi("Ssd12/Ssc12")]
         Ssd12Ssc12,
+        [Scpi("A_1")]
         A1,
+        [Scpi("A_2")]
         A2,
+        [Scpi("A_3")]
         A3,
+        [Scpi("A_4")]
         A4,
+        [Scpi("B_1")]
         B1,
+        [Scpi("B_2")]
         B2,
+        [Scpi("B_3")]
         B3,
+        [Scpi("B_4")]
         B4,
+        [Scpi("C_1")]
         C1,
+        [Scpi("C_2")]
         C2,
+        [Scpi("C_3")]
         C3,
+        [Scpi("C_4")]
         C4,
+        [Scpi("D_1")]
         D1,
+        [Scpi("D_2")]
         D2,
+        [Scpi("D_3")]
         D3,
+        [Scpi("D_4")]
         D4,
+        [Scpi("R_1")]
         R11,
+        [Scpi("R_2")]
         R22,
+        [Scpi("R_3")]
         R33,
+        [Scpi("R_4")]
         R44,
+        [Scpi("a1_1")]
         a11,
+        [Scpi("a2_2")]
         a22,
+        [Scpi("a3_3")]
         a33,
+        [Scpi("a4_4")]
         a44,
+        [Scpi("b1_1")]
         b11,
+        [Scpi("b1_2")]
         b12,
+        [Scpi("b1_3")]
         b13,
+        [Scpi("b1_4")]
         b14,
+        [Scpi("b2_1")]
         b21,
+        [Scpi("b2_2")]
         b22,
+        [Scpi("b2_3")]
         b23,
+        [Scpi("b2_4")]
         b24,
+        [Scpi("b3_1")]
         b31,
+        [Scpi("b3_2")]
         b32,
+        [Scpi("b3_3")]
         b33,
+        [Scpi("b3_4")]
         b34,
+        [Scpi("b4_1")]
         b41,
+        [Scpi("b4_2")]
         b42,
+        [Scpi("b4_3")]
         b43,
+        [Scpi("b4_4")]
         b44,
         AuxLn11,
         AuxLn21
