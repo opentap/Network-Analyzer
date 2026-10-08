@@ -16,7 +16,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store SNP", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Store SNP File")]
-    public class StoreSnp : StoreDataBase
+    public class StoreSnp : ChannelSelectionBase
     {
         #region Settings
         [Display("Ports", Groups: new[] { "Trace" }, Order: 22)]

@@ -30,31 +30,25 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            // if MetaData available
-            if ((MetaData.Property != null) && (MetaData.Value.Count > 1))
+            if (MetaData.Property != null)
             {
-                // for every item in metadata
-                foreach (var i in MetaData.Value)
+                if (MetaData.Value != null)
                 {
-                    // Append Parent Step's metadata
-                    ParentMetaData.Add(i);
+                    foreach (var item in MetaData.Value)
+                    {
+                        ParentMetaData.Add(item);
+                    }
                 }
             }
-            else
+            else if (MetaData.Step is PNABaseStep step)
             {
-                // Looks like the input step does not have metadata available,
-                // lets get it and add it
-                PNABaseStep x = (MetaData.Step as PNABaseStep);
-                Log.Info("Get MetaData: ");
-                List<(string, object)> ret = x.GetMetaData();
-                foreach (var it in ret)
+                Log.Info("Get MetaData:");
+                foreach (var item in step.GetMetaData())
                 {
-                    ParentMetaData.Add(it);
-                    Log.Info("Adding metadata: " + x.GetMetaData());
+                    ParentMetaData.Add(item);
+                    Log.Info("Adding metadata: " + item);
                 }
             }
-
-
 
             UpgradeVerdict(Verdict.Pass);
         }

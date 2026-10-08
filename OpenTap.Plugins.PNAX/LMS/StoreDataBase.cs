@@ -15,7 +15,7 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX
 {
     [Browsable(false)]
-    public class StoreDataBase: TestStep
+    public abstract class ChannelSelectionBase : TestStep
     {
         [Display("PNA", Order: 0.1)]
         public PNAX PNAX { get; set; }
@@ -28,6 +28,18 @@ namespace OpenTap.Plugins.PNAX
         [Display("Channels", Description: "Choose which channels to grab data from.", "Measurements", Order: 10.1)]
         public List<int> channels { get; set; }
 
+        public void AutoSelectChannelsAvailableOnInstrument()
+        {
+            if (AutoSelectChannels)
+            {
+                channels = PNAX.GetActiveChannels();
+            }
+        }
+    }
+
+    [Browsable(false)]
+    public class StoreDataBase : ChannelSelectionBase
+    {
         [Browsable(false)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
         public List<(string, object)> MetaData { get; set; }
@@ -35,14 +47,6 @@ namespace OpenTap.Plugins.PNAX
         public override void Run()
         {
             throw new NotImplementedException();
-        }
-
-        public void AutoSelectChannelsAvailableOnInstrument()
-        {
-            if (AutoSelectChannels)
-            {
-                channels = PNAX.GetActiveChannels();
-            }
         }
     }
 
