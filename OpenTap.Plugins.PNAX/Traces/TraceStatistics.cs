@@ -34,19 +34,7 @@ namespace OpenTap.Plugins.PNAX
             {
                 ShowTraceSettings();
                 _Channel = value;
-
-                // Update traces
-                foreach (var a in ChildTestSteps)
-                {
-                    if (a.GetType().IsSubclassOf(typeof(PNABaseStep)))
-                    {
-                        (a as PNABaseStep).Channel = value;
-                    }
-                    if (a is SingleTraceBaseStep)
-                    {
-                        (a as SingleTraceBaseStep).UpdateTestStepName();
-                    }
-                }
+                UpdateChildStepChannel(value);
             }
         }
 

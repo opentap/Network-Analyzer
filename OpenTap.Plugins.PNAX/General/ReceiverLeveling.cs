@@ -79,16 +79,7 @@ namespace OpenTap.Plugins.PNAX.General
         [Display("Update MetaData", Groups: new[] { "MetaData" }, Order: 1000.2)]
         public override void UpdateMetaData()
         {
-            MetaData = new List<(string, object)>();
-
-            foreach (var ch in this.ChildTestSteps)
-            {
-                List<(string, object)> ret = (ch as ReceiverLevelingSource).GetMetaData();
-                foreach (var it in ret)
-                {
-                    MetaData.Add(it);
-                }
-            }
+            UpdateMetaDataFromChildren<ReceiverLevelingSource>();
         }
 
     }
