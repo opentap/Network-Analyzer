@@ -53,19 +53,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Channel = value;
-
-                // Update traces
-                foreach (var a in ChildTestSteps)
-                {
-                    if (a is PNABaseStep childStep)
-                    {
-                        childStep.Channel = value;
-                    }
-                    if (a is SingleTraceBaseStep traceStep)
-                    {
-                        traceStep.UpdateTestStepName();
-                    }
-                }
+                UpdateChildStepChannel(value);
             }
         }
 
@@ -157,6 +145,21 @@ namespace OpenTap.Plugins.PNAX
 
         protected virtual void UpdateChanelConverterStage()
         {
+        }
+
+        protected void UpdateChildStepChannel(int channel)
+        {
+            foreach (var child in ChildTestSteps)
+            {
+                if (child is PNABaseStep childStep)
+                {
+                    childStep.Channel = channel;
+                }
+                if (child is SingleTraceBaseStep traceStep)
+                {
+                    traceStep.UpdateTestStepName();
+                }
+            }
         }
 
         protected string GetDummyTraceName(string measurementName = null)
