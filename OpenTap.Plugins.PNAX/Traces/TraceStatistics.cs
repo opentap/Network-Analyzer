@@ -38,13 +38,13 @@ namespace OpenTap.Plugins.PNAX
                 // Update traces
                 foreach (var a in ChildTestSteps)
                 {
-                    if (a.GetType().IsSubclassOf(typeof(PNABaseStep)))
+                    if (a is PNABaseStep childStep)
                     {
-                        (a as PNABaseStep).Channel = value;
+                        childStep.Channel = value;
                     }
-                    if (a is SingleTraceBaseStep)
+                    if (a is SingleTraceBaseStep traceStep)
                     {
-                        (a as SingleTraceBaseStep).UpdateTestStepName();
+                        traceStep.UpdateTestStepName();
                     }
                 }
             }

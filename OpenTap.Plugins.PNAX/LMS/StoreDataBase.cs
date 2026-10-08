@@ -38,16 +38,11 @@ namespace OpenTap.Plugins.PNAX
     }
 
     [Browsable(false)]
-    public class StoreDataBase : ChannelSelectionBase
+    public abstract class StoreDataBase : ChannelSelectionBase
     {
         [Browsable(false)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 50)]
         public List<(string, object)> MetaData { get; set; }
-
-        public override void Run()
-        {
-            throw new NotImplementedException();
-        }
     }
 
     [Browsable(false)]
