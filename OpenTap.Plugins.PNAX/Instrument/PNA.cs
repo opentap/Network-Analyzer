@@ -439,6 +439,7 @@ namespace OpenTap.Plugins.PNAX
 
             string errorString = string.Join(",", errors.ToArray());
             Log.Error($"Error: {errorString} while sending command: {command}");
+            throw new InvalidOperationException($"SCPI error while sending command '{command}': {errorString}");
         }
 
         public void SetTriggerSource(TriggerSourceEnumType trigerSource)

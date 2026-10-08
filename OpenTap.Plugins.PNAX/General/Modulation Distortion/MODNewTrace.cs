@@ -26,25 +26,17 @@ namespace OpenTap.Plugins.PNAX
         public MODNewTrace()
         {
             Meas = MODTraceEnum.PIn1;
-            ChildTestSteps.Add(new MODSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
-        }
-
-        [Browsable(false)]
-        public override List<(string, object)> GetMetaData()
-        {
-            List<(string, object)> retVal = new List<(string, object)>();
-
-            return retVal;
+            AddNewTraceChild<MODSingleTrace>(trace => trace.Meas = Meas);
         }
 
         protected override void DeleteDummyTrace()
         {
-            PNAX.ScpiCommand($"CALCulate{Channel}:PARameter:DELete \'CH{Channel}_DUMMY_1\'");
+            DeleteDummyTrace(string.Empty);
         }
 
         protected override void AddNewTrace()
         {
-            ChildTestSteps.Add(new MODSingleTrace() { PNAX = this.PNAX, Meas = this.Meas, Channel = this.Channel, IsControlledByParent = true, EnableTraceSettings = true });
+            AddNewTraceChild<MODSingleTrace>(trace => trace.Meas = Meas);
         }
     }
 }

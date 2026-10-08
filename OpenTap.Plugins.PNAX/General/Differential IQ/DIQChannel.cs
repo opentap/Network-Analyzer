@@ -55,9 +55,9 @@ namespace OpenTap.Plugins.PNAX
             NumberOfRanges = 1;
 
             // Traces
-            DIQNewTrace standardNewTrace = new DIQNewTrace { IsControlledByParent = true, Channel = this.Channel };
-            DIQFrequencyRange freqRange = new DIQFrequencyRange { IsControlledByParent = true, Channel = this.Channel };
-            DIQSources sources = new DIQSources { IsControlledByParent = true, Channel = this.Channel };
+            DIQNewTrace standardNewTrace = ConfigureChildStep(new DIQNewTrace());
+            DIQFrequencyRange freqRange = ConfigureChildStep(new DIQFrequencyRange());
+            DIQSources sources = ConfigureChildStep(new DIQSources());
 
             this.ChildTestSteps.Add(standardNewTrace);
             this.ChildTestSteps.Add(freqRange);
@@ -67,10 +67,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_1\',\'Differential I/Q\',\'IPwrF1\'");
+            DefineDummyTrace("Differential I/Q", "IPwrF1", string.Empty);
 
             RunChildSteps(); //If the step supports child steps.
 

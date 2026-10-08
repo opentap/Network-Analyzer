@@ -36,46 +36,39 @@ namespace OpenTap.Plugins.PNAX
         {
             // Add child steps in the order that is required
 
-            // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
-            // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false };
-            // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            // Mixer Setup/Power/Frequency
+            var mixerSteps = AddMixerChildSteps();
 
             // Tone Power
-            TonePower power = new TonePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, ToneFrequencySweepType = this.ChannelSweepType };
+            TonePower power = ConfigureChildStep(new TonePower { ToneFrequencySweepType = this.ChannelSweepType });
             // Tone Frequency
-            ToneFrequency frequency = new ToneFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            ToneFrequency frequency = ConfigureChildStep(new ToneFrequency());
 
             // Traces
-            SweptIMDNewTrace sweptIMDNewTrace = new SweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            SweptIMDNewTrace sweptIMDNewTrace = ConfigureChildStep(new SweptIMDNewTrace());
 
 
             // Defaults
-            mixerFrequencyTestStep.InputMixerFrequencyStart = 10.5e6;
-            mixerFrequencyTestStep.InputMixerFrequencyStop = 49.9995e9;
-            mixerFrequencyTestStep.InputMixerFrequencyCenter = 25.005e9;
-            mixerFrequencyTestStep.InputMixerFrequencySpan = 49.99e9;
+            mixerSteps.Frequency.InputMixerFrequencyStart = 10.5e6;
+            mixerSteps.Frequency.InputMixerFrequencyStop = 49.9995e9;
+            mixerSteps.Frequency.InputMixerFrequencyCenter = 25.005e9;
+            mixerSteps.Frequency.InputMixerFrequencySpan = 49.99e9;
 
-            mixerFrequencyTestStep.IFMixerFrequencyStart = 10.5e6;
-            mixerFrequencyTestStep.IFMixerFrequencyStop = 49.9995e9;
-            mixerFrequencyTestStep.IFMixerFrequencyCenter = 25.005e9;
-            mixerFrequencyTestStep.IFMixerFrequencySpan = 49.99e9;
-            mixerFrequencyTestStep.IFMixerFrequencyFixed = 10e6;
+            mixerSteps.Frequency.IFMixerFrequencyStart = 10.5e6;
+            mixerSteps.Frequency.IFMixerFrequencyStop = 49.9995e9;
+            mixerSteps.Frequency.IFMixerFrequencyCenter = 25.005e9;
+            mixerSteps.Frequency.IFMixerFrequencySpan = 49.99e9;
+            mixerSteps.Frequency.IFMixerFrequencyFixed = 10e6;
 
-            mixerFrequencyTestStep.OutputMixerFrequencyStart = 10.5e6;
-            mixerFrequencyTestStep.OutputMixerFrequencyStop = 49.9995e9;
-            mixerFrequencyTestStep.OutputMixerFrequencyCenter = 25.005e9;
-            mixerFrequencyTestStep.OutputMixerFrequencySpan = 49.99e9;
+            mixerSteps.Frequency.OutputMixerFrequencyStart = 10.5e6;
+            mixerSteps.Frequency.OutputMixerFrequencyStop = 49.9995e9;
+            mixerSteps.Frequency.OutputMixerFrequencyCenter = 25.005e9;
+            mixerSteps.Frequency.OutputMixerFrequencySpan = 49.99e9;
 
 
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(sweptIMDNewTrace);
 
             // Once we have all child steps, lets get the number of points
@@ -84,10 +77,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_PwrMain_1\',\'Swept IMD Converters\',\'PwrMain\'");
+            DefineDummyTrace("Swept IMD Converters", "PwrMain");
 
             RunChildSteps(); //If the step supports child steps.
 

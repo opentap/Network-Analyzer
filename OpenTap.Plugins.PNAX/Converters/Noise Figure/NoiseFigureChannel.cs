@@ -21,29 +21,22 @@ namespace OpenTap.Plugins.PNAX
 
         public NoiseFigureChannel()
         {
-            // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
-            // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false };
-            // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            // Mixer Setup/Power/Frequency
+            AddMixerChildSteps(enableSweptPowerSettings: false);
 
             // Compression
-            NoiseFigure noiseFigure = new NoiseFigure { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigure noiseFigure = ConfigureChildStep(new NoiseFigure());
             // Power
-            NoiseFigurePower power = new NoiseFigurePower { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigurePower power = ConfigureChildStep(new NoiseFigurePower());
             // Frequency
-            NoiseFigureFrequency frequency = new NoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureFrequency frequency = ConfigureChildStep(new NoiseFigureFrequency());
 
             // Trace
-            NoiseFigureNewTrace noiseFigureNewTrace = new NoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            NoiseFigureNewTrace noiseFigureNewTrace = ConfigureChildStep(new NoiseFigureNewTrace());
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(noiseFigure);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(noiseFigureNewTrace);
 
             // Once we have all child steps, lets get the number of points
@@ -52,10 +45,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_NF_1\',\'Noise Figure Converters\',\'NF\'");
+            DefineDummyTrace("Noise Figure Converters", "NF");
 
             RunChildSteps(); //If the step supports child steps.
 

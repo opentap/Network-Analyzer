@@ -36,14 +36,14 @@ namespace OpenTap.Plugins.PNAX
         {
             IsControlledByParent = false;
             // Add child steps in the order that is required
-            GeneralSweptIMDConfigure configure = new GeneralSweptIMDConfigure { IsControlledByParent = true, Channel = this.Channel };
+            GeneralSweptIMDConfigure configure = ConfigureChildStep(new GeneralSweptIMDConfigure());
             // Tone Power
-            GeneralTonePower power = new GeneralTonePower { IsControlledByParent = true, Channel = this.Channel, ToneFrequencySweepType = this.ChannelSweepType };
+            GeneralTonePower power = ConfigureChildStep(new GeneralTonePower { ToneFrequencySweepType = this.ChannelSweepType });
             // Tone Frequency
-            GeneralToneFrequency frequency = new GeneralToneFrequency { IsControlledByParent = true, Channel = this.Channel };
+            GeneralToneFrequency frequency = ConfigureChildStep(new GeneralToneFrequency());
 
             // Traces
-            GeneralSweptIMDNewTrace sweptIMDNewTrace = new GeneralSweptIMDNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            GeneralSweptIMDNewTrace sweptIMDNewTrace = ConfigureChildStep(new GeneralSweptIMDNewTrace());
 
             this.ChildTestSteps.Add(configure);
             this.ChildTestSteps.Add(power);
@@ -57,10 +57,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel.ToString()}_DUMMY_PwrMain_1\',\'Swept IMD\',\'PwrMain\'");
+            DefineDummyTrace("Swept IMD", "PwrMain");
 
             RunChildSteps(); //If the step supports child steps.
 

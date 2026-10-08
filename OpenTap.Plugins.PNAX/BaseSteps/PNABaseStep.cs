@@ -94,7 +94,7 @@ namespace OpenTap.Plugins.PNAX
         [Output]
         [Browsable(false)]
         [Display("MetaData", Groups: new[] { "MetaData" }, Order: 1000.0)]
-        public List<(string, object)> MetaData { get; set; }
+        public virtual List<(string, object)> MetaData { get; set; }
         #endregion
 
         public PNABaseStep()
@@ -114,10 +114,11 @@ namespace OpenTap.Plugins.PNAX
             // UpgradeVerdict(Verdict.Pass);
         }
 
+        // Default: steps that don't contribute metadata simply have nothing to report.
         [Browsable(false)]
         public virtual List<(string, object)> GetMetaData()
         {
-            throw new NotImplementedException();
+            return new List<(string, object)>();
         }
 
         public virtual void UpdateMetaData()
@@ -126,7 +127,10 @@ namespace OpenTap.Plugins.PNAX
 
             foreach (var ch in this.ChildTestSteps)
             {
-                List<(string, object)> ret = (ch as PNABaseStep).GetMetaData();
+                if (!(ch is PNABaseStep childStep))
+                    continue;
+
+                List<(string, object)> ret = childStep.GetMetaData();
                 foreach (var it in ret)
                 {
                     MetaData.Add(it);
@@ -136,6 +140,52 @@ namespace OpenTap.Plugins.PNAX
 
         protected virtual void UpdateChanelConverterStage()
         {
+        }
+
+        protected string GetDummyTraceName(string measurementName = null)
+        {
+            return GetDummyTraceName(Channel, measurementName);
+        }
+
+        protected string GetDummyTraceName(int channel, string measurementName = null)
+        {
+            string measurementSuffix = string.IsNullOrEmpty(measurementName) ? string.Empty : $"_{measurementName}";
+            return $"CH{channel}_DUMMY{measurementSuffix}_1";
+        }
+
+        protected void DefineDummyTrace(string measurementClass, string measurementName, string dummyTraceMeasurementName = null)
+        {
+            DefineDummyTrace(Channel, measurementClass, measurementName, dummyTraceMeasurementName);
+        }
+
+        protected void DefineDummyTrace(int channel, string measurementClass, string measurementName, string dummyTraceMeasurementName = null)
+        {
+            PNAX.GetNewTraceID(channel);
+            PNAX.ScpiCommand($"CALCulate{channel}:CUST:DEFine '{GetDummyTraceName(channel, dummyTraceMeasurementName ?? measurementName)}','{measurementClass}','{measurementName}'");
+        }
+
+        protected void DeleteDummyTrace(string dummyTraceMeasurementName)
+        {
+            DeleteDummyTrace(Channel, dummyTraceMeasurementName);
+        }
+
+        protected void DeleteDummyTrace(int channel, string dummyTraceMeasurementName)
+        {
+            PNAX.ScpiCommand($"CALCulate{channel}:PARameter:DELete '{GetDummyTraceName(channel, dummyTraceMeasurementName)}'");
+        }
+
+        protected T ConfigureChildStep<T>(T childStep) where T : PNABaseStep
+        {
+            childStep.IsControlledByParent = true;
+            childStep.Channel = Channel;
+            childStep.PNAX = PNAX;
+            childStep.ConverterStages = ConverterStages;
+            return childStep;
+        }
+
+        protected void AddConfiguredChildStep<T>(T childStep) where T : PNABaseStep
+        {
+            ChildTestSteps.Add(ConfigureChildStep(childStep));
         }
 
         private void UpdateChildStepConverterStage()

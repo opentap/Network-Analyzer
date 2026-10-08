@@ -23,29 +23,22 @@ namespace OpenTap.Plugins.PNAX
         {
             // Add child steps in the order that is required
             
-            // Mixer Setup
-            MixerSetupTestStep mixerSetupTestStep = new MixerSetupTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
-            // Mixer Power
-            MixerPowerTestStep mixerPowerTestStep = new MixerPowerTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages, EnablePort3Settings = false, EnablePort4Settings = false, EnableSweptPowerSettings = false };
-            // Mixer Frequency
-            MixerFrequencyTestStep mixerFrequencyTestStep = new MixerFrequencyTestStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            // Mixer Setup/Power/Frequency
+            AddMixerChildSteps(enableSweptPowerSettings: false);
 
             // Compression
-            Compression compression = new Compression { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            Compression compression = ConfigureChildStep(new Compression());
             // Power
-            MixerConverterPowerStep power = new MixerConverterPowerStep { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            MixerConverterPowerStep power = ConfigureChildStep(new MixerConverterPowerStep());
             // Frequency
-            GainCompressionFrequency frequency = new GainCompressionFrequency { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            GainCompressionFrequency frequency = ConfigureChildStep(new GainCompressionFrequency());
 
             // Traces
-            GainCompressionNewTrace gainCompressionNewTrace = new GainCompressionNewTrace { IsControlledByParent = true, Channel = this.Channel, ConverterStages = this.ConverterStages };
+            GainCompressionNewTrace gainCompressionNewTrace = ConfigureChildStep(new GainCompressionNewTrace());
 
             this.ChildTestSteps.Add(frequency);
             this.ChildTestSteps.Add(power);
             this.ChildTestSteps.Add(compression);
-            this.ChildTestSteps.Add(mixerFrequencyTestStep);
-            this.ChildTestSteps.Add(mixerPowerTestStep);
-            this.ChildTestSteps.Add(mixerSetupTestStep);
             this.ChildTestSteps.Add(gainCompressionNewTrace);
 
             // Once we have all child steps, lets get the number of points
@@ -54,10 +47,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_SC21_1\',\'Gain Compression Converters\',\'SC21\'");
+            DefineDummyTrace("Gain Compression Converters", "SC21");
 
             RunChildSteps(); //If the step supports child steps.
 

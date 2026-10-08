@@ -24,13 +24,13 @@ namespace OpenTap.Plugins.PNAX
             IsControlledByParent = false;
 
             // NoiseFigure
-            GeneralNoiseFigure noiseFigure = new GeneralNoiseFigure { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigure noiseFigure = ConfigureChildStep(new GeneralNoiseFigure());
             // Power
-            GeneralNoiseFigurePower power = new GeneralNoiseFigurePower { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigurePower power = ConfigureChildStep(new GeneralNoiseFigurePower());
             // Frequency
-            GeneralNoiseFigureFrequency frequency = new GeneralNoiseFigureFrequency { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigureFrequency frequency = ConfigureChildStep(new GeneralNoiseFigureFrequency());
             // Trace
-            GeneralNoiseFigureNewTrace noiseFigureNewTrace = new GeneralNoiseFigureNewTrace { IsControlledByParent = true, Channel = this.Channel };
+            GeneralNoiseFigureNewTrace noiseFigureNewTrace = ConfigureChildStep(new GeneralNoiseFigureNewTrace());
 
             this.ChildTestSteps.Add(noiseFigure);
             this.ChildTestSteps.Add(power);
@@ -43,10 +43,7 @@ namespace OpenTap.Plugins.PNAX
 
         public override void Run()
         {
-            PNAX.GetNewTraceID(Channel);
-            // Define a dummy measurement so we can setup all channel parameters
-            // we will add the traces during the StandardSingleTrace or StandardNewTrace test steps
-            PNAX.ScpiCommand($"CALCulate{Channel}:CUST:DEFine \'CH{Channel}_DUMMY_NF_1\',\'Noise Figure Cold Source\',\'NF\'");
+            DefineDummyTrace("Noise Figure Cold Source", "NF");
 
             RunChildSteps(); //If the step supports child steps.
 

@@ -47,16 +47,16 @@ namespace OpenTap.Plugins.PNAX
 
         public void AddTraceFormat(PNAX.MeasurementFormatEnum format)
         {
-            TraceFormat trFormat = new TraceFormat() { PNAX = this.PNAX, Channel = this.Channel };
+            TraceFormat trFormat = new TraceFormat();
             trFormat.Format = format;
-            this.ChildTestSteps.Add(trFormat);
+            AddTraceChild(trFormat);
         }
 
         public void AddTraceTitle(string title)
         {
-            TraceTitle trTitle = new TraceTitle() { PNAX = this.PNAX, Channel = this.Channel };
+            TraceTitle trTitle = new TraceTitle();
             trTitle.Title = title;
-            this.ChildTestSteps.Add(trTitle);
+            AddTraceChild(trTitle);
         }
 
         public override void Run()

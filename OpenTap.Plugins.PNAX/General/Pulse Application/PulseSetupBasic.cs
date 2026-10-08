@@ -35,13 +35,35 @@ namespace OpenTap.Plugins.PNAX
         [Unit("sec", UseEngineeringPrefix: true, StringFormat: "000.000")]
         public double PulseWidthPrimary { get; set; }
 
+        private double _PulsePeriodPrimary;
         [Display("Pulse Period", Group: "Pulse Timing", Order: 31)]
         [Unit("sec", UseEngineeringPrefix: true, StringFormat: "0.000")]
-        public double PulsePeriodPrimary { get; set; }
+        public virtual double PulsePeriodPrimary
+        {
+            get
+            {
+                return _PulsePeriodPrimary;
+            }
+            set
+            {
+                _PulsePeriodPrimary = value;
+            }
+        }
 
+        private double _PulseFrequencyPrimary;
         [Display("Pulse Frequency", Group: "Pulse Timing", Order: 32)]
         [Unit("Hz", UseEngineeringPrefix: true, StringFormat: "0.000")]
-        public double PulseFrequencyPrimary { get; set; }
+        public virtual double PulseFrequencyPrimary
+        {
+            get
+            {
+                return _PulseFrequencyPrimary;
+            }
+            set
+            {
+                _PulseFrequencyPrimary = value;
+            }
+        }
 
 
         private PulseTriggerEnumtype _PulseTriggerType;
@@ -91,9 +113,6 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
-        //[Display("ADC trigger delay", Groups: new[] { "Pulse Trigger" }, Order: 63)]
-        //public double ADCTriggerDelay { get; set; }
-
         #endregion
 
         public PulseSetupBasic()
@@ -107,21 +126,11 @@ namespace OpenTap.Plugins.PNAX
             PulseTriggerType = PulseTriggerEnumtype.Internal;
             pulseTriggerLevelEdge = PulseTriggerLevelEdgeEnumtype.HighLevel;
             SynchADCUsingPulseTrigger = false;
-            //ADCTriggerDelay = 250e-3;
-
         }
 
-        public override void Run()
+        // Shared trigger dispatch reused by PulseSetup.
+        protected void ApplyPulseTrigger()
         {
-            // Pulse Measurement
-            PNAX.PulseMode(Channel, PulseMode);
-
-            // Pulse Timing
-            PNAX.PulsePrimaryWidth(Channel, PulseWidthPrimary);
-            PNAX.PulsePrimaryPeriod(Channel, PulsePeriodPrimary);
-            PNAX.PulsePrimaryFrequency(Channel, PulseFrequencyPrimary);
-
-            // Trigger
             PNAX.PulseGeneratorTrigger(Channel, PulseTriggerType);
             switch (pulseTriggerLevelEdge)
             {
@@ -143,8 +152,20 @@ namespace OpenTap.Plugins.PNAX
                     break;
             }
             PNAX.PulseGeneratorSyncADCs(Channel, SynchADCUsingPulseTrigger);
-            // Setting Pulse 0 on Basic Pulse setup affects the Trigger on the instrument
-            //PNAX.PulseGeneratorDelay(Channel, "Pulse0", ADCTriggerDelay);
+        }
+
+        public override void Run()
+        {
+            // Pulse Measurement
+            PNAX.PulseMode(Channel, PulseMode);
+
+            // Pulse Timing
+            PNAX.PulsePrimaryWidth(Channel, PulseWidthPrimary);
+            PNAX.PulsePrimaryPeriod(Channel, PulsePeriodPrimary);
+            PNAX.PulsePrimaryFrequency(Channel, PulseFrequencyPrimary);
+
+            // Trigger
+            ApplyPulseTrigger();
 
             RunChildSteps(); //If the step supports child steps.
 
