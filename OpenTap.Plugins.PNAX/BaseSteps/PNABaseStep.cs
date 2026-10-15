@@ -36,9 +36,9 @@ namespace OpenTap.Plugins.PNAX
                 // Update traces
                 foreach (var a in ChildTestSteps)
                 {
-                    if (a.GetType().IsSubclassOf(typeof(PNABaseStep)))
+                    if (a is PNABaseStep childStep)
                     {
-                        (a as PNABaseStep).PNAX = value;
+                        childStep.PNAX = value;
                     }
                 }
             }
@@ -53,19 +53,7 @@ namespace OpenTap.Plugins.PNAX
             set
             {
                 _Channel = value;
-
-                // Update traces
-                foreach (var a in ChildTestSteps)
-                {
-                    if (a.GetType().IsSubclassOf(typeof(PNABaseStep)))
-                    {
-                        (a as PNABaseStep).Channel = value;
-                    }
-                    if (a is SingleTraceBaseStep)
-                    {
-                        (a as SingleTraceBaseStep).UpdateTestStepName();
-                    }
-                }
+                UpdateChildStepChannel(value);
             }
         }
 
@@ -138,8 +126,40 @@ namespace OpenTap.Plugins.PNAX
             }
         }
 
+        protected void UpdateMetaDataFromChildren<TChild>() where TChild : PNABaseStep
+        {
+            MetaData = new List<(string, object)>();
+
+            foreach (var child in ChildTestSteps)
+            {
+                if (!(child is TChild childStep))
+                    continue;
+
+                List<(string, object)> childMetaData = childStep.GetMetaData();
+                foreach (var item in childMetaData)
+                {
+                    MetaData.Add(item);
+                }
+            }
+        }
+
         protected virtual void UpdateChanelConverterStage()
         {
+        }
+
+        protected void UpdateChildStepChannel(int channel)
+        {
+            foreach (var child in ChildTestSteps)
+            {
+                if (child is PNABaseStep childStep)
+                {
+                    childStep.Channel = channel;
+                }
+                if (child is SingleTraceBaseStep traceStep)
+                {
+                    traceStep.UpdateTestStepName();
+                }
+            }
         }
 
         protected string GetDummyTraceName(string measurementName = null)
@@ -192,12 +212,12 @@ namespace OpenTap.Plugins.PNAX
         {
             foreach (var step in this.ChildTestSteps)
             {
-                if (step.GetType().IsSubclassOf(typeof(PNABaseStep)))
+                if (step is PNABaseStep childStep)
                 {
                     if (step.GetType().Equals(typeof(MixerSetupTestStep)))
                         continue;
 
-                    (step as PNABaseStep).ConverterStages = _ConverterStagesEnum;
+                    childStep.ConverterStages = _ConverterStagesEnum;
                 }
             }
         }

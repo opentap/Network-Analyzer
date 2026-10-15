@@ -16,7 +16,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - DUT Meta Data", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends DUT Meta data to publish table")]
     [AllowAsChildIn(typeof(StoreDataBase))]
-    public class StoreDutMetaData : TestStep
+    public class StoreDutMetaData : StoreDataMetaDataChildBase
     {
         #region Settings
         [Display("DUT", Order: 1)]
@@ -30,8 +30,6 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
-
             Type myType = Dut.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
@@ -43,7 +41,7 @@ namespace OpenTap.Plugins.PNAX.LMS
                 {
                     if (a.AttributeType.Name.Equals("MetaDataAttribute"))
                     {
-                        _parentsMetaData.Add((prop.Name, propValue));
+                        ParentMetaData.Add((prop.Name, propValue));
                         break;
                     }
                 }

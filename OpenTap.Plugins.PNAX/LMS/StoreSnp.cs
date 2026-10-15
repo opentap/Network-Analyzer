@@ -16,19 +16,9 @@ using System.Text;
 namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store SNP", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Store SNP File")]
-    public class StoreSnp : TestStep
+    public class StoreSnp : ChannelSelectionBase
     {
         #region Settings
-        [Display("PNA", Order: 0.1)]
-        public PNAX PNAX { get; set; }
-
-        [Display("Auto Select All Channels", Group: "Measurements", Order: 10)]
-        public bool AutoSelectChannels { get; set; }
-
-        [EnabledIf("AutoSelectChannels", false, HideIfDisabled = true)]
-        [Display("Channel", Description: "Choose which channel to grab data from.", "Measurements", Order: 10)]
-        public List<int> channels { get; set; }
-
         [Display("Ports", Groups: new[] { "Trace" }, Order: 22)]
         public List<int> Ports { get; set; }
 
@@ -66,10 +56,7 @@ namespace OpenTap.Plugins.PNAX.LMS
         {
             UpgradeVerdict(Verdict.NotSet);
 
-            if (AutoSelectChannels)
-            {
-                channels = PNAX.GetActiveChannels();
-            }
+            AutoSelectChannelsAvailableOnInstrument();
 
             foreach (int channel in channels)
             {

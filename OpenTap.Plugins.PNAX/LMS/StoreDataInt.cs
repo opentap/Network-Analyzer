@@ -15,7 +15,7 @@ namespace OpenTap.Plugins.PNAX.LMS
 {
     [Display("Store Trace Data - Integer", Groups: new[] { "Network Analyzer", "Load/Measure/Store" }, Description: "Appends an integer data to trace.")]
     [AllowAsChildIn(typeof(StoreDataBase))]
-    public class StoreDataInt : TestStep
+    public class StoreDataInt : StoreDataMetaDataChildBase
     {
         #region Settings
         public String Desc { get; set; }
@@ -30,11 +30,9 @@ namespace OpenTap.Plugins.PNAX.LMS
 
         public override void Run()
         {
-            List<(string, object)> _parentsMetaData = GetParent<StoreDataBase>().MetaData;
-
             if (!Desc.Equals(""))
             {
-                _parentsMetaData.Add((Desc, Value));
+                ParentMetaData.Add((Desc, Value));
             }
 
             UpgradeVerdict(Verdict.Pass);
